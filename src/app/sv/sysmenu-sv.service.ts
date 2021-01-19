@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import {ConfigService} from './config.service';
+import { ConfigService } from './config.service';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import {data} from '../models/data_model';
-import {FeedBack} from '../models/feedback';
+import { data } from '../models/data_model';
+import { FeedBack } from '../models/feedback';
 
 @Injectable({
   providedIn: 'root'
@@ -23,14 +23,24 @@ export class SysmenuSvService {
       'type_sql': 'read'
     }
     return this.http.post<data>(apiUrl, data, { headers: header });
-    }
+  }
 
-    crudsysmenu(vdata:any,type:string): Observable<FeedBack> {
-      const header = { 'Content-Type': 'application/json' };
-      const apiUrl = this.configSv.ip + 'sysmenu.php';
-      //console.log(vdata);
-       let data;
-       data = {
+  crudsysmenu(vdata: any, type: string, cause?): Observable<FeedBack> {
+    const header = { 'Content-Type': 'application/json' };
+    const apiUrl = this.configSv.ip + 'sysmenu.php';
+    //console.log(vdata);
+    let data;
+    if (type === 'cancel') {
+      data = {
+        'id': vdata,
+        'emp_id': this.configSv.emp_id,
+        'type_sql': type,
+        'cause': cause
+      }
+    }
+    else {
+      data = {
+        'id': vdata.id,
         'title': vdata.title,
         'url': vdata.url,
         'svg': vdata.svg,
@@ -38,7 +48,8 @@ export class SysmenuSvService {
         'submenu_flg': vdata.submenu,
         'emp_id': this.configSv.emp_id,
         'type_sql': type
-      }  
-      return this.http.post<FeedBack>(apiUrl, data, { headers: header });
       }
+    }
+    return this.http.post<FeedBack>(apiUrl, data, { headers: header });
+  }
 }
