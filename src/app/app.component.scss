@@ -117,3 +117,30 @@ ion-note {
 ion-item.selected {
   --color: var(--ion-color-primary);
 }
+
+
+.active {
+  --color: var(--ion-color-primary);
+}
+.active-parent {
+  font-weight: 700 !important; // bold is set here
+}
+.sub-item {
+  padding-left: 20px;
+  font-size: small;
+}
+
+.error{
+  //text-shadow: 0px 0px 3px rgba(117, 117, 117, 0.12);
+  color: #ff0000;
+  //text-align: center;
+  //padding-top: 15px;
+  display:table;
+  //margin-top: 0px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.newdata {
+  --ion-item-background:#86edffd5;
+}

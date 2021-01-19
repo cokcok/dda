@@ -1,0 +1,68 @@
+<ion-content text-center>
+
+  <!-- <div class="main">
+    <p class="sign" align="center">DDA</p>
+  
+     <form class="form1">
+      <input class="un" type="text" align="center" placeholder="Username">
+      <input class="pass" type="password" align="center" placeholder="Password">
+      <a class="submit" align="center">Sign in</a>
+    </form> 
+    </div> --> 
+
+    <div class="main">
+      <p class="sign" align="center">ดวงดี Appilcation</p>
+      <!-- <p class="sign" align="center">DDA</p> -->
+      <form [formGroup]="ionicForm"  (ngSubmit)="submitForm()" novalidate >
+        <ion-item lines="full" class="un">
+          <ion-label  position="floating">Username</ion-label>
+          <ion-input  formControlName="name" type="text" ></ion-input>
+          <span class="error" *ngIf="isSubmitted && errorControl.name.errors?.required">
+            กรุณาระบุ Username
+          </span>
+        </ion-item>       
+        <ion-item lines="full" class="pass">
+          <ion-label  position="floating">Password</ion-label>
+          <ion-input  formControlName="password" type="password"  ></ion-input>
+          <span  class="error" *ngIf="isSubmitted && errorControl.password.errors?.required">
+            กรุณาระบุ Password
+          </span>
+        </ion-item>
+        
+        <ion-row>
+          <ion-col>
+            <ion-button type="submit" color="danger" expand="block">เข้าสู่ระบบ</ion-button>
+          </ion-col>
+        </ion-row>
+
+        <ion-row  class="appversion">
+          <ion-col>
+              App Version : {{versionNumber}}
+          </ion-col>
+        </ion-row>
+
+      </form> 
+
+    </div>
+
+
+<!--     <div class="bg">
+      <div class="head" text-center>
+        <h1>ดวงดี Application</h1>
+        <h5>DDA</h5>
+    </div>
+    <form [formGroup]="ionicForm"  novalidate *ngIf="ionicForm">
+      <div class="inputs">
+        <ion-item lines="full" >
+          <ion-label  position="floating">Username</ion-label>
+          <ion-input  formControlName="name" type="text"></ion-input>
+        </ion-item>
+        <span class="error ion-padding" *ngIf="isSubmitted && errorControl.name.errors?.required">
+          Name is required.
+        </span>
+      </div>
+    </form>
+    </div> -->
+
+
+</ion-content>

@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-
-import { Platform } from '@ionic/angular';
+import { Platform,NavController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import {firebase} from '@firebase/app';
 import {environment} from '../environments/environment';
 import { NotificationsService } from './sv/notifications.service';
+import { Router } from '@angular/router';
+import {ConfigService} from './sv/config.service';
+import {SigninSvService} from './sv/signin-sv.service';
+import {page} from './models/signin_model';
 
 
 @Component({
@@ -14,46 +17,62 @@ import { NotificationsService } from './sv/notifications.service';
   styleUrls: ['app.component.scss']
 })
 export class AppComponent implements OnInit {
-  public selectedIndex = 0;
-  public appPages = [
+  public selectedIndex = 0; chkAuten = false;  filterTerm: string;
+   public appPages = [
     {
-      title: 'Inbox',
-      url: '/folder/Inbox',
-      icon: 'mail'
+      title: 'สร้างเมนูหลัก',
+      url: '/sysmenu',
+      icon: 'trash',
+      open: ''
     },
     {
-      title: 'Outbox',
-      url: '/folder/Outbox',
-      icon: 'paper-plane'
+      title: 'ประชาสัมพันธ์',
+      url: '/syspublicize',
+      icon: 'trash',
+      open: ''
     },
     {
-      title: 'Favorites',
-      url: '/folder/Favorites',
-      icon: 'heart'
+      title: 'ข้อมูลหลัก',
+      url: '',
+      children: [
+        {
+          title: 'ข้อมูลหลัก 1',
+          url: '/mtd01',
+          icon: 'trash',
+          svg:'logout',
+          open: 'true'
+        },
+        {
+          title: 'ข้อมูลหลัก 2',
+          url: '/mtd02',
+          icon: 'trash',
+          svg:'logout',
+          open: 'true'
+        }
+      ] 
     },
     {
-      title: 'Archived',
-      url: '/folder/Archived',
-      icon: 'archive'
+      title: 'ใบสั่งเสื้อ',
+      url: '/po01',
+      icon: 'trash',
+      open: ''
     },
     {
-      title: 'Trash',
-      url: '/folder/Trash',
-      icon: 'trash'
-    },
-    {
-      title: 'Spam',
-      url: '/folder/Spam',
-      icon: 'warning'
-    }
-  ];
+      title: 'ออกจากระบบ',
+      url: '/folder/Logout',
+      svg:'logout'
+    } 
+  ]; 
+ // public appPages: any;
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
-
+  emp_name:string; dept_name:string;
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private notificationsService:NotificationsService
+    private notificationsService:NotificationsService,
+    private navCtrl: NavController,
+    private router: Router,public configSv:ConfigService,public signinSv:SigninSvService
   ) {
     this.initializeApp();
   }
@@ -62,6 +81,15 @@ export class AppComponent implements OnInit {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+     // this.chklogin();
+      this.signinSv.getObservable().subscribe((data) => {
+        //console.log('Data received', data);
+        this.configSv.emp_id = data['employee'][0]['id'];
+        this.emp_name = data['employee'][0]['emp_name'];
+        this.dept_name = data['employee'][0]['dept_name'];
+        this.appPages = data['employee'][0]['page'];
+        //console.log(this.appPages)
+    });
     });
   }
 
@@ -72,6 +100,7 @@ export class AppComponent implements OnInit {
     if (path !== undefined) {
       this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
     }
+    
   }
 
   ngAfterViewInit() {
@@ -79,4 +108,11 @@ export class AppComponent implements OnInit {
        await this.notificationsService.requestPermission();
     });
   }
+
+  chklogin(){
+    if (this.chkAuten === false){
+     this.router.navigateByUrl('/');
+   }
+  }
+
 }

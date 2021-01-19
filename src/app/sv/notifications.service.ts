@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { environment } from './../../environments/environment';
 import { firebase } from '@firebase/app';
 import '@firebase/messaging';
+import {ConfigService} from '../sv/config.service';
 @Injectable({
   providedIn: 'root'
 })
 export class NotificationsService {
 
-  constructor() { }
+  constructor(public configSv:ConfigService) { }
   init(): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       navigator.serviceWorker.ready.then((registration) => {
@@ -65,7 +66,7 @@ export class NotificationsService {
         await messaging.requestPermission();
 
         const token: string = await messaging.getToken();
-       // this.configService.token = token;
+       this.configSv.token = token;
         console.log('User notifications token:', token);
       } catch (err) {
         // No notifications granted
