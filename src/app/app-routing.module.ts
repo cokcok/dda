@@ -5,7 +5,7 @@ const routes: Routes = [
   {
     path: '',
     //redirectTo: 'folder/Inbox',
-    redirectTo: 'syspublicize',    
+    redirectTo: 'mtd01',    
     //redirectTo: 'signin',
     pathMatch: 'full'
   },
@@ -48,6 +48,10 @@ const routes: Routes = [
   {
     path: 'sysgroupmenu',
     loadChildren: () => import('./sysgroupmenu/sysgroupmenu.module').then( m => m.SysgroupmenuPageModule)
+  },
+  {
+    path: 'sysgroupmenu01',
+    loadChildren: () => import('./sysgroupmenu01/sysgroupmenu01.module').then( m => m.Sysgroupmenu01PageModule)
   }
 ];
 

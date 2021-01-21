@@ -3,8 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ConfigService } from './../sv/config.service';
 import { SysmenuSvService } from '../sv/sysmenu-sv.service';
 import { Subscription } from 'rxjs';
-import { data } from '../../../../githost/src/app/model/data';
-import {  AlertController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
+
 @Component({
   selector: 'app-sysmenu',
   templateUrl: './sysmenu.page.html',
@@ -17,10 +17,9 @@ export class SysmenuPage implements OnInit {
   id: number;
   data = [];
 
-
   constructor(public formBuilder: FormBuilder, public configSv: ConfigService, public sysmenuSv: SysmenuSvService, private alertCtrl: AlertController) { }
 
-  ngOnInit() {
+  ngOnInit() {  
     this.ionicForm = this.formBuilder.group({
       id: [''],
       title: ['', [Validators.required]],
@@ -65,6 +64,7 @@ export class SysmenuPage implements OnInit {
               submenu: this.ionicForm.controls.submenu.value,
               highlight: true
             });
+            this.refreshForm();
           }
           else if (typesql === 'update') {
             let item;
@@ -82,9 +82,7 @@ export class SysmenuPage implements OnInit {
           this.configSv.ChkformAlert(data.message);
         }, (error) => {
           console.log(JSON.stringify(error));
-        }, () => {
-
-          this.refreshForm();
+        }, () => {         
         }
       );
     }
@@ -125,7 +123,7 @@ export class SysmenuPage implements OnInit {
 
   doInfinite(infiniteScroll) {
     this.page++;
-    console.log(this.page, this.maxpadding);
+    //console.log(this.page, this.maxpadding);
     /*  setTimeout(() => {
        this.loaddata(this.page * this.limit , infiniteScroll);     
      },1000); */
@@ -139,7 +137,6 @@ export class SysmenuPage implements OnInit {
   refreshForm() {
     this.ionicForm.reset();
     this.isSubmitted = false;
-
   }
 
   selectData(id) {

@@ -23,8 +23,8 @@ ConfigService
 
   ngOnInit() {
     this.ionicForm = this.formBuilder.group({
-      name: ['admin', [Validators.required]],
-      password: ['admin', [Validators.required]]
+      name: ['root', [Validators.required]],
+      password: ['root1234', [Validators.required]]
       /* ,email: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
       dob: [this.defaultDate],
       mobile: ['', [Validators.required, Validators.pattern('^[0-9]+$')]] */
@@ -68,7 +68,9 @@ ConfigService
           }
           else
           {
+            setTimeout(() => {
             this.configSv.ChkformAlert('ไม่พบข้อมูลแล้ว');
+            }, 2100);
           }
         },(error) => {
           console.log(JSON.stringify(error));

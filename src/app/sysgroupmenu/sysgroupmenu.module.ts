@@ -7,13 +7,13 @@ import { IonicModule } from '@ionic/angular';
 import { SysgroupmenuPageRoutingModule } from './sysgroupmenu-routing.module';
 
 import { SysgroupmenuPage } from './sysgroupmenu.page';
-
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    SysgroupmenuPageRoutingModule
+    SysgroupmenuPageRoutingModule,Ng2SearchPipeModule
   ],
   declarations: [SysgroupmenuPage]
 })

@@ -77,9 +77,10 @@
   <div scrollY="true" id="myFixZone">
     <ion-searchbar placeholder="ค้นหา..." [(ngModel)]="filterTerm" animated="true"></ion-searchbar>
     <ion-list>
-      <ion-item-sliding *ngFor="let c of data  | filter:filterTerm"  [ngClass]="c.highlight ? 'newdata': ''" (click)="selectData(c.id)">        
-        <ion-item>    
-          <ion-label>  
+      <ion-item-sliding *ngFor="let c of data  | filter:filterTerm" [ngClass]="c.highlight ? 'newdata': ''"
+        (click)="selectData(c.id)">
+        <ion-item>
+          <ion-label>
             <ion-text color="primary">
               <h3>{{ c.title }}</h3>
             </ion-text>

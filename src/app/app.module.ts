@@ -13,15 +13,14 @@ import { environment } from '../environments/environment';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
-
-
+import { IonicSelectableModule } from 'ionic-selectable';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
     BrowserModule,FormsModule,ReactiveFormsModule,HttpClientModule,
     IonicModule.forRoot(),
-    AppRoutingModule,Ng2SearchPipeModule,
+    AppRoutingModule,Ng2SearchPipeModule,IonicSelectableModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [

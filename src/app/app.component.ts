@@ -26,6 +26,24 @@ export class AppComponent implements OnInit {
       open: ''
     },
     {
+      title: 'สร้างเมนูย่อย',
+      url: '/syssubmenu',
+      icon: 'trash',
+      open: ''
+    },
+    {
+      title: 'กลุ่มผู้ใช้',
+      url: '/sysgroup',
+      icon: 'trash',
+      open: ''
+    },
+    {
+      title: 'เชื่อมกลุ่มผู้ใช้กับเมนู',
+      url: '/sysgroupmenu',
+      icon: 'trash',
+      open: ''
+    },
+    {
       title: 'ประชาสัมพันธ์',
       url: '/syspublicize',
       icon: 'trash',
@@ -36,7 +54,7 @@ export class AppComponent implements OnInit {
       url: '',
       children: [
         {
-          title: 'ข้อมูลหลัก 1',
+          title: 'ข้อมูลผู้ใช้',
           url: '/mtd01',
           icon: 'trash',
           svg:'logout',
