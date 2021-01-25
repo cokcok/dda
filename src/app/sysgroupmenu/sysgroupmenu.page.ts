@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ConfigService } from "./../sv/config.service";
+import { ConfigService } from "../sv/config.service";
 import { SysmenuSvService } from "../sv/sysmenu-sv.service";
 import { Subscription } from "rxjs";
 import { NavController } from '@ionic/angular';

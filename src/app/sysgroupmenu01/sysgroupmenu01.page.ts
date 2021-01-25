@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormControl, } from "@angular/forms";
-import { ConfigService } from "./../sv/config.service";
+import { ConfigService } from "../sv/config.service";
 import { SysmenuSvService } from "../sv/sysmenu-sv.service";
 import { Subscription } from "rxjs";
 import { AlertController } from "@ionic/angular";

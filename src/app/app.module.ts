@@ -14,6 +14,7 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import { IonicSelectableModule } from 'ionic-selectable';
+import * as $ from "jquery";
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],

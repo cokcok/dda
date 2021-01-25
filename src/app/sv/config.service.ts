@@ -7,7 +7,10 @@ import { AlertController, LoadingController } from '@ionic/angular';
 export class ConfigService {
   public ip = 'http://localhost:8012/ws_dda/';
   public token;
-  public emp_id:number; public emp_name:string;public dept_name:string;
+  public emp_id:number; 
+  public group_id:number; public pic:string;
+  public prefix_name:string;public surname:string;public name:string
+  //emp_name:string; dept_name:string;pic:string;
   constructor(private loadingController: LoadingController,private alertCtrl: AlertController) { }
 
 

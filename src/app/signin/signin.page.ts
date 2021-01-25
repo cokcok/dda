@@ -57,8 +57,9 @@ ConfigService
      // console.log(this.ionicForm.controls.name.value);
 
      this.configSv.loadingAlert(2000);
-      this.sub = this.signinSv.signin(this.ionicForm.controls.name.value,this.ionicForm.controls.password.value).subscribe(
+      this.sub = this.signinSv.signin(this.ionicForm.controls.name.value,this.ionicForm.controls.password.value,this.configSv.token).subscribe(
         (data) => {
+          console.log(data);
           if (data !== null){
             //console.log(data);
             this.signinSv.publishSomeData(data); 
@@ -69,7 +70,7 @@ ConfigService
           else
           {
             setTimeout(() => {
-            this.configSv.ChkformAlert('ไม่พบข้อมูลแล้ว');
+            this.configSv.ChkformAlert('ไม่พบข้อมูล/รหัสผ่านไม่ถูกต้อง');
             }, 2100);
           }
         },(error) => {

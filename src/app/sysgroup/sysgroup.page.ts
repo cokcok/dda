@@ -5,7 +5,7 @@ import {
   Validators,
   FormControl,
 } from "@angular/forms";
-import { ConfigService } from "./../sv/config.service";
+import { ConfigService } from "../sv/config.service";
 import { SysmenuSvService } from "../sv/sysmenu-sv.service";
 import { Subscription } from "rxjs";
 import { AlertController } from "@ionic/angular";

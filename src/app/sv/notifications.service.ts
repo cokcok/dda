@@ -1,8 +1,10 @@
+import { ConfigService } from './config.service';
 import { Injectable } from '@angular/core';
-import { environment } from './../../environments/environment';
+import { environment } from '../../environments/environment';
 import { firebase } from '@firebase/app';
 import '@firebase/messaging';
-import {ConfigService} from '../sv/config.service';
+//import {ConfigService} from './config.service';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -67,7 +69,7 @@ export class NotificationsService {
 
         const token: string = await messaging.getToken();
        this.configSv.token = token;
-        console.log('User notifications token:', token);
+       console.log('User notifications token:', token);
       } catch (err) {
         // No notifications granted
       }

@@ -16,68 +16,137 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<form [formGroup]="ionicForm" novalidate>
-  <ion-grid fixed>
-    <ion-row>
-      <ion-col>
-        เลขที่ระบบ <input type="text" formControlName="id" disabled class="IDnoshowBG">
-        <input type="hidden" formControlName="highlight">
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <ion-item>
-          <ion-label position="floating">คำนำหน้าชื่อ</ion-label>
-          <ion-select interface="popover" formControlName="prefix_name"  >
-            <ion-select-option value="นาย">นาย</ion-select-option>
-            <ion-select-option value="นาง">นาง</ion-select-option>
-            <ion-select-option value="นางสาว">นางสาว</ion-select-option>
-          </ion-select>
-          <span class="error" *ngIf="isSubmitted && errorControl.prefix_name.errors?.required">
-            กรุณาระบุ คำนำหน้าชื่อ
+  <form [formGroup]="ionicForm" novalidate>
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col>
+          เลขที่ระบบ <input type="text" formControlName="id" disabled class="IDnoshowBG">
+          <input type="hidden" formControlName="highlight">
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">คำนำหน้าชื่อ</ion-label>
+            <ion-select interface="popover" formControlName="prefix_name"  >
+              <ion-select-option value="นาย">นาย</ion-select-option>
+              <ion-select-option value="นาง">นาง</ion-select-option>
+              <ion-select-option value="นางสาว">นางสาว</ion-select-option>
+            </ion-select>
+            <span class="error" *ngIf="isSubmitted && errorControl.prefix_name.errors?.required">
+              กรุณาระบุ คำนำหน้าชื่อ
+            </span> 
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">ชื่อ</ion-label>
+            <ion-input formControlName="name" type="text"  ></ion-input>
+            <span class="error" *ngIf="isSubmitted && errorControl.name.errors?.required">
+              กรุณาระบุ ชื่อ
+            </span>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">นามสกุล</ion-label>
+            <ion-input formControlName="surname" type="text"  ></ion-input>
+            <span class="error" *ngIf="isSubmitted && errorControl.surname.errors?.required">
+              กรุณาระบุ นามสกุล
+            </span>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">Username&Password</ion-label>
+            <ion-input formControlName="username" type="text" [readonly] = "disableSelect"  ></ion-input>
+            <span class="error" *ngIf="isSubmitted && errorControl.username.errors?.required">
+              กรุณาระบุ Username&Password
+            </span>
+          </ion-item>
+        </ion-col>
+  
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label>กลุ่มผู้ใช้งาน</ion-label>
+            <ionic-selectable
+              interface="popover"
+              item-content
+              formControlName="group_id"
+              itemValueField="id"
+              itemTextField="description"
+              [items]="groups"
+              [canSearch]="true"
+              [canClear]="true"
+              clearButtonText="ล้างข้อมูล"
+              closeButtonText="ยกเลิก"
+              >
+            </ionic-selectable>
+          </ion-item>
+          <span class="error" *ngIf="isSubmitted && errorControl.group_id.errors?.required">
+            กรุณาระบุ กลุ่มผู้ใช้งาน
           </span>
-        </ion-item>
-      </ion-col>
-      <ion-col>
-        <ion-item>
-          <ion-label position="floating">ชื่อ</ion-label>
-          <ion-input formControlName="name" type="text"  ></ion-input>
-          <span class="error" *ngIf="isSubmitted && errorControl.name.errors?.required">
-            กรุณาระบุ ชื่อ
-          </span>
-        </ion-item>
-      </ion-col>
-      <ion-col>
-        <ion-item>
-          <ion-label position="floating">นามสกุล</ion-label>
-          <ion-input formControlName="surname" type="text"  ></ion-input>
-          <span class="error" *ngIf="isSubmitted && errorControl.surname.errors?.required">
-            กรุณาระบุ นามสกุล
-          </span>
-        </ion-item>
-      </ion-col>
-      <ion-col>
-        <ion-item>
-          <ion-label position="floating">Username/Password</ion-label>
-          <ion-input formControlName="username" type="text"  ></ion-input>
-          <span class="error" *ngIf="isSubmitted && errorControl.username.errors?.required">
-            กรุณาระบุ Username/Password
-          </span>
-        </ion-item>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <p>แนบรูปภาพ <!-- [(ngModel)]="picresizbase64" -->
-          <div id="resampled"></div>
-          <input type="hidden" id="picresizbase64" formControlName="picresizbase64"  name="picresizbase64">
-          <input type="file" (change)="fileUpload_img($event)" id="file-input" style="position:absolute; top: -999999px" #fileIngimg>
-          <button ion-button (click)="onClick_fileUpload()">Upload</button>
-          <p>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-  </form>
+        </ion-col>
+        <ion-col>
+          <p>แนบรูปภาพผู้ใช้   <input type="file" (change)="fileUpload_img($event)" id="file-input" style="position:absolute; top: -999999px" #fileIngimg>
+            <button ion-button (click)="onClick_fileUpload()">Upload</button>
+            <!-- <div id="resampled"><ion-icon name="star"></ion-icon>
+          </div> -->
+          <!-- <div [formGroup]="ionicForm" *ngFor="let ionicForm of picresizbase64Array.controls">
+            <input formControlName="resampled" type="text" />
+            <ion-img [src]="img.path"></ion-img> -->
+            <!-- <img src="{{resampled}}"/> -->
+           <!--  <ion-img src = {{ ionicForm.resampled }} ></ion-img> -->
+          <!--   <ion-img [src]="img.path"></ion-img> -->
+            <!-- <div id="resampled"></div>
+            <input type="text" id="picresizbase64" formControlName="picresizbase64List"  name="picresizbase64"> -->
+          <!-- </div> -->
+            <!-- <input type="hidden" id="picresizbase64" formControlName="picresizbase64List"  name="picresizbase64"> -->
+            <div  >
+           <div  style="display: inline-block;" *ngFor="let img of picpreview" >
+            <ion-img style="width: 100px; height: 100px;"  [src]="img.url"></ion-img>
+            <ion-button (click)="delImg(img.id)">
+              <ion-icon slot="icon-only" size="small" name="trash"></ion-icon>
+            </ion-button>
+           </div>
+          </div>
+            <p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    </form>
 <ion-content>
-
+  <div scrollY="true" id="myFixZone">
+    <ion-searchbar placeholder="ค้นหา..." [(ngModel)]="filterTerm" animated="true"></ion-searchbar>
+    <ion-list>
+      <ion-item-sliding *ngFor="let c of data  | filter:filterTerm" [ngClass]="c.highlight ? 'newdata': ''"
+        (click)="selectData(c.id)">
+        <ion-item>
+          <ion-label>
+            <ion-text color="primary">
+              <h3>{{ c.prefix_name }} {{ c.name }} {{ c.surname }}</h3>
+            </ion-text>
+             <p>กลุ่ม {{ c.group_name }} </p>
+          </ion-label>
+          <ion-badge slot="end" color="success">{{ c.id }}</ion-badge>
+        </ion-item>
+        <ion-item-options>
+          <ion-item-option color="warning" (click)="resetPass(c.id)">
+            <ion-icon slot="end" name="refresh"></ion-icon>
+            Reset Pwd
+          </ion-item-option>
+          <ion-item-option color="danger" (click)="cancelData(c.id)">
+            <ion-icon slot="end" name="trash"></ion-icon>
+            ลบ
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </div>
 </ion-content>

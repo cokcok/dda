@@ -144,3 +144,16 @@ ion-item.selected {
 .newdata {
   --ion-item-background:#86edffd5;
 }
+
+.pic{
+  width: 100px;
+  height: 100px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+.btncolor {
+  --background: var(--ion-color-btn);
+}

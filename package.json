@@ -29,6 +29,7 @@
     "cordova-plugin-app-version": "^0.1.12",
     "firebase": "^8.2.3",
     "ionic-selectable": "^4.7.1",
+    "jquery": "^3.5.1",
     "ng2-search-filter": "^0.5.1",
     "rxjs": "~6.5.5",
     "tslib": "^2.0.0",

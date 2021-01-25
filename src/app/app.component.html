@@ -4,8 +4,13 @@
       <ion-content>
         <ion-list id="inbox-list">
           <ion-list-header>ยินดีต้อนรับ</ion-list-header>
+          <ion-img class="pic"  src={{pic}}  [hidden]="!pic"></ion-img>
           <ion-note>{{emp_name}}</ion-note>
-          <ion-note>แผนก {{dept_name}}</ion-note>
+          <ion-button class="btncolor" (click)="chPass()" fill="clear">
+          <ion-icon slot="icon-only" name="settings"></ion-icon>
+          </ion-button>
+          <div> <ion-note>กลุ่ม {{dept_name}}</ion-note></div>
+         
           <ion-searchbar placeholder="ค้นหา..." [(ngModel)]="filterTerm" animated="true"></ion-searchbar> 
           <!--  <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
             <ion-item (click)="selectedIndex = i" routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" [class.selected]="selectedIndex == i">
@@ -15,7 +20,7 @@
           </ion-menu-toggle> -->
 
           <div *ngFor="let p of appPages | filter:filterTerm; let i = index;" >
-            <ion-menu-toggle *ngIf="p.url" auto-hide="false">
+            <ion-menu-toggle *ngIf="p.url" auto-hide="true">
               <ion-item   [routerLink]="[p.url]" routerDirection="root" routerLinkActive='active' lines="none" detail="false" >
                 <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"
                   [src]="'../assets/icons/' + p.svg + '.svg'"></ion-icon>

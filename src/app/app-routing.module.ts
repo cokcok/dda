@@ -5,7 +5,7 @@ const routes: Routes = [
   {
     path: '',
     //redirectTo: 'folder/Inbox',
-    redirectTo: 'mtd01',    
+    redirectTo: 'chpass',    
     //redirectTo: 'signin',
     pathMatch: 'full'
   },
@@ -52,6 +52,10 @@ const routes: Routes = [
   {
     path: 'sysgroupmenu01',
     loadChildren: () => import('./sysgroupmenu01/sysgroupmenu01.module').then( m => m.Sysgroupmenu01PageModule)
+  },
+  {
+    path: 'chpass',
+    loadChildren: () => import('./chpass/chpass.module').then( m => m.ChpassPageModule)
   }
 ];
 
