@@ -18,76 +18,76 @@ import { page } from './models/signin_model';
 })
 export class AppComponent implements OnInit {
   public selectedIndex = 0; chkAuten = false; filterTerm: string;
-  public appPages = [
-    {
-      title: 'สร้างเมนูหลัก',
-      url: '/sysmenu',
-      icon: 'trash',
-      open: ''
-    },
-    {
-      title: 'สร้างเมนูย่อย',
-      url: '/syssubmenu',
-      icon: 'trash',
-      open: ''
-    },
-    {
-      title: 'กลุ่มผู้ใช้',
-      url: '/sysgroup',
-      icon: 'trash',
-      open: ''
-    },
-    {
-      title: 'เชื่อมกลุ่มผู้ใช้กับเมนู',
-      url: '/sysgroupmenu',
-      icon: 'trash',
-      open: ''
-    },
-    {
-      title: 'ประชาสัมพันธ์',
-      url: '/maindda',
-      icon: 'trash',
-      open: ''
-    },
-    {
-      title: 'จัดการประชาสัมพันธ์',
-      url: '/syspublicize',
-      icon: 'trash',
-      open: ''
-    },
-    {
-      title: 'ข้อมูลหลัก',
-      url: '',
-      children: [
-        {
-          title: 'ข้อมูลผู้ใช้',
-          url: '/mtd01',
-          icon: 'trash',
-          svg: 'logout',
-          open: 'true'
-        },
-        {
-          title: 'ข้อมูลหลัก 2',
-          url: '/mtd02',
-          icon: 'trash',
-          svg: 'logout',
-          open: 'true'
-        }
-      ]
-    },
-    {
-      title: 'ใบสั่งเสื้อ',
-      url: '/po01',
-      icon: 'trash',
-      open: ''
-    },
-    {
-      title: 'ออกจากระบบ',
-      url: '/folder/Logout',
-      svg: 'logout'
-    }
-  ];
-  //public appPages: any;
+  // public appPages = [
+  //   {
+  //     title: 'สร้างเมนูหลัก',
+  //     url: '/sysmenu',
+  //     icon: 'trash',
+  //     open: ''
+  //   },
+  //   {
+  //     title: 'สร้างเมนูย่อย',
+  //     url: '/syssubmenu',
+  //     icon: 'trash',
+  //     open: ''
+  //   },
+  //   {
+  //     title: 'กลุ่มผู้ใช้',
+  //     url: '/sysgroup',
+  //     icon: 'trash',
+  //     open: ''
+  //   },
+  //   {
+  //     title: 'เชื่อมกลุ่มผู้ใช้กับเมนู',
+  //     url: '/sysgroupmenu',
+  //     icon: 'trash',
+  //     open: ''
+  //   },
+  //   {
+  //     title: 'ประชาสัมพันธ์',
+  //     url: '/maindda',
+  //     icon: 'trash',
+  //     open: ''
+  //   },
+  //   {
+  //     title: 'จัดการประชาสัมพันธ์',
+  //     url: '/syspublicize',
+  //     icon: 'trash',
+  //     open: ''
+  //   },
+  //   {
+  //     title: 'ข้อมูลหลัก',
+  //     url: '',
+  //     children: [
+  //       {
+  //         title: 'ข้อมูลผู้ใช้',
+  //         url: '/mtd01',
+  //         icon: 'trash',
+  //         svg: 'logout',
+  //         open: 'true'
+  //       },
+  //       {
+  //         title: 'ข้อมูลหลัก 2',
+  //         url: '/mtd02',
+  //         icon: 'trash',
+  //         svg: 'logout',
+  //         open: 'true'
+  //       }
+  //     ]
+  //   },
+  //   {
+  //     title: 'ใบสั่งเสื้อ',
+  //     url: '/po01',
+  //     icon: 'trash',
+  //     open: ''
+  //   },
+  //   {
+  //     title: 'ออกจากระบบ',
+  //     url: '/folder/Logout',
+  //     svg: 'logout'
+  //   }
+  // ];
+  public appPages: any;
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
   emp_name: string; dept_name: string; pic: string;
   constructor(
@@ -105,7 +105,7 @@ export class AppComponent implements OnInit {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-      // this.chklogin();
+       this.chklogin();
       this.signinSv.getObservable().subscribe((data) => {
         //console.log('Data received', data);
         this.configSv.emp_id = data['employee'][0]['id'];

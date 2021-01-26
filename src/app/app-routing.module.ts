@@ -5,8 +5,8 @@ const routes: Routes = [
   {
     path: '',
     //redirectTo: 'folder/Inbox',
-    redirectTo: 'maindda',    
-    //redirectTo: 'signin',
+    //redirectTo: 'maindda',    
+    redirectTo: 'signin',
     pathMatch: 'full'
   },
   {
