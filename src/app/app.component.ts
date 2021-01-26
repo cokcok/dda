@@ -45,6 +45,12 @@ export class AppComponent implements OnInit {
     },
     {
       title: 'ประชาสัมพันธ์',
+      url: '/maindda',
+      icon: 'trash',
+      open: ''
+    },
+    {
+      title: 'จัดการประชาสัมพันธ์',
       url: '/syspublicize',
       icon: 'trash',
       open: ''
@@ -81,7 +87,7 @@ export class AppComponent implements OnInit {
       svg: 'logout'
     }
   ];
-  // public appPages: any;
+  //public appPages: any;
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
   emp_name: string; dept_name: string; pic: string;
   constructor(
@@ -118,11 +124,16 @@ export class AppComponent implements OnInit {
 
       this.signinSv.getObservable1().subscribe((data) => {
         //console.log('Data received', data,data['picresizbase64List'][0]['url']);
-        this.emp_name = data['prefix_name'] + ' ' + data['name'] + ' ' + data['surname'];
-        this.pic = data['picresizbase64List'][0]['url'];
+        this.emp_name = data['prefix_name'] + ' ' + data['name'] + ' ' + data['surname']; 
+        if(data['picresizbase64List'].length > 0){
+          this.pic = data['picresizbase64List'][0]['url'];
+        }else{
+          this.pic = null;
+        }
+        
       });
     });
-
+    //this.menuCtrl.close();
   }
 
   async ngOnInit() {
@@ -132,7 +143,7 @@ export class AppComponent implements OnInit {
     if (path !== undefined) {
       this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
     }
-
+    //this.menuCtrl.close();
   }
 
   ngAfterViewInit() {

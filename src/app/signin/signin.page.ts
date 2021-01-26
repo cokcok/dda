@@ -61,10 +61,10 @@ ConfigService
         (data) => {
           console.log(data);
           if (data !== null){
-            //console.log(data);
+            //console.log(data); 
             this.signinSv.publishSomeData(data); 
              setTimeout(() => {
-              this.navCtrl.navigateForward('/syspublicize');
+              this.navCtrl.navigateForward('/maindda');
             }, 2100); 
           }
           else

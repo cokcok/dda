@@ -5,7 +5,7 @@ const routes: Routes = [
   {
     path: '',
     //redirectTo: 'folder/Inbox',
-    redirectTo: 'chpass',    
+    redirectTo: 'syspublicize',    
     //redirectTo: 'signin',
     pathMatch: 'full'
   },
@@ -56,6 +56,10 @@ const routes: Routes = [
   {
     path: 'chpass',
     loadChildren: () => import('./chpass/chpass.module').then( m => m.ChpassPageModule)
+  },
+  {
+    path: 'maindda',
+    loadChildren: () => import('./maindda/maindda.module').then( m => m.MainddaPageModule)
   }
 ];
 

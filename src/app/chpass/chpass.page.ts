@@ -59,7 +59,7 @@ export class ChpassPage implements OnInit {
 
   loaddata() {
     this.sub = this.signinSv
-      .getchpass(13,'read')
+      .getchpass(this.configSv.emp_id,'read')
       .subscribe((data) => {
         if (data !== null) {
           data.data_detail.forEach((item) => {
@@ -148,7 +148,7 @@ export class ChpassPage implements OnInit {
       console.log("Please provide all the required values!");
       return false;
     } else {
-      console.log(this.ionicForm.value);
+      //console.log(this.ionicForm.value);
       this.sub = this.signinSv
       .crudchpass(this.ionicForm.value, 'chdata')
       .subscribe(

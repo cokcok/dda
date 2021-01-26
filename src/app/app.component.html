@@ -3,7 +3,7 @@
     <ion-menu contentId="main-content" type="overlay">
       <ion-content>
         <ion-list id="inbox-list">
-          <ion-list-header>ยินดีต้อนรับ</ion-list-header>
+          <!-- <ion-list-header>ยินดีต้อนรับ</ion-list-header> -->
           <ion-img class="pic"  src={{pic}}  [hidden]="!pic"></ion-img>
           <ion-note>{{emp_name}}</ion-note>
           <ion-button class="btncolor" (click)="chPass()" fill="clear">
@@ -11,8 +11,9 @@
           </ion-button>
           <div> <ion-note>กลุ่ม {{dept_name}}</ion-note></div>
          
-          <ion-searchbar placeholder="ค้นหา..." [(ngModel)]="filterTerm" animated="true"></ion-searchbar> 
-          <!--  <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
+          <ion-searchbar placeholder="ค้นหา..." [(ngModel)]="filterTerm" animated="true"></ion-searchbar>
+
+           <!-- <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
             <ion-item (click)="selectedIndex = i" routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" [class.selected]="selectedIndex == i">
             <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'" [src] ="'../assets/icons/' + p.svg + '.svg'" ></ion-icon>  
               <ion-label>{{ p.title }}</ion-label>
@@ -20,8 +21,8 @@
           </ion-menu-toggle> -->
 
           <div *ngFor="let p of appPages | filter:filterTerm; let i = index;" >
-            <ion-menu-toggle *ngIf="p.url" auto-hide="true">
-              <ion-item   [routerLink]="[p.url]" routerDirection="root" routerLinkActive='active' lines="none" detail="false" >
+            <ion-menu-toggle auto-hide="false" *ngIf="p.url" >
+              <ion-item   [routerLink]="[p.url]" routerDirection="root" routerLinkActive='active' lines="none"  >
                 <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"
                   [src]="'../assets/icons/' + p.svg + '.svg'"></ion-icon>
                 <ion-label>{{ p.title }}</ion-label>
@@ -32,15 +33,18 @@
               <ion-icon slot="start" name="arrow-down" *ngIf="p.open"></ion-icon>
               <ion-label  [class.active-parent]="p.open"  >{{ p.title }}</ion-label>
             </ion-item>
-            <ion-list *ngIf="p.open">
+             <ion-list *ngIf="p.open">
               <ion-menu-toggle auto-hide="false">
-                <ion-item *ngFor="let sub of p.children let sub_i = index"  routerDirection="root" [routerLink]="[sub.url]" lines="none" detail="false" class="sub-item" routerLinkActive='active'> <!-- class="sub-item" -->
+                <ion-item *ngFor="let sub of p.children let sub_i = index"  routerDirection="root" [routerLink]="[sub.url]" lines="none" detail="false" class="sub-item" routerLinkActive='active'> 
                   <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"
                     [src]="'./assets/icons/' + sub.svg + '.svg'"></ion-icon>
                   <ion-label>{{ sub.title }}</ion-label>
                 </ion-item>
               </ion-menu-toggle>
-            </ion-list>
+            </ion-list> 
+          </div>
+
+        </ion-list>
 
             <!--  <div *ngFor="let p_child of appPages[i].children; let i_child = index">
               <ion-item (click)="selectedIndex = i_child" routerDirection="root" [routerLink]="[p_child.url]" lines="none" detail="false" [class.selected]="selectedIndex == i_child" detail="false">
@@ -56,10 +60,6 @@
               <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'" [src] ="'../assets/icons/' + p.svg + '.svg'" ></ion-icon>  
               <ion-label>{{ p.title }}</ion-label>
             </ion-item> -->
-
-          </div>
-
-        </ion-list>
 
        <!--  <ion-list id="labels-list">
           <ion-list-header>Labels</ion-list-header>

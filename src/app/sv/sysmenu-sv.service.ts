@@ -168,4 +168,33 @@ export class SysmenuSvService {
     //console.log(data);
     return this.http.post<FeedBack>(apiUrl, data, { headers: header });
   }
+
+
+  getpublicize(): Observable<data> {
+    const header = { 'Content-Type': 'application/json' };
+    const apiUrl = this.configSv.ip + 'syspublicize.php';
+    let data;
+    data = {
+      'type_sql': 'read'
+    }
+    return this.http.post<data>(apiUrl, data, { headers: header });
+  }
+
+  crudpublicize(vdata: any, type: string): Observable<FeedBack> {
+    const header = { 'Content-Type': 'application/json' };
+    const apiUrl = this.configSv.ip + 'syspublicize.php';
+    let data;
+      data = {
+        'name':vdata,
+        'emp_id': this.configSv.emp_id,
+        'type_sql': type
+      }
+    return this.http.post<FeedBack>(apiUrl, data, { headers: header });
+  }
+
+
+
 }
+
+
+

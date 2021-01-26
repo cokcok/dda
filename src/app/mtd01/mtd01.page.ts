@@ -3,7 +3,7 @@ import {FormBuilder,FormGroup,Validators,FormControl,FormArray} from "@angular/f
 import { ConfigService } from "../sv/config.service";
 import { Subscription } from "rxjs";
 import { AlertController } from "@ionic/angular";
-import {MtdSvService} from '../sv/mtd-sv.service';
+import { MtdSvService } from '../sv/mtd-sv.service';
 import { SysmenuSvService } from "../sv/sysmenu-sv.service";
 import * as $ from 'jquery';
 
