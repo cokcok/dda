@@ -5,7 +5,7 @@ const routes: Routes = [
   {
     path: '',
     //redirectTo: 'folder/Inbox',
-    redirectTo: 'syspublicize',    
+    redirectTo: 'maindda',    
     //redirectTo: 'signin',
     pathMatch: 'full'
   },
