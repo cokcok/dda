@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import {FormBuilder,FormGroup,Validators,FormControl,FormArray} from "@angular/forms";
+import {FormBuilder,FormGroup,Validators,FormControl,FormArray} from "@angular/forms"; 
 import { ConfigService } from "../sv/config.service";
 import { Subscription } from "rxjs";
 import { AlertController } from "@ionic/angular";

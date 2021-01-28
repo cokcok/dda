@@ -1,0 +1,114 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>ข้อมูลบริษัท</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="submitForm()">
+        <ion-icon slot="icon-only" src="./assets/icons/save.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="ionicForm" novalidate>
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col>
+          เลขที่ระบบ <input type="text" formControlName="id" disabled class="IDnoshowBG">
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">ชื่อบริษัท</ion-label>
+            <ion-input formControlName="company_name" type="text"></ion-input>
+            <span class="error" *ngIf="isSubmitted && errorControl.company_name.errors?.required">
+              กรุณาระบุ ชื่อบริษัท
+            </span>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">บ้านเลขที่ ซอย ถนน</ion-label>
+            <ion-input formControlName="company_address" type="text"></ion-input>
+            <span class="error" *ngIf="isSubmitted && errorControl.company_address.errors?.required">
+              กรุณาระบุ บ้านเลขที่ ซอย ถนน
+            </span>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-auto-complete [labelPosition]="'floating'" [label]="'สถานที่ตั้ง (จังหวัด เขต/อำเภอ แขวง/ตำบล รหัสไปรษณีย์)'" formControlName="company_place"
+            [dataProvider]="placeSv"></ion-auto-complete>
+          <span class="error" *ngIf="isSubmitted && errorControl.company_place.errors?.required">
+            กรุณาระบุ สถานที่ตั้ง
+          </span>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">เบอร์ติดต่อ</ion-label>
+            <ion-input formControlName="company_tel" type="text"></ion-input>
+            <span class="error" *ngIf="isSubmitted && errorControl.company_tel.errors?.required">
+              กรุณาระบุ เบอร์ติดต่อ
+            </span>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">E-mail</ion-label>
+            <ion-input formControlName="company_email" type="text"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">Website</ion-label>
+            <ion-input formControlName="company_website" type="text"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">Facebook</ion-label>
+            <ion-input formControlName="company_fb" type="text"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">Line</ion-label>
+            <ion-input formControlName="company_line" type="text"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">IG</ion-label>
+            <ion-input formControlName="company_ig" type="text"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">Twitter</ion-label>
+            <ion-input formControlName="company_twitter" type="text"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </form>
+</ion-content>

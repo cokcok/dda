@@ -5,8 +5,8 @@ const routes: Routes = [
   {
     path: '',
     //redirectTo: 'folder/Inbox',
-    //redirectTo: 'maindda',    
-    redirectTo: 'signin',
+    redirectTo: 'signin',    
+   // redirectTo: 'signin',
     pathMatch: 'full'
   },
   {
@@ -60,6 +60,14 @@ const routes: Routes = [
   {
     path: 'maindda',
     loadChildren: () => import('./maindda/maindda.module').then( m => m.MainddaPageModule)
+  },
+  {
+    path: 'mtdcompany',
+    loadChildren: () => import('./mtdcompany/mtdcompany.module').then( m => m.MtdcompanyPageModule)
+  },
+  {
+    path: 'test',
+    loadChildren: () => import('./test/test.module').then( m => m.TestPageModule)
   }
 ];
 

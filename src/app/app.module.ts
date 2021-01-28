@@ -14,15 +14,17 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import { IonicSelectableModule } from 'ionic-selectable';
+import { AutoCompleteModule } from 'ionic4-auto-complete';
+import { NgSelectModule } from '@ng-select/ng-select';
 import * as $ from "jquery";
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
     BrowserModule,FormsModule,ReactiveFormsModule,HttpClientModule,
-    IonicModule.forRoot(),
+    IonicModule.forRoot(),AutoCompleteModule,
     AppRoutingModule,Ng2SearchPipeModule,IonicSelectableModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),NgSelectModule
   ],
   providers: [
     StatusBar,

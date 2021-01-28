@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { data } from '../models/data_model';
 import { FeedBack } from '../models/feedback';
+import {place} from '../models/place';
 
 @Injectable({
   providedIn: 'root'
@@ -56,7 +57,10 @@ export class MtdSvService {
     return this.http.post<FeedBack>(apiUrl, data, { headers: header });
   }
 
-
+  getplace(): Observable<place[]> {
+    let apiUrl = "./assets/data/place.json";    
+    return this.http.get<place[]>(apiUrl);
+  }
 
 }
  
