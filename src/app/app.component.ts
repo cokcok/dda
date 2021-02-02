@@ -105,7 +105,7 @@ export class AppComponent implements OnInit {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-      this.chklogin();
+      //this.chklogin();
       this.signinSv.getObservable().subscribe((data) => {
         //console.log('Data received', data);
         this.configSv.emp_id = data['employee'][0]['id'];
@@ -133,6 +133,7 @@ export class AppComponent implements OnInit {
         
       });
     });
+    //this.chkAuten = true;
     //this.menuCtrl.close();
   }
 

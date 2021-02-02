@@ -27,7 +27,7 @@ export class PlaceSvService {
         dataplace.forEach((value, index) => {
             this.place.push({
               id: index,
-              description:   value.province + ' '+ value.district + ' ' + value.amphoe + ' ' + value.zipcode ,
+              description:   value.district + ' '+ value.amphoe + ' ' + value.province + ' ' + value.zipcode ,
               zipcode: value.zipcode,
               amphoe: value.amphoe,
               district: value.district,
@@ -58,6 +58,17 @@ export class PlaceSvService {
     return this.http.post<data>(apiUrl, data, { headers: header });
   }
 
+  getmtdsupply(padding: number, limit: number = 9999999999): Observable<data> {
+    const header = { 'Content-Type': 'application/json' };
+    let apiUrl = this.configSv.ip + 'mtd_supply.php';;
+     let data = {
+      'padding': padding,
+      'limit': limit,
+      'type_sql': 'read'
+    }
+    return this.http.post<data>(apiUrl, data, { headers: header });
+  }
+
   crudcompany(vdata: any, type: string, cause?): Observable<FeedBack> {
     const header = { 'Content-Type': 'application/json' };
     const apiUrl = this.configSv.ip + 'mtd_company.php';
@@ -68,6 +79,7 @@ export class PlaceSvService {
         'company_name': vdata.company_name,
         'company_address': vdata.company_address,
         'company_place': vdata.company_place,
+        'company_taxid': vdata.company_taxid,
         'company_email': vdata.company_email,
         'company_website': vdata.company_website,
         'company_fb': vdata.company_fb,
@@ -78,6 +90,38 @@ export class PlaceSvService {
         'emp_id': this.configSv.emp_id,
         'type_sql': type
       }
+    
+    return this.http.post<FeedBack>(apiUrl, data, { headers: header });
+  }
+
+
+  crudsupply(vdata: any, type: string, cause?): Observable<FeedBack> {
+    const header = { 'Content-Type': 'application/json' };
+    const apiUrl = this.configSv.ip + 'mtd_supply.php';
+    let data;
+    if (type === 'cancel') {
+      data = {
+        'id': vdata,
+        'emp_id': this.configSv.emp_id,
+        'type_sql': type,
+        'cause': cause
+      }
+    }
+    else {
+      data = {
+        'id': vdata.id,
+        'supply_name': vdata.supply_name,
+        'supply_address': vdata.supply_address,
+        'supply_place': vdata.supply_place,
+        'supply_taxid': vdata.supply_taxid,
+        'supply_email': vdata.supply_email,
+        'supply_tel': vdata.supply_tel,
+        'emp_id': this.configSv.emp_id,
+        'type_sql': type
+      }
+    }
+
+    
     
     return this.http.post<FeedBack>(apiUrl, data, { headers: header });
   }

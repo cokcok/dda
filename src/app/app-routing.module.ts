@@ -5,7 +5,7 @@ const routes: Routes = [
   {
     path: '',
     //redirectTo: 'folder/Inbox',
-    redirectTo: 'signin',    
+    redirectTo: 'mtdsupplier',    
    // redirectTo: 'signin',
     pathMatch: 'full'
   },
@@ -68,6 +68,26 @@ const routes: Routes = [
   {
     path: 'test',
     loadChildren: () => import('./test/test.module').then( m => m.TestPageModule)
+  },
+  {
+    path: 'mtdarea',
+    loadChildren: () => import('./mtdarea/mtdarea.module').then( m => m.MtdareaPageModule)
+  },
+  {
+    path: 'mtdproducttype',
+    loadChildren: () => import('./mtdproducttype/mtdproducttype.module').then( m => m.MtdproducttypePageModule)
+  },
+  {
+    path: 'mtdsize',
+    loadChildren: () => import('./mtdsize/mtdsize.module').then( m => m.MtdsizePageModule)
+  },
+  {
+    path: 'mtdshipping',
+    loadChildren: () => import('./mtdshipping/mtdshipping.module').then( m => m.MtdshippingPageModule)
+  },
+  {
+    path: 'mtdsupplier',
+    loadChildren: () => import('./mtdsupplier/mtdsupplier.module').then( m => m.MtdsupplierPageModule)
   }
 ];
 

@@ -4,7 +4,6 @@ import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { MtdcompanyPageRoutingModule } from './mtdcompany-routing.module';
 import { MtdcompanyPage } from './mtdcompany.page';
-import { IonicSelectableModule } from 'ionic-selectable';
 import { AutoCompleteModule } from 'ionic4-auto-complete';
 
 @NgModule({
@@ -12,7 +11,7 @@ import { AutoCompleteModule } from 'ionic4-auto-complete';
     CommonModule,
     FormsModule,
     IonicModule,AutoCompleteModule
-    ,MtdcompanyPageRoutingModule,ReactiveFormsModule,IonicSelectableModule
+    ,MtdcompanyPageRoutingModule,ReactiveFormsModule
   ],
   declarations: [MtdcompanyPage]
 })

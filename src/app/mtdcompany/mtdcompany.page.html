@@ -63,9 +63,21 @@
       <ion-row>
         <ion-col>
           <ion-item>
+            <ion-label position="floating">เลขประจำตัวผู้เสียภาษี</ion-label>
+            <ion-input formControlName="company_taxid" type="text"></ion-input>
+            <span class="error" *ngIf="isSubmitted && errorControl.company_taxid.errors?.required">
+              กรุณาระบุ เลขประจำตัวผู้เสียภาษี
+            </span>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
             <ion-label position="floating">E-mail</ion-label>
             <ion-input formControlName="company_email" type="text"></ion-input>
           </ion-item>
+          
         </ion-col>
       </ion-row>
       <ion-row>

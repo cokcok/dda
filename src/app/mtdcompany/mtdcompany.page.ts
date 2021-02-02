@@ -4,7 +4,6 @@ import { ConfigService } from "../sv/config.service";
 import { Subscription } from "rxjs";
 import { AlertController } from "@ionic/angular";
 import {PlaceSvService} from '../sv/place-sv.service';
-import {data_detail} from '../../../../raot_tech/src/models/datamodel';
 
 
 @Component({
@@ -28,6 +27,7 @@ export class MtdcompanyPage implements OnInit {
       company_address: ["", [Validators.required]],
       company_place: ["", [Validators.required]],
       company_tel: ["", [Validators.required]] ,
+      company_taxid: ["", [Validators.required]] ,
       company_email: [""],
       company_website: [""],
       company_fb: [""],
