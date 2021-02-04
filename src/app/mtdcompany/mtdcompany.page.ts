@@ -18,7 +18,7 @@ export class MtdcompanyPage implements OnInit {
 
   constructor(public formBuilder: FormBuilder,
     public configSv: ConfigService,
-    private alertCtrl: AlertController,private placeSv:PlaceSvService) { }
+    private alertCtrl: AlertController,public placeSv:PlaceSvService) { }
 
   ngOnInit() {
     this.ionicForm = this.formBuilder.group({
@@ -27,6 +27,7 @@ export class MtdcompanyPage implements OnInit {
       company_address: ["", [Validators.required]],
       company_place: ["", [Validators.required]],
       company_tel: ["", [Validators.required]] ,
+      company_fax: [""] ,
       company_taxid: ["", [Validators.required]] ,
       company_email: [""],
       company_website: [""],

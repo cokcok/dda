@@ -1,19 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-
+import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-
 import { MtdsizePageRoutingModule } from './mtdsize-routing.module';
-
 import { MtdsizePage } from './mtdsize.page';
-
+import { Ng2SearchPipeModule } from 'ng2-search-filter'; 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    MtdsizePageRoutingModule
+    MtdsizePageRoutingModule,ReactiveFormsModule,Ng2SearchPipeModule
   ],
   declarations: [MtdsizePage]
 })

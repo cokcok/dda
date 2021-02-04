@@ -1,5 +1,8 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+     </ion-buttons>
     <ion-title>ข้อมูลตัวแทนจำหน่าย</ion-title>
     <ion-buttons slot="primary">
       <ion-button (click)="refreshForm()">
@@ -37,6 +40,12 @@
           <span class="error" *ngIf="isSubmitted && errorControl.supply_tel.errors?.required">
             กรุณาระบุ เบอร์ติดต่อ
           </span>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-label position="floating">fax</ion-label>
+          <ion-input formControlName="supply_fax" type="text"></ion-input>
         </ion-item>
       </ion-col>
       <ion-col>

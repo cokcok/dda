@@ -87,6 +87,7 @@ export class PlaceSvService {
         'company_ig': vdata.company_ig,
         'company_twitter': vdata.company_twitter,
         'company_tel': vdata.company_tel,
+        'company_fax': vdata.company_fax,
         'emp_id': this.configSv.emp_id,
         'type_sql': type
       }
@@ -116,6 +117,7 @@ export class PlaceSvService {
         'supply_taxid': vdata.supply_taxid,
         'supply_email': vdata.supply_email,
         'supply_tel': vdata.supply_tel,
+        'supply_fax': vdata.supply_fax,
         'emp_id': this.configSv.emp_id,
         'type_sql': type
       }

@@ -180,7 +180,7 @@ export class Mtd01Page implements OnInit {
   loaddata(padding: number, infiniteScroll?) {
     let datalimit;
     this.sub = this.mtdSv
-      .getmtd('mtd01',padding,this.limit)
+      .getmtd(0,padding,this.limit)
       .subscribe((data) => {
         if (data !== null) {
           this.maxpadding = data["maxpadding"];

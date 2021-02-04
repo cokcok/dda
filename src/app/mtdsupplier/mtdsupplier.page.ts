@@ -15,7 +15,7 @@ export class MtdsupplierPage implements OnInit {
   id: number; data = [];  page = 0;maxpadding = 0;limit = 50;
   constructor(public formBuilder: FormBuilder,
     public configSv: ConfigService,
-    private alertCtrl: AlertController,private placeSv:PlaceSvService) { }
+    private alertCtrl: AlertController,public placeSv:PlaceSvService) { }
 
   ngOnInit() {
     this.ionicForm = this.formBuilder.group({
@@ -24,6 +24,7 @@ export class MtdsupplierPage implements OnInit {
       supply_address: ["", [Validators.required]],
       supply_place: ["", [Validators.required]],
       supply_tel: ["", [Validators.required]] ,
+      supply_fax: [""] ,
       supply_taxid: ["", [Validators.required]] ,
       supply_email: [""],
       highlight: [""],
@@ -55,7 +56,7 @@ export class MtdsupplierPage implements OnInit {
   }
 
   submitForm(){
-    console.log(this.ionicForm.value)
+    //console.log(this.ionicForm.value)
     this.isSubmitted = true;
     if (!this.ionicForm.valid) {
       console.log("Please provide all the required values!");
@@ -78,6 +79,7 @@ export class MtdsupplierPage implements OnInit {
               supply_address: this.ionicForm.controls.supply_address.value,
               supply_place: this.ionicForm.controls.supply_place.value,
               supply_tel: this.ionicForm.controls.supply_tel.value,
+              supply_fax: this.ionicForm.controls.supply_fax.value,
               supply_taxid: this.ionicForm.controls.supply_taxid.value,
               supply_email: this.ionicForm.controls.supply_email.value,
               highlight: true,
@@ -173,4 +175,14 @@ export class MtdsupplierPage implements OnInit {
     confirm.present();
   }
 
+  doInfinite(infiniteScroll) {
+    this.page++;
+    this.loaddata(this.page * this.limit, infiniteScroll);
+    if (this.page === this.maxpadding) {
+      infiniteScroll.target.disabled = true;
+      //this.configSv.ChkformAlert('ไม่พบข้อมูลแล้ว');
+    }
+  }
+
 }
+ 
