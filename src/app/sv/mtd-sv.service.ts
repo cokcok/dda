@@ -10,7 +10,7 @@ import { place } from '../models/place';
   providedIn: 'root'
 })
 export class MtdSvService {
-  getpage = ['mtd01.php','mtd_area.php','mtd_producttype.php','mtd_size.php','mtd_shipping.php']
+  getpage = ['mtd01.php','mtd_area.php','mtd_producttype.php','mtd_size.php','mtd_shipping.php','mtd_number.php','mtd_numberdetail.php','mtd_product.php']//7
   constructor(private http: HttpClient, private configSv: ConfigService) { }
 
   getplace(): Observable<place[]> {
@@ -18,7 +18,7 @@ export class MtdSvService {
     return this.http.get<place[]>(apiUrl);
   }
 
-  getmtd(page:number,padding: number, limit: number = 9999999999): Observable<data> {
+  getmtd(page:number,padding: number, limit: number = 9999999999,condition?): Observable<data> {
     const header = { 'Content-Type': 'application/json' };
     let apiUrl = this.configSv.ip + this.getpage[page];
     // if(page === 'mtd01'){
@@ -27,6 +27,7 @@ export class MtdSvService {
      let data = {
       'padding': padding,
       'limit': limit,
+      'condition':condition,
       'type_sql': 'read'
     }
     return this.http.post<data>(apiUrl, data, { headers: header });
@@ -157,5 +158,84 @@ export class MtdSvService {
     return this.http.post<FeedBack>(apiUrl, data, { headers: header });
   }
 
+  crudmtdnumber(vdata: any, type: string, cause?): Observable<FeedBack> {
+    const header = { 'Content-Type': 'application/json' };
+    const apiUrl = this.configSv.ip + 'mtd_number.php';
+    let data;
+    if (type === 'cancel') {
+      data = {
+        'id': vdata,
+        'emp_id': this.configSv.emp_id,
+        'type_sql': type,
+        'cause': cause
+      }
+    }
+    else {
+      data = {
+        'id': vdata.id,
+        'color': vdata.color,
+        'color_acronym': vdata.color_acronym,
+        'emp_id': this.configSv.emp_id,
+        'type_sql': type
+      }
+    }
+    return this.http.post<FeedBack>(apiUrl, data, { headers: header });
+  }
+
+
+  crudmtdnumberdetail(vdata: any, type: string, cause?): Observable<FeedBack> {
+    const header = { 'Content-Type': 'application/json' };
+    const apiUrl = this.configSv.ip + 'mtd_numberdetail.php';
+    let data;
+    if (type === 'cancel') {
+      data = {
+        'id': vdata,
+        'emp_id': this.configSv.emp_id,
+        'type_sql': type,
+        'cause': cause
+      }
+    }
+    else {
+      data = {
+        'id': vdata.id,
+        'mtd_number_id': vdata.mtd_number_id,
+        'number': vdata.number,
+        'mtd_size_id': vdata.mtd_size_id.id,
+        'qty': vdata.qty,
+        'price': vdata.price,
+        'emp_id': this.configSv.emp_id,
+        'type_sql': type
+      }
+    }
+    return this.http.post<FeedBack>(apiUrl, data, { headers: header });
+  }
+
+  crudmtdproduct(vdata: any, type: string, cause?): Observable<FeedBack> {
+    const header = { 'Content-Type': 'application/json' };
+    const apiUrl = this.configSv.ip + 'mtd_product.php';
+    let data;
+    if (type === 'cancel') {
+      data = {
+        'id': vdata,
+        'emp_id': this.configSv.emp_id,
+        'type_sql': type,
+        'cause': cause
+      }
+    }
+    else {
+      data = {
+        'id': vdata.id,
+        'product_name': vdata.product_name,
+        'product_desc': vdata.product_desc,
+        'product_pattern': vdata.product_pattern,
+        'product_model': vdata.product_model,
+        'product_color': vdata.product_color,
+        'product_type_id': vdata.product_type_id.id,
+        'emp_id': this.configSv.emp_id,
+        'type_sql': type
+      }
+    }
+    return this.http.post<FeedBack>(apiUrl, data, { headers: header });
+  }
 }
  

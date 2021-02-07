@@ -27,7 +27,7 @@
       <ion-row>
         <ion-col>
           <ion-item>
-            <ion-label position="floating">คำนำหน้าชื่อ</ion-label>
+            <ion-label class="showlabel" position="floating">คำนำหน้าชื่อ</ion-label>
             <ion-select interface="popover" formControlName="prefix_name"  >
               <ion-select-option value="นาย">นาย</ion-select-option>
               <ion-select-option value="นาง">นาง</ion-select-option>
@@ -40,7 +40,7 @@
         </ion-col>
         <ion-col>
           <ion-item>
-            <ion-label position="floating">ชื่อ</ion-label>
+            <ion-label class="showlabel" position="floating">ชื่อ</ion-label>
             <ion-input formControlName="name" type="text"  ></ion-input>
             <span class="error" *ngIf="isSubmitted && errorControl.name.errors?.required">
               กรุณาระบุ ชื่อ
@@ -49,7 +49,7 @@
         </ion-col>
         <ion-col>
           <ion-item>
-            <ion-label position="floating">นามสกุล</ion-label>
+            <ion-label class="showlabel" position="floating">นามสกุล</ion-label>
             <ion-input formControlName="surname" type="text"  ></ion-input>
             <span class="error" *ngIf="isSubmitted && errorControl.surname.errors?.required">
               กรุณาระบุ นามสกุล
@@ -58,7 +58,7 @@
         </ion-col>
         <ion-col>
           <ion-item>
-            <ion-label position="floating">Username&Password</ion-label>
+            <ion-label class="showlabel" position="floating">Username&Password</ion-label>
             <ion-input formControlName="username" type="text" [readonly] = "disableSelect"  ></ion-input>
             <span class="error" *ngIf="isSubmitted && errorControl.username.errors?.required">
               กรุณาระบุ Username&Password
@@ -70,7 +70,7 @@
       <ion-row>
         <ion-col>
           <ion-item>
-            <ion-label>กลุ่มผู้ใช้งาน</ion-label>
+            <ion-label class="showlabel" >กลุ่มผู้ใช้งาน</ion-label>
             <ionic-selectable
               interface="popover"
               item-content

@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
      </ion-buttons>
-    <ion-title>ข้อมูลขนาด</ion-title>
+    <ion-title>ข้อมูล ตัวเลข(ข้อมูลสี)</ion-title>
     <ion-buttons slot="primary">
       <ion-button (click)="refreshForm()">
         <ion-icon slot="icon-only" src="./assets/icons/refresh.svg"></ion-icon>
@@ -24,15 +24,24 @@
       </ion-col>
     </ion-row>
     <ion-row>
-        <ion-col >
-          <ion-item>
-            <ion-label class="showlabel" position="floating">ขนาด</ion-label>
-            <ion-input formControlName="size" type="text"></ion-input>
-            <span class="error" *ngIf="isSubmitted && errorControl.size.errors?.required">
-              กรุณาระบุ ขนาด
-            </span>
-          </ion-item>
-        </ion-col>
+      <ion-col > 
+        <ion-item>
+        <ion-label class="showlabel" position="floating">สี</ion-label>
+        <ion-input formControlName="color" type="text"></ion-input>
+        <span class="error" *ngIf="isSubmitted && errorControl.color.errors?.required">
+          กรุณาระบุ สี
+        </span>
+      </ion-item>
+    </ion-col>
+    <ion-col > 
+      <ion-item>
+      <ion-label class="showlabel" position="floating">อักษรย่อ</ion-label>
+      <ion-input formControlName="color_acronym" type="text"></ion-input>
+      <span class="error" *ngIf="isSubmitted && errorControl.color_acronym.errors?.required">
+        กรุณาระบุ อักษรย่อ สี
+      </span>
+    </ion-item>
+  </ion-col>
     </ion-row>
   </ion-grid>
 </form>
@@ -40,18 +49,24 @@
   <div scrollY="true" id="myFixZone">
     <ion-searchbar placeholder="ค้นหา..." [(ngModel)]="filterTerm" animated="true"></ion-searchbar>
     <ion-list>
+      <div class="content_alert">**จะลบได้ก็ต่อเมื่อ ยอดคงเหลือทั้งหมดเท่า 0</div>
       <ion-item-sliding *ngFor="let c of data  | filter:filterTerm" [ngClass]="c.highlight ? 'newdata': ''"
         (click)="selectData(c.id)">
         <ion-item>
           <ion-label>
             <ion-text color="primary">
-              <h3>{{ c.size }}</h3>
+              <h3>สี : {{ c.color }}</h3>
+              <h3>อักษรย่อ : {{ c.color_acronym }}</h3>
             </ion-text>
           </ion-label>
           <ion-badge slot="end" color="success">{{ c.id }}</ion-badge>
         </ion-item>
         <ion-item-options>
-          <ion-item-option color="danger" (click)="cancelData(c.id)">
+          <ion-item-option  (click)="addData(c.id,c.color)">
+            <ion-icon slot="end" name="add"></ion-icon>
+            เพิ่มตัวเลข
+          </ion-item-option>
+          <ion-item-option *ngIf="c.number_qty==0" color="danger" (click)="cancelData(c.id)">
             <ion-icon slot="end" name="trash"></ion-icon>
             ลบ
           </ion-item-option>

@@ -26,7 +26,7 @@
     <ion-row>
       <ion-col>
         <ion-item>
-          <ion-label position="floating">เขต(ที่แสดงในป้ายเขียว)</ion-label>
+          <ion-label class="showlabel" position="floating">เขต(ที่แสดงในป้ายเขียว)</ion-label>
           <ion-input formControlName="area_name" type="text"></ion-input>
           <span class="error" *ngIf="isSubmitted && errorControl.area_name.errors?.required">
             กรุณาระบุ เขต(ที่แสดงในป้ายเขียว)
@@ -35,7 +35,7 @@
       </ion-col>
       <ion-col>
         <ion-item>
-          <ion-label position="floating">เขตรับผิดชอบ</ion-label>
+          <ion-label class="showlabel" position="floating">เขตรับผิดชอบ</ion-label>
           <ion-input formControlName="area_name_desc" type="text"></ion-input>
           <span class="error" *ngIf="isSubmitted && errorControl.area_name_desc.errors?.required">
             กรุณาระบุ เขตรับผิดชอบ
@@ -44,7 +44,7 @@
       </ion-col>
       <ion-col>
         <ion-item>
-          <ion-label position="floating">รอบวันที่ส่ง</ion-label>
+          <ion-label class="showlabel" position="floating">รอบวันที่ส่ง</ion-label>
           <ion-select interface="popover" formControlName="area_day"  >
             <ion-select-option value="จันทร์">จันทร์</ion-select-option>
             <ion-select-option value="อังคาร">อังคาร</ion-select-option>

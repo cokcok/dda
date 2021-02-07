@@ -26,7 +26,7 @@
     <ion-row>
       <ion-col>
         <ion-item>
-          <ion-label position="floating">ชื่อตัวแทน</ion-label>
+          <ion-label class="showlabel" position="floating">ชื่อตัวแทน</ion-label>
           <ion-input formControlName="supply_name" type="text"></ion-input>
           <span class="error" *ngIf="isSubmitted && errorControl.supply_name.errors?.required">
             กรุณาระบุ ชื่อตัวแทน
@@ -35,7 +35,7 @@
       </ion-col>
       <ion-col>
         <ion-item>
-          <ion-label position="floating">เบอร์ติดต่อ</ion-label>
+          <ion-label class="showlabel" position="floating">เบอร์ติดต่อ</ion-label>
           <ion-input formControlName="supply_tel" type="text"></ion-input>
           <span class="error" *ngIf="isSubmitted && errorControl.supply_tel.errors?.required">
             กรุณาระบุ เบอร์ติดต่อ
@@ -44,13 +44,13 @@
       </ion-col>
       <ion-col>
         <ion-item>
-          <ion-label position="floating">fax</ion-label>
+          <ion-label class="showlabel" position="floating">fax</ion-label>
           <ion-input formControlName="supply_fax" type="text"></ion-input>
         </ion-item>
       </ion-col>
       <ion-col>
         <ion-item>
-          <ion-label position="floating">บ้านเลขที่ ซอย ถนน</ion-label>
+          <ion-label class="showlabel" position="floating">บ้านเลขที่ ซอย ถนน</ion-label>
           <ion-input formControlName="supply_address" type="text"></ion-input>
           <span class="error" *ngIf="isSubmitted && errorControl.supply_address.errors?.required">
             กรุณาระบุ บ้านเลขที่ ซอย ถนน
@@ -60,7 +60,7 @@
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-auto-complete [labelPosition]="'floating'" [label]="'สถานที่ตั้ง ( แขวง/ตำบล เขต/อำเภอ จังหวัด รหัสไปรษณีย์)'" formControlName="supply_place"
+        <ion-auto-complete class="showlabel" [labelPosition]="'floating'" [label]="'สถานที่ตั้ง ( แขวง/ตำบล เขต/อำเภอ จังหวัด รหัสไปรษณีย์)'" formControlName="supply_place"
         [dataProvider]="placeSv"></ion-auto-complete>
       <span class="error" *ngIf="isSubmitted && errorControl.supply_place.errors?.required">
         กรุณาระบุ สถานที่ตั้ง
@@ -70,7 +70,7 @@
     <ion-row>
       <ion-col>
         <ion-item>
-          <ion-label position="floating">เลขประจำตัวผู้เสียภาษี</ion-label>
+          <ion-label class="showlabel" position="floating">เลขประจำตัวผู้เสียภาษี</ion-label>
           <ion-input formControlName="supply_taxid" type="text"></ion-input>
           <span class="error" *ngIf="isSubmitted && errorControl.supply_taxid.errors?.required">
             กรุณาระบุ เลขประจำตัวผู้เสียภาษี
@@ -79,7 +79,7 @@
       </ion-col>
       <ion-col>
         <ion-item>
-          <ion-label position="floating">E-mail</ion-label>
+          <ion-label class="showlabel" position="floating">E-mail</ion-label>
           <ion-input formControlName="supply_email" type="text"></ion-input>
         </ion-item>
       </ion-col>

@@ -6,7 +6,7 @@ import { ConfigService } from "../sv/config.service";
 import { SysmenuSvService } from "../sv/sysmenu-sv.service";
 import { Subscription } from "rxjs";
 import { AlertController } from "@ionic/angular";
-@Component({
+@Component({ 
   selector: 'app-sysgroupmenu01',
   templateUrl: './sysgroupmenu01.page.html',
   styleUrls: ['./sysgroupmenu01.page.scss'],

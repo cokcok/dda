@@ -26,7 +26,7 @@
     <ion-row>
       <ion-col >
         <ion-item>
-          <ion-label position="floating">ประเภทสินค้า</ion-label>
+          <ion-label class="showlabel" position="floating">ประเภทสินค้า</ion-label>
           <ion-input formControlName="product_type" type="text"></ion-input>
           <span class="error" *ngIf="isSubmitted && errorControl.product_type.errors?.required">
            กรุณาระบุ ประเภทสินค้า
@@ -35,7 +35,7 @@
       </ion-col>
       <ion-col >
         <ion-item>
-          <ion-label position="floating">รายละเอียดประเภทสินค้า</ion-label>
+          <ion-label class="showlabel" position="floating">รายละเอียดประเภทสินค้า</ion-label>
           <ion-input formControlName="product_type_desc" type="text"></ion-input>
         </ion-item>
       </ion-col>
