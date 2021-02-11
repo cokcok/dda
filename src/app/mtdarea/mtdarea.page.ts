@@ -48,27 +48,32 @@ export class MtdareaPage implements OnInit {
       }
       this.sub = this.mtdSv
       .crudmtdarea(this.ionicForm.value,typesql)
-      .subscribe((data) => {
+      .subscribe((data) => { 
         if (data !== null) {
           if (typesql === "insert") {
-            this.data.unshift({
-              id: data.id,
-              area_name: this.ionicForm.controls.area_name.value,
-              area_name_desc: this.ionicForm.controls.area_name_desc.value,
-              area_day: this.ionicForm.controls.area_day.value,
-              highlight: true,
-            });
+            if(data.status === 'ok'){
+              this.data.unshift({
+                id: data.id,
+                area_name: this.ionicForm.controls.area_name.value,
+                area_name_desc: this.ionicForm.controls.area_name_desc.value,
+                area_day: this.ionicForm.controls.area_day.value,
+                highlight: true,
+              });
+            }
           } else if (typesql === "update") {
-            let item;
-            item = this.data.filter((val) => val.id == data.id);
-            item.forEach((item) => {
-              for (const [key, value] of Object.entries(item)) {
-                 item[key] = this.ionicForm.controls[key].value;
-              }
-            });
+            if(data.status === 'ok'){
+              let item;
+              item = this.data.filter((val) => val.id == data.id);
+              item.forEach((item) => {
+                for (const [key, value] of Object.entries(item)) {
+                  item[key] = this.ionicForm.controls[key].value;
+                }
+              });
+            }
           }
-
-          this.configSv.ChkformAlert(data.message);
+          //if(data.status === 'ok'){
+            this.configSv.ChkformAlert(data.message);
+          //}
         }
       },
       (error) => {

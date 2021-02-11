@@ -23,9 +23,9 @@ export class MtdproductPage implements OnInit {
       id: [""],
       product_name: ["", [Validators.required]],
       product_desc: [""],
-      product_pattern: ["", [Validators.required]],
-      product_model: ["", [Validators.required]],
-      product_color: ["", [Validators.required]],
+      product_pattern: [""],
+      product_model: [""],
+      product_color: [""],
       product_type_id: this.portControl,
       product_type_name:[""],
       number_qty: [""],
@@ -91,7 +91,7 @@ export class MtdproductPage implements OnInit {
                   if (key === "product_type_id") {
                     item[key] = this.ionicForm.controls[key].value.id;
                   }else if(key === "product_type_name"){
-                    item[key] = this.ionicForm.controls[key].value.product_type;
+                    item[key] = this.ionicForm.controls['product_type_id'].value.product_type;
                   }else{
                     item[key] = this.ionicForm.controls[key].value;
                   }
@@ -181,15 +181,15 @@ export class MtdproductPage implements OnInit {
                 if(data.message == 'ok')
                 {   
                   this.configSv.ChkformAlert(data.message);
+                  this.data = this.data.filter(obj => obj.id !== item);
                 }
                 else
                 {
                   this.configSv.ChkformAlert(data.message);
-                }              
+                } 
               }, (error) => {
                 console.log(JSON.stringify(error));
               }, () => {
-                this.data = this.data.filter(obj => obj.id !== item);
                 this.refreshForm();
               }
             );

@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header> 
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
@@ -64,27 +64,18 @@
         <ion-item>
           <ion-label class="showlabel" position="floating">แบบ</ion-label>
           <ion-input formControlName="product_pattern" type="text"></ion-input>
-          <span class="error" *ngIf="isSubmitted && errorControl.product_pattern.errors?.required">
-            กรุณาระบุ แบบ
-          </span>
         </ion-item>
       </ion-col>
       <ion-col>
         <ion-item>
           <ion-label class="showlabel" position="floating">รุ่น</ion-label>
           <ion-input formControlName="product_model" type="text"></ion-input>
-          <span class="error" *ngIf="isSubmitted && errorControl.product_model.errors?.required">
-            กรุณาระบุ รุ่น
-          </span>
         </ion-item>
       </ion-col>
       <ion-col>
         <ion-item>
           <ion-label class="showlabel" position="floating">สี</ion-label>
           <ion-input formControlName="product_color" type="text"></ion-input>
-          <span class="error" *ngIf="isSubmitted && errorControl.product_color.errors?.required">
-            กรุณาระบุ สี
-          </span>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -94,7 +85,7 @@
   <div scrollY="true" id="myFixZone">
     <ion-searchbar placeholder="ค้นหา..." [(ngModel)]="filterTerm" animated="true"></ion-searchbar>
     <ion-list>
-      <div class="content_alert">**จะลบได้ก็ต่อเมื่อ ยอดคงเหลือทั้งหมดเท่า 0</div>
+      <div class="content_alert">**จะลบได้ก็ต่อเมื่อ ยอดคงเหลือทั้งหมดเท่ากับ 0</div>
       <ion-item-sliding *ngFor="let c of data   | filter:filterTerm;  index as i" [ngClass]="c.highlight ? 'newdata': ''"
         (click)="selectData(c.id)">
         <ion-item>

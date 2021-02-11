@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>เพิ่มตัวเลขสินค้าลำดับที่ {{index}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">
+        <ion-icon slot="icon-only" src="./assets/icons/close.svg"></ion-icon>
+      </ion-button>
+      <ion-buttons slot="primary">
+        <ion-button (click)="submitForm()">
+          <ion-icon slot="icon-only" src="./assets/icons/save.svg"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+<form [formGroup]="ionicForm" novalidate>
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col >
+        กรอกตัวเลข
+        ระบุสีข้างหน้า
+        ระบุสีข้างหลัง
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label class="showlabel" position="floating">ตัวเลข</ion-label>
+          <ion-input formControlName="podetail_number"  type="number"></ion-input>
+          <span class="error" *ngIf="isSubmitted && errorControl.podetail_number.errors?.required">
+            กรุณาระบุ ตัวเลข
+          </span>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-button [disabled] = "ionicForm.controls['podetail_number'].invalid" (click)="ChkNumber()"  expand="block"  shape="round">
+          ยืนยันตัวเลข
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</form>
+
+</ion-content>

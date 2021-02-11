@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, Validators, FormControl, } from "@angular/forms
 import { ConfigService } from "../sv/config.service";
 import { Subscription } from "rxjs";
 import { AlertController } from "@ionic/angular";
-import {MtdSvService} from '../sv/mtd-sv.service';
+import { MtdSvService} from '../sv/mtd-sv.service';
 
 @Component({
   selector: 'app-mtdnumberdetail',
@@ -44,7 +44,7 @@ export class MtdnumberdetailPage implements OnInit {
       price: ["",[Validators.required]],
       size_name:[""],
       highlight: [""],
-    });
+    }); 
     this.loaddata_size(this.page);
     this.loaddata(this.page);
   }
@@ -104,6 +104,8 @@ export class MtdnumberdetailPage implements OnInit {
                   //item[key] = this.ionicForm.controls[key].value;
                   if (key === "mtd_size_id") {
                     item[key] = this.ionicForm.controls[key].value.id;
+                  }else if(key === "size_name"){
+                    item[key] = this.ionicForm.controls['mtd_size_id'].value.size;
                   }else if(key === "update_flg"){
                     this.ionicForm.controls['qty'].enable();
                   }else{

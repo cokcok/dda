@@ -10,7 +10,7 @@ import { place } from '../models/place';
   providedIn: 'root'
 })
 export class MtdSvService {
-  getpage = ['mtd01.php','mtd_area.php','mtd_producttype.php','mtd_size.php','mtd_shipping.php','mtd_number.php','mtd_numberdetail.php','mtd_product.php']//7
+  getpage = ['mtd01.php','mtd_area.php','mtd_producttype.php','mtd_size.php','mtd_shipping.php','mtd_number.php','mtd_numberdetail.php','mtd_product.php','mtd_productdetail.php']//8 indexล่าสุด
   constructor(private http: HttpClient, private configSv: ConfigService) { }
 
   getplace(): Observable<place[]> {
@@ -231,6 +231,33 @@ export class MtdSvService {
         'product_model': vdata.product_model,
         'product_color': vdata.product_color,
         'product_type_id': vdata.product_type_id.id,
+        'emp_id': this.configSv.emp_id,
+        'type_sql': type
+      }
+    }
+    return this.http.post<FeedBack>(apiUrl, data, { headers: header });
+  }
+
+  crudmtdproductdetail(vdata: any, type: string, cause?): Observable<FeedBack> {
+    const header = { 'Content-Type': 'application/json' };
+    const apiUrl = this.configSv.ip + 'mtd_productdetail.php';
+    let data;
+    if (type === 'cancel') {
+      data = {
+        'id': vdata,
+        'emp_id': this.configSv.emp_id,
+        'type_sql': type,
+        'cause': cause
+      }
+    }
+    else {
+      data = {
+        'id': vdata.id,
+        'mtd_size_id': vdata.mtd_size_id.id,
+        'mtd_product_id': vdata.mtd_product_id,
+        'qty': vdata.qty,
+        'price': vdata.price,
+        'qty_remain': vdata.qty_remain,
         'emp_id': this.configSv.emp_id,
         'type_sql': type
       }

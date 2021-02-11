@@ -47,20 +47,24 @@ export class MtdshippingPage implements OnInit {
       .subscribe((data) => {
         if (data !== null) {
           if (typesql === "insert") {
-            this.data.unshift({
-              id: data.id,
-              shipping_desc: this.ionicForm.controls.shipping_desc.value,
-              shipping_price: this.ionicForm.controls.shipping_price.value,
-              highlight: true,
-            });
+            if(data.status === 'ok'){
+              this.data.unshift({
+                id: data.id,
+                shipping_desc: this.ionicForm.controls.shipping_desc.value,
+                shipping_price: this.ionicForm.controls.shipping_price.value,
+                highlight: true,
+              });
+            }
           } else if (typesql === "update") {
-            let item;
-            item = this.data.filter((val) => val.id == data.id);
-            item.forEach((item) => {
-              for (const [key, value] of Object.entries(item)) {
-                 item[key] = this.ionicForm.controls[key].value;
-              }
-            });
+            if(data.status === 'ok'){
+              let item;
+              item = this.data.filter((val) => val.id == data.id);
+              item.forEach((item) => {
+                for (const [key, value] of Object.entries(item)) {
+                   item[key] = this.ionicForm.controls[key].value;
+                }
+              });
+            }
           }
 
           this.configSv.ChkformAlert(data.message);

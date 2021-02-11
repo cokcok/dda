@@ -15,14 +15,14 @@
       <!-- <p class="sign" align="center">DDA</p> -->
       <form [formGroup]="ionicForm"  (ngSubmit)="submitForm()" novalidate >
         <ion-item lines="full" class="un">
-          <ion-label  position="floating">Username</ion-label>
+          <ion-label class="showlabel"  position="floating">Username</ion-label>
           <ion-input  formControlName="name" type="text" ></ion-input>
           <span class="error" *ngIf="isSubmitted && errorControl.name.errors?.required">
             กรุณาระบุ Username
           </span>
         </ion-item>       
         <ion-item lines="full" class="pass">
-          <ion-label  position="floating">Password</ion-label>
+          <ion-label class="showlabel"  position="floating">Password</ion-label>
           <ion-input  formControlName="password" type="password"  ></ion-input>
           <span  class="error" *ngIf="isSubmitted && errorControl.password.errors?.required">
             กรุณาระบุ Password

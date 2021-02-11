@@ -13,7 +13,7 @@
         <h3>ข้อมูลส่วนตัว</h3>
       </ion-list-header>
       <ion-item>
-        <ion-label position="floating">คำนำหน้าชื่อ</ion-label>
+        <ion-label class="showlabel" position="floating">คำนำหน้าชื่อ</ion-label>
         <ion-select interface="popover" formControlName="prefix_name"  >
           <ion-select-option value="นาย">นาย</ion-select-option>
           <ion-select-option value="นาง">นาง</ion-select-option>
@@ -24,14 +24,14 @@
         </span>
       </ion-item>
       <ion-item>
-        <ion-label position="floating">ชื่อ</ion-label>
+        <ion-label class="showlabel" position="floating">ชื่อ</ion-label>
         <ion-input formControlName="name" type="text"  ></ion-input>
         <span class="error" *ngIf="isSubmitted && errorControl.name.errors?.required">
           กรุณาระบุ ชื่อ
         </span>
       </ion-item>
         <ion-item>
-          <ion-label position="floating">นามสกุล</ion-label>
+          <ion-label class="showlabel" position="floating">นามสกุล</ion-label>
           <ion-input formControlName="surname" type="text"  ></ion-input>
           <span class="error" *ngIf="isSubmitted && errorControl.surname.errors?.required">
             กรุณาระบุ นามสกุล
@@ -61,21 +61,21 @@
     </ion-list-header>
    </ion-list>
    <ion-item>
-    <ion-label position="floating">รหัสผ่านเก่า</ion-label>
+    <ion-label class="showlabel" position="floating">รหัสผ่านเก่า</ion-label>
     <ion-input formControlName="oldpass" type="text"  ></ion-input>
     <span class="error" *ngIf="isSubmitted1 && errorControl1.oldpass.errors?.required">
       กรุณาระบุ รหัสผ่านเก่า
     </span>
   </ion-item>
     <ion-item>
-      <ion-label position="floating">รหัสผ่านใหม่</ion-label>
+      <ion-label class="showlabel" position="floating">รหัสผ่านใหม่</ion-label>
       <ion-input formControlName="newpass" type="password"  ></ion-input>
       <span class="error" *ngIf="isSubmitted1 && errorControl1.newpass.errors?.required">
         กรุณาระบุ รหัสผ่านใหม่
       </span>
     </ion-item>
     <ion-item>
-      <ion-label position="floating">ยืนยันรหัสผ่านใหม่</ion-label>
+      <ion-label class="showlabel" position="floating">ยืนยันรหัสผ่านใหม่</ion-label>
       <ion-input formControlName="comfirm_newpass" type="password"  ></ion-input>
       <span class="error" *ngIf="isSubmitted1 && errorControl1.comfirm_newpass.errors?.required">
         กรุณาระบุ ยืนยันรหัสผ่านใหม่

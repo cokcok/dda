@@ -2,9 +2,10 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
-     </ion-buttons>
-    <ion-title>เพิ่มสินค้า </ion-title>
-        <ion-buttons slot="primary">
+    </ion-buttons>
+    <ion-title>เพิ่มสินค้า {{product_name}} แบบ {{product_pattern}} รุ่น {{product_model}} สี {{product_color}}
+    </ion-title>
+    <ion-buttons slot="primary">
       <ion-button (click)="refreshForm()">
         <ion-icon slot="icon-only" src="./assets/icons/refresh.svg"></ion-icon>
       </ion-button>
@@ -16,7 +17,85 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-
+<form [formGroup]="ionicForm" novalidate>
+  <input type="hidden" formControlName="mtd_product_id">
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col>
+        เลขที่ระบบ <input type="text" formControlName="id" disabled class="IDnoshowBG">
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label class="showlabel">ขนาด</ion-label>
+          <ionic-selectable interface="floating" item-content formControlName="mtd_size_id" itemValueField="id"
+            itemTextField="size" [items]="ports" [canSearch]="true" closeButtonText="ยกเลิก">
+          </ionic-selectable>
+          <span class="error" *ngIf="isSubmitted && errorControl.mtd_size_id.errors?.required">
+            กรุณาระบุ ขนาด
+          </span>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-label class="showlabel" position="floating">จำนวนคงเหลือ</ion-label>
+          <ion-input formControlName="qty" type="number"></ion-input>
+          <span class="error" *ngIf="isSubmitted && errorControl.qty.errors?.required">
+            กรุณาระบุ จำนวนคงเหลือ
+          </span>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-label class="showlabel" position="floating">ราคา</ion-label>
+          <ion-input formControlName="price" type="number"></ion-input>
+          <span class="error" *ngIf="isSubmitted && errorControl.price.errors?.required">
+            กรุณาระบุ ราคา
+          </span>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label class="showlabel" position="floating">จำนวนคงเหลือที่ยอมรับได้</ion-label>
+          <ion-input formControlName="qty_remain" type="number"></ion-input>
+          <span class="error" *ngIf="isSubmitted && errorControl.qty_remain.errors?.required">
+            กรุณาระบุ จำนวนคงเหลือที่ยอมรับได้
+          </span>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</form>
 <ion-content>
-
+  <div scrollY="true" id="myFixZone">
+    <ion-searchbar placeholder="ค้นหา..." [(ngModel)]="filterTerm" animated="true"></ion-searchbar>
+    <ion-list>
+      <div class="content_alert">**จะลบได้ก็ต่อเมื่อ ยอดคงเหลือทั้งหมดเท่ากับ 0</div>
+      <ion-item-sliding *ngFor="let c of data  | mySearch:filterTerm:'number'" [ngClass]="c.highlight ? 'newdata': ''"
+        (click)="selectData(c.id)">
+        <ion-item>
+          <ion-label>
+            <ion-text color="primary">
+              <h3> ขนาด : {{c.size_name}}</h3>
+              <h3>จำนวนคงเหลือ : {{ c.qty }} ราคา : {{ c.price }}</h3>
+            </ion-text>
+          </ion-label>
+          <ion-badge slot="end" color="success">{{ c.id }}</ion-badge>
+        </ion-item>
+        <ion-item-options>
+          <ion-item-option *ngIf="c.qty==0" color="danger" (click)="cancelData(c.id)">
+            <ion-icon slot="end" name="trash"></ion-icon>
+            ลบ
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </div>
 </ion-content>

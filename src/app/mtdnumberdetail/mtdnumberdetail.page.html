@@ -59,9 +59,9 @@
         <ion-item>
         <ion-label class="showlabel" position="floating">จำนวนคงเหลือ</ion-label>
         <ion-input formControlName="qty" type="number"></ion-input>
-        <!-- <span class="error" *ngIf="isSubmitted && errorControl.qty.errors?.required">
-          กรุณาระบุ ตัวเลข
-        </span> -->
+        <span class="error" *ngIf="isSubmitted && errorControl.qty.errors?.required">
+          กรุณาระบุ จำนวนคงเหลือ
+        </span>
       </ion-item>
     </ion-col>
     <ion-col > 
@@ -80,7 +80,7 @@
   <div scrollY="true" id="myFixZone">
     <ion-searchbar placeholder="ค้นหา..." [(ngModel)]="filterTerm" animated="true"></ion-searchbar>
     <ion-list>
-      <div class="content_alert">**จะลบได้ก็ต่อเมื่อ ยอดคงเหลือทั้งหมดเท่า 0</div>
+      <div class="content_alert">**จะลบได้ก็ต่อเมื่อ ยอดคงเหลือทั้งหมดเท่ากับ 0</div>
       <ion-item-sliding *ngFor="let c of data  | mySearch:filterTerm:'number'" [ngClass]="c.highlight ? 'newdata': ''"
         (click)="selectData(c.id)">
         <ion-item>

@@ -3,10 +3,175 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>po01</ion-title>
+    <ion-title>ใบสั่งซื้อลูกค้า</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="refreshForm()">
+        <ion-icon slot="icon-only" src="./assets/icons/refresh.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="primary">
+      <ion-button (click)="submitForm()">
+        <ion-icon slot="icon-only" src="./assets/icons/save.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
- 
-<ion-content>
+ <ion-content>
+  <form [formGroup]="ionicForm" novalidate>
+    <ion-grid >
+      <div class="table1">
+      <ion-row>
+        <ion-col >
+          <ion-item>
+            <ion-label class="showlabel" position="floating">วันที่สั่งซื้อ</ion-label>
+            <!-- <ion-datetime formControlName="po_date" displayFormat="DD/MM/YYYY" ></ion-datetime> -->
+            <ion-input readonly [liIonic4Datepicker]="datePickerObj" type="text" formControlName="po_date"></ion-input>
+            <span class="error" *ngIf="isSubmitted && errorControl.po_date.errors?.required">
+              กรุณาระบุ วันที่สั่งซื้อ
+            </span>
+          </ion-item>
+        </ion-col>
+        <ion-col >
+          <ion-item>
+            <ion-label class="showlabel" position="floating">ผู้ขาย</ion-label>
+            <ionic-selectable interface="floating" item-content formControlName="mtd_user_id" itemValueField="id"
+              itemTextField="name" [items]="ports_sale" [canSearch]="true" closeButtonText="ยกเลิก">
+            </ionic-selectable>
+            <span class="error" *ngIf="isSubmitted && errorControl.mtd_user_id.errors?.required">
+              กรุณาระบุ ผู้ขาย
+            </span>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-label class="showlabel" position="floating">ชื่อวิน</ion-label>
+            <ion-input formControlName="po_namewin" type="text"></ion-input>
+            <span class="error" *ngIf="isSubmitted && errorControl.po_namewin.errors?.required">
+              กรุณาระบุ ชื่อวิน
+            </span>
+          </ion-item>
+        </ion-col>
+        <ion-col >
+          <ion-item>
+            <ion-label class="showlabel" position="floating">เขต</ion-label>
+            <ionic-selectable interface="floating" item-content formControlName="mtd_area_id" itemValueField="id"
+              itemTextField="area_name" [items]="ports_area" [canSearch]="true" closeButtonText="ยกเลิก">
+            </ionic-selectable>
+            <span class="error" *ngIf="isSubmitted && errorControl.mtd_area_id.errors?.required">
+              กรุณาระบุ เขต
+            </span>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label class="showlabel" position="floating">ชื่อลูกค้า</ion-label>
+            <ion-input formControlName="po_customer" type="text"></ion-input>
+            <span class="error" *ngIf="isSubmitted && errorControl.po_customer.errors?.required">
+              กรุณาระบุ ชื่อลูกค้า
+            </span>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-label class="showlabel" position="floating">เบอร์ลูกค้า</ion-label>
+            <ion-input formControlName="po_customer_tel" type="text"></ion-input>
+            <span class="error" *ngIf="isSubmitted && errorControl.po_customer_tel.errors?.required">
+              กรุณาระบุ เบอร์ลูกค้า
+            </span>
+          </ion-item>
+        </ion-col>
+        <ion-col >
+          <ion-item>
+            <ion-label class="showlabel" position="floating">วันที่นัดรับ</ion-label>
+            <ion-input readonly [liIonic4Datepicker]="datePickerObj" type="text" formControlName="po_recivedate"></ion-input>
+            <span class="error" *ngIf="isSubmitted && errorControl.po_recivedate.errors?.required">
+              กรุณาระบุ วันที่นัดรับ
+            </span>
+          </ion-item>
+          </ion-col> 
+      </ion-row>
+      <ion-row>
+        <ion-col >
+          <ion-item>
+            <ion-label class="showlabel" position="floating">การส่งสินค้า</ion-label>
+            <ionic-selectable interface="floating" item-content formControlName="mtd_shipping_id" itemValueField="id"
+              itemTextField="shipping_desc" [items]="ports_shipping" [canSearch]="true" closeButtonText="ยกเลิก" (onChange)="portChange($event)">
+            </ionic-selectable>
+            <span class="error" *ngIf="isSubmitted && errorControl.mtd_shipping_id.errors?.required">
+              กรุณาระบุ การส่งสินค้า
+            </span>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-label class="showlabel" position="floating">ราคาค่าส่ง</ion-label>
+            <ion-input formControlName="po_shipping_price" type="number"></ion-input>
+            <span class="error" *ngIf="isSubmitted && errorControl.po_shipping_price.errors?.required">
+              กรุณาระบุ ราคาค่าส่ง
+            </span>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-label class="showlabel" position="floating">สถานที่ส่ง (บ้านเลขที่ ซอย ถนน)</ion-label>
+            <ion-input formControlName="po_address" type="text"></ion-input>
+          </ion-item>
+        </ion-col>
+          <ion-col>
+            <ion-auto-complete class="showlabel" [labelPosition]="'floating'" [label]="'สถานที่ส่ง ( แขวง/ตำบล เขต/อำเภอ จังหวัด รหัสไปรษณีย์)'" formControlName="po_address_place"
+            [dataProvider]="placeSv"></ion-auto-complete>
+          </ion-col>
+      </ion-row>
+      </div>
+      <p></p>
+      <div class="table1">
+        <ion-row>
+          <ion-col> <ion-item>
+            <ion-label class="showlabelmain" position="floating">สินค้าหลัก **สินค้าที่มีการคิดเงิน **</ion-label>
+           <ionic-selectable item-content itemValueField="id" itemTextField="name" [isMultiple]="true" [canSearch]="true" [items]="ports_productmain" (onChange)="portChange_Product($event)">
+            <ng-template ionicSelectableItemTemplate let-port="item" let-isPortSelected="isItemSelected">
+              <div [ngClass]="{'qtyerror': inqtyerror(port.qty,port.qty_remain)}" >{{port.name}} remain: {{port.qty_remain}} qty: {{port.qty}}</div>
+            </ng-template>
+          </ionic-selectable>
+          <span class="error" *ngIf="isSubmitted && tmpproduct.length===0">
+            กรุณาเลือก สินค้า
+          </span>
+          </ion-item>
+        </ion-col>
+        </ion-row>
+        
+        <ion-row  class="table1_header" *ngIf="tmpproduct.length>0">
+          <ion-col size="1">ลำดับ</ion-col>
+          <ion-col size="2">สินค้า/ขนาด/ราคา</ion-col>
+          <!-- <ion-col size="2">ขนาด/ราคา</ion-col> -->
+          <ion-col size="2">ส่วนลด</ion-col>
+          <ion-col size="2">ราคารวม</ion-col>
+          <ion-col size="3">หมายเหตุ</ion-col>
+        </ion-row>
+        <ion-row class="table1_detail" *ngFor="let c of tmpproduct;let i = index;">
+          <ion-col  size="1">{{i+1}}</ion-col>
+          <ion-col size="2">{{c.name}}</ion-col>
+          <!-- <ion-col size="2">{{c.size}}/{{c.price}}</ion-col> -->
+          <ion-col size="2"> 
+          <ion-input  class="showborder" type="number"  [(ngModel)]="discount[i]" [ngModelOptions]="{standalone: true}" (change)="Discount(c.id,discount[i])"></ion-input> 
+          </ion-col>
+          <ion-col size="2">{{c.total|number}}</ion-col>
+          <ion-col size="3"> 
+            <ion-input  class="showborder" type="text"  [(ngModel)]="commentproduct[i]" [ngModelOptions]="{standalone: true}" (change)="Commentproduct(c.id,commentproduct[i])"></ion-input> 
+            </ion-col>
+            <ion-col size="2"> 
+              <ion-button (click)="Addnumber(i+1,c.id)">
+                <ion-icon slot="icon-only" class="iconSize" name="add"></ion-icon>
+              </ion-button>
+              <ion-button (click)="Deltmpproduct(c.id)">
+                <ion-icon slot="icon-only" class="iconSize" name="trash"></ion-icon>
+              </ion-button>
+            </ion-col>
+        </ion-row>
+      </div>
+    </ion-grid>
 
+  </form>
 </ion-content>

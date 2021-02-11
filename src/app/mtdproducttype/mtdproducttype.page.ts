@@ -49,20 +49,24 @@ export class MtdproducttypePage implements OnInit {
       .subscribe((data) => {
         if (data !== null) {
           if (typesql === "insert") {
-            this.data.unshift({
-              id: data.id,
-              product_type: this.ionicForm.controls.product_type.value,
-              product_type_desc: this.ionicForm.controls.product_type_desc.value,
-              highlight: true,
-            });
+            if(data.status === 'ok'){
+              this.data.unshift({
+                id: data.id,
+                product_type: this.ionicForm.controls.product_type.value,
+                product_type_desc: this.ionicForm.controls.product_type_desc.value,
+                highlight: true,
+              });
+            }
           } else if (typesql === "update") {
-            let item;
-            item = this.data.filter((val) => val.id == data.id);
-            item.forEach((item) => {
-              for (const [key, value] of Object.entries(item)) {
-                 item[key] = this.ionicForm.controls[key].value;
-              }
-            });
+            if(data.status === 'ok'){
+              let item;
+              item = this.data.filter((val) => val.id == data.id);
+              item.forEach((item) => {
+                for (const [key, value] of Object.entries(item)) {
+                  item[key] = this.ionicForm.controls[key].value;
+                }
+              });
+            }
           }
 
           this.configSv.ChkformAlert(data.message);
