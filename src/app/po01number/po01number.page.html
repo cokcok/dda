@@ -15,32 +15,86 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-<form [formGroup]="ionicForm" novalidate>
-  <ion-grid fixed>
-    <ion-row>
-      <ion-col >
-        กรอกตัวเลข
-        ระบุสีข้างหน้า
-        ระบุสีข้างหลัง
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <ion-item>
-          <ion-label class="showlabel" position="floating">ตัวเลข</ion-label>
-          <ion-input formControlName="podetail_number"  type="number"></ion-input>
-          <span class="error" *ngIf="isSubmitted && errorControl.podetail_number.errors?.required">
-            กรุณาระบุ ตัวเลข
-          </span>
-        </ion-item>
-      </ion-col>
-      <ion-col>
-        <ion-button [disabled] = "ionicForm.controls['podetail_number'].invalid" (click)="ChkNumber()"  expand="block"  shape="round">
-          ยืนยันตัวเลข
-        </ion-button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-</form>
-
+  <form [formGroup]="ionicForm" novalidate>
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col>
+          กรอกตัวเลข
+          ระบุสีข้างหน้า
+          ระบุสีข้างหลัง
+        </ion-col>
+      </ion-row>
+      <ion-row >
+        <ion-col>
+          <ion-item>
+            <ion-label class="showlabel" position="floating">ตัวเลข</ion-label>
+            <ion-input formControlName="podetail_number" type="number"></ion-input>
+            <span class="error" *ngIf="isSubmitted && errorControl.podetail_number.errors?.required">
+              กรุณาระบุ ตัวเลข
+            </span>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-button [disabled]="ionicForm.controls['podetail_number'].invalid" (click)="ChkNumber()" expand="block"
+            shape="round">
+            ยืนยันตัวเลข
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="ports_front.length>0">
+        <ion-col class="table1">
+        <ion-list>
+          <ion-radio-group (ionChange)="radioGroupChange_front($event)">
+            <ion-list-header>
+              <ion-label class="table1_header">
+                ตัวเลขด้านหน้า
+              </ion-label>
+            </ion-list-header>
+            <span class="error" *ngIf="isSubmitted && errorControl.mtd_numberfront_id.errors?.required">
+              กรุณาเลือก ตัวเลขด้านหน้า
+            </span>
+            <ion-item>
+              <ion-searchbar placeholder="ค้นหา..." [(ngModel)]="filterfront" [ngModelOptions]="{standalone: true}" animated="true"></ion-searchbar>
+            </ion-item>
+            <ion-list class="table1_detail" lines="none" *ngFor="let c of ports_front | mySearch:filterfront:'color' ;let i = index;" >
+              <ion-item>
+                <ion-radio slot="start" value="{{c.id}}"></ion-radio>
+                <ion-label>สี{{ c.color }}</ion-label>
+              </ion-item>
+                <ion-list  *ngFor="let cc of ports_front[i].front_number;">
+                  <ion-label  [ngClass]="(inqtyerror(cc.qty,cc.qty_remain))?'sublistchk':'sublist'"> เลข {{ cc.number }} เหลือ {{cc.qty}}/{{cc.qty_remain}}</ion-label>  
+                </ion-list>
+            </ion-list>
+          </ion-radio-group>
+        </ion-list>
+        </ion-col>
+        <ion-col class="table1">
+          <ion-list>
+            <ion-radio-group (ionChange)="radioGroupChange_back($event)">
+              <ion-list-header>
+                <ion-label class="table1_header">
+                  ตัวเลขด้านหลัง
+                </ion-label>
+              </ion-list-header>
+              <span class="error" *ngIf="isSubmitted && errorControl.mtd_numberback_id.errors?.required">
+                กรุณาเลือก ตัวเลขด้านหลัง
+              </span>
+              <ion-item>
+                <ion-searchbar placeholder="ค้นหา..." [(ngModel)]="filterback" [ngModelOptions]="{standalone: true}" animated="true"></ion-searchbar>
+              </ion-item>
+              <ion-list class="table1_detail"  lines="none" *ngFor="let c of ports_front| mySearch:filterback:'color';let i = index;">
+                <ion-item>
+                  <ion-radio slot="start" value="{{c.id}}"></ion-radio>
+                  <ion-label>สี{{ c.color }}</ion-label>
+                </ion-item>
+                <ion-list *ngFor="let cc of ports_front[i].back_number;">
+                  <ion-label  [ngClass]="(inqtyerror(cc.qty,cc.qty_remain))?'sublistchk':'sublist'"> เลข {{ cc.number }} เหลือ {{cc.qty}}/{{cc.qty_remain}}</ion-label> 
+                </ion-list>
+              </ion-list>
+            </ion-radio-group>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
 </ion-content>

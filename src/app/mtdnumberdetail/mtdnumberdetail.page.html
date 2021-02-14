@@ -55,7 +55,7 @@
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col > 
+      <ion-col> 
         <ion-item>
         <ion-label class="showlabel" position="floating">จำนวนคงเหลือ</ion-label>
         <ion-input formControlName="qty" type="number"></ion-input>
@@ -70,6 +70,15 @@
       <ion-input formControlName="price" type="number"></ion-input>
       <span class="error" *ngIf="isSubmitted && errorControl.price.errors?.required">
         กรุณาระบุ ราคา
+      </span>
+    </ion-item>
+  </ion-col>
+  <ion-col>
+    <ion-item>
+      <ion-label class="showlabel" position="floating">จำนวนคงเหลือที่ยอมรับได้</ion-label>
+      <ion-input formControlName="qty_remain" type="number"></ion-input>
+      <span class="error" *ngIf="isSubmitted && errorControl.qty_remain.errors?.required">
+        กรุณาระบุ จำนวนคงเหลือที่ยอมรับได้
       </span>
     </ion-item>
   </ion-col>

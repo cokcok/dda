@@ -128,11 +128,12 @@
       <p></p>
       <div class="table1">
         <ion-row>
-          <ion-col> <ion-item>
-            <ion-label class="showlabelmain" position="floating">สินค้าหลัก **สินค้าที่มีการคิดเงิน **</ion-label>
+          <ion-col> 
+            <ion-item>
+            <ion-label class="showlabelmain" position="floating">เลือกสินค้า</ion-label>
            <ionic-selectable item-content itemValueField="id" itemTextField="name" [isMultiple]="true" [canSearch]="true" [items]="ports_productmain" (onChange)="portChange_Product($event)">
             <ng-template ionicSelectableItemTemplate let-port="item" let-isPortSelected="isItemSelected">
-              <div [ngClass]="{'qtyerror': inqtyerror(port.qty,port.qty_remain)}" >{{port.name}} remain: {{port.qty_remain}} qty: {{port.qty}}</div>
+              <div [ngClass]="{'qtychk': inqtyerror(port.qty,port.qty_remain)}" >{{port.name}} remain: {{port.qty_remain}} qty: {{port.qty}}</div>
             </ng-template>
           </ionic-selectable>
           <span class="error" *ngIf="isSubmitted && tmpproduct.length===0">
@@ -165,12 +166,31 @@
               <ion-button (click)="Addnumber(i+1,c.id)">
                 <ion-icon slot="icon-only" class="iconSize" name="add"></ion-icon>
               </ion-button>
-              <ion-button (click)="Deltmpproduct(c.id)">
+              <ion-button (click)="Deltmpproduct(c.id,i)">
                 <ion-icon slot="icon-only" class="iconSize" name="trash"></ion-icon>
               </ion-button>
             </ion-col>
+            <ion-row>
+              <span class="error" *ngIf="isSubmitted && discount[i]>c.total">
+               สินค้าลำดับที่ {{i+1}}  มีส่วนลดมากกว่าราคาสินค้า กรุณาตรวจสอบข้อมูล
+              </span>
+            </ion-row>
+            <div *ngIf="c.numbervalue !== null">
+              <ion-row>
+                <ion-col  size="auto">เลขเสื้อเบอร์ {{c.numbervalue.podetail_number}}</ion-col>
+                <ion-col  size="auto">ด้านหน้าสี{{c.numbervalue.color_front}}</ion-col>
+                <ion-col  size="auto">ด้านหลังสี{{c.numbervalue.color_back}}</ion-col>
+              </ion-row>
+            </div>  
+        </ion-row> 
+        <ion-row class="table1_footer" *ngIf="tmpproduct.length>0">
+          <ion-col  size="1"></ion-col>
+          <ion-col  size="2">รวม</ion-col>
+          <ion-col  size="2">{{allDiscount}}</ion-col>
+          <ion-col  size="2">{{alltotal}}</ion-col>
         </ion-row>
       </div>
+      
     </ion-grid>
 
   </form>

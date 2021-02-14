@@ -72,9 +72,9 @@
 <ion-content>
   <div scrollY="true" id="myFixZone">
     <ion-searchbar placeholder="ค้นหา..." [(ngModel)]="filterTerm" animated="true"></ion-searchbar>
-    <ion-list>
+    <ion-list> 
       <div class="content_alert">**จะลบได้ก็ต่อเมื่อ ยอดคงเหลือทั้งหมดเท่ากับ 0</div>
-      <ion-item-sliding *ngFor="let c of data  | mySearch:filterTerm:'number'" [ngClass]="c.highlight ? 'newdata': ''"
+      <ion-item-sliding *ngFor="let c of data  | mySearch:filterTerm:'size_name'" [ngClass]="c.highlight ? 'newdata': ''"
         (click)="selectData(c.id)">
         <ion-item>
           <ion-label>

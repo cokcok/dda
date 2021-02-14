@@ -27,6 +27,7 @@ export class Po01Page implements OnInit {
   portControl_shipping: FormControl; ports_shipping: any;
   portControl_productmain: FormControl; ports_productmain: any;
   tmpproduct =[];discount = []; commentproduct = [];
+  allDiscount = 0;alltotal=0;
   myDate = new Date().toISOString();
   datePickerObj: any = {};
 
@@ -49,7 +50,7 @@ export class Po01Page implements OnInit {
     this.portControl_sale = this.formBuilder.control("", Validators.required);
     this.portControl_area = this.formBuilder.control("", Validators.required);
     this.portControl_shipping = this.formBuilder.control("", Validators.required);
-    this.portControl_productmain = this.formBuilder.control("", Validators.required);
+    //this.portControl_productmain = this.formBuilder.control("", Validators.required);
     this.ionicForm = this.formBuilder.group({
       id:[""],
       po_running:[""],
@@ -68,7 +69,7 @@ export class Po01Page implements OnInit {
       po_shipping_price:["",[Validators.required]],
       po_address:[""],  
       po_address_place:[""],
-      tmpproduct:[this.tmpproduct,[Validators.required]],
+      tmpproduct:["",[Validators.required]],
     });
     this.loaddata_sale(0);this.loaddata_area(0);this.loaddata_shipping(0);this.loaddata_product();
     this.fndate();
@@ -120,6 +121,8 @@ export class Po01Page implements OnInit {
       }
     };
   }
+
+
 
   get errorControl() {
     return this.ionicForm.controls;
@@ -197,11 +200,14 @@ export class Po01Page implements OnInit {
    if(this.tmpproduct.length === 0){
     tmpindex = 0;
    }else{
-    tmpindex = this.tmpproduct.length;
+    //console.log(this.tmpproduct[this.tmpproduct.length-1]["id"] + 1);
+    tmpindex = this.tmpproduct[this.tmpproduct.length-1]["id"] + 1;
    }
+  
    port.forEach((value, index) => {
     this.tmpproduct.push({
-      id: (index+1)+tmpindex,
+      id: index+tmpindex,
+      //id: index,
       name: value.product_name +'/'+value.size+ '/' +value.price,
       product_id: value.id,
       product_name: value.product_name,
@@ -210,16 +216,26 @@ export class Po01Page implements OnInit {
       discount:'0',
       total: value.price,
       commentproduct: '',
-      numbervalue: [],
+      numbervalue: null,
     });
-  })
+  });
+    //this.ionicForm.controls['tmpproduct'].setValue(this.tmpproduct);
+    
+    this.alltotal = this.tmpproduct.reduce((acc,current) => acc + Number(current.total), 0);
+    this.allDiscount = this.tmpproduct.reduce((acc,current) => acc + Number(current.discount), 0);
     event.component.clear();
   }
 
   Discount(id,value){
     let item = this.tmpproduct.filter((val) => val.id == id);
     item[0].discount = value;
-    item[0].total = Number(item[0].price) - Number(value);
+    if(value <= item[0].price){
+      item[0].total = Number(item[0].price) - Number(value);
+      this.alltotal = this.tmpproduct.reduce((acc,current) => acc + Number(current.total), 0);
+      this.allDiscount = this.tmpproduct.reduce((acc,current) => acc + Number(current.discount), 0);
+      //this.ionicForm.controls['chkdiscount'].setValue(1);
+    }
+ 
   }
 
   Commentproduct(id,value){
@@ -228,15 +244,19 @@ export class Po01Page implements OnInit {
    // item[0].total = Number(item[0].price) - Number(value);
   }
 
-  Deltmpproduct(id){
+  Deltmpproduct(id,index){
+    this.discount[index] = null; this.commentproduct[index] = null
     this.tmpproduct = this.tmpproduct.filter(obj => obj.id !== id);
-    this.ionicForm.controls['tmpproduct'].setValue(this.tmpproduct);
+    this.alltotal = this.tmpproduct.reduce((acc,current) => acc + Number(current.total), 0);
+    this.allDiscount = this.tmpproduct.reduce((acc,current) => acc + Number(current.discount), 0);
+    // this.ionicForm.controls['tmpproduct'].setValue(this.tmpproduct);
+    //console.log(this.tmpproduct);
     
   }
 
   async Addnumber(index,id){
     let item = this.tmpproduct.filter((val) => val.id == id);
-    console.log(item);  
+   //console.log(item);  
     const modal = await this.modalCtrl.create({
       component:Po01numberPage,
       componentProps:{index:index}
@@ -244,25 +264,95 @@ export class Po01Page implements OnInit {
     })
 
     await modal.present();
-    const data = await modal.onWillDismiss();
-    console.log(data);
-    // let valueitem = [];
-    // valueitem.push({
-    //   id:'55',
-    //   name:'xx',
-    // });
-    // item[0].numbervalue = valueitem;
-    
+    const {data,role} = await modal.onWillDismiss();
+    //console.log(data,role);
+    if(role === 'comfirm'){
+      item[0].numbervalue = data;
+    }
   }
 
-  submitForm(){
-     console.log(this.ionicForm.value)
-     this.isSubmitted = true;
-    if (!this.ionicForm.valid) {
+  async submitForm(){
+    let founddiscount = this.tmpproduct.find(function (value){
+        if(value.discount > value.price){
+          return true;
+        }
+    });
+    this.ionicForm.controls['tmpproduct'].setValue(this.tmpproduct);
+    this.ionicForm.controls['po_discount'].setValue(this.allDiscount);
+    this.ionicForm.controls['po_total'].setValue(this.alltotal);
+    console.log(this.ionicForm.value)
+    this.isSubmitted = true;
+    if (!this.ionicForm.valid || founddiscount) {
       console.log("Please provide all the required values!");
       return false;
     } else {
-      null;
+      const confirm =  await this.alertCtrl.create({
+        header: 'ยืนยันข้อมูลในการบันทึก',
+        //message: 'แน่ใจว่าต้องการลบเลขระบบที่ '+ item +' ? ',
+        buttons: [{
+          text: 'ยกเลิก',
+          handler: (data: any) => {
+             console.log('cancel ',data);
+          }
+        },
+        {
+          text: 'ตกลง',
+            handler: (data: any) => {
+            console.log('submit');
+            let typesql: string;
+            if (!this.ionicForm.controls.id.value) {
+              typesql = "insert";
+            } else {
+              typesql = "update";
+            }
+            this.sub = this.poSv
+            .crudpo(this.ionicForm.value,typesql)
+            .subscribe((data) => {
+              if (data !== null) {
+                if (typesql === "insert") {
+                  if(data.status === 'ok'){
+                    null;
+                  }else{
+                    this.configSv.ChkformAlert(data.message);
+                  }
+                } else if (typesql === "update") {
+                  if(data.status === 'ok'){
+                    null;
+                    // let item;
+                    // item = this.data.filter((val) => val.id == data.id);
+                    // item.forEach((item) => {
+                    //   for (const [key, value] of Object.entries(item)) {
+                    //     //item[key] = this.ionicForm.controls[key].value;
+                    //     if (key === "mtd_size_id") {
+                    //       item[key] = this.ionicForm.controls[key].value.id;
+                    //     }else if(key === "size_name"){
+                    //       item[key] = this.ionicForm.controls['mtd_size_id'].value.size;
+                    //     }else if(key === "update_flg"){
+                    //       this.ionicForm.controls['qty'].enable();
+                    //     }else{
+                    //       item[key] = this.ionicForm.controls[key].value;
+                    //     }
+                    //   }
+                    // });
+                  }else{
+                    this.configSv.ChkformAlert(data.message);
+                  }  
+                }
+                if(data.status === 'ok'){
+                  this.configSv.ChkformAlert(data.message);
+                }
+              }
+            },
+            (error) => {
+              console.log(JSON.stringify(error));
+            },
+            () => {
+              this.refreshForm();
+            });
+          }
+        }]
+      });
+      confirm.present();
     }
   }
 
@@ -274,11 +364,12 @@ export class Po01Page implements OnInit {
 
 
   refreshForm() {
-    this.ionicForm.reset({po_date:moment().format('L'),po_green:0});
+    this.ionicForm.reset({po_date:moment().format("DD/MM/YYYY"),po_green:0});
     let item = this.ports_sale.filter((val) => val.id == this.configSv.emp_id)[0];
     this.portControl_sale.setValue(item);
     this.isSubmitted = false;
     this.tmpproduct =[];
+    this.alltotal=0;this.allDiscount=0;
   }
 
 

@@ -43,9 +43,10 @@ export class MtdnumberdetailPage implements OnInit {
       qty: [{value: 0,disabled: true},[Validators.required]],
       price: ["",[Validators.required]],
       size_name:[""],
+      qty_remain: ["100",[Validators.required]],
       highlight: [""],
     }); 
-    this.loaddata_size(this.page);
+    this.loaddata_size();
     this.loaddata(this.page);
   }
 
@@ -54,12 +55,19 @@ export class MtdnumberdetailPage implements OnInit {
   }
 
 
-  loaddata_size(padding: number,  infiniteScroll?) {
-    this.sub = this.mtdSv.getmtd(3,padding).subscribe((data) => {
-      if (data !== null) {
-        this.ports = data.data_detail.map((item) => Object.assign({}, item));
-      }
-    });
+  // loaddata_size(padding: number,  infiniteScroll?) {
+  //   this.sub = this.mtdSv.getmtd(3,padding).subscribe((data) => {
+  //     if (data !== null) {
+  //       this.ports = data.data_detail.map((item) => Object.assign({}, item));
+  //     }
+  //   });
+  // }
+
+  loaddata_size(){
+    this.ports = [
+      {id: 1,size: 'เล็ก'},{id: 2,size: 'ใหญ่'}
+    ]
+    console.log(this.ports);
   }
 
   submitForm(){
@@ -89,6 +97,7 @@ export class MtdnumberdetailPage implements OnInit {
                 size_name: this.ionicForm.controls.mtd_size_id.value.size,
                 qty: this.ionicForm.controls.qty.value,
                 price: this.ionicForm.controls.price.value,
+                qty_remain: this.ionicForm.controls.qty_remain.value,
                 update_flg:0,
                 highlight: true,
               });
@@ -139,7 +148,7 @@ export class MtdnumberdetailPage implements OnInit {
   refreshForm() {
     //this.ionicForm.reset({qty: [{value: 0, disabled: true}]});
     
-    this.ionicForm.reset({qty: 0,mtd_number_id:this.color_id});
+    this.ionicForm.reset({qty: 0,mtd_number_id:this.color_id,qty_remain:100});
     this.ionicForm.controls['qty'].disable();
     this.isSubmitted = false;
 
@@ -169,9 +178,11 @@ export class MtdnumberdetailPage implements OnInit {
       for (const [key, value] of Object.entries(item)) {
         // console.log(key , value)
         if (key === "mtd_size_id") {
+          //console.log(key , value)
           let value_a = this.ports.filter(function (item1) {
-            return item1.id === value;
+            return item1.id == value;
           })[0];
+          //console.log(value_a);
           this.portControl.setValue(value_a);
         }else if(key === "update_flg"){
           //console.log(value);

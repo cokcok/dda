@@ -203,6 +203,7 @@ export class MtdSvService {
         'mtd_size_id': vdata.mtd_size_id.id,
         'qty': vdata.qty,
         'price': vdata.price,
+        'qty_remain': vdata.qty_remain,
         'emp_id': this.configSv.emp_id,
         'type_sql': type
       }
