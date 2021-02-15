@@ -107,7 +107,7 @@
         <ion-col>
           <ion-item>
             <ion-label class="showlabel" position="floating">ราคาค่าส่ง</ion-label>
-            <ion-input formControlName="po_shipping_price" type="number"></ion-input>
+            <ion-input formControlName="po_shipping_price" type="number" [(ngModel)]="po_shipping_price" (change)="cul_total()"></ion-input>
             <span class="error" *ngIf="isSubmitted && errorControl.po_shipping_price.errors?.required">
               กรุณาระบุ ราคาค่าส่ง
             </span>
@@ -185,9 +185,21 @@
         </ion-row> 
         <ion-row class="table1_footer" *ngIf="tmpproduct.length>0">
           <ion-col  size="1"></ion-col>
-          <ion-col  size="2">รวม</ion-col>
-          <ion-col  size="2">{{allDiscount}}</ion-col>
-          <ion-col  size="2">{{alltotal}}</ion-col>
+          <ion-col  size="2">รวมราคาสินค้า</ion-col>
+          <ion-col  size="2">{{allDiscount|number}}</ion-col>
+          <ion-col  size="2">{{alltotalproduct|number}}</ion-col>
+        </ion-row>
+        <ion-row class="table1_footer" *ngIf="tmpproduct.length>0">
+          <ion-col  size="1"></ion-col>
+          <ion-col  size="2">รวมค่าขนส่ง</ion-col>
+          <ion-col  size="2"></ion-col>
+          <ion-col  size="2">{{po_shipping_price|number}}</ion-col>
+        </ion-row>
+        <ion-row class="table1_footer" *ngIf="tmpproduct.length>0">
+          <ion-col  size="1"></ion-col>
+          <ion-col  size="2">รวมสุทธิ</ion-col>
+          <ion-col  size="2"></ion-col>
+          <ion-col  size="2">{{alltotal|number}}</ion-col>
         </ion-row>
       </div>
       

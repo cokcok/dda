@@ -27,18 +27,9 @@ export class Po01Page implements OnInit {
   portControl_shipping: FormControl; ports_shipping: any;
   portControl_productmain: FormControl; ports_productmain: any;
   tmpproduct =[];discount = []; commentproduct = [];
-  allDiscount = 0;alltotal=0;
+  allDiscount = 0;alltotalproduct=0;po_shipping_price=0;alltotal=0;
   myDate = new Date().toISOString();
   datePickerObj: any = {};
-
-  //tmproduct1 =  Array(productdetail:[],numberdetail:[]);
-  // export interface tmproduct1{
-  //   productdetail:number;
-  //   numberdetail:string;
-  // }
-
-
- // tmproduct1: Array<{productdetail: [], numberdetail: []}>;
 
   constructor(private navCtrl: NavController, private activatedRoute: ActivatedRoute,public formBuilder: FormBuilder,
     public configSv: ConfigService,public mtdSv: MtdSvService,
@@ -61,8 +52,9 @@ export class Po01Page implements OnInit {
       po_customer:["",[Validators.required]],
       po_customer_tel:["",[Validators.required]],
       po_green:["0"],
-      po_total:[""],
+      po_totalproduct:[""],
       po_discount:[""],
+      po_total:[""],
       po_add:[""],
       po_recivedate:["",[Validators.required]],
       mtd_shipping_id:this.portControl_shipping,
@@ -181,6 +173,7 @@ export class Po01Page implements OnInit {
     let port = event.value;
     //console.log(port,port['shipping_price']);
     this.ionicForm.controls['po_shipping_price'].setValue(port['shipping_price']);
+    this.cul_total();
   }
 
   public inqtyerror(qty: number,qty_remain:number): boolean{
@@ -189,6 +182,13 @@ export class Po01Page implements OnInit {
     }
   }
  
+  public cul_total(){
+    this.alltotalproduct = this.tmpproduct.reduce((acc,current) => acc + Number(current.total), 0);
+    this.allDiscount = this.tmpproduct.reduce((acc,current) => acc + Number(current.discount), 0);
+    this.alltotal = Number(this.alltotalproduct) + Number(this.po_shipping_price);
+    
+  }
+
   portChange_Product(event: {
     component: IonicSelectableComponent,
     value: any
@@ -220,10 +220,9 @@ export class Po01Page implements OnInit {
     });
   });
     //this.ionicForm.controls['tmpproduct'].setValue(this.tmpproduct);
-    
-    this.alltotal = this.tmpproduct.reduce((acc,current) => acc + Number(current.total), 0);
-    this.allDiscount = this.tmpproduct.reduce((acc,current) => acc + Number(current.discount), 0);
     event.component.clear();
+    this.cul_total();
+    
   }
 
   Discount(id,value){
@@ -231,9 +230,10 @@ export class Po01Page implements OnInit {
     item[0].discount = value;
     if(value <= item[0].price){
       item[0].total = Number(item[0].price) - Number(value);
-      this.alltotal = this.tmpproduct.reduce((acc,current) => acc + Number(current.total), 0);
-      this.allDiscount = this.tmpproduct.reduce((acc,current) => acc + Number(current.discount), 0);
-      //this.ionicForm.controls['chkdiscount'].setValue(1);
+      this.cul_total();
+      // this.alltotalproduct = this.tmpproduct.reduce((acc,current) => acc + Number(current.total), 0);
+      // this.allDiscount = this.tmpproduct.reduce((acc,current) => acc + Number(current.discount), 0);
+     
     }
  
   }
@@ -247,10 +247,10 @@ export class Po01Page implements OnInit {
   Deltmpproduct(id,index){
     this.discount[index] = null; this.commentproduct[index] = null
     this.tmpproduct = this.tmpproduct.filter(obj => obj.id !== id);
-    this.alltotal = this.tmpproduct.reduce((acc,current) => acc + Number(current.total), 0);
-    this.allDiscount = this.tmpproduct.reduce((acc,current) => acc + Number(current.discount), 0);
-    // this.ionicForm.controls['tmpproduct'].setValue(this.tmpproduct);
-    //console.log(this.tmpproduct);
+    this.cul_total();
+    // this.alltotalproduct = this.tmpproduct.reduce((acc,current) => acc + Number(current.total), 0);
+    // this.allDiscount = this.tmpproduct.reduce((acc,current) => acc + Number(current.discount), 0);
+
     
   }
 
@@ -279,6 +279,7 @@ export class Po01Page implements OnInit {
     });
     this.ionicForm.controls['tmpproduct'].setValue(this.tmpproduct);
     this.ionicForm.controls['po_discount'].setValue(this.allDiscount);
+    this.ionicForm.controls['po_totalproduct'].setValue(this.alltotalproduct);
     this.ionicForm.controls['po_total'].setValue(this.alltotal);
     console.log(this.ionicForm.value)
     this.isSubmitted = true;
@@ -310,9 +311,12 @@ export class Po01Page implements OnInit {
             .subscribe((data) => {
               if (data !== null) {
                 if (typesql === "insert") {
-                  if(data.status === 'ok'){
-                    null;
-                  }else{
+                  // if(data.status === 'ok'){
+                  //   null;
+                  // }else{
+                  //   this.configSv.ChkformAlert(data.message);
+                  // }
+                  if(data.status !== 'ok'){
                     this.configSv.ChkformAlert(data.message);
                   }
                 } else if (typesql === "update") {
@@ -368,8 +372,8 @@ export class Po01Page implements OnInit {
     let item = this.ports_sale.filter((val) => val.id == this.configSv.emp_id)[0];
     this.portControl_sale.setValue(item);
     this.isSubmitted = false;
-    this.tmpproduct =[];
-    this.alltotal=0;this.allDiscount=0;
+    this.tmpproduct =[];this.discount = []; this.commentproduct = [];
+    this.alltotalproduct=0;this.allDiscount=0;this.po_shipping_price=0;this.alltotal=0; this.loaddata_product();
   }
 
 
