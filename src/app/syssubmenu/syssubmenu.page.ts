@@ -138,7 +138,7 @@ export class SyssubmenuPage implements OnInit {
           //console.log(data.data_detail);
           this.maxpadding = data["maxpadding"];
           datalimit = data["limit"];
-          this.data = data.data_detail.map((item) => Object.assign({}, item));
+          this.data =  this.data.concat(data.data_detail.map((item) => Object.assign({}, item)));
           // console.log(this.data, this.maxpadding);
           /*     for (let i = 0; i < datalimit; i++) {
             //console.log(data['data_detail'][i]['id']);

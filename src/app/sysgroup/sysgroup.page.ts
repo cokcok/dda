@@ -56,7 +56,7 @@ export class SysgroupPage implements OnInit {
           //console.log(data.data_detail);
           this.maxpadding = data["maxpadding"];
           datalimit = data["limit"];
-          this.data = data.data_detail.map((item) => Object.assign({}, item));
+          this.data =  this.data.concat(data.data_detail.map((item) => Object.assign({}, item)));
           if (infiniteScroll) {
             infiniteScroll.target.complete();
           }

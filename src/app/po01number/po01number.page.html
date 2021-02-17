@@ -28,9 +28,12 @@
         <ion-col>
           <ion-item>
             <ion-label class="showlabel" position="floating">ตัวเลข</ion-label>
-            <ion-input formControlName="podetail_number" type="number"></ion-input>
+            <ion-input formControlName="podetail_number" type="text"></ion-input>
             <span class="error" *ngIf="isSubmitted && errorControl.podetail_number.errors?.required">
               กรุณาระบุ ตัวเลข
+            </span>
+            <span class="error" *ngIf="isSubmitted && errorControl.podetail_number.errors?.pattern">
+              กรุณาใส่เฉพาะตัวเลข
             </span>
           </ion-item>
         </ion-col>

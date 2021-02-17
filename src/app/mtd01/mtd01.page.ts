@@ -185,7 +185,7 @@ export class Mtd01Page implements OnInit {
         if (data !== null) {
           this.maxpadding = data["maxpadding"];
           datalimit = data["limit"];
-          this.data = data.data_detail.map((item) => Object.assign({}, item));
+          this.data =  this.data.concat(data.data_detail.map((item) => Object.assign({}, item)));   
           if (infiniteScroll) {
             infiniteScroll.target.complete();
           }
@@ -207,7 +207,7 @@ export class Mtd01Page implements OnInit {
       .getsysgroup(padding)
       .subscribe((data) => {
         if (data !== null) {
-          this.groups = data.data_detail.map((item) => Object.assign({}, item));
+          this.groups =  this.groups.concat(data.data_detail.map((item) => Object.assign({}, item)));   
         }
       });
   }

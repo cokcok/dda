@@ -40,6 +40,7 @@ export class MtdproductdetailPage implements OnInit {
       mtd_size_id: this.portControl,
       mtd_product_id:[this.product_id],
       qty: [{value: 0,disabled: true},[Validators.required]],
+      tmpproduct_qty :[{value: 0,disabled: true}],
       price: ["",[Validators.required]],
       qty_remain: ["100",[Validators.required]],
       size_name:[""],
@@ -57,7 +58,7 @@ export class MtdproductdetailPage implements OnInit {
   loaddata_size(padding: number,  infiniteScroll?) {
     this.sub = this.mtdSv.getmtd(3,padding).subscribe((data) => {
       if (data !== null) {
-        this.ports = data.data_detail.map((item) => Object.assign({}, item));
+        this.ports =  this.ports.concat(data.data_detail.map((item) => Object.assign({}, item)));
       }
     });
   }
@@ -150,7 +151,7 @@ export class MtdproductdetailPage implements OnInit {
         if (data !== null) {
           this.maxpadding = data["maxpadding"];
           datalimit = data["limit"];
-          this.data = data.data_detail.map((item) => Object.assign({}, item));
+          this.data =  this.data.concat(data.data_detail.map((item) => Object.assign({}, item)));
           if (infiniteScroll) {
             infiniteScroll.target.complete();
           }

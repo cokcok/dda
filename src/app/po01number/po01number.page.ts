@@ -24,7 +24,7 @@ export class Po01numberPage implements OnInit {
     this.portControl_front = this.formBuilder.control("", Validators.required);
     this.portControl_back = this.formBuilder.control("", Validators.required);
     this.ionicForm = this.formBuilder.group({
-      podetail_number:["",[Validators.required]],
+      podetail_number:["",[Validators.required, Validators.pattern('^[0-9]+$')]],
       color_front:[""],
       color_back:[""],
       mtd_numberfront_id:this.portControl_front,
@@ -42,6 +42,7 @@ export class Po01numberPage implements OnInit {
 
   ChkNumber(){
     const name = new String(this.ionicForm.controls.podetail_number.value)
+    console.log(name);
     const map = Array.prototype.map
     const tmp_number = map.call(name, eachLetter => {
         return eachLetter

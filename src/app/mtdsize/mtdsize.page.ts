@@ -95,7 +95,7 @@ export class MtdsizePage implements OnInit {
         if (data !== null) {
           this.maxpadding = data["maxpadding"];
           datalimit = data["limit"];
-          this.data = data.data_detail.map((item) => Object.assign({}, item));
+          this.data =  this.data.concat(data.data_detail.map((item) => Object.assign({}, item)));
           if (infiniteScroll) {
             infiniteScroll.target.complete();
           }

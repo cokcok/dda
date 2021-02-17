@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, NavController,AlertController } from '@ionic/angular';
-import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormControl, } from "@angular/forms";
 import { ConfigService } from "../sv/config.service";
 import { Subscription } from "rxjs";
@@ -31,7 +30,7 @@ export class Po01Page implements OnInit {
   myDate = new Date().toISOString();
   datePickerObj: any = {};
 
-  constructor(private navCtrl: NavController, private activatedRoute: ActivatedRoute,public formBuilder: FormBuilder,
+  constructor(private navCtrl: NavController,public formBuilder: FormBuilder,
     public configSv: ConfigService,public mtdSv: MtdSvService,
     private alertCtrl: AlertController,private poSv: PoSvService,public placeSv:PlaceSvService,private modalCtrl:ModalController) { 
 
@@ -281,7 +280,7 @@ export class Po01Page implements OnInit {
     this.ionicForm.controls['po_discount'].setValue(this.allDiscount);
     this.ionicForm.controls['po_totalproduct'].setValue(this.alltotalproduct);
     this.ionicForm.controls['po_total'].setValue(this.alltotal);
-    console.log(this.ionicForm.value)
+    //console.log(this.ionicForm.value)
     this.isSubmitted = true;
     if (!this.ionicForm.valid || founddiscount) {
       console.log("Please provide all the required values!");
@@ -293,13 +292,13 @@ export class Po01Page implements OnInit {
         buttons: [{
           text: 'ยกเลิก',
           handler: (data: any) => {
-             console.log('cancel ',data);
+             //console.log('cancel ',data);
           }
         },
         {
           text: 'ตกลง',
             handler: (data: any) => {
-            console.log('submit');
+            //console.log('submit');
             let typesql: string;
             if (!this.ionicForm.controls.id.value) {
               typesql = "insert";
@@ -310,48 +309,45 @@ export class Po01Page implements OnInit {
             .crudpo(this.ionicForm.value,typesql)
             .subscribe((data) => {
               if (data !== null) {
-                if (typesql === "insert") {
-                  // if(data.status === 'ok'){
-                  //   null;
-                  // }else{
-                  //   this.configSv.ChkformAlert(data.message);
-                  // }
-                  if(data.status !== 'ok'){
-                    this.configSv.ChkformAlert(data.message);
-                  }
-                } else if (typesql === "update") {
-                  if(data.status === 'ok'){
-                    null;
-                    // let item;
-                    // item = this.data.filter((val) => val.id == data.id);
-                    // item.forEach((item) => {
-                    //   for (const [key, value] of Object.entries(item)) {
-                    //     //item[key] = this.ionicForm.controls[key].value;
-                    //     if (key === "mtd_size_id") {
-                    //       item[key] = this.ionicForm.controls[key].value.id;
-                    //     }else if(key === "size_name"){
-                    //       item[key] = this.ionicForm.controls['mtd_size_id'].value.size;
-                    //     }else if(key === "update_flg"){
-                    //       this.ionicForm.controls['qty'].enable();
-                    //     }else{
-                    //       item[key] = this.ionicForm.controls[key].value;
-                    //     }
-                    //   }
-                    // });
-                  }else{
-                    this.configSv.ChkformAlert(data.message);
-                  }  
-                }
                 if(data.status === 'ok'){
                   this.configSv.ChkformAlert(data.message);
                 }
+
+                // if (typesql === "insert") {
+                //   if(data.status !== 'ok'){
+                //     this.configSv.ChkformAlert(data.message);
+                //   }
+                // } else if (typesql === "update") {
+                //   if(data.status === 'ok'){
+                //     null;
+                //     // let item;
+                //     // item = this.data.filter((val) => val.id == data.id);
+                //     // item.forEach((item) => {
+                //     //   for (const [key, value] of Object.entries(item)) {
+                //     //     //item[key] = this.ionicForm.controls[key].value;
+                //     //     if (key === "mtd_size_id") {
+                //     //       item[key] = this.ionicForm.controls[key].value.id;
+                //     //     }else if(key === "size_name"){
+                //     //       item[key] = this.ionicForm.controls['mtd_size_id'].value.size;
+                //     //     }else if(key === "update_flg"){
+                //     //       this.ionicForm.controls['qty'].enable();
+                //     //     }else{
+                //     //       item[key] = this.ionicForm.controls[key].value;
+                //     //     }
+                //     //   }
+                //     // });
+                //   }else{
+                //     this.configSv.ChkformAlert(data.message);
+                //   }  
+                // }
+                
               }
             },
             (error) => {
               console.log(JSON.stringify(error));
             },
             () => {
-              this.refreshForm();
+              //this.refreshForm();
             });
           }
         }]

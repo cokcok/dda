@@ -39,8 +39,8 @@ export class MtdnumberdetailPage implements OnInit {
       mtd_number_id:[this.color_id],
       number: ["",[Validators.required]],
       mtd_size_id: this.portControl,
-      //qty: ["0",[Validators.required]],
-      qty: [{value: 0,disabled: true},[Validators.required]],
+      tmpnumber_qty: [{value: 0,disabled: true}],
+      qty: [{value: 0,disabled: true},[Validators.required]],  
       price: ["",[Validators.required]],
       size_name:[""],
       qty_remain: ["100",[Validators.required]],
@@ -67,7 +67,7 @@ export class MtdnumberdetailPage implements OnInit {
     this.ports = [
       {id: 1,size: 'เล็ก'},{id: 2,size: 'ใหญ่'}
     ]
-    console.log(this.ports);
+    //console.log(this.ports);
   }
 
   submitForm(){
@@ -162,7 +162,7 @@ export class MtdnumberdetailPage implements OnInit {
         if (data !== null) {
           this.maxpadding = data["maxpadding"];
           datalimit = data["limit"];
-          this.data = data.data_detail.map((item) => Object.assign({}, item));
+          this.data =  this.data.concat(data.data_detail.map((item) => Object.assign({}, item)));
           if (infiniteScroll) {
             infiniteScroll.target.complete();
           }

@@ -42,7 +42,7 @@ export class MtdproductPage implements OnInit {
   loaddata_producttype(padding: number,  infiniteScroll?) {
     this.sub = this.mtdSv.getmtd(2,padding).subscribe((data) => {
       if (data !== null) {
-        this.ports = data.data_detail.map((item) => Object.assign({}, item));
+        this.ports =  this.ports.concat(data.data_detail.map((item) => Object.assign({}, item)));  
       }
     });
   }
@@ -131,9 +131,10 @@ export class MtdproductPage implements OnInit {
         if (data !== null) {
           this.maxpadding = data["maxpadding"];
           datalimit = data["limit"];
-          this.data = data.data_detail.map((item) => Object.assign({}, item));
+          this.data =  this.data.concat(data.data_detail.map((item) => Object.assign({}, item)));
           if (infiniteScroll) {
             infiniteScroll.target.complete();
+            
           }
         }
       });
