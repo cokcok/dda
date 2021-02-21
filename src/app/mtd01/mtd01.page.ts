@@ -181,7 +181,7 @@ export class Mtd01Page implements OnInit {
     let datalimit;
     this.sub = this.mtdSv
       .getmtd(0,padding,this.limit)
-      .subscribe((data) => {
+      .subscribe((data) => { 
         if (data !== null) {
           this.maxpadding = data["maxpadding"];
           datalimit = data["limit"];

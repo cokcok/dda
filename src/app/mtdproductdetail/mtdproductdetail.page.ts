@@ -58,7 +58,7 @@ export class MtdproductdetailPage implements OnInit {
   loaddata_size(padding: number,  infiniteScroll?) {
     this.sub = this.mtdSv.getmtd(3,padding).subscribe((data) => {
       if (data !== null) {
-        this.ports =  this.ports.concat(data.data_detail.map((item) => Object.assign({}, item)));
+        this.ports =  data.data_detail.map((item) => Object.assign({}, item));
       }
     });
   }

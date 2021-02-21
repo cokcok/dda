@@ -104,6 +104,7 @@ export class MtdSvService {
         'id': vdata.id,
         'product_type': vdata.product_type,
         'product_type_desc': vdata.product_type_desc,
+        'category_id' : vdata.category_id.id,
         'emp_id': this.configSv.emp_id,
         'type_sql': type
       }
@@ -232,6 +233,7 @@ export class MtdSvService {
         'product_model': vdata.product_model,
         'product_color': vdata.product_color,
         'product_type_id': vdata.product_type_id.id,
+        'pic': vdata.picresizbase64List,
         'emp_id': this.configSv.emp_id,
         'type_sql': type
       }

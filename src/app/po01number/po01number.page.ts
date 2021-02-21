@@ -6,7 +6,6 @@ import { Subscription } from "rxjs";
 import { MtdSvService} from '../sv/mtd-sv.service';
 import { PoSvService } from '../sv/po-sv.service';
 import { IonicSelectableComponent } from 'ionic-selectable';
-import {map} from 'rxjs/operators';
 @Component({
   selector: 'app-po01number',
   templateUrl: './po01number.page.html',
@@ -15,12 +14,17 @@ import {map} from 'rxjs/operators';
 export class Po01numberPage implements OnInit {
   @Input() index:number;
   ionicForm: FormGroup;isSubmitted = false; 
+  ionicForm1: FormGroup;isSubmitted1 = false; 
   sub: Subscription;filterfront: string;filterback: string; 
-  portControl_front: FormControl; ports_front=[];
-  portControl_back: FormControl; ports_back: any;
+  portControl_front: FormControl; ports_front=[];portscategory=[];
+  portControl_back: FormControl; ports_back: any;portscategoryid:any;
+  portControl_productmain: FormControl; ports_productmain: any;
+  tmpproduct =[];;discount = []; commentproduct = [];
   constructor(private modalCtrl:ModalController,private navCtrl: NavController,public formBuilder: FormBuilder,public configSv: ConfigService,public mtdSv: MtdSvService,private alertCtrl: AlertController,private poSv: PoSvService) { }
 
+
   ngOnInit() {
+    this.loaddata_typeserch();this.loaddata_product();
     this.portControl_front = this.formBuilder.control("", Validators.required);
     this.portControl_back = this.formBuilder.control("", Validators.required);
     this.ionicForm = this.formBuilder.group({
@@ -30,10 +34,104 @@ export class Po01numberPage implements OnInit {
       mtd_numberfront_id:this.portControl_front,
       mtd_numberback_id: this.portControl_back,
     });
+  
+    this.ionicForm1 = this.formBuilder.group({
+      id :[this.index],
+      tmpproductetc:["",[Validators.required]],
+      etctotaldiscount:[""],
+      etctotalall:[""],
+    });
+
+  }
+
+  loaddata_typeserch(){
+    this.portscategory = [
+      {id: '0',typecategory: 'ตัวเลข'},
+      {id: '1',typecategory: 'สินค้าอื่นๆ'},
+    ];
+    //console.log(this.portscategory);
+  }
+
+  loaddata_product() {
+    let datalimit;
+    this.sub = this.poSv
+      .getproduct('readproduct',1)
+      .subscribe((data) => {
+        if (data !== null) {
+          this.ports_productmain = data.data_detail.map((item) => Object.assign({}, item));
+        }
+      });
+  }
+
+  portChange_category(event: {
+    component: IonicSelectableComponent,
+    value: any
+  }) {
+    let port = event.value;
+    this.portscategoryid = port['id'];
+  }
+
+  portChange_Product(event: {
+    component: IonicSelectableComponent,
+    value: any
+  }) {
+    let port = event.value;
+    let tmpindex:number;
+   if(this.tmpproduct.length === 0){
+    tmpindex = 0;
+   }else{
+    tmpindex = this.tmpproduct[this.tmpproduct.length-1]["id"] + 1;
+   }
+  
+   port.forEach((value, index) => {
+    this.tmpproduct.push({
+      id: index+tmpindex,
+      name: value.product_name +'/'+value.size+ '/' +value.price,
+      product_id: value.id,
+      product_name: value.product_name,
+      size: value.size,
+      price: value.price,
+      discount:'0',
+      total: value.price,
+      commentproduct: '',
+    });
+  });
+    event.component.clear();
+    this.cul_total();
+    console.log(this.tmpproduct);
   }
 
   get errorControl() {
     return this.ionicForm.controls;
+  }
+
+  Discount(id,value){
+    let item = this.tmpproduct.filter((val) => val.id == id);
+    item[0].discount = value;
+    if(value <= item[0].price){
+      item[0].total = Number(item[0].price) - Number(value);
+      this.cul_total();
+    }
+ 
+  }
+
+  Commentproduct(id,value){
+    let item = this.tmpproduct.filter((val) => val.id == id);
+    item[0].commentproduct = value;
+  }
+
+  Deltmpproduct(id,index){
+    this.discount[index] = null; this.commentproduct[index] = null
+    this.tmpproduct = this.tmpproduct.filter(obj => obj.id !== id);
+    this.cul_total();
+
+  }
+
+  public cul_total(){
+    this.ionicForm1.controls['etctotaldiscount'].setValue(this.tmpproduct.reduce((acc,current) => acc + Number(current.discount), 0));
+    this.ionicForm1.controls['etctotalall'].setValue(this.tmpproduct.reduce((acc,current) => acc + Number(current.total), 0));
+
+    
   }
 
   dismissModal(){
@@ -41,8 +139,7 @@ export class Po01numberPage implements OnInit {
   }
 
   ChkNumber(){
-    const name = new String(this.ionicForm.controls.podetail_number.value)
-    console.log(name);
+    const name = new String(this.ionicForm.controls.podetail_number.value);
     const map = Array.prototype.map
     const tmp_number = map.call(name, eachLetter => {
         return eachLetter
@@ -84,13 +181,26 @@ export class Po01numberPage implements OnInit {
     //console.log(this.ionicForm.value)
     //let data = ['aaa','dddd','ccc'];
     //this.modalCtrl.dismiss(data);
-    this.isSubmitted = true;
-    if (!this.ionicForm.valid) {
-      console.log("Please provide all the required values!");
-      return false;
-    } else {
-      this.modalCtrl.dismiss(this.ionicForm.value,'comfirm');
+    if(this.portscategoryid === '0'){
+      this.isSubmitted = true;
+      if (!this.ionicForm.valid) {
+        console.log("Please provide all the required values!");
+        return false;
+      } else {
+        this.modalCtrl.dismiss(this.ionicForm.value,'comfirm');
+      }
+    }else{
+      //console.log('abc');
+      this.ionicForm1.controls['tmpproductetc'].setValue(this.tmpproduct);
+      if (!this.ionicForm1.valid) {
+        console.log("Please provide all the required values!");
+        return false;
+      } else {
+        this.modalCtrl.dismiss(this.ionicForm1.value,'comfirm1');
+      }
+
     }
+   
 
   }
 

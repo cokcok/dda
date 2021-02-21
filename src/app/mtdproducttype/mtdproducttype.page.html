@@ -33,10 +33,29 @@
           </span>
         </ion-item>
       </ion-col>
-      <ion-col >
+      <ion-col > 
         <ion-item>
           <ion-label class="showlabel" position="floating">รายละเอียดประเภทสินค้า</ion-label>
           <ion-input formControlName="product_type_desc" type="text"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col >
+        <ion-item>
+          <ion-label class="showlabel" position="floating" >หมวด</ion-label>
+          <ionic-selectable
+            interface="floating"
+            item-content
+            formControlName="category_id"
+            itemValueField="id"
+            itemTextField="typecategory"
+            [items]="portscategory"
+            [canSearch]="true" 
+            closeButtonText="ยกเลิก"
+            >
+          </ionic-selectable>
+          <span class="error" *ngIf="isSubmitted && errorControl.category_id.errors?.required">
+            กรุณาระบุ หมวด
+          </span>
         </ion-item>
       </ion-col>
     </ion-row>

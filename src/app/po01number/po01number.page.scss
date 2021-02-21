@@ -24,3 +24,23 @@
 .table1_detail{
     border: 1px dashed  #4c8492;
 }
+
+.table1_detail ion-col{
+    border: 1px dashed  #4c8492;
+    background-color: #f0eec8;
+    font-weight: bold;
+    text-align: center;
+  }  
+
+  .showborder{
+    border:inset 2px #EBE9ED;
+    background-color: #b2f0c6;
+    padding-left: 10px;
+    // border-right:solid 1px #CCCCCC;
+    // border-bottom:solid 1px #CCCCCC;
+    // align-content: center;
+}
+
+.qtychk{
+    color: #ec1628;
+}

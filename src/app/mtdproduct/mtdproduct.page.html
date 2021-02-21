@@ -79,6 +79,21 @@
         </ion-item>
       </ion-col>
     </ion-row>
+    <ion-row>
+      <ion-col>
+        <p>แนบรูปภาพสินค้า   <input type="file" (change)="fileUpload_img($event)" id="file-input" style="position:absolute; top: -999999px" #fileIngimg>
+          <button ion-button (click)="onClick_fileUpload()">Upload</button>
+          <div  >
+         <div  style="display: inline-block;" *ngFor="let img of picpreview" >
+          <ion-img style="width: 100px; height: 100px;"  [src]="img.url"></ion-img>
+          <ion-button (click)="delImg(img.id)">
+            <ion-icon slot="icon-only" size="small" name="trash"></ion-icon>
+          </ion-button>
+         </div>
+        </div>
+          <p>
+      </ion-col>
+    </ion-row>
   </ion-grid>
 </form>
 <ion-content>

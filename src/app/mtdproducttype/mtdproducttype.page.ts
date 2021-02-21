@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder,FormGroup,Validators} from "@angular/forms"; 
+import {FormBuilder,FormGroup,Validators,FormControl} from "@angular/forms"; 
 import { ConfigService } from "../sv/config.service";
 import { Subscription } from "rxjs";
 import { AlertController } from "@ionic/angular";
@@ -12,23 +12,35 @@ import {MtdSvService} from '../sv/mtd-sv.service';
 export class MtdproducttypePage implements OnInit {
   ionicForm: FormGroup;isSubmitted = false;
   sub: Subscription;filterTerm: string;
+  portControl: FormControl;portscategory:any;
   id: number; data = [];  page = 0;maxpadding = 0;limit = 50;
   constructor(public mtdSv: MtdSvService,public formBuilder: FormBuilder,
     public configSv: ConfigService,
     private alertCtrl: AlertController) { }
 
   ngOnInit() {
+    this.portControl = this.formBuilder.control("", Validators.required);
     this.ionicForm = this.formBuilder.group({
       id: [""],
       product_type: ["", [Validators.required]],
       product_type_desc: [""],
+      category_id: this.portControl,
       highlight: [""],
     });
     this.loaddata(this.page);
+    this.loaddata_typeserch();
   }
 
   get errorControl() {
     return this.ionicForm.controls;
+  }
+
+  loaddata_typeserch(){
+    this.portscategory = [
+      {id: '0',typecategory: 'สินค้าหลัก'},
+      {id: '1',typecategory: 'สินค้ารอง'},
+    ];
+    //console.log(this.ports);
   }
 
   submitForm(){
@@ -90,7 +102,7 @@ export class MtdproducttypePage implements OnInit {
     this.ionicForm.reset();
     this.isSubmitted = false;
   }
-
+ 
   loaddata(padding: number, infiniteScroll?) {
     let datalimit;
     this.sub = this.mtdSv
@@ -113,8 +125,17 @@ export class MtdproducttypePage implements OnInit {
     //console.log(item);
     item.forEach((item) => {
       for (const [key, value] of Object.entries(item)) {
-        // console.log(key , value)
-        this.ionicForm.controls[key].setValue(value);
+         //console.log(key , value)
+        if (key === "category_id") {
+          let value_a = this.portscategory.filter(function (item1) {
+            return item1.id === value;
+          })[0];
+          //console.log(value_a);
+          this.portControl.setValue(value_a);
+        }else{
+          this.ionicForm.controls[key].setValue(value);
+        }
+        //this.ionicForm.controls[key].setValue(value);
       }
     });
   }

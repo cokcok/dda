@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController, NavController,AlertController } from '@ionic/angular';
 import { ConfigService } from "../sv/config.service";
 import { Subscription } from "rxjs";
 import { PoSvService } from '../sv/po-sv.service';
@@ -6,6 +7,8 @@ import { FormBuilder, FormGroup, Validators, FormControl, } from "@angular/forms
 import { IonicSelectableComponent } from 'ionic-selectable';
 import * as moment_ from 'moment';
 import 'moment/locale/th';
+import {Po01Page} from '../po01/po01.page';
+
 const moment = moment_;
 
 @Component({
@@ -15,12 +18,12 @@ const moment = moment_;
 })
 export class Po02Page implements OnInit {
   ionicForm: FormGroup;isSubmitted = false; 
-  data = []; page = 0;maxpadding = 0;limit = 50;
+  data = []; page = 0;maxpadding:number;limit = 50;
   sub: Subscription; maxdatalimit=0;filterTerm: string;
   portControl: FormControl; portssearch: any;typeserch:number = 9;
   myarraytxt = [9,2,3]; myarraytxtdate = [0,1];
   datePickerObj: any = {};
-  constructor( public configSv: ConfigService,private poSv: PoSvService,public formBuilder: FormBuilder) { }
+  constructor( public configSv: ConfigService,private poSv: PoSvService,public formBuilder: FormBuilder,private modalCtrl:ModalController) { }
 
   ngOnInit() {
     this.portControl = this.formBuilder.control("", Validators.required);
@@ -29,25 +32,27 @@ export class Po02Page implements OnInit {
       txtserach: ["",[Validators.required]],
     }); 
     this.loaddata_typeserch();this.fndate();
+    //console.log(this.data);
     this.loaddata(this.page);
   }
 
   loaddata(padding: number, infiniteScroll?){
     let datalimit;
-    console.log(padding,this.data);
+    //console.log(padding,this.data);
     this.sub = this.poSv
     .getpo(this.ionicForm.value,padding,10)
     .subscribe((data) => {
       if (data !== null) {
-        console.log(data);
+        //console.log(data);
         this.maxpadding = data["maxpadding"];
         datalimit = data["limit"];
         this.data =  this.data.concat(data.data_detail.map((item) => Object.assign({}, item)));   
-        console.log( this.data);
+        //console.log( this.data);
         if (infiniteScroll) {
           infiniteScroll.target.complete();
         }
-        
+      }else{
+        this.maxpadding = 0;
       }
     });
   }
@@ -104,29 +109,55 @@ export class Po02Page implements OnInit {
   }
 
   SearchData(padding,infiniteScroll?){
+    
     this.sub = this.poSv
     .getpo(this.ionicForm.value,padding,this.limit)
     .subscribe((data) => {
       if (data !== null) {
-        console.log(data);
+        //console.log(data);
          this.maxpadding = data["maxpadding"];
          this.maxdatalimit = data["limit"];
          this.data =  this.data.concat(data.data_detail.map((item) => Object.assign({}, item)));
          if (infiniteScroll) {
            infiniteScroll.target.complete();
          }
+      }else{
+        this.maxpadding = 0;
       }
     });
+    console.log(this.data);
   }
 
   doInfinite(infiniteScroll) {
     this.page++;
     //console.log( this.page);
-    //this.SearchData(this.page * this.limit, infiniteScroll);
-     this.loaddata(this.page * 10, infiniteScroll);
+    this.SearchData(this.page * this.limit, infiniteScroll);
+    // this.loaddata(this.page * 10, infiniteScroll);
     if (this.page === this.maxpadding) {
       infiniteScroll.target.disabled = true;
       //this.configSv.ChkformAlert('ไม่พบข้อมูลแล้ว');
+    }
+  }
+
+  async View(id){
+    console.log(id);
+   // let item = this.tmpproduct.filter((val) => val.id == id);
+   //console.log(item);  
+    const modal = await this.modalCtrl.create({
+      component:Po01Page,
+      componentProps:{id:id}
+      
+    })
+
+    await modal.present();
+    const {data,role} = await modal.onWillDismiss();
+    //console.log(data,role);
+    if(role === 'comfirm'){
+      //item[0].numbervalue = data;
+    }else if(role === 'comfirm1'){
+      //item[0].productetc = data;
+      //this.tmpproductetc = this.tmpproductetc.concat(data);
+
     }
   }
   

@@ -1,8 +1,12 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+    
+    <ion-buttons slot="start" >
+      <ion-menu-button *ngIf="id === undefined" ></ion-menu-button>
     </ion-buttons>
+    <!-- <ion-buttons slot="start" *ngIf="id != 0">
+      <ion-back-button></ion-back-button>
+    </ion-buttons> -->
     <ion-title>ใบสั่งซื้อลูกค้า</ion-title>
     <ion-buttons slot="primary">
       <ion-button (click)="refreshForm()">
@@ -146,12 +150,12 @@
         <ion-row  class="table1_header" *ngIf="tmpproduct.length>0">
           <ion-col size="1">ลำดับ</ion-col>
           <ion-col size="2">สินค้า/ขนาด/ราคา</ion-col>
-          <!-- <ion-col size="2">ขนาด/ราคา</ion-col> -->
           <ion-col size="2">ส่วนลด</ion-col>
           <ion-col size="2">ราคารวม</ion-col>
           <ion-col size="3">หมายเหตุ</ion-col>
         </ion-row>
-        <ion-row class="table1_detail" *ngFor="let c of tmpproduct;let i = index;">
+        <!-- <ion-row class="table1_detail" *ngFor="let c of tmpproduct;let i = index;">  ng-class-even="'blue'" ng-class-odd="'green'" -->
+          <ion-row  *ngFor="let c of tmpproduct;let i = index; " [ngClass]="(i % 2 == 0) ? 'table1_detail_odd' : 'table1_detail_even'">  
           <ion-col  size="1">{{i+1}}</ion-col>
           <ion-col size="2">{{c.name}}</ion-col>
           <!-- <ion-col size="2">{{c.size}}/{{c.price}}</ion-col> -->
@@ -161,8 +165,12 @@
           <ion-col size="2">{{c.total|number}}</ion-col>
           <ion-col size="3"> 
             <ion-input  class="showborder" type="text"  [(ngModel)]="commentproduct[i]" [ngModelOptions]="{standalone: true}" (change)="Commentproduct(c.id,commentproduct[i])"></ion-input> 
-            </ion-col>
+          </ion-col>
             <ion-col size="2"> 
+              <input type="file"  (change)="fileUpload_img($event)" id="file-input" style="position:absolute; top: -999999px" #fileIngimg>
+              <ion-button (click)="onClick_fileUpload(c.id)">
+                <ion-icon slot="icon-only" class="iconSize" name="images"></ion-icon>
+              </ion-button>
               <ion-button (click)="Addnumber(i+1,c.id)">
                 <ion-icon slot="icon-only" class="iconSize" name="add"></ion-icon>
               </ion-button>
@@ -170,18 +178,64 @@
                 <ion-icon slot="icon-only" class="iconSize" name="trash"></ion-icon>
               </ion-button>
             </ion-col>
-            <ion-row>
-              <span class="error" *ngIf="isSubmitted && discount[i]>c.total">
+             <ion-col size="12" *ngIf="isSubmitted && discount[i]>c.total">
+            <ion-row >
+              <span class="error" >
                สินค้าลำดับที่ {{i+1}}  มีส่วนลดมากกว่าราคาสินค้า กรุณาตรวจสอบข้อมูล
               </span>
             </ion-row>
-            <div *ngIf="c.numbervalue !== null">
-              <ion-row>
+          </ion-col>
+            
+            <ion-col size="12" *ngIf="c.numbervalue !== null">
+              <div>
+              <ion-row *ngIf="c.numbervalue !== null">
                 <ion-col  size="auto">เลขเสื้อเบอร์ {{c.numbervalue.podetail_number}}</ion-col>
                 <ion-col  size="auto">ด้านหน้าสี{{c.numbervalue.color_front}}</ion-col>
                 <ion-col  size="auto">ด้านหลังสี{{c.numbervalue.color_back}}</ion-col>
               </ion-row>
-            </div>  
+            </div>
+            </ion-col>
+            <ion-col size="12" *ngIf="c.productetc !== null">
+              <div>
+                <ion-row>
+                  <ion-text color="primary">
+                   สินค้าอื่นๆ ของลำดับที่ {{i+1}}
+                  </ion-text>
+                </ion-row>
+              <ion-row *ngFor="let cc of c.productetc.tmpproductetc;let ii = index;">
+                <ion-col size="1"> {{ii+1}}</ion-col> 
+                <ion-col size="2"> {{cc.name}}</ion-col>
+                <ion-col size="2"> {{cc.discount}}</ion-col>
+                <ion-col size="2"> {{cc.total}}</ion-col> 
+                <ion-col size="3"> {{cc.commentproduct}}</ion-col>
+              </ion-row>
+              </div>
+            </ion-col>
+            <ion-col size="12" *ngIf="c.picresizbase64List.length > 0">
+              <div>
+                <ion-row>
+                  <ion-text color="primary">
+                  ภาพประกอบ ของลำดับที่ {{i+1}}
+                  </ion-text>
+                </ion-row>
+                <div  >
+                  <div  style="display: inline-block;" *ngFor="let img of c.picresizbase64List" >
+                   <ion-img style="width: 100px; height: 100px;"  [src]="img.urlresize"></ion-img>
+                   <ion-button (click)="delImg(img.tmpproductid,img.indexpic)">
+                     <ion-icon slot="icon-only" size="small" name="trash"></ion-icon>
+                   </ion-button>
+                  </div>
+                 </div>
+              <!-- <ion-row *ngFor="let cc of c.productetc.tmpproductetc;let ii = index;">
+                <ion-col size="1"> {{ii+1}}</ion-col> 
+                <ion-col size="2"> {{cc.name}}</ion-col>
+                <ion-col size="2"> {{cc.discount}}</ion-col>
+                <ion-col size="2"> {{cc.total}}</ion-col> 
+                <ion-col size="3"> {{cc.commentproduct}}</ion-col>
+              </ion-row> -->
+              </div>
+            </ion-col>
+         
         </ion-row> 
         <ion-row class="table1_footer" *ngIf="tmpproduct.length>0">
           <ion-col  size="1"></ion-col>

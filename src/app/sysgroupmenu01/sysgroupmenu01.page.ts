@@ -52,7 +52,7 @@ export class Sysgroupmenu01Page implements OnInit {
   loaddata_submenu(padding: number,  infiniteScroll?) {
     this.sub = this.sysmenuSv.getsyssubmenu_sysgroupmenu(padding,this.group_id,'readsubmenu').subscribe((data) => {
       if (data !== null) {
-        this.ports =  this.ports.concat(data.data_detail.map((item) => Object.assign({}, item)));
+        this.ports =  data.data_detail.map((item) => Object.assign({}, item));
         //console.log(this.ports);
       }
     });

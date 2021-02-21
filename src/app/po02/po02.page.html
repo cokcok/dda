@@ -46,7 +46,7 @@
         </ion-button>
       </ion-col>
     </ion-row>
-    <ion-row class="content_alert">
+    <ion-row class="content_alert" *ngIf="maxpadding>=0">
       <ion-col>
         พบข้อมูลที่ค้นหา จำนวน  {{maxdatalimit}} ข้อมูล
       </ion-col>
@@ -64,7 +64,7 @@
             <ion-label class="showlabelheader">{{ c.po_running }}</ion-label>
           </ion-col>
         </ion-row>
-        <ion-button fill="outline" slot="end" color="success">ดูรายละเอียดลำดับที่ {{i+1}}</ion-button>
+        <ion-button fill="outline" slot="end" color="success" (click)="View(c.id)">ดูรายละเอียดลำดับที่ {{i+1}}</ion-button>
       </ion-item>
       <ion-item>
         <ion-grid fixed>

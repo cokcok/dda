@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input, ViewChild, ElementRef } from '@angular/core';
 import { ModalController, NavController,AlertController } from '@ionic/angular';
 import { FormBuilder, FormGroup, Validators, FormControl, } from "@angular/forms";
 import { ConfigService } from "../sv/config.service";
@@ -11,21 +11,24 @@ const moment = moment_;
 import { IonicSelectableComponent } from 'ionic-selectable';
 import {PlaceSvService} from '../sv/place-sv.service';
 import {Po01numberPage} from '../po01number/po01number.page';
-
+import * as $ from 'jquery';
 @Component({
   selector: 'app-po01',
   templateUrl: './po01.page.html',
   styleUrls: ['./po01.page.scss'],
 })
 export class Po01Page implements OnInit {
+  @Input() id:number;
+  @ViewChild('fileIngimg') fileIngimg: ElementRef;
   ionicForm: FormGroup;isSubmitted = false; 
   sub: Subscription;
-  id: number;
+  //id: number;
   portControl_sale: FormControl; ports_sale: any;
   portControl_area: FormControl; ports_area: any;
   portControl_shipping: FormControl; ports_shipping: any;
   portControl_productmain: FormControl; ports_productmain: any;
   tmpproduct =[];discount = []; commentproduct = [];
+  tmpproductetc = []; //picpreview =[];
   allDiscount = 0;alltotalproduct=0;po_shipping_price=0;alltotal=0;
   myDate = new Date().toISOString();
   datePickerObj: any = {};
@@ -33,16 +36,18 @@ export class Po01Page implements OnInit {
   constructor(private navCtrl: NavController,public formBuilder: FormBuilder,
     public configSv: ConfigService,public mtdSv: MtdSvService,
     private alertCtrl: AlertController,private poSv: PoSvService,public placeSv:PlaceSvService,private modalCtrl:ModalController) { 
-
+      //this.folder = this.activatedRoute.snapshot.paramMap.get('id');
+      console.log(this.id);
     }
 
   ngOnInit() {
+    console.log(this.id);
     this.portControl_sale = this.formBuilder.control("", Validators.required);
     this.portControl_area = this.formBuilder.control("", Validators.required);
     this.portControl_shipping = this.formBuilder.control("", Validators.required);
     //this.portControl_productmain = this.formBuilder.control("", Validators.required);
     this.ionicForm = this.formBuilder.group({
-      id:[""],
+      id:[this.id],
       po_running:[""],
       po_date:[moment().format('L'),[Validators.required]],
       mtd_user_id:this.portControl_sale,
@@ -58,7 +63,7 @@ export class Po01Page implements OnInit {
       po_recivedate:["",[Validators.required]],
       mtd_shipping_id:this.portControl_shipping,
       po_shipping_price:["",[Validators.required]],
-      po_address:[""],  
+      po_address:[""],
       po_address_place:[""],
       tmpproduct:["",[Validators.required]],
     });
@@ -157,7 +162,7 @@ export class Po01Page implements OnInit {
   loaddata_product() {
     let datalimit;
     this.sub = this.poSv
-      .getproduct('readproduct')
+      .getproduct('readproduct',0)
       .subscribe((data) => {
         if (data !== null) {
           this.ports_productmain = data.data_detail.map((item) => Object.assign({}, item));
@@ -182,8 +187,9 @@ export class Po01Page implements OnInit {
   }
  
   public cul_total(){
-    this.alltotalproduct = this.tmpproduct.reduce((acc,current) => acc + Number(current.total), 0);
-    this.allDiscount = this.tmpproduct.reduce((acc,current) => acc + Number(current.discount), 0);
+    //console.log(this.tmpproduct,this.tmpproductetc);
+    this.alltotalproduct = this.tmpproduct.reduce((acc,current) => acc + Number(current.total), 0) +  this.tmpproductetc.reduce((acc,current) => acc + Number(current.etctotalall), 0);
+    this.allDiscount = this.tmpproduct.reduce((acc,current) => acc + Number(current.discount), 0) +  this.tmpproductetc.reduce((acc,current) => acc + Number(current.etctotaldiscount), 0);
     this.alltotal = Number(this.alltotalproduct) + Number(this.po_shipping_price);
     
   }
@@ -202,7 +208,7 @@ export class Po01Page implements OnInit {
     //console.log(this.tmpproduct[this.tmpproduct.length-1]["id"] + 1);
     tmpindex = this.tmpproduct[this.tmpproduct.length-1]["id"] + 1;
    }
-  
+   //let picresizbase64Array = Array;
    port.forEach((value, index) => {
     this.tmpproduct.push({
       id: index+tmpindex,
@@ -215,7 +221,9 @@ export class Po01Page implements OnInit {
       discount:'0',
       total: value.price,
       commentproduct: '',
+      picresizbase64List: [],
       numbervalue: null,
+      productetc: null,
     });
   });
     //this.ionicForm.controls['tmpproduct'].setValue(this.tmpproduct);
@@ -244,13 +252,103 @@ export class Po01Page implements OnInit {
   }
 
   Deltmpproduct(id,index){
+    //console.log(id,index);
     this.discount[index] = null; this.commentproduct[index] = null
     this.tmpproduct = this.tmpproduct.filter(obj => obj.id !== id);
+    this.tmpproductetc = this.tmpproductetc.filter(obj => obj.id !== id);
     this.cul_total();
     // this.alltotalproduct = this.tmpproduct.reduce((acc,current) => acc + Number(current.total), 0);
     // this.allDiscount = this.tmpproduct.reduce((acc,current) => acc + Number(current.discount), 0);
 
     
+  }
+  img_id:number;indexpic = 0;
+  onClick_fileUpload(id) {
+    this.img_id = id;
+    this.fileIngimg.nativeElement.click();
+  }
+
+  fileUpload_img(event) {
+    var file = event.srcElement.files[0];
+    //console.log(file);
+    let item = this.tmpproduct.filter((val) => val.id == this.img_id);
+    //console.log(item);
+    let pic = [];
+    if (typeof file !== 'undefined') {
+      if (file.type.match(/image.*/)) {
+        var reader = new FileReader();
+        var self = this;
+        reader.onloadend = function () {
+          //self.picbase64 = reader.result
+          var canvas = document.createElement("canvas");
+          var ctx = canvas.getContext("2d");
+          canvas.width = 500; // target width
+          canvas.height = 500; // target height
+          var image = new Image();
+          image.src = reader.result as string;
+          image.onload = function (e) {
+            ctx.drawImage(image,
+              0, 0, image.width, image.height,
+              0, 0, canvas.width, canvas.height
+            );
+            // create a new base64 encoding
+            var resampledImage = new Image();
+            resampledImage.src = canvas.toDataURL();
+
+            pic.push({
+              tmpproductid : item[0].id,
+              indexpic : self.indexpic,
+              urlorignal:reader.result,
+              urlresize:resampledImage.src,
+            });
+            item[0].picresizbase64List = item[0].picresizbase64List.concat(pic);
+            self.indexpic++;
+            // self.picresizbase64 = resampledImage.src;
+            //   self.picpreview.push({
+            //     id:self.indexpic,
+            //     url:resampledImage.src
+            //   });
+              
+            //  self.picresizbase64Array.push(self.formBuilder.group({
+            //     id:[self.indexpic],
+            //     url: [self.picresizbase64],
+               
+            //   }));
+              //self.indexpic++;
+          };
+        }
+        //this.label = file.name;
+        reader.readAsDataURL(file);
+        //console.log(self.picpreview);
+        //this.ionicForm.controls.picresizbase64.setValue(self.picresizbase64);
+      }
+      else {
+        alert('กรุณาระบุชนิดไฟล์รูปภาพ');
+      }
+    }
+  }
+
+  delImg(tmpproductid,index){
+    let item = this.tmpproduct.filter(obj => obj.id == tmpproductid);
+    let itempic =  item.map((element) => {
+      return { picresizbase64List: element.picresizbase64List.filter((subElement) => subElement.indexpic !== index)}
+    });
+    //console.log(itempic);  
+    //console.log(item[0].picresizbase64List.map((itempic) => Object.assign({}, item)));
+    var plusTen = []
+    itempic[0]['picresizbase64List'].forEach((itm,index) => {
+      // console.log(itm['indexpic']);
+      //console.log(itm.picresizbase64List[index]['tmpproductid']);
+        plusTen.push({
+        tmpproductid: itm['tmpproductid'], 
+        indexpic: itm['indexpic'], 
+        urlorignal: itm['urlorignal'] , 
+        urlresize : itm['urlresize'],
+      })
+    });
+
+    item[0].picresizbase64List = plusTen;
+    //console.log(item);
   }
 
   async Addnumber(index,id){
@@ -258,7 +356,7 @@ export class Po01Page implements OnInit {
    //console.log(item);  
     const modal = await this.modalCtrl.create({
       component:Po01numberPage,
-      componentProps:{index:index}
+      componentProps:{index:id}
       
     })
 
@@ -267,6 +365,12 @@ export class Po01Page implements OnInit {
     //console.log(data,role);
     if(role === 'comfirm'){
       item[0].numbervalue = data;
+    }else if(role === 'comfirm1'){
+      item[0].productetc = data;
+      this.tmpproductetc = this.tmpproductetc.concat(data);
+     // console.log(this.tmpproductetc);
+     // console.log(this.tmpproductetc.reduce((acc,current) => acc + Number(current.etctotalall), 0));
+      this.cul_total();
     }
   }
 
@@ -280,7 +384,7 @@ export class Po01Page implements OnInit {
     this.ionicForm.controls['po_discount'].setValue(this.allDiscount);
     this.ionicForm.controls['po_totalproduct'].setValue(this.alltotalproduct);
     this.ionicForm.controls['po_total'].setValue(this.alltotal);
-    //console.log(this.ionicForm.value)
+    console.log(this.ionicForm.value)
     this.isSubmitted = true;
     if (!this.ionicForm.valid || founddiscount) {
       console.log("Please provide all the required values!");
@@ -369,6 +473,7 @@ export class Po01Page implements OnInit {
     this.portControl_sale.setValue(item);
     this.isSubmitted = false;
     this.tmpproduct =[];this.discount = []; this.commentproduct = [];
+    this.tmpproductetc =[];this.indexpic = 0;
     this.alltotalproduct=0;this.allDiscount=0;this.po_shipping_price=0;this.alltotal=0; this.loaddata_product();
   }
 

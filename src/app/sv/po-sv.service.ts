@@ -16,7 +16,8 @@ export class PoSvService {
     const header = { 'Content-Type': 'application/json' };
     let apiUrl = this.configSv.ip + 'po_getproduct.php';
      let data = {
-      'type_sql': type
+      'type_sql': type,
+      'category': value,
     }
     return this.http.post<data>(apiUrl, data, { headers: header });
   }
