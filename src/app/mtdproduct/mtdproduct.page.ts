@@ -53,7 +53,7 @@ export class MtdproductPage implements OnInit {
   }
 
   submitForm(){
-    console.log(this.ionicForm.value)
+    //console.log(this.ionicForm.value)
     this.isSubmitted = true;
     if (!this.ionicForm.valid) {
       console.log("Please provide all the required values!");
@@ -201,7 +201,7 @@ export class MtdproductPage implements OnInit {
            if(data['cause']){
             this.sub = this.mtdSv.crudmtdproduct(item, 'cancel',data['cause']).subscribe(
               (data) => {
-                if(data.message == 'ok')
+                if(data.status == 'ok')
                 {   
                   this.configSv.ChkformAlert(data.message);
                   this.data = this.data.filter(obj => obj.id !== item);

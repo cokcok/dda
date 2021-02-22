@@ -55,7 +55,7 @@
             </span>
           </ion-item>
         </ion-col>
-        <ion-col >
+        <ion-col > 
           <ion-item>
             <ion-label class="showlabel" position="floating">เขต</ion-label>
             <ionic-selectable interface="floating" item-content formControlName="mtd_area_id" itemValueField="id"
@@ -68,7 +68,16 @@
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col>
+        <ion-item>
+          <ion-label class="showlabel" position="floating">ประเภทลูกค้า</ion-label>
+          <ionic-selectable interface="floating" item-content formControlName="customer_type_id" itemValueField="id"
+            itemTextField="type" [items]="portscustomertype" [canSearch]="true" closeButtonText="ยกเลิก" (onChange)="portChangeCus($event)">
+          </ionic-selectable>
+          <span class="error" *ngIf="isSubmitted && errorControl.customer_type_id.errors?.required">
+            กรุณาระบุ ประเภทลูกค้า
+          </span>
+        </ion-item>
+        <ion-col *ngIf="cus_type==0">
           <ion-item>
             <ion-label class="showlabel" position="floating">ชื่อลูกค้า</ion-label>
             <ion-input formControlName="po_customer" type="text"></ion-input>
@@ -77,12 +86,26 @@
             </span>
           </ion-item>
         </ion-col>
-        <ion-col>
+        <ion-col *ngIf="cus_type==0">
           <ion-item>
             <ion-label class="showlabel" position="floating">เบอร์ลูกค้า</ion-label>
             <ion-input formControlName="po_customer_tel" type="text"></ion-input>
             <span class="error" *ngIf="isSubmitted && errorControl.po_customer_tel.errors?.required">
               กรุณาระบุ เบอร์ลูกค้า
+            </span>
+          </ion-item>
+        </ion-col>
+        <ion-col *ngIf="cus_type==1">
+          <ion-item>
+            <ion-label class="showlabel" position="floating">ลูกค้าที่เป็นสมาชิก</ion-label>
+            <ionic-selectable interface="floating" item-content formControlName="mtd_member_id" itemValueField="id"
+              itemTextField="member_name" [items]="ports_member" [canSearch]="true" closeButtonText="ยกเลิก" (onChange)="portChange_member($event)">
+              <ng-template ionicSelectableItemTemplate let-port="item" let-isPortSelected="isItemSelected">
+                {{port.member_name}} {{port.member_surname}}
+              </ng-template>
+            </ionic-selectable>
+            <span class="error" *ngIf="isSubmitted && errorControl.mtd_member_id.errors?.required">
+              กรุณาระบุ ลูกค้าที่เป็นสมาชิก
             </span>
           </ion-item>
         </ion-col>

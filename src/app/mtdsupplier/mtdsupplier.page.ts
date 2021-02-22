@@ -42,7 +42,7 @@ export class MtdsupplierPage implements OnInit {
     let datalimit;
     this.sub = this.placeSv
       .getmtdsupply(padding, this.limit)
-      .subscribe((data) => {
+      .subscribe((data) => { 
         if (data !== null) {
           //console.log(data.data_detail);
           this.maxpadding = data["maxpadding"];
@@ -150,7 +150,7 @@ export class MtdsupplierPage implements OnInit {
            if(data['cause']){
             this.sub = this.placeSv.crudsupply(item, 'cancel',data['cause']).subscribe(
               (data) => {
-                if(data.message == 'ok')
+                if(data.status == 'ok')
                 {   
                   this.configSv.ChkformAlert(data.message);
                 }

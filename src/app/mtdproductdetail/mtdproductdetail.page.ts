@@ -208,7 +208,7 @@ export class MtdproductdetailPage implements OnInit {
            if(data['cause']){
             this.sub = this.mtdSv.crudmtdproductdetail(item, 'cancel',data['cause']).subscribe(
               (data) => {
-                if(data.message == 'ok')
+                if(data.status == 'ok')
                 {   
                   this.configSv.ChkformAlert(data.message);
                 }

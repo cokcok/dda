@@ -10,7 +10,7 @@ import { place } from '../models/place';
   providedIn: 'root'
 })
 export class MtdSvService {
-  getpage = ['mtd01.php','mtd_area.php','mtd_producttype.php','mtd_size.php','mtd_shipping.php','mtd_number.php','mtd_numberdetail.php','mtd_product.php','mtd_productdetail.php']//8 indexล่าสุด
+  getpage = ['mtd01.php','mtd_area.php','mtd_producttype.php','mtd_size.php','mtd_shipping.php','mtd_number.php','mtd_numberdetail.php','mtd_product.php','mtd_productdetail.php','mtd_member.php']//9 indexล่าสุด
   constructor(private http: HttpClient, private configSv: ConfigService) { }
 
   getplace(): Observable<place[]> {
@@ -267,5 +267,47 @@ export class MtdSvService {
     }
     return this.http.post<FeedBack>(apiUrl, data, { headers: header });
   }
+
+  crudmtdmember(vdata: any, type: string, cause?): Observable<FeedBack> {
+    const header = { 'Content-Type': 'application/json' };
+    const apiUrl = this.configSv.ip + 'mtd_member.php';
+    let data;
+    if (type === 'cancel') {
+      data = {
+        'id': vdata,
+        'emp_id': this.configSv.emp_id,
+        'type_sql': type,
+        'cause': cause
+      }
+    }
+    else {
+      data = {
+        'id': vdata.id,
+        'member_date': vdata.member_date,
+        'member_idcard': vdata.member_idcard,
+        'member_name': vdata.member_name,
+        'member_surname': vdata.member_surname,
+        'member_nickname': vdata.member_nickname,
+        'member_brithday': vdata.member_brithday,
+        'member_nationality': vdata.member_nationality,
+        'member_race': vdata.member_race,
+        'member_religion': vdata.member_religion,
+        'member_address': vdata.member_address,
+        'member_place': vdata.member_place,
+        'member_tel': vdata.member_tel,
+        'member_email': vdata.member_email,
+        'member_line': vdata.member_line,
+        'member_winname': vdata.member_winname,
+        'mtd_area_id': vdata.mtd_area_id.id,
+        'member_yellow': vdata.member_yellow,
+        'member_countwin': vdata.member_countwin,
+        'pic': vdata.picresizbase64List,
+        'emp_id': this.configSv.emp_id,
+        'type_sql': type
+      }
+    }
+    return this.http.post<FeedBack>(apiUrl, data, { headers: header });
+  }
+
 }
  

@@ -162,7 +162,7 @@ export class MtdproducttypePage implements OnInit {
            if(data['cause']){
             this.sub = this.mtdSv.crudmtdproducttype(item, 'cancel',data['cause']).subscribe(
               (data) => {
-                if(data.message == 'ok')
+                if(data.status == 'ok')
                 {   
                   this.configSv.ChkformAlert(data.message);
                 }

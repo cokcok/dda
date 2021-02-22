@@ -5,7 +5,7 @@ const routes: Routes = [
   {
     path: '',
     //redirectTo: 'folder/Inbox',
-    redirectTo: 'mtdproduct',
+    redirectTo: 'po01',
    // redirectTo: 'signin',
     pathMatch: 'full'
   },
@@ -112,6 +112,10 @@ const routes: Routes = [
   {
     path: 'po02',
     loadChildren: () => import('./po02/po02.module').then( m => m.Po02PageModule)
+  },
+  {
+    path: 'mtdmember',
+    loadChildren: () => import('./mtdmember/mtdmember.module').then( m => m.MtdmemberPageModule)
   }
 ];
 

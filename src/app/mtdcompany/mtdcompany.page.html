@@ -45,7 +45,7 @@
       </ion-row>
       <ion-row>
         <ion-col>
-          <ion-auto-complete class="showlabel" [labelPosition]="'floating'" [label]="'สถานที่ตั้ง (จังหวัด เขต/อำเภอ แขวง/ตำบล รหัสไปรษณีย์)'" formControlName="company_place"
+          <ion-auto-complete class="showlabel" [labelPosition]="'floating'" [label]="'สถานที่ตั้ง (แขวง/ตำบล เขต/อำเภอ จังหวัด รหัสไปรษณีย์)'" formControlName="company_place"
             [dataProvider]="placeSv"></ion-auto-complete>
           <span class="error" *ngIf="isSubmitted && errorControl.company_place.errors?.required">
             กรุณาระบุ สถานที่ตั้ง

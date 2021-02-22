@@ -1,0 +1,239 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+     </ion-buttons>
+    <ion-title>ข้อมูล สมาชิก</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="refreshForm()">
+        <ion-icon slot="icon-only" src="./assets/icons/refresh.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="primary">
+      <ion-button (click)="submitForm()">
+        <ion-icon slot="icon-only" src="./assets/icons/save.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <tabset>
+
+    <!-- Tab 1 -->
+    <tab heading="แบบฟอร์ม" id="tab1">
+      <form [formGroup]="ionicForm" novalidate >
+        <ion-grid fixed >
+          <ion-row>
+            <ion-col>
+              เลขที่ระบบ <input type="text" formControlName="id" disabled class="IDnoshowBG">
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-label class="showlabel" position="floating">วันที่สมัคร</ion-label>
+                <ion-input readonly [liIonic4Datepicker]="datePickerObj" type="text" formControlName="member_date"></ion-input>
+                <span class="error" *ngIf="isSubmitted && errorControl.member_date.errors?.required">
+                  กรุณาระบุ วันที่สมัคร
+                </span>
+              </ion-item>
+            </ion-col>
+           
+            <ion-col>
+              <ion-item>
+                <ion-label class="showlabel" position="floating">ชื่อ</ion-label>
+                <ion-input formControlName="member_name" type="text"></ion-input>
+                <span class="error" *ngIf="isSubmitted && errorControl.member_name.errors?.required">
+                  กรุณาระบุ ชื่อ
+                </span>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-label class="showlabel" position="floating">นามสกุล</ion-label>
+                <ion-input formControlName="member_surname" type="text"></ion-input>
+                <span class="error" *ngIf="isSubmitted && errorControl.member_surname.errors?.required">
+                  กรุณาระบุ นามสกุล
+                </span>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-label class="showlabel" position="floating">ชื่อเล่น</ion-label>
+                <ion-input formControlName="member_nickname" type="text"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-label class="showlabel" position="floating">วันเกิด</ion-label>
+                <ion-input readonly [liIonic4Datepicker]="datePickerObj" type="text" formControlName="member_brithday"  (ngModelChange)="calage($event)"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            
+            <ion-col>
+              <ion-item>
+                <ion-label class="showlabel" position="floating">อายุ</ion-label>
+                <ion-input  type="text" formControlName="member_age" ></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-label class="showlabel" position="floating">สัญชาติ</ion-label>
+                <ion-input  type="text" formControlName="member_nationality" ></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-label class="showlabel" position="floating">เชื้อชาติ</ion-label>
+                <ion-input  type="text" formControlName="member_race" ></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-label class="showlabel" position="floating">ศาสนา</ion-label>
+                <ion-input  type="text" formControlName="member_religion" ></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-label class="showlabel" position="floating">เลขบัตรปชช.</ion-label>
+                <ion-input formControlName="member_idcard" type="text"></ion-input>
+                <span class="error" *ngIf="isSubmitted && errorControl.member_idcard.errors?.required">
+                  กรุณาระบุ เลขบัตรปชช.
+                </span>
+                <span class="error" *ngIf="isSubmitted && errorControl.member_idcard.errors?.minlength">
+                  กรุณาระบุ เลขบัตรปชช.ให้ครบ 13 หลัก
+                </span>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            
+            <ion-col>
+              <ion-item>
+                <ion-label class="showlabel" position="floating">เบอร์ติดต่อ</ion-label>
+                <ion-input  type="text" formControlName="member_tel" ></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-label class="showlabel" position="floating">อีเมล์</ion-label>
+                <ion-input  type="text" formControlName="member_email" ></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-label class="showlabel" position="floating">Line</ion-label>
+                <ion-input  type="text" formControlName="member_line" ></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-label class="showlabel" position="floating">บ้านเลขที่ ซอย ถนน</ion-label>
+                <ion-input formControlName="member_address" type="text"></ion-input>
+                <span class="error" *ngIf="isSubmitted && errorControl.member_address.errors?.required">
+                  กรุณาระบุ บ้านเลขที่ ซอย ถนน
+                </span>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-auto-complete class="showlabel" [labelPosition]="'floating'" [label]="'สถานที่ตั้ง (แขวง/ตำบล เขต/อำเภอ จังหวัด รหัสไปรษณีย์)'" formControlName="member_place"
+                [dataProvider]="placeSv"></ion-auto-complete>
+              <span class="error" *ngIf="isSubmitted && errorControl.member_place.errors?.required">
+                กรุณาระบุ สถานที่ตั้ง
+              </span>
+            </ion-col>
+           
+          </ion-row>
+          <ion-row>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-label class="showlabel" position="floating">ชื่อวิน</ion-label>
+                <ion-input  type="text" formControlName="member_winname" ></ion-input>
+                <span class="error" *ngIf="isSubmitted && errorControl.member_winname.errors?.required">
+                  กรุณาระบุ ชื่อวิน
+                </span>
+              </ion-item>
+            </ion-col>
+            <ion-col >
+              <ion-item>
+                <ion-label class="showlabel" position="floating">เขต</ion-label>
+                <ionic-selectable interface="floating" item-content formControlName="mtd_area_id" itemValueField="id"
+                  itemTextField="area_name" [items]="ports_area" [canSearch]="true" closeButtonText="ยกเลิก">
+                </ionic-selectable>
+                <span class="error" *ngIf="isSubmitted && errorControl.mtd_area_id.errors?.required">
+                  กรุณาระบุ เขต
+                </span>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-label class="showlabel" position="floating">เลขที่บัตรเหลือง</ion-label>
+                <ion-input  type="text" formControlName="member_yellow" ></ion-input>
+                <span class="error" *ngIf="isSubmitted && errorControl.member_yellow.errors?.required">
+                  กรุณาระบุ เลขที่บัตรเหลือง
+                </span>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+            <ion-item>
+                <ion-label class="showlabel" position="floating">จำนวนสมาชิกในวิน</ion-label>
+                <ion-input  type="number" formControlName="member_countwin" ></ion-input>
+                <span class="error" *ngIf="isSubmitted && errorControl.member_countwin.errors?.required">
+                  กรุณาระบุ จำนวนสมาชิกในวิน
+                </span>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <p>แนบรูปภาพ  <input type="file" (change)="fileUpload_img($event)" id="file-input" style="position:absolute; top: -999999px" #fileIngimg>
+                <button ion-button (click)="onClick_fileUpload()">Upload</button>
+                <div  >
+               <div  style="display: inline-block;" *ngFor="let img of picpreview" >
+                <ion-img style="width: 100px; height: 100px;"  [src]="img.url"></ion-img>
+                <ion-button (click)="delImg(img.id)">
+                  <ion-icon slot="icon-only" size="small" name="trash"></ion-icon>
+                </ion-button>
+               </div>
+              </div>
+                <p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </form>
+    </tab>
+
+    <!-- Tab 2 -->
+    <tab heading="ข้อมูลทั้งหมด" id="tab2">
+      <ion-searchbar placeholder="ค้นหา..." [(ngModel)]="filterTerm" animated="true"></ion-searchbar>
+      <ion-list>
+        <ion-item-sliding *ngFor="let c of data   | filter:filterTerm;  index as i" [ngClass]="c.highlight ? 'newdata': ''"
+          (click)="selectData(c.id)">
+          <ion-item>
+            <ion-label>
+              <ion-text color="primary">
+                <h3>ลำดับที่ {{i+1}} ชื่อ : {{ c.member_name }} นามสกุล: {{ c.member_surname  }}</h3>
+              </ion-text>
+            </ion-label>
+            <ion-badge slot="end" color="success">{{ c.id }}</ion-badge>
+          </ion-item>
+          <ion-item-options>
+            <ion-item-option  color="danger" (click)="cancelData(c.id)">
+              <ion-icon slot="end" name="trash"></ion-icon>
+              ลบ
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-list>
+      <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+    </tab>
+  </tabset>
+</ion-content>

@@ -221,7 +221,7 @@ export class MtdnumberdetailPage implements OnInit {
            if(data['cause']){
             this.sub = this.mtdSv.crudmtdnumberdetail(item, 'cancel',data['cause']).subscribe(
               (data) => {
-                if(data.message == 'ok')
+                if(data.status == 'ok')
                 {   
                   this.configSv.ChkformAlert(data.message);
                 }

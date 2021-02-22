@@ -1,6 +1,6 @@
 import { Component, OnInit,Input, ViewChild, ElementRef } from '@angular/core';
 import { ModalController, NavController,AlertController } from '@ionic/angular';
-import { FormBuilder, FormGroup, Validators, FormControl, } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms";
 import { ConfigService } from "../sv/config.service";
 import { Subscription } from "rxjs";
 import { MtdSvService} from '../sv/mtd-sv.service';
@@ -22,11 +22,13 @@ export class Po01Page implements OnInit {
   @ViewChild('fileIngimg') fileIngimg: ElementRef;
   ionicForm: FormGroup;isSubmitted = false; 
   sub: Subscription;
-  //id: number;
+  //id: number; 
   portControl_sale: FormControl; ports_sale: any;
   portControl_area: FormControl; ports_area: any;
   portControl_shipping: FormControl; ports_shipping: any;
   portControl_productmain: FormControl; ports_productmain: any;
+  portControl_customertype: FormControl; portscustomertype:any;
+  portControl_member: FormControl; ports_member: any;
   tmpproduct =[];discount = []; commentproduct = [];
   tmpproductetc = []; //picpreview =[];
   allDiscount = 0;alltotalproduct=0;po_shipping_price=0;alltotal=0;
@@ -45,7 +47,8 @@ export class Po01Page implements OnInit {
     this.portControl_sale = this.formBuilder.control("", Validators.required);
     this.portControl_area = this.formBuilder.control("", Validators.required);
     this.portControl_shipping = this.formBuilder.control("", Validators.required);
-    //this.portControl_productmain = this.formBuilder.control("", Validators.required);
+    this.portControl_customertype = this.formBuilder.control("", Validators.required);
+    this.portControl_member = this.formBuilder.control("");
     this.ionicForm = this.formBuilder.group({
       id:[this.id],
       po_running:[""],
@@ -53,8 +56,10 @@ export class Po01Page implements OnInit {
       mtd_user_id:this.portControl_sale,
       po_namewin: ["",[Validators.required]],
       mtd_area_id: this.portControl_area,
-      po_customer:["",[Validators.required]],
-      po_customer_tel:["",[Validators.required]],
+      customer_type_id :  this.portControl_customertype,
+      po_customer:[""], 
+      po_customer_tel:[""],
+      mtd_member_id: this.portControl_member,
       po_green:["0"],
       po_totalproduct:[""],
       po_discount:[""],
@@ -67,7 +72,7 @@ export class Po01Page implements OnInit {
       po_address_place:[""],
       tmpproduct:["",[Validators.required]],
     });
-    this.loaddata_sale(0);this.loaddata_area(0);this.loaddata_shipping(0);this.loaddata_product();
+    this.loaddata_sale(0);this.loaddata_area(0);this.loaddata_shipping(0);this.loaddata_product();this.loaddata_customertype();this.loaddata_member(0);
     this.fndate();
   }
 
@@ -155,6 +160,17 @@ export class Po01Page implements OnInit {
       .subscribe((data) => {
         if (data !== null) {
           this.ports_shipping = data.data_detail.map((item) => Object.assign({}, item));
+        }
+      });
+  }
+
+  loaddata_member(padding: number, infiniteScroll?) {
+    let datalimit;
+    this.sub = this.mtdSv
+      .getmtd(9,padding)
+      .subscribe((data) => {
+        if (data !== null) {
+          this.ports_member = data.data_detail.map((item) => Object.assign({}, item));
         }
       });
   }
@@ -474,10 +490,49 @@ export class Po01Page implements OnInit {
     this.isSubmitted = false;
     this.tmpproduct =[];this.discount = []; this.commentproduct = [];
     this.tmpproductetc =[];this.indexpic = 0;
-    this.alltotalproduct=0;this.allDiscount=0;this.po_shipping_price=0;this.alltotal=0; this.loaddata_product();
+    this.alltotalproduct=0;this.allDiscount=0;this.po_shipping_price=0;this.alltotal=0; this.loaddata_product(); this.cus_type
+    //this.portControl_customertype.setValue(this.portscustomertype[0]);
   }
 
+ 
+  loaddata_customertype(){
+    this.portscustomertype = [
+      {id: '0',type: 'ลูกค้าทั่วไป'},
+      {id: '1',type: 'สมาชิก'},
+    ];
+    //this.portControl_customertype.setValue(this.portscustomertype[0]);
+  }
+  cus_type:any;
+  portChangeCus(event: {
+    component: IonicSelectableComponent,
+    value: any
+  }) {
+    let port = event.value;
+    this.cus_type = port['id'];
+    if(this.cus_type == '0'){
+      this.ionicForm.get('po_customer').setValidators(Validators.required);
+      this.ionicForm.get('po_customer_tel').setValidators(Validators.required);
+    }else{
+      this.ionicForm.get('mtd_member_id').setValidators(Validators.required);
+    }
 
+  }
+  
+  portChange_member(event: {
+    component: IonicSelectableComponent,
+    value: any
+  }) {
+    let port = event.value;
+    let item = this.ports_member.filter((val) => val.id == port['id']);
+  
+    let cus_name = item[0].member_name + ' ' + item[0].member_surname;
+    let cus_tel = item[0].member_tel; 
+    console.log(item,cus_name,cus_tel);
+    this.ionicForm.controls['po_customer'].setValue(cus_name);
+    this.ionicForm.controls['po_customer_tel'].setValue(cus_tel);
+  
+
+  }
 
 
 }

@@ -293,7 +293,7 @@ export class Mtd01Page implements OnInit {
             this.sub = this.mtdSv.crudmtd01(item, 'cancel',data['cause']).subscribe(
               (data) => {
                 console.log(data);
-                if(data.message == 'ok')
+                if(data.status == 'ok')
                 {   
                   this.configSv.ChkformAlert(data.message);
                 }
@@ -334,7 +334,7 @@ export class Mtd01Page implements OnInit {
             this.sub = this.mtdSv.crudmtd01(item, 'resetpwd').subscribe(
               (data) => {
                 console.log(data);
-                if(data.message == 'ok')
+                if(data.status == 'ok')
                 {   
                   this.configSv.ChkformAlert(data.message);
                 }

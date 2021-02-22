@@ -177,7 +177,7 @@ export class SysmenuPage implements OnInit {
             this.sub = this.sysmenuSv.crudsysmenu(item, 'cancel',data['cause']).subscribe(
               (data) => {
                 //this.data = this.data.filter(obj => obj.id !== item);
-                if(data.message == 'ok')
+                if(data.status == 'ok')
                 {   
                   this.configSv.ChkformAlert(data.message);
                 }

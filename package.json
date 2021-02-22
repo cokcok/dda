@@ -28,6 +28,7 @@
     "@ionic/angular": "^5.0.0",
     "@logisticinfotech/ionic4-datepicker": "^1.4.4",
     "@ng-select/ng-select": "^5.1.0",
+    "bootstrap": "^4.6.0",
     "cordova-plugin-app-version": "^0.1.12",
     "firebase": "^8.2.3",
     "ionic-selectable": "^4.7.1",
@@ -35,6 +36,7 @@
     "jquery": "^3.5.1",
     "moment": "^2.29.1",
     "ng2-search-filter": "^0.5.1",
+    "ngx-bootstrap": "^6.2.0",
     "rxjs": "~6.5.5",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.3"

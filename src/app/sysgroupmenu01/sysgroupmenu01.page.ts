@@ -151,7 +151,7 @@ export class Sysgroupmenu01Page implements OnInit {
           handler: (data: any) => {
             this.sub = this.sysmenuSv.crudsyssubmenu_sysgroupmenu(item, 'delete').subscribe(
               (data) => {
-                if(data.message == 'ok')
+                if(data.status == 'ok')
                 {   
                   this.configSv.ChkformAlert(data.message);
                 }
