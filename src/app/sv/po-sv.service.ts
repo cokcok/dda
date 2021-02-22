@@ -31,6 +31,9 @@ export class PoSvService {
     }
     return this.http.post<number_data>(apiUrl, data, { headers: header });
   }
+ 
+
+
 
   crudpo(vdata: any, type: string, cause?): Observable<FeedBack> {
     const header = { 'Content-Type': 'application/json' };
@@ -73,7 +76,6 @@ export class PoSvService {
 
 
   getpo(vdata:any,padding: number, limit: number = 9999999999): Observable<data> {
-    //getpage = ['mtd01.php','mtd_area.php','mtd_producttype.php','mtd_size.php','mtd_shipping.php','mtd_number.php','mtd_numberdetail.php','mtd_product.php','mtd_productdetail.php'];
     const header = { 'Content-Type': 'application/json' };
     let apiUrl = this.configSv.ip + 'po_getproduct.php';
      let data = {
@@ -82,6 +84,17 @@ export class PoSvService {
       'typeserch': vdata.typeserch_id.id,
       'serchtxt': vdata.txtserach,
       'type_sql': 'readpo'
+    }
+    return this.http.post<data>(apiUrl, data, { headers: header });
+  }
+
+  getpo_edit(id): Observable<data> {
+    const header = { 'Content-Type': 'application/json' };
+    const apiUrl = this.configSv.ip + 'po.php';
+    let data;
+    data = {
+      'id': id,
+      'type_sql': 'read'
     }
     return this.http.post<data>(apiUrl, data, { headers: header });
   }

@@ -18,7 +18,7 @@ import * as $ from 'jquery';
   styleUrls: ['./po01.page.scss'],
 })
 export class Po01Page implements OnInit {
-  @Input() id:number;
+  @Input() id:number;@Input() po_running:string;
   @ViewChild('fileIngimg') fileIngimg: ElementRef;
   ionicForm: FormGroup;isSubmitted = false; 
   sub: Subscription;
@@ -39,11 +39,11 @@ export class Po01Page implements OnInit {
     public configSv: ConfigService,public mtdSv: MtdSvService,
     private alertCtrl: AlertController,private poSv: PoSvService,public placeSv:PlaceSvService,private modalCtrl:ModalController) { 
       //this.folder = this.activatedRoute.snapshot.paramMap.get('id');
-      console.log(this.id);
+      //console.log(this.id);
     }
 
   ngOnInit() {
-    console.log(this.id);
+    
     this.portControl_sale = this.formBuilder.control("", Validators.required);
     this.portControl_area = this.formBuilder.control("", Validators.required);
     this.portControl_shipping = this.formBuilder.control("", Validators.required);
@@ -73,7 +73,46 @@ export class Po01Page implements OnInit {
       tmpproduct:["",[Validators.required]],
     });
     this.loaddata_sale(0);this.loaddata_area(0);this.loaddata_shipping(0);this.loaddata_product();this.loaddata_customertype();this.loaddata_member(0);
-    this.fndate();
+    this.fndate(); this.loaddata_edit();
+  }
+
+  loaddata_edit(){
+   //console.log(this.id);
+    if(typeof this.id !== 'undefined'){
+      console.log(this.id);
+      this.sub = this.poSv
+      .getpo_edit(this.id)
+      .subscribe((data) => {
+        if (data !== null) {
+          console.log(data);
+          data.data_detail.forEach((item) => {
+            for (const [key, value] of Object.entries(item)) {
+               //console.log(key , value);
+               this.ionicForm.controls[key].setValue(value);
+              // if (key === "mtd_size_id") {
+              //   let value_a = this.ports.filter(function (item1) {
+              //     return item1.id === value;
+              //   })[0];
+              //   this.portControl.setValue(value_a);
+              // }else if(key === "update_flg"){
+              //   //console.log(value);
+              //   if(value === '1'){
+              //     this.ionicForm.controls['qty'].disable();
+              //   }else{
+              //     this.ionicForm.controls['qty'].enable();
+              //   }
+              // }else{
+              //   this.ionicForm.controls[key].setValue(value);
+              // }
+            }
+          });
+          // this.maxpadding = data["maxpadding"];
+          // datalimit = data["limit"];
+          // this.data =  this.data.concat(data.data_detail.map((item) => Object.assign({}, item)));
+         
+        }
+      });
+    }
   }
 
   fndate(){
@@ -388,6 +427,11 @@ export class Po01Page implements OnInit {
      // console.log(this.tmpproductetc.reduce((acc,current) => acc + Number(current.etctotalall), 0));
       this.cul_total();
     }
+  }
+
+  dismissModal(){
+    this.modalCtrl.dismiss();
+
   }
 
   async submitForm(){

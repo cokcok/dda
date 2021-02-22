@@ -1,13 +1,14 @@
 <ion-header>
   <ion-toolbar>
-    
-    <ion-buttons slot="start" >
-      <ion-menu-button *ngIf="id === undefined" ></ion-menu-button>
+    <ion-buttons slot="start" *ngIf="id === undefined">
+      <ion-menu-button  ></ion-menu-button>
     </ion-buttons>
-    <!-- <ion-buttons slot="start" *ngIf="id != 0">
-      <ion-back-button></ion-back-button>
-    </ion-buttons> -->
-    <ion-title>ใบสั่งซื้อลูกค้า</ion-title>
+    <ion-buttons slot="start"  *ngIf="id !== undefined">
+      <ion-button (click)="dismissModal()">
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>ใบสั่งซื้อลูกค้า {{po_running}}</ion-title>
     <ion-buttons slot="primary">
       <ion-button (click)="refreshForm()">
         <ion-icon slot="icon-only" src="./assets/icons/refresh.svg"></ion-icon>

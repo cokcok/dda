@@ -8,6 +8,8 @@ import { IonicSelectableComponent } from 'ionic-selectable';
 import * as moment_ from 'moment';
 import 'moment/locale/th';
 import {Po01Page} from '../po01/po01.page';
+import {Po01numberPage} from '../po01number/po01number.page';
+import {TestPage} from '../test/test.page';
 
 const moment = moment_;
 
@@ -109,7 +111,6 @@ export class Po02Page implements OnInit {
   }
 
   SearchData(padding,infiniteScroll?){
-    
     this.sub = this.poSv
     .getpo(this.ionicForm.value,padding,this.limit)
     .subscribe((data) => {
@@ -125,30 +126,29 @@ export class Po02Page implements OnInit {
         this.maxpadding = 0;
       }
     });
-    console.log(this.data);
+    //console.log(this.data);
   }
 
   doInfinite(infiniteScroll) {
     this.page++;
     //console.log( this.page);
-    this.SearchData(this.page * this.limit, infiniteScroll);
-    // this.loaddata(this.page * 10, infiniteScroll);
+    //this.SearchData(this.page * this.limit, infiniteScroll);
+     this.loaddata(this.page * 10, infiniteScroll);
     if (this.page === this.maxpadding) {
       infiniteScroll.target.disabled = true;
       //this.configSv.ChkformAlert('ไม่พบข้อมูลแล้ว');
     }
   }
 
-  async View(id){
-    console.log(id);
+  async View(id,po_running){
+   // console.log(id);
    // let item = this.tmpproduct.filter((val) => val.id == id);
    //console.log(item);  
     const modal = await this.modalCtrl.create({
       component:Po01Page,
-      componentProps:{id:id}
-      
-    })
-
+      cssClass: 'my-modal',
+      componentProps:{id:id,po_running:po_running},
+    });
     await modal.present();
     const {data,role} = await modal.onWillDismiss();
     //console.log(data,role);
