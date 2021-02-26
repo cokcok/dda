@@ -9,7 +9,7 @@
       </ion-button>
     </ion-buttons>
     <ion-title>ใบสั่งซื้อลูกค้า {{po_running}}</ion-title>
-    <ion-buttons slot="primary">
+    <ion-buttons slot="primary" *ngIf="id === undefined">
       <ion-button (click)="refreshForm()">
         <ion-icon slot="icon-only" src="./assets/icons/refresh.svg"></ion-icon>
       </ion-button>
@@ -214,8 +214,8 @@
               <div>
               <ion-row *ngIf="c.numbervalue !== null">
                 <ion-col  size="auto">เลขเสื้อเบอร์ {{c.numbervalue.podetail_number}}</ion-col>
-                <ion-col  size="auto">ด้านหน้าสี{{c.numbervalue.color_front}}</ion-col>
-                <ion-col  size="auto">ด้านหลังสี{{c.numbervalue.color_back}}</ion-col>
+                <ion-col  size="auto">ด้านหน้าสี {{c.numbervalue.color_front}}</ion-col>
+                <ion-col  size="auto">ด้านหลังสี {{c.numbervalue.color_back}}</ion-col>
               </ion-row>
             </div>
             </ion-col>
@@ -250,13 +250,6 @@
                    </ion-button>
                   </div>
                  </div>
-              <!-- <ion-row *ngFor="let cc of c.productetc.tmpproductetc;let ii = index;">
-                <ion-col size="1"> {{ii+1}}</ion-col> 
-                <ion-col size="2"> {{cc.name}}</ion-col>
-                <ion-col size="2"> {{cc.discount}}</ion-col>
-                <ion-col size="2"> {{cc.total}}</ion-col> 
-                <ion-col size="3"> {{cc.commentproduct}}</ion-col>
-              </ion-row> -->
               </div>
             </ion-col>
          

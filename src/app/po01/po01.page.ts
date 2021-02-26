@@ -12,6 +12,7 @@ import { IonicSelectableComponent } from 'ionic-selectable';
 import {PlaceSvService} from '../sv/place-sv.service';
 import {Po01numberPage} from '../po01number/po01number.page';
 import * as $ from 'jquery';
+import {map} from 'rxjs/operators';
 @Component({
   selector: 'app-po01',
   templateUrl: './po01.page.html',
@@ -71,9 +72,17 @@ export class Po01Page implements OnInit {
       po_address:[""],
       po_address_place:[""],
       tmpproduct:["",[Validators.required]],
+      po_ems:[""],
+      po_status:[""],
+      po_transferdate:[""],
+      oldtmpproduct:[""],
     });
     this.loaddata_sale(0);this.loaddata_area(0);this.loaddata_shipping(0);this.loaddata_product();this.loaddata_customertype();this.loaddata_member(0);
-    this.fndate(); this.loaddata_edit();
+    this.fndate(); 
+  }
+
+  ionViewDidEnter(){
+    this.loaddata_edit();
   }
 
   loaddata_edit(){
@@ -88,28 +97,52 @@ export class Po01Page implements OnInit {
           data.data_detail.forEach((item) => {
             for (const [key, value] of Object.entries(item)) {
                //console.log(key , value);
-               this.ionicForm.controls[key].setValue(value);
-              // if (key === "mtd_size_id") {
-              //   let value_a = this.ports.filter(function (item1) {
-              //     return item1.id === value;
-              //   })[0];
-              //   this.portControl.setValue(value_a);
-              // }else if(key === "update_flg"){
-              //   //console.log(value);
-              //   if(value === '1'){
-              //     this.ionicForm.controls['qty'].disable();
-              //   }else{
-              //     this.ionicForm.controls['qty'].enable();
-              //   }
-              // }else{
-              //   this.ionicForm.controls[key].setValue(value);
-              // }
+               if(key === "mtd_user_id"){
+                let value_a = this.ports_sale.filter(function (item1) {
+                     return item1.id === value;
+                 })[0];
+                 this.portControl_sale.setValue(value_a);
+               }else if(key === "mtd_area_id"){
+                let value_a = this.ports_area.filter(function (item1) {
+                  return item1.id === value;
+                })[0];
+                this.portControl_area.setValue(value_a);
+               }else if(key === "mtd_member_id"){
+                let value_a = this.ports_member.filter(function (item1) {
+                  return item1.id === value;
+                })[0];
+                this.portControl_member.setValue(value_a);
+              }else if(key === "mtd_shipping_id"){
+                let value_a = this.ports_shipping.filter(function (item1) {
+                  return item1.id === value;
+                })[0];
+                this.portControl_shipping.setValue(value_a);
+              }else if(key === "po_customertype"){
+                let value_a = this.portscustomertype.filter(function (item1) {
+                  return item1.id === value;
+                })[0];
+                this.portControl_customertype.setValue(value_a);
+                this.cus_type = value_a['id'];
+                if(this.cus_type == '0'){
+                  this.ionicForm.get('po_customer').setValidators(Validators.required);
+                  this.ionicForm.get('po_customer_tel').setValidators(Validators.required);
+                }else{
+                  this.ionicForm.get('mtd_member_id').setValidators(Validators.required);
+                }
+              }else{
+                this.ionicForm.controls[key].setValue(value);
+              }
             }
+
+            this.tmpproduct = data.data_detail[0]['tmpproduct'];
+            this.allDiscount = data.data_detail[0]['po_discount'];
+            this.alltotalproduct = data.data_detail[0]['po_totalproduct'];
+            this.alltotal = data.data_detail[0]['po_total'];
+            this.tmpproduct.forEach((item,index) => {
+              this.discount[index] = item['discount'];
+              this.commentproduct[index] = item['commentproduct'];
+            });
           });
-          // this.maxpadding = data["maxpadding"];
-          // datalimit = data["limit"];
-          // this.data =  this.data.concat(data.data_detail.map((item) => Object.assign({}, item)));
-         
         }
       });
     }
@@ -422,9 +455,13 @@ export class Po01Page implements OnInit {
       item[0].numbervalue = data;
     }else if(role === 'comfirm1'){
       item[0].productetc = data;
-      this.tmpproductetc = this.tmpproductetc.concat(data);
-     // console.log(this.tmpproductetc);
-     // console.log(this.tmpproductetc.reduce((acc,current) => acc + Number(current.etctotalall), 0));
+      let array_data  = []; //data;
+      array_data.push(data);  //convert object to array
+      this.tmpproductetc = array_data;
+      // console.log(this.tmpproductetc);
+      // console.log(a);
+      // console.log( a.reduce((acc,current) => Number(acc) + Number(current.etctotaldiscount), 0));
+
       this.cul_total();
     }
   }
@@ -473,9 +510,15 @@ export class Po01Page implements OnInit {
             .crudpo(this.ionicForm.value,typesql)
             .subscribe((data) => {
               if (data !== null) {
-                if(data.status === 'ok'){
-                  this.configSv.ChkformAlert(data.message);
+                if(typesql === 'insert'){
+                  if(data.status === 'ok'){
+                    this.refreshForm();
+                    this.configSv.ChkformAlert(data.message);
+                  }
+                }else if(typesql === 'update'){
+                  console.log('update');
                 }
+                
 
                 // if (typesql === "insert") {
                 //   if(data.status !== 'ok'){

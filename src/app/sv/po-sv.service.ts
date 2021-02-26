@@ -48,6 +48,12 @@ export class PoSvService {
       }
     }
     else {
+      let mid:number;
+      if(vdata.customer_type_id.id === '0'){
+        mid = 0;
+      }else{
+        mid =  vdata.mtd_member_id.id;
+      }
       data = {
         'id': vdata.id,
         'po_date':vdata.po_date,
@@ -57,16 +63,18 @@ export class PoSvService {
         'po_customertype': vdata.customer_type_id.id,
         'po_customer': vdata.po_customer,
         'po_customer_tel': vdata.po_customer_tel,
-        'mtd_member_id' : vdata.mtd_member_id.id,
+        'mtd_member_id' :mid,
         'po_green' : vdata.po_green,
-        'po_total' : vdata.po_total,
+        'po_totalproduct' : vdata.po_totalproduct,
         'po_discount' : vdata.po_discount,
+        'po_total' : vdata.po_total,
         'po_recivedate' : vdata.po_recivedate,
         'mtd_shipping_id' : vdata.mtd_shipping_id.id,
         'po_shipping_price' : vdata.po_shipping_price,
         'po_address' : vdata.po_address,
         'po_address_place' : vdata.po_address_place,
         'tmpproduct' : vdata.tmpproduct,
+        'oldtmpproduct' : vdata.oldtmpproduct,
         'emp_id': this.configSv.emp_id,
         'type_sql': type
       }

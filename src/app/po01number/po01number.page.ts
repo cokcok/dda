@@ -98,7 +98,7 @@ export class Po01numberPage implements OnInit {
   });
     event.component.clear();
     this.cul_total();
-    console.log(this.tmpproduct);
+    //console.log(this.tmpproduct);
   }
 
   get errorControl() {
