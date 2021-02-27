@@ -12,7 +12,7 @@ import { IonicSelectableComponent } from 'ionic-selectable';
 import {PlaceSvService} from '../sv/place-sv.service';
 import {Po01numberPage} from '../po01number/po01number.page';
 import * as $ from 'jquery';
-import {map} from 'rxjs/operators';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 @Component({
   selector: 'app-po01',
   templateUrl: './po01.page.html',
@@ -38,7 +38,7 @@ export class Po01Page implements OnInit {
 
   constructor(private navCtrl: NavController,public formBuilder: FormBuilder,
     public configSv: ConfigService,public mtdSv: MtdSvService,
-    private alertCtrl: AlertController,private poSv: PoSvService,public placeSv:PlaceSvService,private modalCtrl:ModalController) { 
+    private alertCtrl: AlertController,private poSv: PoSvService,public placeSv:PlaceSvService,private modalCtrl:ModalController,private iab: InAppBrowser) { 
       //this.folder = this.activatedRoute.snapshot.paramMap.get('id');
       //console.log(this.id);
     }
@@ -88,7 +88,7 @@ export class Po01Page implements OnInit {
   loaddata_edit(){
    //console.log(this.id);
     if(typeof this.id !== 'undefined'){
-      console.log(this.id);
+     // console.log(this.id);
       this.sub = this.poSv
       .getpo_edit(this.id)
       .subscribe((data) => {
@@ -141,8 +141,12 @@ export class Po01Page implements OnInit {
             this.tmpproduct.forEach((item,index) => {
               this.discount[index] = item['discount'];
               this.commentproduct[index] = item['commentproduct'];
+              item['picresizbase64List'].forEach(element => {
+                this.indexpic = element['indexpic'];
+              });
             });
           });
+          this.indexpic++
         }
       });
     }
@@ -358,7 +362,7 @@ export class Po01Page implements OnInit {
 
   fileUpload_img(event) {
     var file = event.srcElement.files[0];
-    //console.log(file);
+    //console.log(event,file);
     let item = this.tmpproduct.filter((val) => val.id == this.img_id);
     //console.log(item);
     let pic = [];
@@ -617,8 +621,11 @@ export class Po01Page implements OnInit {
     console.log(item,cus_name,cus_tel);
     this.ionicForm.controls['po_customer'].setValue(cus_name);
     this.ionicForm.controls['po_customer_tel'].setValue(cus_tel);
-  
+  }
 
+  showImg(detail_id,name){
+   let url = this.configSv.ip + 'po01/productdetail/' + detail_id + '/' +  name
+   const browser = this.iab.create(url).show();
   }
 
 

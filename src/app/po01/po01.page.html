@@ -245,6 +245,9 @@
                 <div  >
                   <div  style="display: inline-block;" *ngFor="let img of c.picresizbase64List" >
                    <ion-img style="width: 100px; height: 100px;"  [src]="img.urlresize"></ion-img>
+                   <ion-button *ngIf="img.detail_id !== undefined" (click)="showImg(img.detail_id,img.name)">
+                    <ion-icon slot="icon-only" size="small" name="search"></ion-icon>
+                  </ion-button>
                    <ion-button (click)="delImg(img.tmpproductid,img.indexpic)">
                      <ion-icon slot="icon-only" size="small" name="trash"></ion-icon>
                    </ion-button>

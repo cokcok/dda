@@ -17,6 +17,8 @@ import { IonicSelectableModule } from 'ionic-selectable';
 import { AutoCompleteModule } from 'ionic4-auto-complete';
 import { NgSelectModule } from '@ng-select/ng-select';
 import * as $ from "jquery";
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -29,7 +31,7 @@ import * as $ from "jquery";
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },InAppBrowser
   ],
   bootstrap: [AppComponent]
 })
