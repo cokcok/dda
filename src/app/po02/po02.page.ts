@@ -40,7 +40,7 @@ export class Po02Page implements OnInit {
     let datalimit;
     //console.log(padding,this.data);
     this.sub = this.poSv
-    .getpo(this.ionicForm.value,padding,10)
+    .getpo(this.ionicForm.value,padding,this.limit)
     .subscribe((data) => {
       if (data !== null) {
         //console.log(data);
@@ -107,8 +107,12 @@ export class Po02Page implements OnInit {
       }
     };
   }
-
+  
   SearchData(padding,infiniteScroll?){
+    // if(this.tmptxtser){
+    //   console.log('a');
+    // }
+    if(padding == 0){this.data = []};
     this.sub = this.poSv
     .getpo(this.ionicForm.value,padding,this.limit)
     .subscribe((data) => {
@@ -131,8 +135,8 @@ export class Po02Page implements OnInit {
   doInfinite(infiniteScroll) {
     this.page++;
     //console.log( this.page);
-    //this.SearchData(this.page * this.limit, infiniteScroll);
-     this.loaddata(this.page * 10, infiniteScroll);
+    this.SearchData(this.page * this.limit, infiniteScroll);
+    //this.loaddata(this.page * 10, infiniteScroll);
     if (this.page === this.maxpadding) {
       infiniteScroll.target.disabled = true;
       //this.configSv.ChkformAlert('ไม่พบข้อมูลแล้ว');

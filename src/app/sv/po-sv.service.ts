@@ -87,10 +87,17 @@ export class PoSvService {
   getpo(vdata:any,padding: number, limit: number = 9999999999): Observable<data> {
     const header = { 'Content-Type': 'application/json' };
     let apiUrl = this.configSv.ip + 'po_getproduct.php';
+    //console.log(vdata,vdata.typeserch_id.id);
+    let typeserch;
+    if(  typeof vdata.typeserch_id.id === 'undefined' ){
+      typeserch = vdata.typeserch_id;
+    }else{
+      typeserch = vdata.typeserch_id.id ;
+    }
      let data = {
       'padding': padding,
       'limit': limit,
-      'typeserch': vdata.typeserch_id.id,
+      'typeserch': typeserch,
       'serchtxt': vdata.txtserach,
       'type_sql': 'readpo'
     }
@@ -109,6 +116,18 @@ export class PoSvService {
   }
 
 
+  getpoassign(vdata:any,padding: number, limit: number = 9999999999): Observable<data> {
+    const header = { 'Content-Type': 'application/json' };
+    let apiUrl = this.configSv.ip + 'po_assign.php';
+     let data = {
+      'padding': padding,
+      'limit': limit,
+      'typeserch': vdata.typeserch_id,
+      'serchtxt': vdata.txtserach,
+      'type_sql': 'read'
+    }
+    return this.http.post<data>(apiUrl, data, { headers: header });
+  }
 
 
 

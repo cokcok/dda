@@ -120,6 +120,10 @@ const routes: Routes = [
   {
     path: 'poassign01',
     loadChildren: () => import('./poassign01/poassign01.module').then( m => m.Poassign01PageModule)
+  },
+  {
+    path: 'poassign02',
+    loadChildren: () => import('./poassign02/poassign02.module').then( m => m.Poassign02PageModule)
   }
 ];
 

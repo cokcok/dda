@@ -4,9 +4,64 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>มอบหมายงานตามใบสั่งซื้อ</ion-title>
+    <ion-buttons slot="primary" *ngIf="dataallarray.length>0 || datasomearray.length>0">
+      <ion-button (click)="submitForm()">
+        <ion-icon slot="icon-only" src="./assets/icons/save.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
-
+<form [formGroup]="ionicForm" novalidate>
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label class="showlabel" position="floating">ค้นหาวันที่นัดรับ</ion-label>
+          <ion-input formControlName="txtserach" readonly [liIonic4Datepicker]="datePickerObj" type="text"></ion-input>
+          <span class="error" *ngIf="isSubmitted && errorControl.txtserach.errors?.required">
+            กรุณาระบุ คำค้นหา
+          </span>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-button [disabled]="ionicForm.invalid" (click)="SerachData(0)" expand="block" shape="round">
+          ค้นหาข้อมูล
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row class="content_alert" *ngIf="ionicForm.controls['typeserch_id'].value !== '9'">
+      <ion-col>
+        พบข้อมูลที่ค้นหา จำนวน {{maxdatalimit}} ข้อมูล
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</form>
 <ion-content>
-
+  <div>
+    <ion-searchbar placeholder="ค้นหา..." [(ngModel)]="filterTerm" animated="true"></ion-searchbar>
+    <ion-card *ngFor="let c of data  | filter:filterTerm;index as i">
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-checkbox color="dark" *ngIf="c.checksomedata === false" (click)="selectData(i,data[i],c.checkall)" [(ngModel)]="c.checkall" slot="start"></ion-checkbox>
+            <ion-checkbox color="tertiary" *ngIf="c.checksomedata === true" (click)="selectDatasome(i,data[i],c.checksomedata)"  [(ngModel)]="c.checksomedata" slot="start"></ion-checkbox>   
+            <!-- (click)="selectDatasome(i,data[i],c.checksomedata)" -->
+            <ion-label class="showlabelheader">วันที่นัดรับ {{ c.po_recivedate }}</ion-label>  
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label class="showlabelheader"> จำนวนรายการทั้งหมด {{ c.countid }} รายการ</ion-label>
+            <ion-button fill="outline" slot="end" color="success" (click)="View(c.po_recivedate)">ดูรายละเอียดวันที่นัดรับ {{c.po_recivedate}}</ion-button>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-card>
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </div>
 </ion-content>
