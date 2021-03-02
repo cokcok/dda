@@ -12,7 +12,7 @@ import { IonicSelectableComponent } from 'ionic-selectable';
   styleUrls: ['./po01number.page.scss'],
 })
 export class Po01numberPage implements OnInit {
-  @Input() index:number;
+  @Input() index:number;@Input() id:number;
   ionicForm: FormGroup;isSubmitted = false; 
   ionicForm1: FormGroup;isSubmitted1 = false; 
   sub: Subscription;filterfront: string;filterback: string; 
@@ -36,7 +36,7 @@ export class Po01numberPage implements OnInit {
     });
   
     this.ionicForm1 = this.formBuilder.group({
-      id :[this.index],
+      id :[this.id],
       tmpproductetc:["",[Validators.required]],
       etctotaldiscount:[""],
       etctotalall:[""],

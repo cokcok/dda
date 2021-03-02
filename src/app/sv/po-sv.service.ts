@@ -41,8 +41,9 @@ export class PoSvService {
     let data;
     if (type === 'cancel') {
       data = {
-        'id': vdata,
+        'id': vdata.id,
         'emp_id': this.configSv.emp_id,
+        'oldtmpproduct' : vdata.oldtmpproduct,
         'type_sql': type,
         'cause': cause
       }
@@ -106,5 +107,10 @@ export class PoSvService {
     }
     return this.http.post<data>(apiUrl, data, { headers: header });
   }
+
+
+
+
+
 }
   

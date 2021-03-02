@@ -14,6 +14,11 @@
         <ion-icon slot="icon-only" src="./assets/icons/refresh.svg"></ion-icon>
       </ion-button>
     </ion-buttons>
+    <ion-buttons slot="primary"  *ngIf="id !== undefined">
+      <ion-button (click)="cancelData()">
+        <ion-icon slot="icon-only" name="trash"></ion-icon>
+      </ion-button>
+    </ion-buttons>
     <ion-buttons slot="primary">
       <ion-button (click)="submitForm()">
         <ion-icon slot="icon-only" src="./assets/icons/save.svg"></ion-icon>
@@ -141,7 +146,7 @@
             </span>
           </ion-item>
         </ion-col>
-        <ion-col>
+        <ion-col> 
           <ion-item>
             <ion-label class="showlabel" position="floating">สถานที่ส่ง (บ้านเลขที่ ซอย ถนน)</ion-label>
             <ion-input formControlName="po_address" type="text"></ion-input>
@@ -255,7 +260,6 @@
                  </div>
               </div>
             </ion-col>
-         
         </ion-row> 
         <ion-row class="table1_footer" *ngIf="tmpproduct.length>0">
           <ion-col  size="1"></ion-col>

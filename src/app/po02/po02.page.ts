@@ -8,8 +8,6 @@ import { IonicSelectableComponent } from 'ionic-selectable';
 import * as moment_ from 'moment';
 import 'moment/locale/th';
 import {Po01Page} from '../po01/po01.page';
-import {Po01numberPage} from '../po01number/po01number.page';
-import {TestPage} from '../test/test.page';
 
 const moment = moment_;
 
@@ -123,7 +121,8 @@ export class Po02Page implements OnInit {
            infiniteScroll.target.complete();
          }
       }else{
-        this.maxpadding = 0;
+        this.maxpadding = 0;this.maxdatalimit=0;
+        this.data = [];
       }
     });
     //console.log(this.data);
@@ -142,8 +141,8 @@ export class Po02Page implements OnInit {
 
   async View(id,po_running){
    // console.log(id);
-   // let item = this.tmpproduct.filter((val) => val.id == id);
-   //console.log(item);  
+    let item = this.data.filter((val) => val.id == id);
+    //console.log(item);  
     const modal = await this.modalCtrl.create({
       component:Po01Page,
       cssClass: 'my-modal',
@@ -153,11 +152,14 @@ export class Po02Page implements OnInit {
     const {data,role} = await modal.onWillDismiss();
     //console.log(data,role);
     if(role === 'comfirm'){
-      //item[0].numbervalue = data;
-    }else if(role === 'comfirm1'){
-      //item[0].productetc = data;
-      //this.tmpproductetc = this.tmpproductetc.concat(data);
-
+      item[0].po_date = data[0]['po_date'];
+      item[0].po_recivedate = data[0]['po_recivedate'];
+      item[0].po_namewin = data[0]['po_namewin'];
+      item[0].po_customer = data[0]['po_customer'];
+      item[0].qty = data[0]['qty'];
+      item[0].po_total = data[0]['po_total'];
+    }else if(role === 'cancel'){
+      item[0].po_statustext = data[0]['po_statustext'];
     }
   }
   

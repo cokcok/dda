@@ -298,13 +298,13 @@ export class Po01Page implements OnInit {
     tmpindex = 0;
    }else{
     //console.log(this.tmpproduct[this.tmpproduct.length-1]["id"] + 1);
-    tmpindex = this.tmpproduct[this.tmpproduct.length-1]["id"] + 1;
+    tmpindex = Number(this.tmpproduct[this.tmpproduct.length-1]["id"]) + 1;
    }
+   //console.log(this.tmpproduct[this.tmpproduct.length-1]["id"],tmpindex);
    //let picresizbase64Array = Array;
    port.forEach((value, index) => {
     this.tmpproduct.push({
-      id: index+tmpindex,
-      //id: index,
+      id: index+Number(tmpindex),
       name: value.product_name +'/'+value.size+ '/' +value.price,
       product_id: value.id,
       product_name: value.product_name,
@@ -443,12 +443,13 @@ export class Po01Page implements OnInit {
     //console.log(item);
   }
 
-  async Addnumber(index,id){
+  async Addnumber(index,id :number){
     let item = this.tmpproduct.filter((val) => val.id == id);
    //console.log(item);  
     const modal = await this.modalCtrl.create({
       component:Po01numberPage,
-      componentProps:{index:id}
+      cssClass: 'my-modal',
+      componentProps:{index:index,id:id}
       
     })
 
@@ -520,38 +521,21 @@ export class Po01Page implements OnInit {
                     this.configSv.ChkformAlert(data.message);
                   }
                 }else if(typesql === 'update'){
-                  console.log('update');
-                }
-                
+                  //console.log('update');
+                  this.configSv.ChkformAlert(data.message);
+                  let dataarray = []; 
+                  dataarray.push({
+                    po_date:this.ionicForm.controls.po_date.value,
+                    po_recivedate:this.ionicForm.controls.po_recivedate.value,
+                    po_namewin:this.ionicForm.controls.po_namewin.value,
+                    po_customer:this.ionicForm.controls.po_customer.value,
+                    po_total: this.ionicForm.controls.po_total.value,
+                    qty:this.tmpproduct.length,
+                  });
+                  this.modalCtrl.dismiss(dataarray,'comfirm');
+                 // this.ionicForm.controls.podetail_number.value
 
-                // if (typesql === "insert") {
-                //   if(data.status !== 'ok'){
-                //     this.configSv.ChkformAlert(data.message);
-                //   }
-                // } else if (typesql === "update") {
-                //   if(data.status === 'ok'){
-                //     null;
-                //     // let item;
-                //     // item = this.data.filter((val) => val.id == data.id);
-                //     // item.forEach((item) => {
-                //     //   for (const [key, value] of Object.entries(item)) {
-                //     //     //item[key] = this.ionicForm.controls[key].value;
-                //     //     if (key === "mtd_size_id") {
-                //     //       item[key] = this.ionicForm.controls[key].value.id;
-                //     //     }else if(key === "size_name"){
-                //     //       item[key] = this.ionicForm.controls['mtd_size_id'].value.size;
-                //     //     }else if(key === "update_flg"){
-                //     //       this.ionicForm.controls['qty'].enable();
-                //     //     }else{
-                //     //       item[key] = this.ionicForm.controls[key].value;
-                //     //     }
-                //     //   }
-                //     // });
-                //   }else{
-                //     this.configSv.ChkformAlert(data.message);
-                //   }  
-                // }
-                
+                }
               }
             },
             (error) => {
@@ -603,8 +587,11 @@ export class Po01Page implements OnInit {
     if(this.cus_type == '0'){
       this.ionicForm.get('po_customer').setValidators(Validators.required);
       this.ionicForm.get('po_customer_tel').setValidators(Validators.required);
+      this.ionicForm.get('mtd_member_id').setValidators(null);
     }else{
       this.ionicForm.get('mtd_member_id').setValidators(Validators.required);
+      this.ionicForm.get('po_customer').setValidators(null);
+      this.ionicForm.get('po_customer_tel').setValidators(null);
     }
 
   }
@@ -618,7 +605,7 @@ export class Po01Page implements OnInit {
   
     let cus_name = item[0].member_name + ' ' + item[0].member_surname;
     let cus_tel = item[0].member_tel; 
-    console.log(item,cus_name,cus_tel);
+    //console.log(item,cus_name,cus_tel);
     this.ionicForm.controls['po_customer'].setValue(cus_name);
     this.ionicForm.controls['po_customer_tel'].setValue(cus_tel);
   }
@@ -628,5 +615,56 @@ export class Po01Page implements OnInit {
    const browser = this.iab.create(url).show();
   }
 
+  async cancelData() {
+    const confirm =  await this.alertCtrl.create({
+      header: 'ยืนยันการลบข้อมูล',
+      message: 'แน่ใจว่าต้องการลบใบสั่งซื้อที่ '+ this.po_running +' ? ',
+      inputs: [
+        {
+          name: 'cause',
+          placeholder: 'ระบุเหตุผลในการยกเลิก',
+        },
+      ],
+      buttons: [{
+        text: 'ยกเลิก',
+        handler: (data: any) => {
+           console.log('cancel ',data);
+        }
+      },
+      {
+        text: 'ตกลง',
+          handler: (data: any) => {
+           if(data['cause']){
+             this.sub = this.poSv.crudpo(this.ionicForm.value,'cancel',data['cause']).subscribe(
+              (data) => {
+                if(data.status == 'ok')
+                {   
+                  this.configSv.ChkformAlert(data.message);
+                  let dataarray = []; 
+                  dataarray.push({
+                    po_statustext:'ยกเลิกใบเสร็จ',
+                  });
+                  this.modalCtrl.dismiss(dataarray,'cancel');
+                }
+                else
+                {
+                  this.configSv.ChkformAlert(data.message);
+                }              
+              }, (error) => {
+                console.log(JSON.stringify(error));
+              }, () => {
+                //this.data = this.data.filter(obj => obj.id !== item);
+                //this.refreshForm();
+              }
+            );
+          } 
+          else{
+            this.configSv.ChkformAlert('กรุณาระบุเหตุผลในการลบด้วย');
+          }
+        }
+      }]
+    });
+    confirm.present();
+  }
 
 }
