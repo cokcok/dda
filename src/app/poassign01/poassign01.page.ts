@@ -144,16 +144,17 @@ export class Poassign01Page implements OnInit {
 
    async View(recivedate){
      let item = this.data.filter((val) => val.po_recivedate == recivedate);
+     let itemsomedata = this.datasomearray.filter((val) => val.po_recivedate == recivedate);
      //console.log(item);  
      const modal = await this.modalCtrl.create({
        component:Poassign02Page,
        cssClass: 'my-modal',
-       componentProps:{recivedate:recivedate},
+       componentProps:{recivedate:recivedate,itemsomedata:itemsomedata},
      });
      await modal.present();
      const {data,role} = await modal.onWillDismiss();
      if(role === 'somedata'){
-      this.datasomearray = this.datasomearray.concat(data);
+      this.datasomearray = data;
       item[0].checksomedata = true;
      }
      

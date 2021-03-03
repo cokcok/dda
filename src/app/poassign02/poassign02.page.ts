@@ -10,7 +10,8 @@ import { PoSvService } from '../sv/po-sv.service';
   styleUrls: ['./poassign02.page.scss'],
 })
 export class Poassign02Page implements OnInit {
-  @Input() recivedate:string;
+  @Input() recivedate:string;    @Input() itemsomedata=[]; 
+
   ionicForm: FormGroup;isSubmitted = false; 
   data = []; page = 0;maxpadding:number;limit = 50;
   sub: Subscription; maxdatalimit=0;filterTerm: string;
@@ -24,6 +25,9 @@ export class Poassign02Page implements OnInit {
       txtserach: [this.recivedate],
     }); 
     this.loaddata(0);
+    this.dataallarray = this.itemsomedata;
+    //console.log(this.itemsomedata);
+    //this.compareArray(this.data,this.itemsomedata);
   }
 
   dismissModal(){
@@ -41,7 +45,9 @@ export class Poassign02Page implements OnInit {
         this.maxpadding = data["maxpadding"];
         datalimit = data["limit"];
         this.data =  this.data.concat(data.data_detail.map((item) => Object.assign({}, item)));   
-        //console.log( this.data);
+        if(padding === 0){
+          this.compareArray(this.data,this.itemsomedata);
+        }
         if (infiniteScroll) {
           infiniteScroll.target.complete();
         }
@@ -76,7 +82,20 @@ export class Poassign02Page implements OnInit {
 
 
    submitForm(){
-    //console.log(this.dataallarray);
+    console.log(this.dataallarray);
     this.modalCtrl.dismiss(this.dataallarray,'somedata');
+  }
+
+  compareArray(dataall,datasome) {
+    dataall.forEach( array1Ttem => {
+        datasome.forEach( array2Item => {
+           if(array1Ttem.id == array2Item.id){
+              //console.log("It's match",array1Ttem);
+              dataall = dataall.filter(obj => obj.id !== array2Item.id);
+              dataall.unshift(array2Item);
+          }
+        });
+      });
+      this.data = dataall;
   }
 }
