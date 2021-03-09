@@ -116,7 +116,7 @@ export class PoSvService {
   }
 
 
-  getpoassign(vdata:any,padding: number, limit: number = 9999999999): Observable<data> {
+  getpoassign(type,vdata:any,padding: number, limit: number = 9999999999): Observable<data> {
     const header = { 'Content-Type': 'application/json' };
     let apiUrl = this.configSv.ip + 'po_assign.php';
      let data = {
@@ -124,11 +124,50 @@ export class PoSvService {
       'limit': limit,
       'typeserch': vdata.typeserch_id,
       'serchtxt': vdata.txtserach,
-      'type_sql': 'read'
+      'po_assigndate' : vdata.po_assigndate,
+      'type_sql': type,
     }
+    //console.log(data);
     return this.http.post<data>(apiUrl, data, { headers: header });
   }
 
+  crudpoassign(vdata: any, type: string, cause?): Observable<FeedBack> {
+    const header = { 'Content-Type': 'application/json' };
+    const apiUrl = this.configSv.ip + 'po_assign.php';
+    let data;
+    if (type === 'cancel') {
+      data = {
+        'id': vdata.id,
+        'emp_id': this.configSv.emp_id,
+        'oldtmpproduct' : vdata.oldtmpproduct,
+        'type_sql': type,
+        'cause': cause
+      }
+    }
+    else {
+      data = {
+        'po_assigndate':vdata.po_assigndate,
+        'seq': vdata.seq,
+        'dataall' : vdata.dataall,
+        'datasome' : vdata.datasome,
+        'total' : vdata.total,
+        'emp_id': this.configSv.emp_id,
+        'type_sql': type
+      }
+    }
+    return this.http.post<FeedBack>(apiUrl, data, { headers: header });
+  }
+
+  getpoassignreport(type,vdata:any): Observable<data> {
+    const header = { 'Content-Type': 'application/json' };
+    let apiUrl = this.configSv.ip + 'po_assign_report.php';
+     let data = {
+      'id' : vdata.id,
+      'type_sql': type,
+    }
+    //console.log(data);
+    return this.http.post<data>(apiUrl, data, { headers: header });
+  }
 
 
 }

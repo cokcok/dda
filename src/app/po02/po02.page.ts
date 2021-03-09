@@ -134,12 +134,14 @@ export class Po02Page implements OnInit {
 
   doInfinite(infiniteScroll) {
     this.page++;
-    //console.log( this.page);
-    this.SearchData(this.page * this.limit, infiniteScroll);
+    console.log( this.page,this.maxpadding);
+    //this.SearchData(this.page * this.limit, infiniteScroll);
     //this.loaddata(this.page * 10, infiniteScroll);
     if (this.page === this.maxpadding) {
       infiniteScroll.target.disabled = true;
       //this.configSv.ChkformAlert('ไม่พบข้อมูลแล้ว');
+    }else{
+      this.SearchData(this.page * this.limit, infiniteScroll);
     }
   }
 

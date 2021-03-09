@@ -19,7 +19,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
   styleUrls: ['./po01.page.scss'],
 })
 export class Po01Page implements OnInit {
-  @Input() id:number;@Input() po_running:string;
+  @Input() id:number;@Input() po_running:string;@Input() mode:string;
   @ViewChild('fileIngimg') fileIngimg: ElementRef;
   ionicForm: FormGroup;isSubmitted = false; 
   sub: Subscription;

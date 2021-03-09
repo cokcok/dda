@@ -18,7 +18,8 @@ import { AutoCompleteModule } from 'ionic4-auto-complete';
 import { NgSelectModule } from '@ng-select/ng-select';
 import * as $ from "jquery";
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
-
+import { File } from '@ionic-native/file/ngx';
+import { FileOpener } from '@ionic-native/file-opener/ngx';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -26,12 +27,12 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
     BrowserModule,FormsModule,ReactiveFormsModule,HttpClientModule,
     IonicModule.forRoot(),AutoCompleteModule,
     AppRoutingModule,Ng2SearchPipeModule,IonicSelectableModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),NgSelectModule
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),NgSelectModule //,FileOpener
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },InAppBrowser
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },InAppBrowser,File,FileOpener
   ],
   bootstrap: [AppComponent]
 })

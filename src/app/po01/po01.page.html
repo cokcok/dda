@@ -6,20 +6,20 @@
     <ion-buttons slot="start"  *ngIf="id !== undefined">
       <ion-button (click)="dismissModal()">
         <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
-      </ion-button>
+    </ion-button>
     </ion-buttons>
     <ion-title>ใบสั่งซื้อลูกค้า {{po_running}}</ion-title>
-    <ion-buttons slot="primary" *ngIf="id === undefined">
+    <ion-buttons slot="primary" *ngIf="id === undefined && mode !== 'view'">
       <ion-button (click)="refreshForm()">
         <ion-icon slot="icon-only" src="./assets/icons/refresh.svg"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-buttons slot="primary"  *ngIf="id !== undefined">
+    <ion-buttons slot="primary"  *ngIf="id !== undefined && mode !== 'view'">
       <ion-button (click)="cancelData()">
         <ion-icon slot="icon-only" name="trash"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-buttons slot="primary">
+    <ion-buttons slot="primary" *ngIf="mode !== 'view'">
       <ion-button (click)="submitForm()">
         <ion-icon slot="icon-only" src="./assets/icons/save.svg"></ion-icon>
       </ion-button>
@@ -195,8 +195,9 @@
           <ion-col size="3"> 
             <ion-input  class="showborder" type="text"  [(ngModel)]="commentproduct[i]" [ngModelOptions]="{standalone: true}" (change)="Commentproduct(c.id,commentproduct[i])"></ion-input> 
           </ion-col>
-            <ion-col size="2"> 
-              <input type="file"  (change)="fileUpload_img($event)" id="file-input" style="position:absolute; top: -999999px" #fileIngimg>
+            <ion-col size="2" > 
+              <div *ngIf="mode !== 'view'">
+                <input type="file"  (change)="fileUpload_img($event)" id="file-input" style="position:absolute; top: -999999px" #fileIngimg>
               <ion-button (click)="onClick_fileUpload(c.id)">
                 <ion-icon slot="icon-only" class="iconSize" name="images"></ion-icon>
               </ion-button>
@@ -206,6 +207,8 @@
               <ion-button (click)="Deltmpproduct(c.id,i)">
                 <ion-icon slot="icon-only" class="iconSize" name="trash"></ion-icon>
               </ion-button>
+              </div>
+              
             </ion-col>
              <ion-col size="12" *ngIf="isSubmitted && discount[i]>c.total">
             <ion-row >

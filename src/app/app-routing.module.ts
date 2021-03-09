@@ -5,7 +5,7 @@ const routes: Routes = [
   {
     path: '',
     //redirectTo: 'folder/Inbox',
-    redirectTo: 'poassign01',
+    redirectTo: 'poassign03',
    // redirectTo: 'signin',
     pathMatch: 'full'
   },
@@ -124,6 +124,10 @@ const routes: Routes = [
   {
     path: 'poassign02',
     loadChildren: () => import('./poassign02/poassign02.module').then( m => m.Poassign02PageModule)
+  },
+  {
+    path: 'poassign03',
+    loadChildren: () => import('./poassign03/poassign03.module').then( m => m.Poassign03PageModule)
   }
 ];
 

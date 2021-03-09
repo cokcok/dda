@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms"
 import { ConfigService } from "../sv/config.service";
 import { Subscription } from "rxjs";
 import { PoSvService } from '../sv/po-sv.service';
+import {Po01Page} from '../po01/po01.page';
+
 @Component({
   selector: 'app-poassign02',
   templateUrl: './poassign02.page.html',
@@ -23,6 +25,7 @@ export class Poassign02Page implements OnInit {
     this.ionicForm = this.formBuilder.group({
       typeserch_id: ["4"],
       txtserach: [this.recivedate],
+      
     }); 
     this.loaddata(0);
     this.dataallarray = this.itemsomedata;
@@ -98,4 +101,28 @@ export class Poassign02Page implements OnInit {
       });
       this.data = dataall;
   }
+
+  async View(id,po_running){
+    // console.log(id);
+     let item = this.data.filter((val) => val.id == id);
+     //console.log(item);
+     const modal = await this.modalCtrl.create({
+       component:Po01Page,
+       cssClass: 'my-modal',
+       componentProps:{id:id,po_running:po_running,mode:'view'},
+     });
+     await modal.present();
+     const {data,role} = await modal.onWillDismiss();
+     //console.log(data,role);
+     if(role === 'comfirm'){
+       item[0].po_date = data[0]['po_date'];
+       item[0].po_recivedate = data[0]['po_recivedate'];
+       item[0].po_namewin = data[0]['po_namewin'];
+       item[0].po_customer = data[0]['po_customer'];
+       item[0].qty = data[0]['qty'];
+       item[0].po_total = data[0]['po_total'];
+     }else if(role === 'cancel'){
+       item[0].po_statustext = data[0]['po_statustext'];
+     }
+   }
 }
