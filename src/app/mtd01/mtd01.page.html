@@ -58,6 +58,17 @@
         </ion-col>
         <ion-col>
           <ion-item>
+            <ion-label class="showlabel" position="floating">ชื่อเล่น</ion-label>
+            <ion-input formControlName="nickname" type="text"  ></ion-input>
+            <span class="error" *ngIf="isSubmitted && errorControl.nickname.errors?.required">
+              กรุณาระบุ ชื่อเล่น
+            </span>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
             <ion-label class="showlabel" position="floating">Username&Password</ion-label>
             <ion-input formControlName="username" type="text" [readonly] = "disableSelect"  ></ion-input>
             <span class="error" *ngIf="isSubmitted && errorControl.username.errors?.required">
@@ -65,12 +76,9 @@
             </span>
           </ion-item>
         </ion-col>
-  
-      </ion-row>
-      <ion-row>
         <ion-col>
           <ion-item>
-            <ion-label class="showlabel" >กลุ่มผู้ใช้งาน</ion-label>
+            <ion-label class="showlabel" position="floating">กลุ่มผู้ใช้งาน</ion-label>
             <ionic-selectable
               interface="popover"
               item-content

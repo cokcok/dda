@@ -1,6 +1,9 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>ออกคูปอง ป้ายเขียว</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>ออกคูปอง/ป้ายเขียว</ion-title>
   </ion-toolbar>
 </ion-header>
 <form [formGroup]="ionicForm" novalidate>
@@ -39,7 +42,7 @@
           <ion-button fill="outline" color="success" (click)="PrintData(c.id)">ออกคูปอง</ion-button>
         </ion-col>
         <ion-col>
-          <ion-button fill="outline" color="success" (click)="View(c.po_recivedate)">ออกป้ายเขียว</ion-button>
+          <ion-button fill="outline" color="success" (click)="PrintData_Green(c.po_recivedate)">ออกป้ายเขียว</ion-button>
         </ion-col>
       </ion-row>
     </ion-card>

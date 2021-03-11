@@ -158,11 +158,12 @@ export class PoSvService {
     return this.http.post<FeedBack>(apiUrl, data, { headers: header });
   }
 
-  getpoassignreport(type,vdata:any): Observable<data> {
+  getpoassignreport(type,id): Observable<data> {
     const header = { 'Content-Type': 'application/json' };
     let apiUrl = this.configSv.ip + 'po_assign_report.php';
+    //console.log(vdata);
      let data = {
-      'id' : vdata.id,
+      'id' : id,
       'type_sql': type,
     }
     //console.log(data);

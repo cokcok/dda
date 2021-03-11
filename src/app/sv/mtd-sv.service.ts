@@ -52,6 +52,7 @@ export class MtdSvService {
         'prefix_name': vdata.prefix_name,
         'name': vdata.name,
         'surname': vdata.surname,
+        'nickname': vdata.nickname,
         'group_id': vdata.group_id.id,
         'userpass': vdata.username,
         'pic': vdata.picresizbase64List,

@@ -34,6 +34,7 @@ export class Mtd01Page implements OnInit {
       prefix_name: ["", [Validators.required]],
       name: ["", [Validators.required]],
       surname: ["", [Validators.required]],
+      nickname: ["", [Validators.required]],
       username: ["", [Validators.required]],
       group_id: this.portControl,
       group_name: [""],
@@ -79,6 +80,7 @@ export class Mtd01Page implements OnInit {
                   prefix_name: this.ionicForm.controls.prefix_name.value,
                   name: this.ionicForm.controls.name.value,
                   surname: this.ionicForm.controls.surname.value,
+                  nickname: this.ionicForm.controls.nickname.value,
                   username: this.ionicForm.controls.username.value,
                   group_id: this.ionicForm.controls.group_id.value.id,
                   group_name: this.ionicForm.controls.group_id.value.description,
@@ -207,7 +209,7 @@ export class Mtd01Page implements OnInit {
       .getsysgroup(padding)
       .subscribe((data) => {
         if (data !== null) {
-          this.groups =  this.groups.concat(data.data_detail.map((item) => Object.assign({}, item)));   
+          this.groups =  data.data_detail.map((item) => Object.assign({}, item));   
         }
       });
   }
@@ -238,7 +240,7 @@ export class Mtd01Page implements OnInit {
     let item;this.picpreview = [];this.picresizbase64Array.clear();
     item = this.data.filter((val) => val.id == id);
     this.disableSelect = true;
-    //console.log(item);
+    console.log(item);
     //this.ionicForm.controls['username'].disable();
     item.forEach((item) => {
       for (const [key, value] of Object.entries(item)) {

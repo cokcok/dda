@@ -36,8 +36,9 @@ export class Poassign03Page implements OnInit {
   data = []; page = 0; maxpadding: number; limit = 50;
   sub: Subscription; maxdatalimit = 0; filterTerm: string;
   datePickerObj: any = {};
-  currentDate = new Date().toLocaleDateString();
-  currentTime = new Date().toLocaleTimeString()//--แก้ตรงนี้
+  // currentDate = new Date().toLocaleDateString();
+  // currentTime = new Date().toLocaleTimeString();
+  colortxt = ['#000000', '#ffff00', '#FF00F3', '#008000', '#ffa500', '#87ceeb', '#800080', '#ff0000'];
   constructor(public configSv: ConfigService, private poSv: PoSvService, public formBuilder: FormBuilder, private modalCtrl: ModalController, private alertCtrl: AlertController) { }
 
   ngOnInit() {
@@ -45,6 +46,7 @@ export class Poassign03Page implements OnInit {
       txtserach: [moment().format('L'), [Validators.required]],
     });
     this.fndate(); this.loaddata(0);
+    //console.log(this.currentDate,this.currentTime);
   }
 
   get errorControl() {
@@ -97,39 +99,20 @@ export class Poassign03Page implements OnInit {
       });
   }
 
-
   PrintData(id) {
-    console.log(id);
-
+    //console.log(id);
     this.sub = this.poSv
-      .getpoassignreport('cupon', this.ionicForm.value)
+      .getpoassignreport('cupon', id)
       .subscribe((data) => {
         if (data !== null) {
-
           this.DownloadPdf(data.data_detail);
           //console.log(this.getDataObject(data.data_detail));
-
-        } else {
-          this.data = [];
-          this.maxpadding = 0; this.maxdatalimit = 0;
-        }
+        } 
       });
-
-
-    // var docDefinition = {
-    //   content: [
-    //     { text: 'สวัสดีประเทศไทย reat pdf demo ', fontSize: 15 },
-    //   ],
-    //   defaultStyle:{
-    //     font : 'THSarabunNew'
-    //   }
-    // };
-    // //pdfMake.createPdf(docDefinition).open()
-    // this.configSv.saveToDevice(pdfMake.createPdf(docDefinition), "HrReport.pdf");
   }
 
   DownloadPdf(vdata) {
-    console.log(vdata);
+    //console.log(vdata);
     var docDefinition = {
       pageOrientation: 'landscape',
       pageMargins: [ 10,30,10,10 ],
@@ -143,14 +126,10 @@ export class Poassign03Page implements OnInit {
             }
           }, alignment: 'center'
         }
-          , { text: this.currentDate + ' ' + this.currentTime, alignment: 'right' }
+          , { text: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString(), alignment: 'right' }
         ]
       },
       content: [
-        // {
-        //   text: 'Experience',
-        //   style: 'header'
-        // },
         [{
           columns: [
             this.getDataObject(vdata, 'odd'),
@@ -165,6 +144,7 @@ export class Poassign03Page implements OnInit {
     this.configSv.saveToDevice(pdfMake.createPdf(docDefinition), "cupon.pdf");
   }
 
+ 
   getDataObject(vdata, type) {
     let data;
     if (type === 'odd') {
@@ -172,84 +152,33 @@ export class Poassign03Page implements OnInit {
     } else if (type === 'even') {
       data = vdata.filter((value, index) => index % 2 === 1);
     }
-    //console.log(data);
+    
+    if(data.length === 0){
+      data.push({
+        po_running : "" ,
+        name : "" ,
+        po_customer_tel : "" ,
+        po_date : "" ,
+        po_namewin : "" ,
+        area_name : "" ,
+        product_name : "" ,
+        size : "" ,
+        podetail_comment : "" ,
+        po_recivedate : "" ,
+        podetail_number : "" ,
+        colorfront : "" ,
+        colorback : "" ,
+        pic : "" ,
+        etc : "" ,
+        po_status : "" ,
+      });
+    }
     const exs = [];
     data.forEach((element, index) => {
       //console.log(element);
-      // exs.push(
-      //   [{
-      //     columns: [
-      //       [{
-      //         text: element['po_running']
-      //       },
-      //       {
-      //         rowSpan: 2,
-      //         text: 'ชื่อวิน: ' + element['po_namewin']
-      //       },
-      //       {
-      //          width: 100,
-      //         text: 'สินค้า: ' + element['product_name']
-      //       },
-      //       {
-      //         text: ''
-      //       }],
-      //       [{
-      //         text: 'ผู้ขาย: ' + element['name']
-      //       },
-      //       {
-      //         text: 'เขต: ' + element['area_name']
-      //       },
-      //       {
-      //         text: 'ขนาด: ' + element['size']
-      //       }
-      //       ],
-      //       [{
-      //         text: 'Tel: ' + element['po_customer_tel']
-      //       },
-      //       {
-      //         text: 'เบอร์: ' + element['podetail_number']
-      //       }],
-      //       [{
-      //         text: 'วันรับ: ' + element['po_date']
-      //       },
-      //       {
-      //         text: 'สี: ' + element['colorfront'] + '/' + element['colorback']
-      //       }],
-      //       [{
-      //         text: 'วันที่ส่ง: ' + element['po_recivedate']
-      //       }]
-      //     ],columnGap: 10
-      //   }]
-      // )
-      // exs.push(
-      //   [{
-      //         columns: [ 
-      //           [{
-      //             text: element['po_running']
-      //           },
-      //           {
-      //             text: 'ชื่อวิน: ' + element['po_namewin']
-      //           }],
-      //           [{
-      //             text: 'ผู้ขาย: ' + element['name']
-      //           },
-      //           {
-      //             text: 'เขต: ' + element['area_name']
-      //           },
-      //           // {
-      //           //   text: 'ขนาด: ' + element['size']
-      //           // },
-      //           ]
-      //         ]
-      //   }],
-      //   [{
-      //     columns: [ 
-      //       [{
-      //         border: [false, false, false, false],
-      //         text: element['product_name']
-      //       },]]
-      //    }], 
-      // )
+      // let a = moment(element['po_recivedate']).format("DD/MM/YYYY")
+      // console.log(element['po_recivedate'], a,moment(a).isoWeekday(),moment(element['po_recivedate'],'DD/MM/YYYY').isoWeekday());
+      //moment(element['po_recivedate'],'DD/MM/YYYY').isoWeekday();
       exs.push(
         [
           {
@@ -266,7 +195,7 @@ export class Poassign03Page implements OnInit {
           },
           {
             border: [false, true, true, false],
-            text: 'วันที่รับ: ' + element['po_date']
+            text: 'วันสั่งซื้อ: ' + element['po_date']
           },
         ],
         [
@@ -292,70 +221,33 @@ export class Poassign03Page implements OnInit {
             text: 'ขนาด: ' + element['size']
           },{
             border: [false, false, true, false],
-            text: 'วันที่ส่ง: ' +  element['po_recivedate'] 
+            fillColor: this.colortxt[moment(element['po_recivedate'],'DD/MM/YYYY').isoWeekday()],
+            text: 'วันนัดรับ: ' +  element['po_recivedate'] 
           }
         ],
         [
           {
-            colSpan: 4,
-            border: [true, false, true, false],
+            colSpan: 3,
+            border: [true, false, false, false],
             text:  'สินค้าอื่น: ' + element['etc']
-          },'','','',
+          },'','',{
+            border: [false, false, true, false],
+            text: 'สถานะ: ' + element['po_status'] 
+          },
         ],
         [
           {
-            colSpan: 4,
-            border: [true, false, true, true],
+            colSpan: 3,
+            border: [true, false, false, true],
             text:  'หมายเหตุ: ' + element['podetail_comment']
-          },'','','',
+          },'','',{
+            border: [false, false, true, true],
+            text: element['pic'] 
+          },
         ],
       );
     });
 
-    // exs.push(
-    //   [
-    //     {
-    //       colSpan: 3,
-    //       text: 'colSpan: 3\n\nborder:\n[false, false, false, false]',
-    //       fillColor: '#eeeeee',
-    //       border: [false, false, false, false]
-    //     },
-    //     '',
-    //     ''
-    //   ],
-    //   [
-    //     'border:\nundefined',
-    //     'border:\nundefined',
-    //     'border:\nundefined'
-    //   ]
-    // );
-    // exs.push(
-    //   [
-    //     {
-    //       text: 'element[po_running]'
-    //     },
-    //     {
-    //       text: 'ผู้ขาย'
-    //     },
-    //     {
-    //       text: 'Tel'
-    //     },
-    //     {
-    //       text: 'วันที่รับ'
-    //     },
-    //   ],
-    //   [
-    //     {
-    //       colSpan: 2,
-    //       border: [true, false, false, false],
-    //       text: 'ชื่อวิน'
-    //     },'',{
-    //       text: 'เขต'
-    //     },{
-    //       text: 'เบอร์/สี'
-    //     }
-    //   ]
-    // );
     return {
       table: {
         widths: ['20%','20%','30%','30%'],
@@ -369,4 +261,61 @@ export class Poassign03Page implements OnInit {
     };
   }
 
+
+  PrintData_Green(id) {
+    //console.log(id);
+    this.sub = this.poSv
+      .getpoassignreport('green', id)
+      .subscribe((data) => {
+        if (data !== null) {
+          console.log(data);
+          this.DownloadPdf1(data.data_detail);
+          //console.log(this.getDataObject(data.data_detail));
+        } 
+      });
+  }
+
+  DownloadPdf1(vdata) {
+    //console.log(vdata);
+    let items = [];
+    items = vdata.map(function (item) {
+      return [item.seq, item.po_date,  { text: item.nickname, alignment: 'center' }, item.po_namewin, item.area_name, { text: item.countid, alignment: 'center' }, item.po_recivedate,''];
+    });
+    console.log(items);
+    var docDefinition = {
+      pageOrientation: 'landscape',
+      pageMargins: [ 10,30,10,10 ],
+      header: {
+        margin: 10,
+        columns: [{ text: 'ป้ายเขียว', alignment: 'left' },
+        {
+          text: {
+            function(currentPage, pageCount) {
+              return currentPage.toString() + ' / ' + pageCount;
+            }
+          }, alignment: 'center'
+        }
+          , { text: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString(), alignment: 'right' }
+        ]
+      },
+      content: [
+        {
+          style: 'tableExample',
+          table: {
+            widths: ['*','*','*','*','*','*','*','*'], //headerRows: 2,
+            headerRows: 2,
+            body: [
+              [{text: 'รายชื่อวิน-ส่งปัก ปักที่ร้าน', style: 'tableHeader', colSpan: 4, alignment: 'center'}, '','','', { text: 'งานปัก xxxx', style: 'tableHeader', colSpan: 4, alignment: 'center' }, '','',''],
+              [{text: '#', style: 'tableHeader', alignment: 'center'}, {text: 'วันสั่งซื้อ', style: 'tableHeader', alignment: 'center'}, {text: 'ผู้ขาย', style: 'tableHeader', alignment: 'center'}, {text: 'ชื่อวิน', style: 'tableHeader', alignment: 'center'}, {text: 'เขต', style: 'tableHeader', alignment: 'center'}, {text: 'จำนวน', style: 'tableHeader', alignment: 'center'}, {text: 'วันนัดรับ', style: 'tableHeader', alignment: 'center'}, {text: 'ป้ายซ้ำ', style: 'tableHeader', alignment: 'center'}],
+            ].concat(items) // detail data
+          }
+
+        },
+      ],
+      defaultStyle: {
+        font: 'THSarabunNew'
+      }
+    }
+    this.configSv.saveToDevice(pdfMake.createPdf(docDefinition), "green.pdf");
+  }
 }

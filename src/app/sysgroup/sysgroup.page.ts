@@ -36,6 +36,8 @@ export class SysgroupPage implements OnInit {
       description: [""],
       highlight: [""],
     });
+   
+
     this.loaddata(this.page);
   }
 
