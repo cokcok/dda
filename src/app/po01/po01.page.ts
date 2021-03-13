@@ -76,6 +76,7 @@ export class Po01Page implements OnInit {
       po_status:[""],
       po_transferdate:[""],
       oldtmpproduct:[""],
+      namewin_comment:[""],
     });
     this.loaddata_sale(0);this.loaddata_area(0);this.loaddata_shipping(0);this.loaddata_product();this.loaddata_customertype();this.loaddata_member(0);
     this.fndate(); 

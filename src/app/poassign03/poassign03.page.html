@@ -39,10 +39,13 @@
         <ion-col>ครั้งที่ {{c.seq}}</ion-col>
         <ion-col>จำนวน {{c.total}} รายการ</ion-col>
         <ion-col>
-          <ion-button fill="outline" color="success" (click)="PrintData(c.id)">ออกคูปอง</ion-button>
+          <ion-button fill="outline" color="tertiary" (click)="PrintData(c.id)">ออกคูปอง</ion-button>
         </ion-col>
         <ion-col>
-          <ion-button fill="outline" color="success" (click)="PrintData_Green(c.po_recivedate)">ออกป้ายเขียว</ion-button>
+          <ion-button fill="outline" color="success" (click)="PrintData_Green(c.id,c.seq,c.po_assign_date)">ออกป้ายเขียว</ion-button>
+        </ion-col>
+        <ion-col>
+          <ion-button fill="outline" color="danger" (click)="ViewData(c.id)">ยกเลิก</ion-button>
         </ion-col>
       </ion-row>
     </ion-card>

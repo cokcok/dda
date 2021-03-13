@@ -99,6 +99,16 @@ export class Poassign03Page implements OnInit {
       });
   }
 
+  doInfinite(infiniteScroll) {
+    this.page++;
+    if (this.page === this.maxpadding) {
+      infiniteScroll.target.disabled = true;
+      //this.configSv.ChkformAlert('ไม่พบข้อมูลแล้ว');
+    }else{
+      this.loaddata(this.page * this.limit, infiniteScroll);
+    }
+  }
+
   PrintData(id) {
     //console.log(id);
     this.sub = this.poSv
@@ -262,26 +272,27 @@ export class Poassign03Page implements OnInit {
   }
 
 
-  PrintData_Green(id) {
+  PrintData_Green(id,seq,assign_date) {
     //console.log(id);
     this.sub = this.poSv
       .getpoassignreport('green', id)
       .subscribe((data) => {
         if (data !== null) {
-          console.log(data);
-          this.DownloadPdf1(data.data_detail);
+          //console.log(data);
+          this.DownloadPdf1(data.data_detail,seq,assign_date);
           //console.log(this.getDataObject(data.data_detail));
         } 
       });
   }
 
-  DownloadPdf1(vdata) {
-    //console.log(vdata);
+  DownloadPdf1(vdata,seq,assign_date) {
+   // console.log(vdata);
     let items = [];
+   var self = this;
     items = vdata.map(function (item) {
-      return [item.seq, item.po_date,  { text: item.nickname, alignment: 'center' }, item.po_namewin, item.area_name, { text: item.countid, alignment: 'center' }, item.po_recivedate,''];
+      return [item.seq, item.po_date, item.po_namewin, item.area_name, { text: item.countid, alignment: 'center' }, {  fillColor: self.colortxt[moment(item.po_recivedate,'DD/MM/YYYY').isoWeekday()],text:item.po_recivedate } ,item.detail,''];
     });
-    console.log(items);
+    //console.log(vdata,items);
     var docDefinition = {
       pageOrientation: 'landscape',
       pageMargins: [ 10,30,10,10 ],
@@ -298,16 +309,20 @@ export class Poassign03Page implements OnInit {
           , { text: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString(), alignment: 'right' }
         ]
       },
+      //  content: [
+      //     this.getDataObjectGreen(vdata),
+      //     console.log(this.getDataObjectGreen(vdata))
+      // ],
       content: [
         {
           style: 'tableExample',
           table: {
-            widths: ['*','*','*','*','*','*','*','*'], //headerRows: 2,
+            widths: ['3%','7%','20%','20%','3%','7%','*','7%'], //headerRows: 2,
             headerRows: 2,
             body: [
-              [{text: 'รายชื่อวิน-ส่งปัก ปักที่ร้าน', style: 'tableHeader', colSpan: 4, alignment: 'center'}, '','','', { text: 'งานปัก xxxx', style: 'tableHeader', colSpan: 4, alignment: 'center' }, '','',''],
-              [{text: '#', style: 'tableHeader', alignment: 'center'}, {text: 'วันสั่งซื้อ', style: 'tableHeader', alignment: 'center'}, {text: 'ผู้ขาย', style: 'tableHeader', alignment: 'center'}, {text: 'ชื่อวิน', style: 'tableHeader', alignment: 'center'}, {text: 'เขต', style: 'tableHeader', alignment: 'center'}, {text: 'จำนวน', style: 'tableHeader', alignment: 'center'}, {text: 'วันนัดรับ', style: 'tableHeader', alignment: 'center'}, {text: 'ป้ายซ้ำ', style: 'tableHeader', alignment: 'center'}],
-            ].concat(items) // detail data
+              [{text: 'รายชื่อวิน-ส่งปัก ปักที่ร้าน', style: 'tableHeader', colSpan: 4, alignment: 'center'}, '','','', { text: 'วันที่มอบหมายของวันที่ ' + assign_date +' ครั้งที่ ' + seq, style: 'tableHeader', colSpan: 4, alignment: 'center' }, '', '',''],
+              [{text: '#', style: 'tableHeader', alignment: 'center'}, {text: 'วันสั่งซื้อ', style: 'tableHeader', alignment: 'center'}, {text: 'ชื่อวิน', style: 'tableHeader', alignment: 'center'}, {text: 'เขต', style: 'tableHeader', alignment: 'center'}, {text: 'จำนวน', style: 'tableHeader', alignment: 'center'}, {text: 'วันนัดรับ', style: 'tableHeader', alignment: 'center'},{text: 'รายละเอียด', style: 'tableHeader', alignment: 'center'}, {text: 'ป้ายซ้ำ', style: 'tableHeader', alignment: 'center'}],
+            ].concat( items)// detail data
           }
 
         },
@@ -318,4 +333,59 @@ export class Poassign03Page implements OnInit {
     }
     this.configSv.saveToDevice(pdfMake.createPdf(docDefinition), "green.pdf");
   }
+
+  getDataObjectGreen(vdata){
+    //console.log(vdata);
+    const exs = [];
+    exs.push(
+      [{text: 'รายชื่อวิน-ส่งปัก ปักที่ร้าน', style: 'tableHeader', colSpan: 4, alignment: 'center'}, '','','', { text: 'งานปัก xxxx', style: 'tableHeader', colSpan: 3, alignment: 'center' }, '',''],
+       [{text: '#', style: 'tableHeader', alignment: 'center'}, {text: 'วันสั่งซื้อ', style: 'tableHeader', alignment: 'center'}, {text: 'ชื่อวิน', style: 'tableHeader', alignment: 'center'}, {text: 'เขต', style: 'tableHeader', alignment: 'center'}, {text: 'จำนวน', style: 'tableHeader', alignment: 'center'}, {text: 'วันนัดรับ', style: 'tableHeader', alignment: 'center'}, {text: 'ป้ายซ้ำ', style: 'tableHeader', alignment: 'center'}]
+    );
+
+    vdata.forEach((element, index) => {
+      exs.push(
+        [
+          { text: element['seq'] },
+          { text: element['po_date'] },
+          { text: element['po_namewin'] },
+          { text: element['area_name'] },
+          { text: element['countid'] },
+          { text: element['po_recivedate'] },
+          { text: ""},
+        ],
+        [
+          '',this.getdataDetail(element['detail']),'','','','','',
+          //{ text: this.getdataDetail(element['detail']) },'','','','','','',
+        ]
+      )
+    });
+    return {
+      table: {
+        widths: ['*','*','*','*','*','*','*'],
+        body: [
+          ...exs
+        ],
+     
+      }
+    };
+  }
+
+  getdataDetail(vdata){
+    const exs1 = [];
+    vdata.forEach((element, index) => {
+      exs1.push(
+        [  { text: element['nickname'] }]
+      );
+    });
+
+    return {
+      table: {
+       // widths: ['auto','auto','auto','auto','auto','auto','auto'],
+        body: [
+          ...exs1
+        ],
+      }
+    };
+  }
+  
 }
