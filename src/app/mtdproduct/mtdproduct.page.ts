@@ -51,7 +51,7 @@ export class MtdproductPage implements OnInit {
       }
     });
   }
-
+ 
   submitForm(){
     //console.log(this.ionicForm.value)
     this.isSubmitted = true;

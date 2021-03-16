@@ -16,82 +16,87 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<form [formGroup]="ionicForm" novalidate>
-  <input type="hidden" formControlName="mtd_number_id">
-  <ion-grid fixed>
-    <ion-row>
-      <ion-col>
-        เลขที่ระบบ <input type="text" formControlName="id" disabled class="IDnoshowBG">
-      </ion-col>
-    </ion-row>
-    <ion-row>
-        <ion-col > 
+
+<ion-content>
+<tabset>
+  <tab heading="แบบฟอร์ม" id="tab1">
+  <form [formGroup]="ionicForm" novalidate>
+    <input type="hidden" formControlName="mtd_number_id">
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col>
+          เลขที่ระบบ <input type="text" formControlName="id" disabled class="IDnoshowBG">
+        </ion-col>
+      </ion-row>
+      <ion-row>
+          <ion-col > 
+            <ion-item>
+            <ion-label class="showlabel" position="floating">ตัวเลข</ion-label>
+            <ion-input formControlName="number" type="number"></ion-input>
+            <span class="error" *ngIf="isSubmitted && errorControl.number.errors?.required">
+              กรุณาระบุ ตัวเลข
+            </span>
+          </ion-item>
+        </ion-col>
+        <ion-col >
           <ion-item>
-          <ion-label class="showlabel" position="floating">ตัวเลข</ion-label>
-          <ion-input formControlName="number" type="number"></ion-input>
-          <span class="error" *ngIf="isSubmitted && errorControl.number.errors?.required">
-            กรุณาระบุ ตัวเลข
+            <ion-label class="showlabel" position="floating">ขนาด</ion-label>
+            <ionic-selectable
+              interface="floating"
+              item-content
+              formControlName="mtd_size_id"
+              itemValueField="id"
+              itemTextField="size"
+              [items]="ports"
+              [canSearch]="true" 
+              closeButtonText="ยกเลิก"
+              >
+            </ionic-selectable>
+            <span class="error" *ngIf="isSubmitted && errorControl.mtd_size_id.errors?.required">
+              กรุณาระบุ ขนาด
+            </span>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col> 
+          <ion-item>
+          <ion-label class="showlabel" position="floating">จำนวนคงเหลือ</ion-label>
+          <ion-input formControlName="qty" type="number"></ion-input>
+          <span class="error" *ngIf="isSubmitted && errorControl.qty.errors?.required">
+            กรุณาระบุ จำนวนคงเหลือ
           </span>
         </ion-item>
       </ion-col>
-      <ion-col >
+      <ion-col > 
         <ion-item>
-          <ion-label class="showlabel" >ขนาด</ion-label>
-          <ionic-selectable
-            interface="floating"
-            item-content
-            formControlName="mtd_size_id"
-            itemValueField="id"
-            itemTextField="size"
-            [items]="ports"
-            [canSearch]="true" 
-            closeButtonText="ยกเลิก"
-            >
-          </ionic-selectable>
-          <span class="error" *ngIf="isSubmitted && errorControl.mtd_size_id.errors?.required">
-            กรุณาระบุ ขนาด
-          </span>
-        </ion-item>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col> 
-        <ion-item>
-        <ion-label class="showlabel" position="floating">จำนวนคงเหลือ</ion-label>
-        <ion-input formControlName="qty" type="number"></ion-input>
-        <span class="error" *ngIf="isSubmitted && errorControl.qty.errors?.required">
-          กรุณาระบุ จำนวนคงเหลือ
+        <ion-label class="showlabel" position="floating">ราคา</ion-label>
+        <ion-input formControlName="price" type="number"></ion-input>
+        <span class="error" *ngIf="isSubmitted && errorControl.price.errors?.required">
+          กรุณาระบุ ราคา
         </span>
       </ion-item>
     </ion-col>
-    <ion-col > 
+    <ion-col>
       <ion-item>
-      <ion-label class="showlabel" position="floating">ราคา</ion-label>
-      <ion-input formControlName="price" type="number"></ion-input>
-      <span class="error" *ngIf="isSubmitted && errorControl.price.errors?.required">
-        กรุณาระบุ ราคา
-      </span>
-    </ion-item>
-  </ion-col>
-  <ion-col>
-    <ion-item>
-      <ion-label class="showlabel" position="floating">จำนวนคงเหลือที่ยอมรับได้</ion-label>
-      <ion-input formControlName="qty_remain" type="number"></ion-input>
-      <span class="error" *ngIf="isSubmitted && errorControl.qty_remain.errors?.required">
-        กรุณาระบุ จำนวนคงเหลือที่ยอมรับได้
-      </span>
-    </ion-item>
-  </ion-col>
-  <ion-col>
-    <ion-item>
-      <ion-label class="showlabel" position="floating">จำนวนรอตัดยอด</ion-label>
-      <ion-input formControlName="tmpnumber_qty" type="number"></ion-input>
-    </ion-item>
+        <ion-label class="showlabel" position="floating">จำนวนคงเหลือที่ยอมรับได้</ion-label>
+        <ion-input formControlName="qty_remain" type="number"></ion-input>
+        <span class="error" *ngIf="isSubmitted && errorControl.qty_remain.errors?.required">
+          กรุณาระบุ จำนวนคงเหลือที่ยอมรับได้
+        </span>
+      </ion-item>
     </ion-col>
-    </ion-row>
-  </ion-grid>
-</form>
-<ion-content>
+    <ion-col>
+      <ion-item>
+        <ion-label class="showlabel" position="floating">จำนวนรอตัดยอด</ion-label>
+        <ion-input formControlName="tmpnumber_qty" type="number"></ion-input>
+      </ion-item>
+      </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</tab>
+<tab heading="ข้อมูลทั้งหมด" id="tab2">
   <div scrollY="true" id="myFixZone">
     <ion-searchbar placeholder="ค้นหา..." [(ngModel)]="filterTerm" animated="true"></ion-searchbar>
     <ion-list>
@@ -120,4 +125,6 @@
       </ion-infinite-scroll-content>
     </ion-infinite-scroll>
   </div>
+</tab>
+</tabset>
 </ion-content>

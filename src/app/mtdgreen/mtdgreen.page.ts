@@ -1,34 +1,49 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder,FormGroup,Validators} from "@angular/forms"; 
+import {FormBuilder,FormGroup,Validators, FormControl} from "@angular/forms"; 
 import { ConfigService } from "../sv/config.service";
-import { Subscription } from "rxjs"; 
+import { Subscription } from "rxjs";
 import { AlertController } from "@ionic/angular";
 import { MtdSvService} from '../sv/mtd-sv.service';
-import { NavController } from '@ionic/angular';
 @Component({
-  selector: 'app-mtdnumber',
-  templateUrl: './mtdnumber.page.html',
-  styleUrls: ['./mtdnumber.page.scss'],
+  selector: 'app-mtdgreen',
+  templateUrl: './mtdgreen.page.html',
+  styleUrls: ['./mtdgreen.page.scss'],
 })
-export class MtdnumberPage implements OnInit {
+export class MtdgreenPage implements OnInit {
   ionicForm: FormGroup;isSubmitted = false;
   sub: Subscription;filterTerm: string;
   id: number; data = [];  page = 0;maxpadding = 0;limit = 50;
-  constructor(public mtdSv: MtdSvService,public formBuilder: FormBuilder,public configSv: ConfigService,private alertCtrl: AlertController,private navCtrl: NavController) { }
+  constructor(public mtdSv: MtdSvService,public formBuilder: FormBuilder,public configSv: ConfigService,private alertCtrl: AlertController) { }
+  portControl_area: FormControl; ports_area: any;
+
 
   ngOnInit() {
+    this.portControl_area = this.formBuilder.control("", Validators.required);
     this.ionicForm = this.formBuilder.group({
       id: [""],
-      color: ["", [Validators.required]],
-      color_acronym: ["", [Validators.required]],
-      number_qty: [""],
+      namewin: ["", [Validators.required]],
+      mtd_area_id: this.portControl_area,
+      qty: [{value: 0,disabled: true},[Validators.required]],
+      tmpqty :[{value: 0,disabled: true}],  
       highlight: [""],
+      area_name:[""],
     });
-    this.loaddata(this.page);
+    this.loaddata_area(0);this.loaddata(0);
   }
 
   get errorControl() {
     return this.ionicForm.controls;
+  }
+
+
+  loaddata_area(padding: number, infiniteScroll?) {
+    this.sub = this.mtdSv
+      .getmtd(1,padding)
+      .subscribe((data) => {
+        if (data !== null) {
+          this.ports_area = data.data_detail.map((item) => Object.assign({}, item)); 
+        }
+      });
   }
 
   submitForm(){
@@ -45,16 +60,18 @@ export class MtdnumberPage implements OnInit {
         typesql = "update";
       }
      this.sub = this.mtdSv
-      .crudmtdnumber(this.ionicForm.value,typesql)
+      .crudmtdgreen(this.ionicForm.value,typesql)
       .subscribe((data) => {
         if (data !== null) {
           if (typesql === "insert") {
             if(data.status === 'ok'){
               this.data.unshift({
                 id: data.id,
-                color: this.ionicForm.controls.color.value,
-                color_acronym: this.ionicForm.controls.color_acronym.value,
-                number_qty:0,
+                namewin: this.ionicForm.controls.namewin.value,
+                mtd_area_id: this.ionicForm.controls.mtd_area_id.value.id,
+                area_name: this.ionicForm.controls.mtd_area_id.value.area_name,
+                qty: 0,
+                update_flg:0,
                 highlight: true,
               });
             }else{
@@ -66,7 +83,15 @@ export class MtdnumberPage implements OnInit {
               item = this.data.filter((val) => val.id == data.id);
               item.forEach((item) => {
                 for (const [key, value] of Object.entries(item)) {
-                   item[key] = this.ionicForm.controls[key].value;
+                  if (key === "mtd_area_id") {
+                    item[key] = this.ionicForm.controls[key].value.id;
+                  }else if(key === "area_name"){
+                    item[key] = this.ionicForm.controls['mtd_area_id'].value.area_name;
+                  }else if(key === "update_flg"){
+                    this.ionicForm.controls['qty'].enable();
+                  }else{
+                    item[key] = this.ionicForm.controls[key].value;
+                  }
                 }
               });
             }else{
@@ -93,14 +118,15 @@ export class MtdnumberPage implements OnInit {
   }
 
   refreshForm() {
-    this.ionicForm.reset();
+    this.ionicForm.reset({qty: 0});
+    this.ionicForm.controls['qty'].disable();
     this.isSubmitted = false;
   }
 
   loaddata(padding: number, infiniteScroll?) {
     let datalimit;
     this.sub = this.mtdSv
-      .getmtd(5,padding,this.limit)
+      .getmtd(10,padding,this.limit)
       .subscribe((data) => {
         if (data !== null) {
           this.maxpadding = data["maxpadding"];
@@ -112,6 +138,7 @@ export class MtdnumberPage implements OnInit {
         }
       });
   }
+
   selectData(id) {
     let item;
     item = this.data.filter((val) => val.id == id);
@@ -119,7 +146,21 @@ export class MtdnumberPage implements OnInit {
     item.forEach((item) => {
       for (const [key, value] of Object.entries(item)) {
         // console.log(key , value)
-        this.ionicForm.controls[key].setValue(value);
+        if (key === "mtd_area_id") {
+          let value_a = this.ports_area.filter(function (item1) {
+            return item1.id === value;
+          })[0];
+          this.portControl_area.setValue(value_a);
+        }else if(key === "update_flg"){
+          if(value === '1'){
+            this.ionicForm.controls['qty'].disable();
+          }else{
+            this.ionicForm.controls['qty'].enable();
+          }
+        }else{
+          this.ionicForm.controls[key].setValue(value);
+        }
+       
       }
     });
   }
@@ -144,7 +185,7 @@ export class MtdnumberPage implements OnInit {
         text: 'ตกลง',
           handler: (data: any) => {
            if(data['cause']){
-            this.sub = this.mtdSv.crudmtdnumber(item, 'cancel',data['cause']).subscribe(
+            this.sub = this.mtdSv.crudmtdgreen(item, 'cancel',data['cause']).subscribe(
               (data) => {
                 if(data.status == 'ok')
                 {   
@@ -180,12 +221,4 @@ export class MtdnumberPage implements OnInit {
     }
   }
 
-  addData(id,color){
-    this.navCtrl.navigateForward(['/mtdnumberdetail'],{
-      queryParams: {
-         value : JSON.stringify(this.data.filter(function (val) { return val.id == id;})),
-         xxx :'aaa',
-        },
-      });
-  }
 }

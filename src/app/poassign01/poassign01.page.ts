@@ -141,7 +141,7 @@ export class Poassign01Page implements OnInit {
      // console.log('check');
       this.dataallarray.push(data);
      }
-     console.log(this.dataallarray);
+     //console.log(this.dataallarray);
    }
 
    selectDatasome(index,data,checked){
@@ -150,7 +150,7 @@ export class Poassign01Page implements OnInit {
       //console.log('not check');
       this.datasomearray = this.datasomearray.filter(item => item.po_recivedate !== data['po_recivedate'])
      }
-     console.log(this.datasomearray);
+     //console.log(this.datasomearray);
    }
 
    async View(recivedate){

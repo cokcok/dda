@@ -4,11 +4,14 @@ import { ConfigService } from "../sv/config.service";
 import { Subscription } from "rxjs";
 import { PoSvService } from '../sv/po-sv.service';
 import { FormBuilder, FormGroup, Validators, FormControl, } from "@angular/forms";
+import {Poassign04Page} from '../poassign04/poassign04.page';
+
 import * as moment_ from 'moment';
 import 'moment/locale/th';
 const moment = moment_;
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
+
 (<any>pdfMake).vfs = pdfFonts.pdfMake.vfs;
 
 //ต้องระบุตามชื่อของ ไฟล์ font
@@ -290,7 +293,7 @@ export class Poassign03Page implements OnInit {
     let items = [];
    var self = this;
     items = vdata.map(function (item) {
-      return [item.seq, item.po_date, item.po_namewin, item.area_name, { text: item.countid, alignment: 'center' }, {  fillColor: self.colortxt[moment(item.po_recivedate,'DD/MM/YYYY').isoWeekday()],text:item.po_recivedate } ,item.detail,''];
+      return [item.seq, item.po_date, item.po_namewin, item.area_name, { text: item.countid, alignment: 'center' }, {  fillColor: self.colortxt[moment(item.po_recivedate,'DD/MM/YYYY').isoWeekday()],text:item.po_recivedate } ,item.detail,{ text: item.status_greendup, alignment: 'center' }];
     });
     //console.log(vdata,items);
     var docDefinition = {
@@ -333,6 +336,34 @@ export class Poassign03Page implements OnInit {
     }
     this.configSv.saveToDevice(pdfMake.createPdf(docDefinition), "green.pdf");
   }
+
+
+  async ViewData(id,seq,assign_date,total){
+    let item = this.data.filter((val) => val.id == id);
+  
+    console.log(item);  
+    const modal = await this.modalCtrl.create({
+      component:Poassign04Page,
+      cssClass: 'my-modal',
+      componentProps:{id:id,assign_date:assign_date,seq:seq,total:total},
+    });
+    await modal.present();
+    const {data,role} = await modal.onWillDismiss();
+    // if(role === 'somedata'){
+    //  this.datasomearray = data;
+    //  item[0].checksomedata = true;
+    // }
+    if(role === 'delete'){
+      //console.log(data,data[0]['id']);
+      if(data[0]['id'] === 'all'){
+        this.data = this.data.filter(obj => obj.id !== id);
+        this.maxdatalimit = this.maxdatalimit - 1;
+      }else{
+        item[0].total  = item[0].total - Number(data[0]['id']);
+      }
+    }
+  }
+
 
   getDataObjectGreen(vdata){
     //console.log(vdata);

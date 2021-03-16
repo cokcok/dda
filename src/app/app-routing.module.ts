@@ -5,7 +5,7 @@ const routes: Routes = [
   {
     path: '',
     //redirectTo: 'folder/Inbox',
-    redirectTo: 'poassign03',
+    redirectTo: 'mtdgreen',
    // redirectTo: 'signin',
     pathMatch: 'full'
   },
@@ -128,6 +128,14 @@ const routes: Routes = [
   {
     path: 'poassign03',
     loadChildren: () => import('./poassign03/poassign03.module').then( m => m.Poassign03PageModule)
+  },
+  {
+    path: 'poassign04',
+    loadChildren: () => import('./poassign04/poassign04.module').then( m => m.Poassign04PageModule)
+  },
+  {
+    path: 'mtdgreen',
+    loadChildren: () => import('./mtdgreen/mtdgreen.module').then( m => m.MtdgreenPageModule)
   }
 ];
 

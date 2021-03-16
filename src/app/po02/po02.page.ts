@@ -165,7 +165,8 @@ export class Po02Page implements OnInit {
       item[0].qty = data[0]['qty'];
       item[0].po_total = data[0]['po_total'];
     }else if(role === 'cancel'){
-      item[0].po_statustext = data[0]['po_statustext'];
+      item[0].po_statustext = data[0]['po_statustext']; 
+      item[0].po_status = 8; 
     }
   }
   

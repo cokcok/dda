@@ -136,13 +136,13 @@ export class PoSvService {
     const header = { 'Content-Type': 'application/json' };
     const apiUrl = this.configSv.ip + 'po_assign.php';
     let data;
-    if (type === 'cancel') {
+    if (type === 'delete') {
       data = {
         'id': vdata.id,
         'emp_id': this.configSv.emp_id,
-        'oldtmpproduct' : vdata.oldtmpproduct,
-        'type_sql': type,
-        'cause': cause
+        'dataall' : vdata.dataall,
+        'total' : vdata.total,
+        'type_sql': type
       }
     }
     else {
@@ -159,13 +159,15 @@ export class PoSvService {
     return this.http.post<FeedBack>(apiUrl, data, { headers: header });
   }
 
-  getpoassignreport(type,id): Observable<data> {
+  getpoassignreport(type,id,padding?,limit?): Observable<data> {
     const header = { 'Content-Type': 'application/json' };
     let apiUrl = this.configSv.ip + 'po_assign_report.php';
     //console.log(vdata);
      let data = {
       'id' : id,
       'type_sql': type,
+      'padding': padding,
+      'limit': limit,
     }
     //console.log(data);
     return this.http.post<data>(apiUrl, data, { headers: header });
