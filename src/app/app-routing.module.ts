@@ -5,7 +5,7 @@ const routes: Routes = [
   {
     path: '',
     //redirectTo: 'folder/Inbox',
-    redirectTo: 'mtdgreen',
+    redirectTo: 'pocfcupon01',
    // redirectTo: 'signin',
     pathMatch: 'full'
   },
@@ -136,6 +136,14 @@ const routes: Routes = [
   {
     path: 'mtdgreen',
     loadChildren: () => import('./mtdgreen/mtdgreen.module').then( m => m.MtdgreenPageModule)
+  },
+  {
+    path: 'pocfcupon01',
+    loadChildren: () => import('./pocfcupon01/pocfcupon01.module').then( m => m.Pocfcupon01PageModule)
+  },
+  {
+    path: 'pocfcupon02',
+    loadChildren: () => import('./pocfcupon02/pocfcupon02.module').then( m => m.Pocfcupon02PageModule)
   }
 ];
 

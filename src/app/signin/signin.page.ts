@@ -23,8 +23,8 @@ ConfigService
 
   ngOnInit() {
     this.ionicForm = this.formBuilder.group({
-      name: ['root', [Validators.required]],
-      password: ['root1234', [Validators.required]]
+      name: ['dda', [Validators.required]],
+      password: ['dda', [Validators.required]]
       /* ,email: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
       dob: [this.defaultDate],
       mobile: ['', [Validators.required, Validators.pattern('^[0-9]+$')]] */

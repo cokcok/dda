@@ -1,4 +1,4 @@
-<ion-header>  
+<ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
@@ -18,122 +18,116 @@
 </ion-header>
 
 <ion-content>
-<tabset>
-  <tab heading="แบบฟอร์ม" id="tab1">
-  <form [formGroup]="ionicForm" novalidate>
-    <ion-grid fixed>
-      <ion-row>
-        <ion-col>
-          เลขที่ระบบ <input type="text" formControlName="id" disabled class="IDnoshowBG">
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col>
-          <ion-item>
-            <ion-label class="showlabel" position="floating">ชื่อสินค้า</ion-label>
-            <ion-input formControlName="product_name" type="text"></ion-input>
-            <span class="error" *ngIf="isSubmitted && errorControl.product_name.errors?.required">
-              กรุณาระบุ สินค้า
-            </span>
-          </ion-item>
-        </ion-col>
-        <ion-col>
-          <ion-item>
-            <ion-label class="showlabel" position="floating">รายละเอียดสินค้า</ion-label>
-            <ion-input formControlName="product_desc" type="text"></ion-input>
-          </ion-item>
-        </ion-col>
-        <ion-col >
-          <ion-item>
-            <ion-label class="showlabel" position="floating">ประเภทสินค้า</ion-label>
-            <ionic-selectable
-              interface="floating"
-              item-content
-              formControlName="product_type_id"
-              itemValueField="id"
-              itemTextField="product_type"
-              [items]="ports"
-              [canSearch]="true" 
-              closeButtonText="ยกเลิก"
-              >
-            </ionic-selectable>
-            <span class="error" *ngIf="isSubmitted && errorControl.product_type_id.errors?.required">
-              กรุณาระบุ ประเภทสินค้า
-            </span>
-          </ion-item>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col>
-          <ion-item>
-            <ion-label class="showlabel" position="floating">แบบ</ion-label>
-            <ion-input formControlName="product_pattern" type="text"></ion-input>
-          </ion-item>
-        </ion-col>
-        <ion-col>
-          <ion-item>
-            <ion-label class="showlabel" position="floating">รุ่น</ion-label>
-            <ion-input formControlName="product_model" type="text"></ion-input>
-          </ion-item>
-        </ion-col>
-        <ion-col>
-          <ion-item>
-            <ion-label class="showlabel" position="floating">สี</ion-label>
-            <ion-input formControlName="product_color" type="text"></ion-input>
-          </ion-item>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col>
-          <p>แนบรูปภาพสินค้า   <input type="file" (change)="fileUpload_img($event)" id="file-input" style="position:absolute; top: -999999px" #fileIngimg>
-            <button ion-button (click)="onClick_fileUpload()">Upload</button>
-            <div  >
-           <div  style="display: inline-block;" *ngFor="let img of picpreview" >
-            <ion-img style="width: 100px; height: 100px;"  [src]="img.url"></ion-img>
-            <ion-button (click)="delImg(img.id)">
-              <ion-icon slot="icon-only" size="small" name="trash"></ion-icon>
-            </ion-button>
-           </div>
-          </div>
-            <p>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </form>
-</tab>
-<tab heading="ข้อมูลทั้งหมด" id="tab2">
-  <div scrollY="true" id="myFixZone">
-    <ion-searchbar placeholder="ค้นหา..." [(ngModel)]="filterTerm" animated="true"></ion-searchbar>
-    <ion-list>
-      <div class="content_alert">**จะลบได้ก็ต่อเมื่อ ยอดคงเหลือทั้งหมดเท่ากับ 0</div>
-      <ion-item-sliding *ngFor="let c of data   | filter:filterTerm;  index as i" [ngClass]="c.highlight ? 'newdata': ''"
-        (click)="selectData(c.id)">
-        <ion-item>
-          <ion-label>
-            <ion-text color="primary">
-              <h3>ลำดับที่ {{i+1}} สินค้า : {{ c.product_name }} ประเภทสินค้า: {{ c.product_type_name  }}</h3>
-              <h3>แบบ : {{ c.product_pattern }} รุ่น : {{ c.product_model }} สี : {{ c.product_color }}</h3>
-            </ion-text>
-          </ion-label>
-          <ion-badge slot="end" color="success">{{ c.id }}</ion-badge>
-        </ion-item>
-        <ion-item-options>
-          <ion-item-option  (click)="addData(c.id)">
-            <ion-icon slot="end" name="add"></ion-icon>
-            เพิ่มสินค้า
-          </ion-item-option>
-          <ion-item-option *ngIf="c.number_qty==0" color="danger" (click)="cancelData(c.id)">
-            <ion-icon slot="end" name="trash"></ion-icon>
-            ลบ
-          </ion-item-option>
-        </ion-item-options>
-      </ion-item-sliding>
-    </ion-list>
-    <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
-      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
-      </ion-infinite-scroll-content>
-    </ion-infinite-scroll>
-  </div>
-  </tab>
-</tabset>
+  <tabset>
+    <tab heading="แบบฟอร์ม" id="tab1">
+      <form [formGroup]="ionicForm" novalidate>
+        <ion-grid fixed>
+          <ion-row>
+            <ion-col>
+              เลขที่ระบบ <input type="text" formControlName="id" disabled class="IDnoshowBG">
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-label class="showlabel" position="floating">ชื่อสินค้า</ion-label>
+                <ion-input formControlName="product_name" type="text"></ion-input>
+                <span class="error" *ngIf="isSubmitted && errorControl.product_name.errors?.required">
+                  กรุณาระบุ สินค้า
+                </span>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-label class="showlabel" position="floating">รายละเอียดสินค้า</ion-label>
+                <ion-input formControlName="product_desc" type="text"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-label class="showlabel" position="floating">ประเภทสินค้า</ion-label>
+                <ionic-selectable interface="floating" item-content formControlName="product_type_id"
+                  itemValueField="id" itemTextField="product_type" [items]="ports" [canSearch]="true"
+                  closeButtonText="ยกเลิก">
+                </ionic-selectable>
+                <span class="error" *ngIf="isSubmitted && errorControl.product_type_id.errors?.required">
+                  กรุณาระบุ ประเภทสินค้า
+                </span>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-label class="showlabel" position="floating">แบบ</ion-label>
+                <ion-input formControlName="product_pattern" type="text"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-label class="showlabel" position="floating">รุ่น</ion-label>
+                <ion-input formControlName="product_model" type="text"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-label class="showlabel" position="floating">สี</ion-label>
+                <ion-input formControlName="product_color" type="text"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <p>แนบรูปภาพสินค้า <input type="file" (change)="fileUpload_img($event)" id="file-input"
+                  style="position:absolute; top: -999999px" #fileIngimg>
+                <button ion-button (click)="onClick_fileUpload()">Upload</button>
+                <div>
+                  <div style="display: inline-block;" *ngFor="let img of picpreview">
+                    <ion-img style="width: 100px; height: 100px;" [src]="img.url"></ion-img>
+                    <ion-button (click)="delImg(img.id)">
+                      <ion-icon slot="icon-only" size="small" name="trash"></ion-icon>
+                    </ion-button>
+                  </div>
+                </div>
+                <p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </form>
+    </tab>
+    <tab heading="ข้อมูลทั้งหมด" id="tab2">
+      <div scrollY="true" id="myFixZone">
+        <ion-searchbar placeholder="ค้นหา..." [(ngModel)]="filterTerm" animated="true"></ion-searchbar>
+        <ion-list>
+          <div class="content_alert">**จะลบได้ก็ต่อเมื่อ ยอดคงเหลือทั้งหมดเท่ากับ 0</div>
+          <ion-item-sliding *ngFor="let c of data   | filter:filterTerm;  index as i"
+            [ngClass]="c.highlight ? 'newdata': ''" (click)="selectData(c.id)">
+            <ion-item>
+              <ion-label>
+                <ion-text color="primary">
+                  <h3>ลำดับที่ {{i+1}} สินค้า : {{ c.product_name }} ประเภทสินค้า: {{ c.product_type_name  }}</h3>
+                  <h3>แบบ : {{ c.product_pattern }} รุ่น : {{ c.product_model }} สี : {{ c.product_color }}</h3>
+                </ion-text>
+              </ion-label>
+              <ion-badge slot="end" color="success">{{ c.id }}</ion-badge>
+            </ion-item>
+            <ion-item-options>
+              <ion-item-option (click)="addData(c.id)">
+                <ion-icon slot="end" name="add"></ion-icon>
+                เพิ่มสินค้า
+              </ion-item-option>
+              <ion-item-option *ngIf="c.number_qty==0" color="danger" (click)="cancelData(c.id)">
+                <ion-icon slot="end" name="trash"></ion-icon>
+                ลบ
+              </ion-item-option>
+            </ion-item-options>
+          </ion-item-sliding>
+        </ion-list>
+        <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+          <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+          </ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+      </div>
+    </tab>
+  </tabset>
 </ion-content>

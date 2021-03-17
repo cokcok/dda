@@ -7,7 +7,6 @@ import { FormBuilder, FormGroup, Validators, FormControl, } from "@angular/forms
 import * as moment_ from 'moment';
 import 'moment/locale/th';
 import {Poassign02Page} from '../poassign02/poassign02.page';
-
 const moment = moment_;
 
 @Component({
@@ -67,7 +66,7 @@ export class Poassign01Page implements OnInit {
       }
     };
   }
-
+ 
   loaddata(padding: number, infiniteScroll?){
     if(padding == 0){this.data = []};
     this.sub = this.poSv

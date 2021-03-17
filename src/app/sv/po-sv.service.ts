@@ -174,5 +174,16 @@ export class PoSvService {
   }
 
 
+  getcfcupon(type,vdata:any): Observable<data> {
+    const header = { 'Content-Type': 'application/json' };
+    let apiUrl = this.configSv.ip + 'cfcupon.php';
+     let data = {
+       'id' : vdata.id,
+      'po_assigndate' : vdata.po_assigndate,
+      'type_sql': type,
+    }
+    return this.http.post<data>(apiUrl, data, { headers: header });
+  }
+
 }
   
