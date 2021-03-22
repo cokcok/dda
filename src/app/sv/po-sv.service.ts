@@ -178,11 +178,36 @@ export class PoSvService {
     const header = { 'Content-Type': 'application/json' };
     let apiUrl = this.configSv.ip + 'cfcupon.php';
      let data = {
-       'id' : vdata.id,
+      'id' : vdata.id,
       'po_assigndate' : vdata.po_assigndate,
       'type_sql': type,
     }
     return this.http.post<data>(apiUrl, data, { headers: header });
+  }
+
+  crudcfcupon(vdata: any, type: string, cause?): Observable<FeedBack> {
+    const header = { 'Content-Type': 'application/json' };
+    const apiUrl = this.configSv.ip + 'cfcupon.php';
+    let data;
+    if (type === 'delete') {
+      data = {
+        'id': vdata.id,
+        'emp_id': this.configSv.emp_id,
+        'dataall' : vdata.dataall,
+        'total' : vdata.total,
+        'type_sql': type
+      }
+    }
+    else {
+      data = {
+        'id': vdata.id,
+        'total':vdata.total,
+        'dataall' : vdata.dataall,
+        'emp_id': this.configSv.emp_id,
+        'type_sql': type
+      }
+    }
+    return this.http.post<FeedBack>(apiUrl, data, { headers: header });
   }
 
 }

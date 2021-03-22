@@ -21,8 +21,8 @@ export class Pocfcupon01Page implements OnInit {
   ionicForm: FormGroup;isSubmitted = false; 
   data = []; page = 0;maxpadding:number;limit = 50;
   sub: Subscription; maxdatalimit=0;filterTerm: string;
-  datePickerObj: any = {};
-  array_status = ['0','1'];
+  datePickerObj: any = {}; typesearch:boolean = false;
+  array_status = ['0','2'];
   constructor(public configSv: ConfigService,private poSv: PoSvService,public formBuilder: FormBuilder,private modalCtrl:ModalController,private alertCtrl: AlertController) { }
 
   ngOnInit() {
@@ -82,22 +82,38 @@ export class Pocfcupon01Page implements OnInit {
     });
   }
 
-
-  async View(id,assign_date,seq){
+  SearchData(){
+    this.typesearch = true;
+    this.sub = this.poSv
+    .getcfcupon('search',this.ionicForm.value)
+    .subscribe((data) => {
+      if (data !== null) {
+        this.data =  data.data_detail.map((item) => Object.assign({}, item));
+      }else{
+        this.data = [];
+      }
+    });
+  }
+  
+  async View(id,assign_date,seq,total){
     let item = this.data.filter((val) => val.id == id);
 
-    //console.log(item);  
+    console.log(item);  
     const modal = await this.modalCtrl.create({
       component:Pocfcupon02Page,
       cssClass: 'my-modal',
-      componentProps:{id:id,assign_date:assign_date,seq:seq},
+      componentProps:{id:id,assign_date:assign_date,seq:seq,total:total},
     });
     await modal.present();
     const {data,role} = await modal.onWillDismiss();
-    // if(role === 'somedata'){
-    //  this.datasomearray = data;
-    //  item[0].checksomedata = true;
-    // }
+    if(role === 'confirm'){
+      console.log(data);
+      if( typeof data != 'undefined'){ 
+        item[0].po_assign_status = data;
+        item[0].po_statustext = this.configSv.numberalltxt[data];
+      }
+     }
+
   }
 
 }

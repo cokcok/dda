@@ -19,14 +19,19 @@
         </ion-item>
       </ion-col>
       <ion-col>
-        <ion-button [disabled]="ionicForm.invalid" (click)="SerachData(0)" expand="block" shape="round">
+        <ion-button [disabled]="ionicForm.invalid" (click)="SearchData()" expand="block" shape="round">
           ค้นหาข้อมูล
         </ion-button>
       </ion-col>
-    </ion-row>
-    <ion-row class="content_alert" *ngIf="ionicForm.controls['typeserach'].value === '0'">
       <ion-col>
-        พบข้อมูลที่ค้นหา จำนวน {{maxdatalimit}} ข้อมูล
+        <ion-button  (click)="loaddata(0)" expand="block" shape="round">
+          ค้นหาข้อมูลที่ค้างทั้งหมด
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row class="content_alert" *ngIf="typesearch === true">
+      <ion-col>
+        พบข้อมูลที่ค้นหา จำนวน {{data.length}} ข้อมูล
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -50,7 +55,7 @@
         <ion-col>
           <ion-item>
             <ion-label class="showlabelheader"> งานปักทั้งหมด {{c.total }} รายการ</ion-label>
-            <ion-button fill="outline" slot="end" color="success" (click)="View(c.id,c.po_assign_date,c.seq)">ดูรายละเอียด</ion-button>
+            <ion-button fill="outline" slot="end" color="success" (click)="View(c.id,c.po_assign_date,c.seq,c.total)">ดูรายละเอียด</ion-button>
           </ion-item>
         </ion-col>
       </ion-row>

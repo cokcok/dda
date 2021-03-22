@@ -26,7 +26,7 @@ export class Poassign01Page implements OnInit {
     this.ionicForm = this.formBuilder.group({
       typeserch_id: ["9"],
       txtserach: ["",[Validators.required]],
-      po_assigndate:[ moment().format('L') ,[Validators.required]],
+      po_assigndate:[ moment().format('DD/MM/YYYY') ,[Validators.required]],
       seq: [],
       dataall:[],
       datasome:[],
@@ -87,7 +87,7 @@ export class Poassign01Page implements OnInit {
   }
 
 
-  SerachData(padding: number,  infiniteScroll?){
+  SearchData(padding: number,  infiniteScroll?){
     //if(this.tmptxtser == null){
     //  this.tmptxtser = this.ionicForm.controls['txtserach'].value;
    // }
@@ -122,7 +122,7 @@ export class Poassign01Page implements OnInit {
     if (typeserach == 9){
       this.loaddata(this.page * this.limit, infiniteScroll);
     }else{
-      this.SerachData(this.page * this.limit, infiniteScroll);
+      this.SearchData(this.page * this.limit, infiniteScroll);
     }
     
     if (this.page === this.maxpadding) {

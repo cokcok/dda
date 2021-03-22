@@ -41,12 +41,12 @@ export class Poassign03Page implements OnInit {
   datePickerObj: any = {};
   // currentDate = new Date().toLocaleDateString();
   // currentTime = new Date().toLocaleTimeString();
-  colortxt = ['#000000', '#ffff00', '#FF00F3', '#008000', '#ffa500', '#87ceeb', '#800080', '#ff0000'];
+ // colortxt = ['#000000', '#ffff00', '#FF00F3', '#008000', '#ffa500', '#87ceeb', '#800080', '#ff0000'];
   constructor(public configSv: ConfigService, private poSv: PoSvService, public formBuilder: FormBuilder, private modalCtrl: ModalController, private alertCtrl: AlertController) { }
 
   ngOnInit() {
     this.ionicForm = this.formBuilder.group({
-      txtserach: [moment().format('L'), [Validators.required]],
+      txtserach: [moment().format('DD/MM/YYYY'), [Validators.required]],
     });
     this.fndate(); this.loaddata(0);
     //console.log(this.currentDate,this.currentTime);
@@ -183,7 +183,7 @@ export class Poassign03Page implements OnInit {
         colorback : "" ,
         pic : "" ,
         etc : "" ,
-        po_status : "" ,
+        po_statustxt : "" ,
       });
     }
     const exs = [];
@@ -234,7 +234,7 @@ export class Poassign03Page implements OnInit {
             text: 'ขนาด: ' + element['size']
           },{
             border: [false, false, true, false],
-            fillColor: this.colortxt[moment(element['po_recivedate'],'DD/MM/YYYY').isoWeekday()],
+            fillColor: this.configSv.colortxt[moment(element['po_recivedate'],'DD/MM/YYYY').isoWeekday()],
             text: 'วันนัดรับ: ' +  element['po_recivedate'] 
           }
         ],
@@ -245,7 +245,7 @@ export class Poassign03Page implements OnInit {
             text:  'สินค้าอื่น: ' + element['etc']
           },'','',{
             border: [false, false, true, false],
-            text: 'สถานะ: ' + element['po_status'] 
+            text: 'สถานะใบสั่งซื้อ: ' + element['po_statustxt'] 
           },
         ],
         [
@@ -293,7 +293,7 @@ export class Poassign03Page implements OnInit {
     let items = [];
    var self = this;
     items = vdata.map(function (item) {
-      return [item.seq, item.po_date, item.po_namewin, item.area_name, { text: item.countid, alignment: 'center' }, {  fillColor: self.colortxt[moment(item.po_recivedate,'DD/MM/YYYY').isoWeekday()],text:item.po_recivedate } ,item.detail,{ text: item.status_greendup, alignment: 'center' }];
+      return [item.seq, item.po_date, item.po_namewin, item.area_name, { text: item.countid, alignment: 'center' }, {  fillColor: self.configSv.colortxt[moment(item.po_recivedate,'DD/MM/YYYY').isoWeekday()],text:item.po_recivedate } ,item.detail,{ text: item.status_greendup, alignment: 'center' }];
     });
     //console.log(vdata,items);
     var docDefinition = {

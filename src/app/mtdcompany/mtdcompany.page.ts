@@ -45,7 +45,7 @@ export class MtdcompanyPage implements OnInit {
 
 
   submitForm(){
-    console.log(this.ionicForm.value)
+    //console.log(this.ionicForm.value)
     this.isSubmitted = true;
     if (!this.ionicForm.valid) {
       console.log("Please provide all the required values!");

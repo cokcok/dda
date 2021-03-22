@@ -18,6 +18,7 @@ import * as $ from "jquery";
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
+import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -26,6 +27,7 @@ import { FileOpener } from '@ionic-native/file-opener/ngx';
     IonicModule.forRoot(),AutoCompleteModule,
     AppRoutingModule,Ng2SearchPipeModule,IonicSelectableModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),NgSelectModule //,FileOpener
+    ,NgIdleKeepaliveModule.forRoot()
   ],
   providers: [
     StatusBar,

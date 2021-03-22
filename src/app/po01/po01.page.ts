@@ -53,7 +53,7 @@ export class Po01Page implements OnInit {
     this.ionicForm = this.formBuilder.group({
       id:[this.id],
       po_running:[""],
-      po_date:[moment().format('L'),[Validators.required]],
+      po_date:[moment().format('DD/MM/YYYY'),[Validators.required]],
       mtd_user_id:this.portControl_sale,
       po_namewin: ["",[Validators.required]],
       mtd_area_id: this.portControl_area,

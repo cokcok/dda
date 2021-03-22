@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import {SigninSvService} from '../sv/signin-sv.service';
 import {ConfigService} from '../sv/config.service';
-
+ 
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.page.html',
@@ -29,6 +29,7 @@ ConfigService
       dob: [this.defaultDate],
       mobile: ['', [Validators.required, Validators.pattern('^[0-9]+$')]] */
     });
+    
   }
  
   ionViewWillEnter() {
@@ -40,6 +41,7 @@ ConfigService
        this.versionNumber = aux[i].content;
       }
     }
+    this.configSv.stopidle();
   }
 
   
@@ -64,6 +66,8 @@ ConfigService
             //console.log(data); 
             this.signinSv.publishSomeData(data); 
              setTimeout(() => {
+              this.isSubmitted = false;
+               this.ionicForm.reset();
               this.navCtrl.navigateForward('/maindda');
             }, 2100); 
           }

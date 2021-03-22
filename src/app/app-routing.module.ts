@@ -5,8 +5,8 @@ const routes: Routes = [
   {
     path: '',
     //redirectTo: 'folder/Inbox',
-    redirectTo: 'pocfcupon01',
-   // redirectTo: 'signin',
+    //redirectTo: 'pocfcupon01',
+    redirectTo: 'signin',
     pathMatch: 'full'
   },
   {

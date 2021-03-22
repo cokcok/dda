@@ -240,7 +240,7 @@ export class Mtd01Page implements OnInit {
     let item;this.picpreview = [];this.picresizbase64Array.clear();
     item = this.data.filter((val) => val.id == id);
     this.disableSelect = true;
-    console.log(item);
+    //console.log(item);
     //this.ionicForm.controls['username'].disable();
     item.forEach((item) => {
       for (const [key, value] of Object.entries(item)) {
@@ -294,7 +294,6 @@ export class Mtd01Page implements OnInit {
            if(data['cause']){
             this.sub = this.mtdSv.crudmtd01(item, 'cancel',data['cause']).subscribe(
               (data) => {
-                console.log(data);
                 if(data.status == 'ok')
                 {   
                   this.configSv.ChkformAlert(data.message);

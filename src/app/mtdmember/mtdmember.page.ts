@@ -31,7 +31,7 @@ export class MtdmemberPage implements OnInit {
     this.picresizbase64Array = this.formBuilder.array([]);
     this.ionicForm = this.formBuilder.group({
       id: [""],
-      member_date: [moment().format('L'), [Validators.required]],
+      member_date: [moment().format('DD/MM/YYYY'), [Validators.required]],
       member_idcard: ["", [Validators.required,Validators.minLength(13)]],
       member_name: ["", [Validators.required]],
       member_surname: ["", [Validators.required]] ,
