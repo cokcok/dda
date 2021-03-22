@@ -12,7 +12,8 @@
       <ion-col>
         <ion-item>
           <ion-label class="showlabel" position="floating">ค้นหาวันที่มอบหมายงาน</ion-label>
-          <ion-input formControlName="po_assigndate" readonly [liIonic4Datepicker]="datePickerObj" type="text"></ion-input>
+          <ion-input formControlName="po_assigndate" readonly [liIonic4Datepicker]="datePickerObj" type="text">
+          </ion-input>
           <span class="error" *ngIf="isSubmitted && errorControl.po_assigndate.errors?.required">
             กรุณาระบุ คำค้นหา
           </span>
@@ -24,7 +25,7 @@
         </ion-button>
       </ion-col>
       <ion-col>
-        <ion-button  (click)="loaddata(0)" expand="block" shape="round">
+        <ion-button (click)="loaddata(0)" expand="block" shape="round">
           ค้นหาข้อมูลที่ค้างทั้งหมด
         </ion-button>
       </ion-col>
@@ -37,7 +38,7 @@
   </ion-grid>
 </form>
 <ion-content>
-  
+
   <div>
     <ion-searchbar placeholder="ค้นหา..." [(ngModel)]="filterTerm" animated="true"></ion-searchbar>
     <ion-card *ngFor="let c of data  | filter:filterTerm;index as i">
@@ -55,18 +56,19 @@
         <ion-col>
           <ion-item>
             <ion-label class="showlabelheader"> งานปักทั้งหมด {{c.total }} รายการ</ion-label>
-            <ion-button fill="outline" slot="end" color="success" (click)="View(c.id,c.po_assign_date,c.seq,c.total)">ดูรายละเอียด</ion-button>
+            <ion-button fill="outline" slot="end" color="success" (click)="View(c.id,c.po_assign_date,c.seq,c.total)">
+              ดูรายละเอียด</ion-button>
           </ion-item>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-item>
-         
+          <ion-label> <u class="showlabelheader">สถานะ :</u> <span
+              [ngClass]="{'postatus_alert': array_status.includes(c.po_assign_status),'postatus_ok':!array_status.includes(c.po_assign_status)}">
+              {{ c.po_statustext }}</span></ion-label>
 
-          <ion-label> <u class="showlabelheader">สถานะ :</u> <span [ngClass]="{'postatus_alert': array_status.includes(c.po_assign_status),'postatus_ok':!array_status.includes(c.po_assign_status)}"> {{ c.po_statustext }}</span></ion-label> 
-        
         </ion-item>
-       
+
       </ion-row>
     </ion-card>
   </div>

@@ -104,7 +104,7 @@ export class ConfigService {
   }
 
   stopidle(){
-    console.log('stop',this.timedOut);
+    //console.log('stop',this.timedOut);
     //this.ChkformAlert('session_timeout');
     this.idle.timeout();
   }

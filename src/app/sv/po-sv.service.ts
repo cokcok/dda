@@ -179,6 +179,7 @@ export class PoSvService {
     let apiUrl = this.configSv.ip + 'cfcupon.php';
      let data = {
       'id' : vdata.id,
+      'po_todaydate' : vdata.po_todaydate,
       'po_assigndate' : vdata.po_assigndate,
       'type_sql': type,
     }

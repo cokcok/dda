@@ -20,7 +20,7 @@ export class Pocfcupon02Page implements OnInit {
   ionicForm: FormGroup;isSubmitted = false; 
   data = []; page = 0;maxpadding:number;limit = 50;
   sub: Subscription; maxdatalimit=0;filterTerm: string;
-  dataallarray = []; assign_statusAll:string;
+  dataallarray = []; assign_statusAll:number;
   checkallstatus:boolean = false;data_check=[];checkall:boolean;
   constructor(public configSv: ConfigService,private poSv: PoSvService,public formBuilder: FormBuilder,private modalCtrl:ModalController,private alertCtrl: AlertController,private iab: InAppBrowser) { }
 
@@ -44,7 +44,6 @@ export class Pocfcupon02Page implements OnInit {
     .getcfcupon('readid',this.ionicForm.value)
     .subscribe((data) => {
       if (data !== null) {
-        console.log(data);
         this.data =  data.data_detail.map((item) => Object.assign({}, item));
         if (infiniteScroll) {
           infiniteScroll.target.complete();
@@ -79,16 +78,6 @@ export class Pocfcupon02Page implements OnInit {
       }
       this.checkallstatus = false;this.dataallarray = [];
      }
-    console.log(this.dataallarray);
-     
-    // this.dataallarray.forEach(function (value, key) {
-    //     console.log(value,key,value['assign_id']);
-    //     this.data.forEach(element => {
-    //       if(element['assign_id'] == value['assign_id']){
-    //         console.log('a');
-    //       }
-    //     });
-    // });
    }
 
    selectData(index,data,checked){
@@ -98,13 +87,13 @@ export class Pocfcupon02Page implements OnInit {
      }else{
       this.dataallarray.push(data);
      }
-     console.log(this.dataallarray);
+     //console.log(this.dataallarray);
+    
    }
 
    async submitForm(){
     this.ionicForm.controls['dataall'].setValue(this.dataallarray);
-
-    console.log(this.ionicForm.value);
+    //console.log(this.ionicForm.value);
     const confirm =  await this.alertCtrl.create({
       header: 'ยืนยันข้อมูลในการปรับสถานะการปัก',
       //message: 'แน่ใจว่าต้องการลบเลขระบบที่ '+ item +' ? ',
@@ -122,10 +111,11 @@ export class Pocfcupon02Page implements OnInit {
           .subscribe((data) => {
             if (data !== null) {
                 if(data.status === 'ok'){
-                  this.assign_statusAll = data._value;
-                  this.compareArray(this.data,this.data_check);
+                  this.assign_statusAll = data.id;
+                  this.compareArray(this.data,this.dataallarray);
                   this.configSv.ChkformAlert(data.message);
                   this.dataallarray = [];
+                  this.checkallstatus = false;this.checkall =false;
                 }
             }
           },
@@ -142,7 +132,8 @@ export class Pocfcupon02Page implements OnInit {
     dataall.forEach( array1Ttem => {
         dataselect.forEach( array2Item => {
            if(array1Ttem.assign_id == array2Item.assign_id){
-              //array1Ttem.disable_checked  = true;
+              array1Ttem.disable_checked  = true;
+              array1Ttem.status_checked  = true;
               array1Ttem.poassign_number  = 1;
               array1Ttem.poassign_numbertxt  = 'งานปักเลขสำเร็จ';
           }

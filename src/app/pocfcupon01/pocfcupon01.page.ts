@@ -28,6 +28,7 @@ export class Pocfcupon01Page implements OnInit {
   ngOnInit() {
       this.ionicForm = this.formBuilder.group({
         po_assigndate:[ "" ,[Validators.required]],
+        po_todaydate:[ moment().format('DD/MM/YYYY')],
         typeserach:[],
       }); 
       this.fndate();this.loaddata(0);
@@ -98,7 +99,6 @@ export class Pocfcupon01Page implements OnInit {
   async View(id,assign_date,seq,total){
     let item = this.data.filter((val) => val.id == id);
 
-    console.log(item);  
     const modal = await this.modalCtrl.create({
       component:Pocfcupon02Page,
       cssClass: 'my-modal',
@@ -107,9 +107,8 @@ export class Pocfcupon01Page implements OnInit {
     await modal.present();
     const {data,role} = await modal.onWillDismiss();
     if(role === 'confirm'){
-      console.log(data);
       if( typeof data != 'undefined'){ 
-        item[0].po_assign_status = data;
+        item[0].po_assign_status = String(data);
         item[0].po_statustext = this.configSv.numberalltxt[data];
       }
      }
