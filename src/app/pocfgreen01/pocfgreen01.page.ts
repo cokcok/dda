@@ -6,18 +6,17 @@ import { PoSvService } from '../sv/po-sv.service';
 import { FormBuilder, FormGroup, Validators, FormControl, } from "@angular/forms"; 
 import * as moment_ from 'moment';
 import 'moment/locale/th';
-import {Pocfcupon02Page} from '../pocfcupon02/pocfcupon02.page';
+import {Pocfgreen02Page} from '../pocfgreen02/pocfgreen02.page';
+
 const moment = moment_;
 
 
-
-
 @Component({
-  selector: 'app-pocfcupon01',
-  templateUrl: './pocfcupon01.page.html',
-  styleUrls: ['./pocfcupon01.page.scss'],
+  selector: 'app-pocfgreen01',
+  templateUrl: './pocfgreen01.page.html',
+  styleUrls: ['./pocfgreen01.page.scss'],
 })
-export class Pocfcupon01Page implements OnInit {
+export class Pocfgreen01Page implements OnInit {
   ionicForm: FormGroup;isSubmitted = false; 
   data = []; page = 0;maxpadding:number;limit = 50;
   sub: Subscription; maxdatalimit=0;filterTerm: string;
@@ -26,12 +25,12 @@ export class Pocfcupon01Page implements OnInit {
   constructor(public configSv: ConfigService,private poSv: PoSvService,public formBuilder: FormBuilder,private modalCtrl:ModalController,private alertCtrl: AlertController) { }
 
   ngOnInit() {
-      this.ionicForm = this.formBuilder.group({
-        po_assigndate:[ "" ,[Validators.required]],
-        po_todaydate:[ moment().format('DD/MM/YYYY')],
-        typeserach:[],
-      }); 
-      this.fndate();this.loaddata(0);
+    this.ionicForm = this.formBuilder.group({
+      po_assigndate:[ "" ,[Validators.required]],
+      po_todaydate:[ moment().format('DD/MM/YYYY')],
+      typeserach:[],
+    }); 
+    this.fndate();this.loaddata(0);
   }
 
   get errorControl() {
@@ -65,14 +64,12 @@ export class Pocfcupon01Page implements OnInit {
     };
   }
 
-
   loaddata(padding: number, infiniteScroll?){
     if(padding == 0){this.data = []};
     this.sub = this.poSv
-    .getcfcupon('read',this.ionicForm.value)
+    .getcfgreen('read',this.ionicForm.value)
     .subscribe((data) => {
       if (data !== null) {
-        //this.data =  this.data.concat(data.data_detail.map((item) => Object.assign({}, item)));
         this.data =  data.data_detail.map((item) => Object.assign({}, item));
         if (infiniteScroll) {
           infiniteScroll.target.complete();
@@ -86,7 +83,7 @@ export class Pocfcupon01Page implements OnInit {
   SearchData(){
     this.typesearch = true;
     this.sub = this.poSv
-    .getcfcupon('search',this.ionicForm.value)
+    .getcfgreen('search',this.ionicForm.value)
     .subscribe((data) => {
       if (data !== null) {
         this.data =  data.data_detail.map((item) => Object.assign({}, item));
@@ -95,12 +92,11 @@ export class Pocfcupon01Page implements OnInit {
       }
     });
   }
-  
+
   async View(id,assign_date,seq,total){
     let item = this.data.filter((val) => val.id == id);
-
     const modal = await this.modalCtrl.create({
-      component:Pocfcupon02Page,
+      component:Pocfgreen02Page,
       cssClass: 'my-modal',
       componentProps:{id:id,assign_date:assign_date,seq:seq,total:total},
     });
@@ -109,7 +105,7 @@ export class Pocfcupon01Page implements OnInit {
     if(role === 'confirm'){
       if( typeof data != 'undefined'){ 
         item[0].po_assign_status = String(data);
-        item[0].po_statustext = this.configSv.numberalltxt[data];
+        item[0].po_statustext = this.configSv.greenalltxt[data];
       }
      }
   }

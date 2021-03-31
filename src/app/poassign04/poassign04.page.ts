@@ -41,7 +41,8 @@ export class Poassign04Page implements OnInit {
     .getpoassignreport('readcancel',this.ionicForm.value.id,padding,this.limit)
     .subscribe((data) => {
       if (data !== null) {
-        //console.log(data);
+        //console.log(data); 
+        
         this.maxpadding = data["maxpadding"];
         datalimit = data["limit"];
         this.data =  this.data.concat(data.data_detail.map((item) => Object.assign({}, item)));   
@@ -73,12 +74,19 @@ export class Poassign04Page implements OnInit {
 
 
   async cancelData() {
-    console.log(this.dataallarray);
     this.ionicForm.controls['dataall'].setValue(this.dataallarray);
+   
+    console.log(this.ionicForm.value);
     const confirm =  await this.alertCtrl.create({
       header: 'ยืนยันการลบข้อมูล',
       message: 'แน่ใจว่าต้องการลบการมอบหมายที่เลือก ' + this.dataallarray.length  + ' รายการ? ',
-      buttons: [{
+      inputs: [
+        {
+          name: 'cause',
+          placeholder: 'ระบุเหตุผลในการยกเลิก',
+        },
+      ],
+      buttons: [{ 
         text: 'ยกเลิก',
         handler: (data: any) => {
            console.log('cancel ',data);
@@ -87,28 +95,31 @@ export class Poassign04Page implements OnInit {
       {
         text: 'ตกลง',
           handler: (data: any) => {
-            console.log('ok');
-             this.sub = this.poSv.crudpoassign(this.ionicForm.value,'delete').subscribe(
-              (data) => {
-                if(data.status == 'ok')
-                {   
-                  // this.configSv.ChkformAlert(data.message);
-                  let dataarray = []; 
-                  dataarray.push({
-                    id: data.id,
-                  });
-                  //console.log(data.id);
-                  this.modalCtrl.dismiss(dataarray,'delete');
+            if(data['cause']){
+              this.sub = this.poSv.crudpoassign(this.ionicForm.value,'delete',data['cause']).subscribe(
+                (data) => {
+                  if(data.status == 'ok')
+                  {   
+                    // this.configSv.ChkformAlert(data.message);
+                    let dataarray = []; 
+                    dataarray.push({
+                      id: data.id,
+                    });
+                    //console.log(data.id);
+                    this.modalCtrl.dismiss(dataarray,'delete');
+                    this.configSv.ChkformAlert(data.message);
+                  }
+                  else
+                  {
+                    this.configSv.ChkformAlert(data.message);
+                  }
+                }, (error) => {
+                  console.log(JSON.stringify(error));
                 }
-                else
-                {
-                  this.configSv.ChkformAlert(data.message);
-                }
-              }, (error) => {
-                console.log(JSON.stringify(error));
-              }
-            );
-
+              );
+            }else{
+              this.configSv.ChkformAlert('กรุณาระบุเหตุผลในการลบด้วย');
+            }
         }
       }]
     });

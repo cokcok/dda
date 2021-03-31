@@ -21,6 +21,7 @@
   <input type="hidden" formControlName="mtd_product_id">
   <ion-grid fixed>
     <ion-row>
+ 
       <ion-col>
         เลขที่ระบบ <input type="text" formControlName="id" disabled class="IDnoshowBG">
       </ion-col>
@@ -28,7 +29,16 @@
     <ion-row>
       <ion-col>
         <ion-item>
-          <ion-label class="showlabel">ขนาด</ion-label>
+          <ion-label class="showlabel" position="floating">รหัสสินค้า</ion-label>
+          <ion-input formControlName="productid"  type="text" ></ion-input>
+          <span class="error" *ngIf="isSubmitted && errorControl.productid.errors?.required">
+            กรุณาระบุ รหัสสินค้า
+          </span>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-label class="showlabel" position="floating">ขนาด</ion-label>
           <ionic-selectable interface="floating" item-content formControlName="mtd_size_id" itemValueField="id"
             itemTextField="size" [items]="ports" [canSearch]="true" closeButtonText="ยกเลิก">
           </ionic-selectable>
@@ -46,6 +56,9 @@
           </span>
         </ion-item>
       </ion-col>
+    
+    </ion-row>
+    <ion-row>
       <ion-col>
         <ion-item>
           <ion-label class="showlabel" position="floating">ราคา</ion-label>
@@ -55,8 +68,6 @@
           </span>
         </ion-item>
       </ion-col>
-    </ion-row>
-    <ion-row>
       <ion-col>
         <ion-item>
           <ion-label class="showlabel" position="floating">จำนวนคงเหลือที่ยอมรับได้</ion-label>

@@ -320,11 +320,11 @@ export class Poassign03Page implements OnInit {
         {
           style: 'tableExample',
           table: {
-            widths: ['3%','7%','20%','20%','3%','7%','*','7%'], //headerRows: 2,
+            widths: ['3%','7%','20%','20%','5%','7%','*','7%'], //headerRows: 2,
             headerRows: 2,
             body: [
               [{text: 'รายชื่อวิน-ส่งปัก ปักที่ร้าน', style: 'tableHeader', colSpan: 4, alignment: 'center'}, '','','', { text: 'วันที่มอบหมายของวันที่ ' + assign_date +' ครั้งที่ ' + seq, style: 'tableHeader', colSpan: 4, alignment: 'center' }, '', '',''],
-              [{text: '#', style: 'tableHeader', alignment: 'center'}, {text: 'วันสั่งซื้อ', style: 'tableHeader', alignment: 'center'}, {text: 'ชื่อวิน', style: 'tableHeader', alignment: 'center'}, {text: 'เขต', style: 'tableHeader', alignment: 'center'}, {text: 'จำนวน', style: 'tableHeader', alignment: 'center'}, {text: 'วันนัดรับ', style: 'tableHeader', alignment: 'center'},{text: 'รายละเอียด', style: 'tableHeader', alignment: 'center'}, {text: 'ป้ายซ้ำ', style: 'tableHeader', alignment: 'center'}],
+              [{text: '#', style: 'tableHeader', alignment: 'center'}, {text: 'วันสั่งซื้อ', style: 'tableHeader', alignment: 'center'}, {text: 'ชื่อวิน', style: 'tableHeader', alignment: 'center'}, {text: 'เขต', style: 'tableHeader', alignment: 'center'}, {text: 'จำนวนปัก', style: 'tableHeader', alignment: 'center'}, {text: 'วันนัดรับ', style: 'tableHeader', alignment: 'center'},{text: 'รายละเอียด', style: 'tableHeader', alignment: 'center'}, {text: 'ป้ายซ้ำ', style: 'tableHeader', alignment: 'center'}],
             ].concat( items)// detail data
           }
 
@@ -340,8 +340,6 @@ export class Poassign03Page implements OnInit {
 
   async ViewData(id,seq,assign_date,total){
     let item = this.data.filter((val) => val.id == id);
-  
-    console.log(item);  
     const modal = await this.modalCtrl.create({
       component:Poassign04Page,
       cssClass: 'my-modal',

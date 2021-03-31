@@ -142,6 +142,7 @@ export class PoSvService {
         'emp_id': this.configSv.emp_id,
         'dataall' : vdata.dataall,
         'total' : vdata.total,
+        'cause': cause,
         'type_sql': type
       }
     }
@@ -173,6 +174,27 @@ export class PoSvService {
     return this.http.post<data>(apiUrl, data, { headers: header });
   }
 
+  getpoassigncancel(type,vdata,padding?,limit?): Observable<data> {
+    const header = { 'Content-Type': 'application/json' };
+    let apiUrl = this.configSv.ip + 'po_assign_report.php';
+    //console.log(vdata);
+    let typeserch;
+    if(  typeof vdata.typeserch_id.id === 'undefined' ){
+      typeserch = null;
+    }else{
+      typeserch = vdata.typeserch_id.id ;
+    }
+     let data = {
+      'type_sql': type,
+      'padding': padding,
+      'limit': limit,
+      'typeserch': typeserch,
+      'serchtxt': vdata.txtserach,
+    }
+    //console.log(data);
+    return this.http.post<data>(apiUrl, data, { headers: header });
+  }
+
 
   getcfcupon(type,vdata:any): Observable<data> {
     const header = { 'Content-Type': 'application/json' };
@@ -186,16 +208,17 @@ export class PoSvService {
     return this.http.post<data>(apiUrl, data, { headers: header });
   }
 
-  crudcfcupon(vdata: any, type: string, cause?): Observable<FeedBack> {
+  crudcfcupon(vdata: any, type: string, cause?,type_restore?): Observable<FeedBack> {
     const header = { 'Content-Type': 'application/json' };
     const apiUrl = this.configSv.ip + 'cfcupon.php';
     let data;
-    if (type === 'delete') {
+    //console.log(vdata,vdata[0].assign_id);
+    if (type === 'restore') {
       data = {
-        'id': vdata.id,
+        'assignid': vdata[0].assign_id,
         'emp_id': this.configSv.emp_id,
-        'dataall' : vdata.dataall,
-        'total' : vdata.total,
+        'cause': cause,
+        'type_restore' : type_restore,
         'type_sql': type
       }
     }
@@ -211,5 +234,101 @@ export class PoSvService {
     return this.http.post<FeedBack>(apiUrl, data, { headers: header });
   }
 
+  getcfmanage(type,vdata:any,padding?,limit?): Observable<data> {
+    const header = { 'Content-Type': 'application/json' };
+    let apiUrl = this.configSv.ip + 'cfmanage.php';
+    let typeserch;
+    if(  typeof vdata.typeserch_id.id === 'undefined' ){
+      typeserch = null;
+    }else{
+      typeserch = vdata.typeserch_id.id ;
+    }
+     let data = {
+      'type_sql': type,
+      'padding': padding,
+      'limit': limit,
+      'typeserch': typeserch,
+      'serchtxt': vdata.txtserach,
+    }
+    return this.http.post<data>(apiUrl, data, { headers: header });
+  }
+
+
+  crudcfmanage(vdata: any, type: string, cause?,type_restore?): Observable<FeedBack> {
+    const header = { 'Content-Type': 'application/json' };
+    const apiUrl = this.configSv.ip + 'cfmanage.php';
+    let data;
+    //console.log(vdata,vdata[0].assign_id);
+    if (type === 'restore') {
+      data = {
+        'mainassignid': vdata[0].mainassignid,
+        'assignid': vdata[0].assign_id,
+        'total': vdata[0].total,
+        'emp_id': this.configSv.emp_id,
+        'cause': cause,
+        'type_restore' : type_restore,
+        'type_sql': type
+      }
+    }
+   
+    return this.http.post<FeedBack>(apiUrl, data, { headers: header });
+  }
+
+
+  getcfgreen(type,vdata:any): Observable<data> {
+    const header = { 'Content-Type': 'application/json' };
+    let apiUrl = this.configSv.ip + 'cfgreen.php';
+     let data = {
+      'id' : vdata.id,
+      'po_todaydate' : vdata.po_todaydate,
+      'po_assigndate' : vdata.po_assigndate,
+      'type_sql': type,
+    }
+    return this.http.post<data>(apiUrl, data, { headers: header });
+  }
+
+  crudcfgreen(vdata: any, type: string, cause?,type_restore?): Observable<FeedBack> {
+    const header = { 'Content-Type': 'application/json' };
+    const apiUrl = this.configSv.ip + 'cfgreen.php';
+    let data;
+    //console.log(vdata,vdata[0].assign_id);
+      data = {
+        'id': vdata.id,
+        'total':vdata.total,
+        'dataall' : vdata.dataall,
+        'emp_id': this.configSv.emp_id,
+        'type_sql': type
+      }
+    
+    return this.http.post<FeedBack>(apiUrl, data, { headers: header });
+  }
+
+  getcfinstall(type,vdata:any): Observable<data> {
+    const header = { 'Content-Type': 'application/json' };
+    let apiUrl = this.configSv.ip + 'cfinstall.php';
+     let data = {
+      'id' : vdata.id,
+      'po_todaydate' : vdata.po_todaydate,
+      'po_assigndate' : vdata.po_assigndate,
+      'type_sql': type,
+    }
+    return this.http.post<data>(apiUrl, data, { headers: header });
+  }
+
+  crudcfinstall(vdata: any, type: string, cause?,type_restore?): Observable<FeedBack> {
+    const header = { 'Content-Type': 'application/json' };
+    const apiUrl = this.configSv.ip + 'cfinstall.php';
+    let data;
+    //console.log(vdata,vdata[0].assign_id);
+      data = {
+        'id': vdata.id,
+        'total':vdata.total,
+        'dataall' : vdata.dataall,
+        'emp_id': this.configSv.emp_id,
+        'type_sql': type
+      }
+    
+    return this.http.post<FeedBack>(apiUrl, data, { headers: header });
+  }
 }
   

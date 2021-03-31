@@ -37,6 +37,7 @@ export class MtdproductdetailPage implements OnInit {
     this.portControl = this.formBuilder.control("", Validators.required);
     this.ionicForm = this.formBuilder.group({
       id:[""],
+      productid:["",[Validators.required]],
       mtd_size_id: this.portControl,
       mtd_product_id:[this.product_id],
       qty: [{value: 0,disabled: true},[Validators.required]],
@@ -87,6 +88,7 @@ export class MtdproductdetailPage implements OnInit {
                 mtd_product_id: this.ionicForm.controls.mtd_product_id.value,
                 mtd_size_id: this.ionicForm.controls.mtd_size_id.value.id,
                 size_name: this.ionicForm.controls.mtd_size_id.value.size,
+                productid: this.ionicForm.controls.productid.value,
                 qty: this.ionicForm.controls.qty.value,
                 price: this.ionicForm.controls.price.value,
                 qty_remain: this.ionicForm.controls.qty_remain.value,
@@ -138,7 +140,7 @@ export class MtdproductdetailPage implements OnInit {
 
 
   refreshForm() {
-    this.ionicForm.reset({qty: 0,mtd_product_id:this.product_id,qty_remain:100});
+    this.ionicForm.reset({qty: 0,mtd_product_id:this.product_id,qty_remain:100,tmpproduct_qty:0});
     this.ionicForm.controls['qty'].disable();
     this.isSubmitted = false;
   }

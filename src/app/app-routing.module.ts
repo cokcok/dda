@@ -5,7 +5,7 @@ const routes: Routes = [
   {
     path: '',
     //redirectTo: 'folder/Inbox',
-    redirectTo: 'pocfcupon01',
+    redirectTo: 'pocfinstall01',
     //redirectTo: 'signin',
     pathMatch: 'full'
   },
@@ -148,6 +148,26 @@ const routes: Routes = [
   {
     path: 'pocfcupon03',
     loadChildren: () => import('./pocfcupon03/pocfcupon03.module').then( m => m.Pocfcupon03PageModule)
+  },
+  {
+    path: 'poassign05',
+    loadChildren: () => import('./poassign05/poassign05.module').then( m => m.Poassign05PageModule)
+  },
+  {
+    path: 'pocfgreen01',
+    loadChildren: () => import('./pocfgreen01/pocfgreen01.module').then( m => m.Pocfgreen01PageModule)
+  },
+  {
+    path: 'pocfgreen02',
+    loadChildren: () => import('./pocfgreen02/pocfgreen02.module').then( m => m.Pocfgreen02PageModule)
+  },
+  {
+    path: 'pocfinstall01',
+    loadChildren: () => import('./pocfinstall01/pocfinstall01.module').then( m => m.Pocfinstall01PageModule)
+  },
+  {
+    path: 'pocfinstall02',
+    loadChildren: () => import('./pocfinstall02/pocfinstall02.module').then( m => m.Pocfinstall02PageModule)
   }
 ];
 

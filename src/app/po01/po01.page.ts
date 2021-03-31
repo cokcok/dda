@@ -94,7 +94,7 @@ export class Po01Page implements OnInit {
       .getpo_edit(this.id)
       .subscribe((data) => {
         if (data !== null) {
-          console.log(data);
+          //console.log(data);
           data.data_detail.forEach((item) => {
             for (const [key, value] of Object.entries(item)) {
                //console.log(key , value);
@@ -483,6 +483,8 @@ export class Po01Page implements OnInit {
           return true;
         }
     });
+ 
+   
     this.ionicForm.controls['tmpproduct'].setValue(this.tmpproduct);
     this.ionicForm.controls['po_discount'].setValue(this.allDiscount);
     this.ionicForm.controls['po_totalproduct'].setValue(this.alltotalproduct);
@@ -525,14 +527,21 @@ export class Po01Page implements OnInit {
                   //console.log('update');
                   this.configSv.ChkformAlert(data.message);
                   let dataarray = []; 
-                  dataarray.push({
+                  let ponumberdetail = this.tmpproduct.map(function (item) {
+                    return item.numbervalue
+                  });
+                  dataarray.push({ 
                     po_date:this.ionicForm.controls.po_date.value,
                     po_recivedate:this.ionicForm.controls.po_recivedate.value,
                     po_namewin:this.ionicForm.controls.po_namewin.value,
+                    area_name:this.ionicForm.controls.mtd_area_id.value.area_name,
                     po_customer:this.ionicForm.controls.po_customer.value,
+                    po_customer_tel:this.ionicForm.controls.po_customer_tel.value,
                     po_total: this.ionicForm.controls.po_total.value,
                     qty:this.tmpproduct.length,
+                    ponumberdetail:ponumberdetail,
                   });
+                  //console.log(dataarray);
                   this.modalCtrl.dismiss(dataarray,'comfirm');
                  // this.ionicForm.controls.podetail_number.value
 

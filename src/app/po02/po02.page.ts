@@ -134,7 +134,7 @@ export class Po02Page implements OnInit {
 
   doInfinite(infiniteScroll) {
     this.page++;
-    console.log( this.page,this.maxpadding);
+    //console.log( this.page,this.maxpadding);
     //this.SearchData(this.page * this.limit, infiniteScroll);
     //this.loaddata(this.page * 10, infiniteScroll);
     if (this.page === this.maxpadding) {
@@ -158,12 +158,15 @@ export class Po02Page implements OnInit {
     const {data,role} = await modal.onWillDismiss();
     //console.log(data,role);
     if(role === 'comfirm'){
+      
       item[0].po_date = data[0]['po_date'];
       item[0].po_recivedate = data[0]['po_recivedate'];
       item[0].po_namewin = data[0]['po_namewin'];
       item[0].po_customer = data[0]['po_customer'];
+      item[0].po_customer_tel = data[0]['po_customer_tel'];
       item[0].qty = data[0]['qty'];
       item[0].po_total = data[0]['po_total'];
+      item[0].ponumberdetail = data[0]['ponumberdetail'];
     }else if(role === 'cancel'){
       item[0].po_statustext = data[0]['po_statustext']; 
       item[0].po_status = 8; 

@@ -9,13 +9,13 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import * as moment_ from 'moment';
 import 'moment/locale/th';
 const moment = moment_;
- 
+
 @Component({
-  selector: 'app-pocfcupon02',
-  templateUrl: './pocfcupon02.page.html',
-  styleUrls: ['./pocfcupon02.page.scss'],
+  selector: 'app-pocfinstall02',
+  templateUrl: './pocfinstall02.page.html',
+  styleUrls: ['./pocfinstall02.page.scss'],
 })
-export class Pocfcupon02Page implements OnInit {
+export class Pocfinstall02Page implements OnInit {
   @Input() id:number;@Input() assign_date:string; @Input() seq:string;@Input() total:string;
   ionicForm: FormGroup;isSubmitted = false; 
   data = []; page = 0;maxpadding:number;limit = 50;
@@ -41,9 +41,10 @@ export class Pocfcupon02Page implements OnInit {
   loaddata(padding: number, infiniteScroll?){
     if(padding == 0){this.data = []};
     this.sub = this.poSv
-    .getcfcupon('readid',this.ionicForm.value)
+    .getcfinstall('readid',this.ionicForm.value)
     .subscribe((data) => {
       if (data !== null) {
+        //console.log(data.data_detail);
         this.data =  data.data_detail.map((item) => Object.assign({}, item));
         if (infiniteScroll) {
           infiniteScroll.target.complete();
@@ -64,38 +65,38 @@ export class Pocfcupon02Page implements OnInit {
     let url = this.configSv.ip + 'po01/productdetail/' + detail_id + '/' +  name
     const browser = this.iab.create(url).show();
    }
-   
+
    selectDataAll(){
-     if(this.checkallstatus ===false){
-      this.data_check = this.data.filter((val) => val.status_checked == false)
-      for (var i = 0; i < this.data_check.length; i++) {
-        this.data_check[i]['status_checked'] = true;
-      }
-      this.dataallarray = this.data_check; this.checkallstatus = true;this.checkall =false;
-     }else{
-      for (var i = 0; i <  this.data_check.length; i++) {
-        this.data_check[i]['status_checked'] = false;
-      }
-      this.checkallstatus = false;this.dataallarray = [];
+    if(this.checkallstatus ===false){
+     this.data_check = this.data.filter((val) => val.disable_checked == false)
+     for (var i = 0; i < this.data_check.length; i++) {
+       this.data_check[i]['status_checked'] = true;
      }
-   }
-
-   selectData(index,data,checked){
-    if(checked){
-      this.dataallarray = this.dataallarray.filter(item => item.assign_id !== data['assign_id'])
-      if(this.dataallarray.length === 0){this.checkall = false;}
-     }else{
-      this.dataallarray.push(data);
+     this.dataallarray = this.data_check; this.checkallstatus = true;this.checkall =false;
+    }else{
+     for (var i = 0; i <  this.data_check.length; i++) {
+       this.data_check[i]['status_checked'] = false;
      }
-     //console.log(this.dataallarray);
-    
-   }
+     this.checkallstatus = false;this.dataallarray = [];
+    }
+  }
 
-   async submitForm(){
+  selectData(index,data,checked){
+   if(checked){
+     this.dataallarray = this.dataallarray.filter(item => item.assign_id !== data['assign_id'])
+     if(this.dataallarray.length === 0){this.checkall = false;}
+    }else{
+     this.dataallarray.push(data);
+    }
+    //console.log(this.dataallarray);
+   
+  }
+
+  async submitForm(){
     this.ionicForm.controls['dataall'].setValue(this.dataallarray);
     //console.log(this.ionicForm.value);
     const confirm =  await this.alertCtrl.create({
-      header: 'ยืนยันข้อมูลในการปรับสถานะการปัก',
+      header: 'ยืนยันข้อมูลในการปรับสถานะการประกอบ',
       //message: 'แน่ใจว่าต้องการลบเลขระบบที่ '+ item +' ? ',
       buttons: [{
         text: 'ยกเลิก',
@@ -107,7 +108,7 @@ export class Pocfcupon02Page implements OnInit {
         text: 'ตกลง',
           handler: (data: any) => {
           this.sub = this.poSv
-          .crudcfcupon(this.ionicForm.value,'insert')
+          .crudcfinstall(this.ionicForm.value,'insert')
           .subscribe((data) => {
             if (data !== null) {
                 if(data.status === 'ok'){
@@ -127,15 +128,15 @@ export class Pocfcupon02Page implements OnInit {
     });
     confirm.present();
   }
-
+ 
   compareArray(dataall,dataselect) {
     dataall.forEach( array1Ttem => {
         dataselect.forEach( array2Item => {
            if(array1Ttem.assign_id == array2Item.assign_id){
               array1Ttem.disable_checked  = true;
               array1Ttem.status_checked  = true;
-              array1Ttem.poassign_number  = 1;
-              array1Ttem.poassign_numbertxt  = 'งานปักเลขสำเร็จ';
+              array1Ttem.poassign_install  = 1;
+              array1Ttem.poassign_installtxt  = 'งานประกอบสำเร็จ';
           }
         });
       });

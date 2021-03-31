@@ -2,8 +2,8 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
-    </ion-buttons> 
-    <ion-title>ติดตามงานปัก</ion-title>
+    </ion-buttons>
+    <ion-title>ติดตามงานป้ายเขียว</ion-title>
   </ion-toolbar>
 </ion-header>
 <form [formGroup]="ionicForm" novalidate>
@@ -38,7 +38,6 @@
   </ion-grid>
 </form>
 <ion-content>
-
   <div>
     <ion-searchbar placeholder="ค้นหา..." [(ngModel)]="filterTerm" animated="true"></ion-searchbar>
     <ion-card *ngFor="let c of data  | filter:filterTerm;index as i">
@@ -66,9 +65,7 @@
           <ion-label> <u class="showlabelheader">สถานะ :</u> <span
               [ngClass]="{'postatus_alert': array_status.includes(c.po_assign_status),'postatus_ok':!array_status.includes(c.po_assign_status)}">
               {{ c.po_statustext }}</span></ion-label>
-
         </ion-item>
-
       </ion-row>
     </ion-card>
   </div>

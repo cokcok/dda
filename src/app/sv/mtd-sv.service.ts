@@ -257,6 +257,7 @@ export class MtdSvService {
     else {
       data = {
         'id': vdata.id,
+        'productid':vdata.productid,
         'mtd_size_id': vdata.mtd_size_id.id,
         'mtd_product_id': vdata.mtd_product_id,
         'qty': vdata.qty,
