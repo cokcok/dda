@@ -263,6 +263,7 @@ export class PoSvService {
       data = {
         'mainassignid': vdata[0].mainassignid,
         'assignid': vdata[0].assign_id,
+        'poid': vdata[0].poid,
         'total': vdata[0].total,
         'emp_id': this.configSv.emp_id,
         'cause': cause,
@@ -323,6 +324,36 @@ export class PoSvService {
       data = {
         'id': vdata.id,
         'total':vdata.total,
+        'dataall' : vdata.dataall,
+        'emp_id': this.configSv.emp_id,
+        'type_sql': type
+      }
+    
+    return this.http.post<FeedBack>(apiUrl, data, { headers: header });
+  }
+
+
+  getpotf(type,vdata:any,padding: number, limit: number = 9999999999): Observable<data> {
+    const header = { 'Content-Type': 'application/json' };
+    let apiUrl = this.configSv.ip + 'potransfer.php';
+     let data = {
+      'padding': padding,
+      'limit': limit,
+      'typeserch': vdata.typeserch_id,
+      'serchtxt': vdata.txtserach,
+      'po_recivedate' : vdata.po_recivedate,
+      'type_sql': type,
+    }
+    //console.log(data);
+    return this.http.post<data>(apiUrl, data, { headers: header });
+  }
+
+  crudpotf(vdata: any, type: string, cause?): Observable<FeedBack> {
+    const header = { 'Content-Type': 'application/json' };
+    const apiUrl = this.configSv.ip + 'potransfer.php';
+    let data;
+    //console.log(vdata,vdata[0].assign_id);
+      data = {
         'dataall' : vdata.dataall,
         'emp_id': this.configSv.emp_id,
         'type_sql': type

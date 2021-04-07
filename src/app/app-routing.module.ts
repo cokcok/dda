@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 const routes: Routes = [
   {
     path: '',
     //redirectTo: 'folder/Inbox',
-    redirectTo: 'pocfinstall01',
+    redirectTo: 'potf01',
     //redirectTo: 'signin',
     pathMatch: 'full'
   },
@@ -168,6 +168,14 @@ const routes: Routes = [
   {
     path: 'pocfinstall02',
     loadChildren: () => import('./pocfinstall02/pocfinstall02.module').then( m => m.Pocfinstall02PageModule)
+  },
+  {
+    path: 'potf01',
+    loadChildren: () => import('./potf01/potf01.module').then( m => m.Potf01PageModule)
+  },
+  {
+    path: 'potf02',
+    loadChildren: () => import('./potf02/potf02.module').then( m => m.Potf02PageModule)
   }
 ];
 

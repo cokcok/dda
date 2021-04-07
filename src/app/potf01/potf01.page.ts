@@ -6,15 +6,15 @@ import { PoSvService } from '../sv/po-sv.service';
 import { FormBuilder, FormGroup, Validators, } from "@angular/forms";
 import * as moment_ from 'moment';
 import 'moment/locale/th';
-import {Poassign02Page} from '../poassign02/poassign02.page';
+import {Potf02Page} from '../potf02/potf02.page';
 const moment = moment_;
 
 @Component({
-  selector: 'app-poassign01',
-  templateUrl: './poassign01.page.html',
-  styleUrls: ['./poassign01.page.scss'],
+  selector: 'app-potf01',
+  templateUrl: './potf01.page.html',
+  styleUrls: ['./potf01.page.scss'],
 })
-export class Poassign01Page implements OnInit {
+export class Potf01Page implements OnInit {
   ionicForm: FormGroup;isSubmitted = false; 
   data = []; page = 0;maxpadding:number;limit = 50;
   sub: Subscription; maxdatalimit=0;filterTerm: string;
@@ -26,12 +26,7 @@ export class Poassign01Page implements OnInit {
     this.ionicForm = this.formBuilder.group({
       typeserch_id: ["9"],
       txtserach: ["",[Validators.required]],
-      po_assigndate:[ moment().format('DD/MM/YYYY') ,[Validators.required]],
-      seq: [],
       dataall:[],
-      datasome:[],
-      total: [],
-      //tmpproduct_qty :[{value: 0,disabled: true}],
     }); 
     this.fndate();this.loaddata(0);
   }
@@ -70,12 +65,11 @@ export class Poassign01Page implements OnInit {
   loaddata(padding: number, infiniteScroll?){
     if(padding == 0){this.data = []};
     this.sub = this.poSv
-    .getpoassign('read',this.ionicForm.value,padding,this.limit)
+    .getpotf('read',this.ionicForm.value,padding,this.limit)
     .subscribe((data) => {
       if (data !== null) {
         this.maxpadding = data["maxpadding"];
         this.maxdatalimit = data["limit"];
-        this.ionicForm.controls['seq'].setValue(data["seq"]);
         this.data =  this.data.concat(data.data_detail.map((item) => Object.assign({}, item)));
         if (infiniteScroll) {
           infiniteScroll.target.complete();
@@ -86,24 +80,35 @@ export class Poassign01Page implements OnInit {
     });
   }
 
-
   SearchData(padding: number,  infiniteScroll?){
-    //if(this.tmptxtser == null){
-    //  this.tmptxtser = this.ionicForm.controls['txtserach'].value;
-   // }
-    // if(this.tmptxtser != this.ionicForm.controls['txtserach'].value || padding == 0){
-    //   this.data = [];
-    // }
     if(padding == 0){this.data = []};
     this.ionicForm.controls['typeserch_id'].setValue(0);
     this.sub = this.poSv
-    .getpoassign('read',this.ionicForm.value,padding,this.limit)
+    .getpotf('read',this.ionicForm.value,padding,this.limit)
     .subscribe((data) => {
       if (data !== null) {
-        //this.maxpadding = data["maxpadding"];
         this.maxpadding = data["maxpadding"];
         this.maxdatalimit = data["limit"];
-        
+        this.data =  this.data.concat(data.data_detail.map((item) => Object.assign({}, item)));
+        if (infiniteScroll) {
+          infiniteScroll.target.complete();
+        }
+      }else{
+        this.data = [];
+        this.maxpadding = 0;this.maxdatalimit=0;
+      }
+    });
+  }
+
+  SearchJustSend(padding: number,  infiniteScroll?){
+    if(padding == 0){this.data = []};
+    this.ionicForm.controls['typeserch_id'].setValue(1);
+    this.sub = this.poSv
+    .getpotf('read',this.ionicForm.value,padding,this.limit)
+    .subscribe((data) => {
+      if (data !== null) {
+        this.maxpadding = data["maxpadding"];
+        this.maxdatalimit = data["limit"];
         this.data =  this.data.concat(data.data_detail.map((item) => Object.assign({}, item)));
         if (infiniteScroll) {
           infiniteScroll.target.complete();
@@ -118,17 +123,36 @@ export class Poassign01Page implements OnInit {
   doInfinite(infiniteScroll) {
     this.page++;
     let typeserach = this.ionicForm.controls['typeserch_id'].value;
-    //this.SearchData(this.page * this.limit, infiniteScroll);
-    if (typeserach == 9){
-      this.loaddata(this.page * this.limit, infiniteScroll);
-    }else{
-      this.SearchData(this.page * this.limit, infiniteScroll);
-    }
-    
     if (this.page === this.maxpadding) {
       infiniteScroll.target.disabled = true;
       //this.configSv.ChkformAlert('ไม่พบข้อมูลแล้ว');
+    }else{
+      if (typeserach == 9){
+        this.loaddata(this.page * this.limit, infiniteScroll);
+      }else{
+        this.SearchJustSend(this.page * this.limit, infiniteScroll);
+      }
     }
+  }
+
+
+  async View(recivedate){
+    let item = this.data.filter((val) => val.po_recivedate == recivedate);
+    //console.log(item);
+    const modal = await this.modalCtrl.create({
+      component:Potf02Page,
+      cssClass: 'my-modal',
+      componentProps:{recivedate:recivedate},
+    });
+    await modal.present();
+    const {data,role} = await modal.onWillDismiss();
+    if(role === 'confirm'){
+      //console.log(data);
+      if( data > 0){ 
+        item[0].countjustsend = item[0].countjustsend - Number(data);
+        item[0].countgoingsend = data;
+      }
+     }
   }
 
   selectData(index,data,checked){
@@ -143,43 +167,11 @@ export class Poassign01Page implements OnInit {
      //console.log(this.dataallarray);
    }
 
-   selectDatasome(index,data,checked){
-    //console.log(data,checked);
-    if(checked){
-      //console.log('not check');
-      this.datasomearray = this.datasomearray.filter(item => item.po_recivedate !== data['po_recivedate'])
-     }
-     //console.log(this.datasomearray);
-   }
-
-   async View(recivedate){
-     let item = this.data.filter((val) => val.po_recivedate == recivedate);
-     let itemsomedata = this.datasomearray.filter((val) => val.po_recivedate == recivedate);
-     //console.log(item);  
-     const modal = await this.modalCtrl.create({
-       component:Poassign02Page,
-       cssClass: 'my-modal',
-       componentProps:{recivedate:recivedate,itemsomedata:itemsomedata},
-     });
-     await modal.present();
-     const {data,role} = await modal.onWillDismiss();
-     if(role === 'somedata'){
-      this.datasomearray = data;
-      item[0].checksomedata = true;
-     }
-    
-   }
-
    async submitForm(){
     this.ionicForm.controls['dataall'].setValue(this.dataallarray);
-    this.ionicForm.controls['datasome'].setValue(this.datasomearray);
-    let total = 0;
-    total = this.dataallarray.reduce((acc,current) => acc + Number(current.countid), 0) + this.datasomearray.reduce((acc,current) => acc + Number(current.qty), 0);
-    //console.log(total);
-    this.ionicForm.controls['total'].setValue(total);
-    //console.log(this.ionicForm.value);
+    console.log(this.ionicForm.value);
     const confirm =  await this.alertCtrl.create({
-      header: 'ยืนยันข้อมูลในการบันทึก',
+      header: 'ยืนยันข้อมูลในการมอบหมายการส่ง',
       //message: 'แน่ใจว่าต้องการลบเลขระบบที่ '+ item +' ? ',
       buttons: [{
         text: 'ยกเลิก',
@@ -190,21 +182,23 @@ export class Poassign01Page implements OnInit {
       {
         text: 'ตกลง',
           handler: (data: any) => {
-          this.sub = this.poSv
-          .crudpoassign(this.ionicForm.value,'insert')
-          .subscribe((data) => {
-            if (data !== null) {
-                if(data.status === 'ok'){
-                  //this.refreshForm();
-                this.configSv.ChkformAlert(data.message);
-                this.dataallarray = [];this.datasomearray = [];
-                this.loaddata(0);
-                }
-            }
-          },
-          (error) => {
-            console.log(JSON.stringify(error));
-          });
+            
+            this.sub = this.poSv
+            .crudpotf(this.ionicForm.value,'insertAll')
+            .subscribe((data) => {
+              if (data !== null) {
+                  if(data.status === 'ok'){
+                    //this.refreshForm();
+                  this.configSv.ChkformAlert(data.message);
+                  this.compareArray(this.data,this.dataallarray);
+                  this.dataallarray = [];
+                  
+                  }
+              }
+            },
+            (error) => {
+              console.log(JSON.stringify(error));
+            });
         }
       }]
     });
@@ -212,4 +206,16 @@ export class Poassign01Page implements OnInit {
 
   }
 
+  compareArray(dataall,dataselect) {
+    dataall.forEach( array1Ttem => {
+        dataselect.forEach( array2Item => {
+           if(array1Ttem.po_recivedate == array2Item.po_recivedate){
+              array1Ttem.countgoingsend  = Number(array1Ttem.countgoingsend) + Number(array1Ttem.countjustsend);
+              array1Ttem.countjustsend  = 0;
+              array1Ttem.disable_checked = true;
+              array1Ttem.status_checked = false;
+          }
+        });
+      });
+  }
 }

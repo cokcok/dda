@@ -177,10 +177,11 @@ export class MtdsupplierPage implements OnInit {
 
   doInfinite(infiniteScroll) {
     this.page++;
-    this.loaddata(this.page * this.limit, infiniteScroll);
     if (this.page === this.maxpadding) {
       infiniteScroll.target.disabled = true;
       //this.configSv.ChkformAlert('ไม่พบข้อมูลแล้ว');
+    }else{
+      this.loaddata(this.page * this.limit, infiniteScroll);
     }
   }
 

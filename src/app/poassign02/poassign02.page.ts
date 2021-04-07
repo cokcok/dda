@@ -5,7 +5,7 @@ import { ConfigService } from "../sv/config.service";
 import { Subscription } from "rxjs";
 import { PoSvService } from '../sv/po-sv.service';
 import {Po01Page} from '../po01/po01.page';
-
+ 
 @Component({
   selector: 'app-poassign02',
   templateUrl: './poassign02.page.html',
