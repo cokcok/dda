@@ -5,7 +5,7 @@ const routes: Routes = [
   {
     path: '',
     //redirectTo: 'folder/Inbox',
-    redirectTo: 'potf01',
+    redirectTo: 'mtd01',
     //redirectTo: 'signin',
     pathMatch: 'full'
   },
@@ -176,6 +176,18 @@ const routes: Routes = [
   {
     path: 'potf02',
     loadChildren: () => import('./potf02/potf02.module').then( m => m.Potf02PageModule)
+  },
+  {
+    path: 'potf03',
+    loadChildren: () => import('./potf03/potf03.module').then( m => m.Potf03PageModule)
+  },
+  {
+    path: 'potf04',
+    loadChildren: () => import('./potf04/potf04.module').then( m => m.Potf04PageModule)
+  },
+  {
+    path: 'potf05',
+    loadChildren: () => import('./potf05/potf05.module').then( m => m.Potf05PageModule)
   }
 ];
 

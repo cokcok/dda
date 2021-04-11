@@ -4,7 +4,6 @@ import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms"
 import { ConfigService } from "../sv/config.service";
 import { Subscription } from "rxjs";
 import { PoSvService } from '../sv/po-sv.service';
-import {data_detail} from '../models/data_model';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 import * as moment_ from 'moment';
@@ -46,7 +45,7 @@ export class Potf02Page implements OnInit {
     .getpotf('view',this.ionicForm.value,padding)
     .subscribe((data) => {
       if (data !== null) {
-        console.log(data.data_detail);
+        //console.log(data.data_detail);
         this.data =  data.data_detail.map((item) => Object.assign({}, item));   
       }else{
         this.maxpadding = 0;

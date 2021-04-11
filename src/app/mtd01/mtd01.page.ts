@@ -15,10 +15,12 @@ import * as $ from 'jquery';
 })
 export class Mtd01Page implements OnInit {
   @ViewChild('fileIngimg') fileIngimg: ElementRef;
+  @ViewChild('pwaphoto') pwaphoto: ElementRef;
   ionicForm: FormGroup;isSubmitted = false;
   portControl: FormControl;sub: Subscription;
   filterTerm: string;page = 0;maxpadding = 0;limit = 50;
   id: number;  picresizbase64Array: FormArray; picresizbase64:any; 
+  imgURI: any = null;
   data = []; picpreview =[]; groups:any;   indexpic = 0;
   disableSelect = false;
   constructor(public formBuilder: FormBuilder,
@@ -122,10 +124,11 @@ export class Mtd01Page implements OnInit {
   }
   
   fileUpload_img(event) {
-    var file = event.srcElement.files[0];
-    //console.log(file);
-    if (typeof file !== 'undefined') {
-      if (file.type.match(/image.*/)) {
+   // var file = event.srcElement.files[0];
+    const fileList: FileList =  this.fileIngimg.nativeElement.files;
+    //console.log(fileList[0].type);
+    if (typeof fileList[0] !== 'undefined') {
+      if (fileList[0].type.match(/image.*/)) {
         var reader = new FileReader();
         var self = this;
         reader.onloadend = function () {
@@ -141,16 +144,9 @@ export class Mtd01Page implements OnInit {
               0, 0, image.width, image.height,
               0, 0, canvas.width, canvas.height
             );
-            // create a new base64 encoding
             var resampledImage = new Image();
             resampledImage.src = canvas.toDataURL();
             self.picresizbase64 = resampledImage.src;
-            //$("#resampled").text('');
-           // console.log(self.picresizbase64);
-            //document.getElementById("resampled").appendChild(resampledImage);
-           // $("#resampled").append(resampledImage);
-           // self.ioniresampledcForm.controls.picresizbase64.setValue(self.picresizbase64.split(',')[1]);
-           //console.log(resampledImage.src);
               self.picpreview.push({
                 id:self.indexpic,
                 url:resampledImage.src
@@ -164,16 +160,15 @@ export class Mtd01Page implements OnInit {
               self.indexpic++;
           };
         }
-        //this.label = file.name;
-        reader.readAsDataURL(file);
-        //console.log(self.picpreview);
-        //this.ionicForm.controls.picresizbase64.setValue(self.picresizbase64);
+        reader.readAsDataURL(fileList[0]);
       }
       else {
         alert('กรุณาระบุชนิดไฟล์รูปภาพ');
       }
     }
   }
+
+
 
   ngOnDestroy(): void {
     this.sub.unsubscribe();
@@ -356,6 +351,46 @@ export class Mtd01Page implements OnInit {
     confirm.present();
   }
 
+
+  // openPWAPhotoPicker() {
+  //   if (this.pwaphoto == null) {
+  //     return;
+  //   }
+  //   this.pwaphoto.nativeElement.click();
+  // }
+
+  // uploadPWA() {
+  //   if (this.pwaphoto == null) {
+  //     return;
+  //   }
+  //   const fileList: FileList = this.pwaphoto.nativeElement.files;
+  //   if (fileList && fileList.length > 0) {
+  //     //this.fileUpload_img(fileList);
+  //     this.firstFileToBase64(fileList[0]).then((result: string) => {
+  //       this.imgURI = result;
+  //     }, (err: any) => {
+  //       // Ignore error, do nothing
+  //       this.imgURI = null;
+  //     });
+  //   }
+  // }
+
+  // private firstFileToBase64(fileImage: File): Promise<{}> {
+  //   return new Promise((resolve, reject) => {
+  //     let fileReader: FileReader = new FileReader();
+  //     if (fileReader && fileImage != null) {
+  //       fileReader.readAsDataURL(fileImage);
+  //       fileReader.onload = () => {
+  //         resolve(fileReader.result);
+  //       };
+  //       fileReader.onerror = (error) => {
+  //         reject(error);
+  //       };
+  //     } else {
+  //       reject(new Error('No file found'));
+  //     }
+  //   });
+  // }
 
 
 }

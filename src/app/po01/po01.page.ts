@@ -19,9 +19,9 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
   styleUrls: ['./po01.page.scss'],
 })
 export class Po01Page implements OnInit {
-  @Input() id:number;@Input() po_running:string;@Input() mode:string;
+  @Input() id:number;@Input() po_running:string;@Input() mode:string;@Input() modepayment:string;
   @ViewChild('fileIngimg') fileIngimg: ElementRef;
-  ionicForm: FormGroup;isSubmitted = false; 
+  ionicForm: FormGroup;isSubmitted = false;  ionicFormPayment: FormGroup;
   sub: Subscription;
   //id: number; 
   portControl_sale: FormControl; ports_sale: any;
@@ -29,6 +29,7 @@ export class Po01Page implements OnInit {
   portControl_shipping: FormControl; ports_shipping: any;
   portControl_productmain: FormControl; ports_productmain: any;
   portControl_customertype: FormControl; portscustomertype:any;
+  portControl_payment: FormControl; ports_payment: any;
   portControl_member: FormControl; ports_member: any;
   tmpproduct =[];discount = []; commentproduct = [];
   tmpproductetc = []; //picpreview =[];
@@ -79,11 +80,12 @@ export class Po01Page implements OnInit {
       namewin_comment:[""],
     });
     this.loaddata_sale(0);this.loaddata_area(0);this.loaddata_shipping(0);this.loaddata_product();this.loaddata_customertype();this.loaddata_member(0);
-    this.fndate(); 
+    this.fndate();   this.loadform_payment();
   }
 
   ionViewDidEnter(){
     this.loaddata_edit();
+  
   }
 
   loaddata_edit(){
@@ -204,6 +206,10 @@ export class Po01Page implements OnInit {
 
   get errorControl() {
     return this.ionicForm.controls;
+  }
+
+  get errorControl_Payment() {
+    return this.ionicFormPayment.controls;
   }
 
   loaddata_sale(padding: number, infiniteScroll?) {
@@ -676,5 +682,92 @@ export class Po01Page implements OnInit {
     });
     confirm.present();
   }
+
+  loadform_payment(){
+    this.portControl_payment = this.formBuilder.control("", Validators.required);
+    this.ionicFormPayment = this.formBuilder.group({
+      typepayment: this.portControl_payment,
+      ems:[""],
+      payment_cancel:[""],
+    }); 
+    this.loaddata_paymenttype();
+  }
+
+  loaddata_paymenttype(){
+    this.ports_payment = [
+      {id: 0,typeserch: 'เงินสด'},
+      {id: 1,typeserch: 'โอนเงิน'},
+      {id: 2,typeserch: 'พัสดุ'},
+      {id: 3,typeserch: 'ยกเลิก'},
+    ];
+    //console.log(this.ports);
+  }
+  paymenttype:number;
+  portChange_payment(event: {
+    component: IonicSelectableComponent,
+    value: any
+  }) {
+    this.ionicFormPayment.setValidators(null);
+    let port = event.value; 
+    this.paymenttype = port['id'];
+    if(this.paymenttype === 2){
+      this.ionicFormPayment.get('ems').setValidators(Validators.required);
+    }
+    else if(this.paymenttype === 3){
+      this.ionicFormPayment.get('payment_cancel').setValidators(Validators.required);
+    }
+  }
+
+  async submitForm_Payment() {
+    console.log(this.ionicFormPayment.value)
+    this.isSubmitted = true;
+    if (!this.ionicFormPayment.valid ) {
+      console.log("Please provide all the required values!");
+      return false;
+    } else {
+      const confirm =  await this.alertCtrl.create({
+      header: 'ยืนยันการบันทึกการส่งสินค้า ' + this.po_running,
+     // message: 'แน่ใจว่าต้องการลบใบสั่งซื้อที่ '+ this.po_running +' ? ',
+
+      buttons: [{
+        text: 'ยกเลิก',
+        handler: (data: any) => {
+           console.log('cancel ',data);
+        }
+      },
+      {
+        text: 'ตกลง',
+          handler: (data: any) => {
+          //  if(data['cause']){
+          //    this.sub = this.poSv.crudpo(this.ionicForm.value,'cancel',data['cause']).subscribe(
+          //     (data) => {
+          //       if(data.status == 'ok')
+          //       {   
+          //         this.configSv.ChkformAlert(data.message);
+          //         let dataarray = []; 
+          //         dataarray.push({
+          //           po_statustext:'ยกเลิกใบเสร็จ',
+          //         });
+          //         this.modalCtrl.dismiss(dataarray,'cancel');
+          //       }
+          //       else
+          //       {
+          //         this.configSv.ChkformAlert(data.message);
+          //       }              
+          //     }, (error) => {
+          //       console.log(JSON.stringify(error));
+          //     }
+          //   );
+          // } 
+          // else{
+          //   this.configSv.ChkformAlert('กรุณาระบุเหตุผลในการลบด้วย');
+          // }
+        }
+      }]
+    });
+    confirm.present();
+  }
+ }
+  
 
 }

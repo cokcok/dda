@@ -19,6 +19,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],

@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="dismissModal()">
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>potf05</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-button expand="full" color="primary" (click)="takePicture()">ถ่ายรูป!!
+  </ion-button>
+  <ion-card *ngIf="myImg">
+  <img [src]="myImg">
+  </ion-card>
+
+  <h2>Take a photo or use the gallery</h2>
+
+  <button ion-button (click)="openPWAPhotoPicker()">Let's go!</button>
+
+  <div *ngIf="imgURI != null">
+    <img [src]="imgURI" #imageSrc style="width: 200px;">
+  </div>
+
+  <div id="pwa">
+    <input type="file" id="pwaphoto" #pwaphoto accept="image/x-png,image/jpeg" (change)="uploadPWA()">
+  </div>
+ 
+</ion-content>

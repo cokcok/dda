@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">dda</string>
+    <string name="title_activity_main">dda</string>
+    <string name="package_name">DDA.ionic.starter</string>
+    <string name="custom_url_scheme">DDA.ionic.starter</string>
+</resources>

@@ -335,7 +335,7 @@ export class PoSvService {
 
   getpotf(type,vdata:any,padding: number, limit: number = 9999999999): Observable<data> {
     const header = { 'Content-Type': 'application/json' };
-    let apiUrl = this.configSv.ip + 'potransfer.php';
+    let apiUrl = this.configSv.ip + 'tf_assign.php';
      let data = {
       'padding': padding,
       'limit': limit,
@@ -350,7 +350,7 @@ export class PoSvService {
 
   crudpotf(vdata: any, type: string, cause?): Observable<FeedBack> {
     const header = { 'Content-Type': 'application/json' };
-    const apiUrl = this.configSv.ip + 'potransfer.php';
+    const apiUrl = this.configSv.ip + 'tf_assign.php';
     let data;
     //console.log(vdata,vdata[0].assign_id);
       data = {
@@ -360,6 +360,21 @@ export class PoSvService {
       }
     
     return this.http.post<FeedBack>(apiUrl, data, { headers: header });
+  }
+
+  getpotf_cfwin(type,vdata:any,padding: number, limit: number = 9999999999): Observable<data> {
+    const header = { 'Content-Type': 'application/json' };
+    let apiUrl = this.configSv.ip + 'tf_cfwin.php';
+     let data = {
+      'padding': padding,
+      'limit': limit,
+      'typeserch': vdata.typeserch_id,
+      'serchtxt': vdata.txtserach,
+      'po_recivedate' : vdata.po_recivedate,
+      'type_sql': type,
+    }
+    //console.log(data);
+    return this.http.post<data>(apiUrl, data, { headers: header });
   }
 }
   

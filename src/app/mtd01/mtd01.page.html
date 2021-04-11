@@ -98,21 +98,10 @@
           </span>
         </ion-col>
         <ion-col>
-          <p>แนบรูปภาพผู้ใช้   <input type="file" (change)="fileUpload_img($event)" id="file-input" style="position:absolute; top: -999999px" #fileIngimg>
+          <p>แนบรูปภาพผู้ใช้   
+            <input type="file" (change)="fileUpload_img($event)" id="file-input" accept="image/x-png,image/jpeg"  style="position:absolute; top: -999999px" #fileIngimg>
             <button ion-button (click)="onClick_fileUpload()">Upload</button>
-            <!-- <div id="resampled"><ion-icon name="star"></ion-icon>
-          </div> -->
-          <!-- <div [formGroup]="ionicForm" *ngFor="let ionicForm of picresizbase64Array.controls">
-            <input formControlName="resampled" type="text" />
-            <ion-img [src]="img.path"></ion-img> -->
-            <!-- <img src="{{resampled}}"/> -->
-           <!--  <ion-img src = {{ ionicForm.resampled }} ></ion-img> -->
-          <!--   <ion-img [src]="img.path"></ion-img> -->
-            <!-- <div id="resampled"></div>
-            <input type="text" id="picresizbase64" formControlName="picresizbase64List"  name="picresizbase64"> -->
-          <!-- </div> -->
-            <!-- <input type="hidden" id="picresizbase64" formControlName="picresizbase64List"  name="picresizbase64"> -->
-            <div  >
+            <div>
            <div  style="display: inline-block;" *ngFor="let img of picpreview" >
             <ion-img style="width: 100px; height: 100px;"  [src]="img.url"></ion-img>
             <ion-button (click)="delImg(img.id)">
@@ -120,7 +109,14 @@
             </ion-button>
            </div>
           </div>
-            <p>
+        <p>
+              <!-- <button ion-button (click)="openPWAPhotoPicker()">Let's go!</button>
+              <div *ngIf="imgURI != null">
+                <img [src]="imgURI" #imageSrc style="width: 200px;">
+              </div>
+              <div id="pwa">
+                <input type="file" id="pwaphoto" #pwaphoto accept="image/x-png,image/jpeg" (change)="uploadPWA()">
+              </div> -->
         </ion-col>
       </ion-row>
     </ion-grid>
