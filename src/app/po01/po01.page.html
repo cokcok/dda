@@ -31,12 +31,20 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<div>
+<div *ngIf="modepayment === 'ok' || modepayment === 'view' ">
   <form [formGroup]="ionicFormPayment" novalidate>
     <ion-grid >
       <div class="table1">
       <ion-row>
         <ion-col>การรับสินค้า</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label class="showlabel" position="floating">เงินที่ต้องชำระ</ion-label>
+            <ion-input formControlName="moneypay" type="text" readonly></ion-input>
+          </ion-item>
+        </ion-col>
       </ion-row>
       <ion-row>
         <ion-col >
@@ -60,23 +68,47 @@
           </ion-item>
         </ion-col>
       </ion-row>
+      <ion-row *ngIf="paymenttype === 0">
+        <ion-col>
+          <ion-item>
+            <ion-label class="showlabel" position="floating">รับเงิน</ion-label>
+            <ion-input formControlName="cashmoney_0" type="number"  (keyup)="cul_cashmoney_0()" ></ion-input>
+            <span class="error" *ngIf="isSubmitted && errorControl_Payment.cashmoney_0.errors?.required">
+              กรุณาระบุ รับเงิน
+            </span>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-label class="showlabel" position="floating">เงินทอน</ion-label>
+            <ion-input formControlName="change_0" type="text" readonly></ion-input>
+            <span class="error" *ngIf="isSubmitted && errorControl_Payment.change_0.errors?.min">
+              เงินทอน ไม่ควรเป็นค่าติดลบ
+            </span>
+          </ion-item>
+        </ion-col>
+      </ion-row>
       <ion-row *ngIf="paymenttype === 2">
-        <ion-item>
-          <ion-label class="showlabel" position="floating">เลข EMS</ion-label>
-          <ion-input formControlName="ems" type="text"></ion-input>
-          <span class="error" *ngIf="isSubmitted && errorControl_Payment.ems.errors?.required">
-            กรุณาระบุ เลข EMS
-          </span>
-        </ion-item>
+        <ion-col>
+          <ion-item>
+            <ion-label class="showlabel" position="floating">เลข EMS</ion-label>
+            <ion-input formControlName="ems_2" type="text"></ion-input>
+            <span class="error" *ngIf="isSubmitted && errorControl_Payment.ems_2.errors?.required">
+              กรุณาระบุ เลข EMS
+            </span>
+          </ion-item>
+        </ion-col>
       </ion-row>
       <ion-row *ngIf="paymenttype === 3">
-        <ion-item>
-          <ion-label class="showlabel" position="floating">สาเหตุที่ยกเลิก</ion-label>
-          <ion-input formControlName="payment_cancel" type="text"></ion-input>
-          <span class="error" *ngIf="isSubmitted && errorControl_Payment.payment_cancel.errors?.required">
-            กรุณาระบุ สาเหตุที่ยกเลิก
-          </span>
-        </ion-item>
+        <ion-col>
+          <ion-item>
+            <ion-label class="showlabel" position="floating">สาเหตุที่ยกเลิก</ion-label>
+            <ion-input formControlName="payment_cancel_3" type="text"></ion-input>
+            <span class="error" *ngIf="isSubmitted && errorControl_Payment.payment_cancel_3.errors?.required">
+              กรุณาระบุ สาเหตุที่ยกเลิก
+            </span>
+          </ion-item>
+        </ion-col>
       </ion-row>
       </div>
     </ion-grid>
@@ -182,6 +214,20 @@
           </ion-col> 
       </ion-row>
       <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label class="showlabel" position="floating">เงื่อนไขป้ายเขียว</ion-label>
+            <ion-input formControlName="namewin_comment" type="text"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-label class="showlabel" position="floating">ค่ามัดจำ</ion-label>
+            <ion-input formControlName="po_deposit" type="number"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
         <ion-col >
           <ion-item>
             <ion-label class="showlabel" position="floating">การส่งสินค้า</ion-label>
@@ -216,12 +262,7 @@
             [dataProvider]="placeSv"></ion-auto-complete>
           </ion-label>
         </ion-col>
-        <ion-col>
-          <ion-item>
-            <ion-label class="showlabel" position="floating">เงื่อนไขป้ายเขียว</ion-label>
-            <ion-input formControlName="namewin_comment" type="text"></ion-input>
-          </ion-item>
-        </ion-col>
+       
       </ion-row>
       </div>
       <p></p>
@@ -243,7 +284,7 @@
         </ion-row>
          
         <ion-row  class="table1_header" *ngIf="tmpproduct.length>0">
-          <ion-col size="1">ลำดับ</ion-col>
+          <ion-col size="0.5">#</ion-col>
           <ion-col size="2">สินค้า/ขนาด/ราคา</ion-col>
           <ion-col size="2">ส่วนลด</ion-col>
           <ion-col size="2">ราคารวม</ion-col>
@@ -251,7 +292,7 @@
         </ion-row>
         <!-- <ion-row class="table1_detail" *ngFor="let c of tmpproduct;let i = index;">  ng-class-even="'blue'" ng-class-odd="'green'" -->
           <ion-row  *ngFor="let c of tmpproduct;let i = index; " [ngClass]="(i % 2 == 0) ? 'table1_detail_odd' : 'table1_detail_even'">  
-          <ion-col  size="1">{{i+1}}</ion-col>
+          <ion-col  size="0.5">{{i+1}}</ion-col>
           <ion-col size="2">{{c.name}}</ion-col>
           <!-- <ion-col size="2">{{c.size}}/{{c.price}}</ion-col> -->
           <ion-col size="2"> 
@@ -261,9 +302,9 @@
           <ion-col size="3"> 
             <ion-input  class="showborder" type="text"  [(ngModel)]="commentproduct[i]" [ngModelOptions]="{standalone: true}" (change)="Commentproduct(c.id,commentproduct[i])"></ion-input> 
           </ion-col>
-            <ion-col size="2" > 
+            <ion-col size="2.5" > 
               <div *ngIf="mode !== 'view'">
-                <input type="file"  (change)="fileUpload_img($event)" id="file-input" style="position:absolute; top: -999999px" #fileIngimg> 
+                <input type="file"  (change)="fileUpload_img($event)" id="file-input" accept="image/x-png,image/jpeg" style="position:absolute; top: -999999px" #fileIngimg> 
               <ion-button (click)="onClick_fileUpload(c.id)">
                 <ion-icon slot="icon-only" class="iconSize" name="images"></ion-icon>
               </ion-button>
@@ -331,22 +372,30 @@
             </ion-col>
         </ion-row> 
         <ion-row class="table1_footer" *ngIf="tmpproduct.length>0">
-          <ion-col  size="1"></ion-col>
-          <ion-col  size="2">รวมราคาสินค้า</ion-col>
+          <!-- <ion-col  size="1"></ion-col> -->
+          <ion-col  size="3">รวมราคาสินค้า</ion-col>
           <ion-col  size="2">{{allDiscount|number}}</ion-col>
           <ion-col  size="2">{{alltotalproduct|number}}</ion-col>
         </ion-row>
         <ion-row class="table1_footer" *ngIf="tmpproduct.length>0">
-          <ion-col  size="1"></ion-col>
-          <ion-col  size="2">รวมค่าขนส่ง</ion-col>
+          <ion-col  size="3">รวมค่าขนส่ง</ion-col>
           <ion-col  size="2"></ion-col>
           <ion-col  size="2">{{po_shipping_price|number}}</ion-col>
         </ion-row>
         <ion-row class="table1_footer" *ngIf="tmpproduct.length>0">
-          <ion-col  size="1"></ion-col>
-          <ion-col  size="2">รวมสุทธิ</ion-col>
+          <ion-col  size="3">รวมราคาทั้งหมด</ion-col>
           <ion-col  size="2"></ion-col>
           <ion-col  size="2">{{alltotal|number}}</ion-col>
+        </ion-row>
+        <ion-row class="table1_footer" *ngIf="tmpproduct.length>0">
+          <ion-col  size="3">หักค่ามัดจำ</ion-col>
+          <ion-col  size="2"></ion-col>
+          <ion-col  size="2">{{ionicForm.controls['po_deposit'].value|number}}</ion-col>
+        </ion-row>
+        <ion-row class="table1_footer" *ngIf="tmpproduct.length>0">
+          <ion-col  size="3">รวมสุทธิ</ion-col>
+          <ion-col  size="2"></ion-col>
+          <ion-col  size="2">{{alltotal-ionicForm.controls['po_deposit'].value|number}}</ion-col>
         </ion-row>
       </div>
       

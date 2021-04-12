@@ -78,6 +78,7 @@ export class Po01Page implements OnInit {
       po_transferdate:[""],
       oldtmpproduct:[""],
       namewin_comment:[""],
+      po_deposit:["0"],
     });
     this.loaddata_sale(0);this.loaddata_area(0);this.loaddata_shipping(0);this.loaddata_product();this.loaddata_customertype();this.loaddata_member(0);
     this.fndate();   this.loadform_payment();
@@ -148,6 +149,31 @@ export class Po01Page implements OnInit {
                 this.indexpic = element['indexpic'];
               });
             });
+
+            if(this.modepayment === 'ok' || this.modepayment === 'view' ){
+              let moneypad = Number(data.data_detail[0]['po_total']) - Number(data.data_detail[0]['po_deposit']);
+              this.ionicFormPayment.controls['moneypay'].setValue(moneypad);
+
+              if(this.modepayment === 'view'){
+                this.sub = this.poSv.getpotf_cfwin('viewpayment',this.id,0).subscribe((data1) => {
+                  if (data1 !== null) {
+                    data1.data_detail.forEach((item) => {
+                      for (const [key, value] of Object.entries(item)) {
+                        if(key === "typepayment"){
+                          let value_a = this.ports_payment.filter(function (item1) {
+                               return item1.id == value;
+                           })[0];
+                           this.portControl_payment.setValue(value_a);
+                           this.paymenttype = Number(value);
+                         }else{
+                          this.ionicFormPayment.controls[key].setValue(value);
+                        }
+                      }
+                    });
+                  }
+                });
+              }
+            }
           });
           this.indexpic++
         }
@@ -368,13 +394,13 @@ export class Po01Page implements OnInit {
   }
 
   fileUpload_img(event) {
-    var file = event.srcElement.files[0];
+    const fileList: FileList =  this.fileIngimg.nativeElement.files;
     //console.log(event,file);
     let item = this.tmpproduct.filter((val) => val.id == this.img_id);
     //console.log(item);
     let pic = [];
-    if (typeof file !== 'undefined') {
-      if (file.type.match(/image.*/)) {
+    if (typeof fileList[0] !== 'undefined') {
+      if (fileList[0].type.match(/image.*/)) {
         var reader = new FileReader();
         var self = this;
         reader.onloadend = function () {
@@ -402,22 +428,10 @@ export class Po01Page implements OnInit {
             });
             item[0].picresizbase64List = item[0].picresizbase64List.concat(pic);
             self.indexpic++;
-            // self.picresizbase64 = resampledImage.src;
-            //   self.picpreview.push({
-            //     id:self.indexpic,
-            //     url:resampledImage.src
-            //   });
-              
-            //  self.picresizbase64Array.push(self.formBuilder.group({
-            //     id:[self.indexpic],
-            //     url: [self.picresizbase64],
-               
-            //   }));
-              //self.indexpic++;
           };
         }
         //this.label = file.name;
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(fileList[0]);
         //console.log(self.picpreview);
         //this.ionicForm.controls.picresizbase64.setValue(self.picresizbase64);
       }
@@ -536,6 +550,12 @@ export class Po01Page implements OnInit {
                   let ponumberdetail = this.tmpproduct.map(function (item) {
                     return item.numbervalue
                   });
+                
+                  if(ponumberdetail[0] !== null){
+                    ponumberdetail = ponumberdetail;
+                  }else{
+                    ponumberdetail = null;
+                  }
                   dataarray.push({ 
                     po_date:this.ionicForm.controls.po_date.value,
                     po_recivedate:this.ionicForm.controls.po_recivedate.value,
@@ -686,9 +706,14 @@ export class Po01Page implements OnInit {
   loadform_payment(){
     this.portControl_payment = this.formBuilder.control("", Validators.required);
     this.ionicFormPayment = this.formBuilder.group({
+      poid : [this.id],
       typepayment: this.portControl_payment,
-      ems:[""],
-      payment_cancel:[""],
+      moneypay: [""],
+      cashmoney_0:[""],
+      change_0:[""],
+      ems_2:[""],
+      payment_cancel_3:[""],
+      tmpproduct:[""],
     }); 
     this.loaddata_paymenttype();
   }
@@ -698,7 +723,8 @@ export class Po01Page implements OnInit {
       {id: 0,typeserch: 'เงินสด'},
       {id: 1,typeserch: 'โอนเงิน'},
       {id: 2,typeserch: 'พัสดุ'},
-      {id: 3,typeserch: 'ยกเลิก'},
+      {id: 3,typeserch: 'ยกเลิกการส่ง'},
+      {id: 4,typeserch: 'งานมีปัญหา'},
     ];
     //console.log(this.ports);
   }
@@ -710,15 +736,25 @@ export class Po01Page implements OnInit {
     this.ionicFormPayment.setValidators(null);
     let port = event.value; 
     this.paymenttype = port['id'];
-    if(this.paymenttype === 2){
-      this.ionicFormPayment.get('ems').setValidators(Validators.required);
+    if(this.paymenttype === 0){
+      this.ionicFormPayment.get('cashmoney_0').setValidators(Validators.required);
+      this.ionicFormPayment.get('change_0').setValidators(Validators.min(0));
+    }
+    else if(this.paymenttype === 2){
+      this.ionicFormPayment.get('ems_2').setValidators(Validators.required);
     }
     else if(this.paymenttype === 3){
-      this.ionicFormPayment.get('payment_cancel').setValidators(Validators.required);
+      this.ionicFormPayment.get('payment_cancel_3').setValidators(Validators.required);
     }
   }
 
+  cul_cashmoney_0(){
+    let total =  Number(this.ionicFormPayment.controls['cashmoney_0'].value) - Number(this.ionicFormPayment.controls['moneypay'].value);
+    this.ionicFormPayment.controls['change_0'].setValue(total);
+  }
+
   async submitForm_Payment() {
+    this.ionicFormPayment.controls['tmpproduct'].setValue(this.ionicForm.controls['oldtmpproduct'].value);
     console.log(this.ionicFormPayment.value)
     this.isSubmitted = true;
     if (!this.ionicFormPayment.valid ) {
@@ -728,7 +764,6 @@ export class Po01Page implements OnInit {
       const confirm =  await this.alertCtrl.create({
       header: 'ยืนยันการบันทึกการส่งสินค้า ' + this.po_running,
      // message: 'แน่ใจว่าต้องการลบใบสั่งซื้อที่ '+ this.po_running +' ? ',
-
       buttons: [{
         text: 'ยกเลิก',
         handler: (data: any) => {
@@ -738,30 +773,27 @@ export class Po01Page implements OnInit {
       {
         text: 'ตกลง',
           handler: (data: any) => {
-          //  if(data['cause']){
-          //    this.sub = this.poSv.crudpo(this.ionicForm.value,'cancel',data['cause']).subscribe(
-          //     (data) => {
-          //       if(data.status == 'ok')
-          //       {   
-          //         this.configSv.ChkformAlert(data.message);
-          //         let dataarray = []; 
-          //         dataarray.push({
-          //           po_statustext:'ยกเลิกใบเสร็จ',
-          //         });
-          //         this.modalCtrl.dismiss(dataarray,'cancel');
-          //       }
-          //       else
-          //       {
-          //         this.configSv.ChkformAlert(data.message);
-          //       }              
-          //     }, (error) => {
-          //       console.log(JSON.stringify(error));
-          //     }
-          //   );
-          // } 
-          // else{
-          //   this.configSv.ChkformAlert('กรุณาระบุเหตุผลในการลบด้วย');
-          // }
+             this.sub = this.poSv.crudtf_cfwin(this.ionicFormPayment.value,'insert').subscribe(
+              (data) => {
+                if(data.status == 'ok')
+                {   
+                  this.configSv.ChkformAlert(data.message);
+                  let dataarray = []; 
+                  dataarray.push({
+                    po_status: data.id,
+                    po_statustext: data._value,
+                  });
+                  this.modalCtrl.dismiss(dataarray,'confirm');
+                }
+                else
+                {
+                  this.configSv.ChkformAlert(data.message);
+                }              
+              }, (error) => {
+                console.log(JSON.stringify(error));
+              }
+            );
+         
         }
       }]
     });

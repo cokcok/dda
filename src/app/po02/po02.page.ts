@@ -117,7 +117,7 @@ export class Po02Page implements OnInit {
     .getpo(this.ionicForm.value,padding,this.limit)
     .subscribe((data) => {
       if (data !== null) {
-        //console.log(data);
+        console.log(data.data_detail);
          this.maxpadding = data["maxpadding"];
          this.maxdatalimit = data["limit"];
          this.data =  this.data.concat(data.data_detail.map((item) => Object.assign({}, item)));
@@ -166,7 +166,9 @@ export class Po02Page implements OnInit {
       item[0].po_customer_tel = data[0]['po_customer_tel'];
       item[0].qty = data[0]['qty'];
       item[0].po_total = data[0]['po_total'];
-      item[0].ponumberdetail = data[0]['ponumberdetail'];
+      if(data[0]['ponumberdetail'] != null){
+        item[0].ponumberdetail = data[0]['ponumberdetail'];
+      }
     }else if(role === 'cancel'){
       item[0].po_statustext = data[0]['po_statustext']; 
       item[0].po_status = 8; 

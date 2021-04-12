@@ -68,6 +68,7 @@ export class PoSvService {
         'po_green' : vdata.po_green,
         'po_totalproduct' : vdata.po_totalproduct,
         'po_discount' : vdata.po_discount,
+        'po_deposit' : vdata.po_deposit,
         'po_total' : vdata.po_total,
         'po_recivedate' : vdata.po_recivedate,
         'mtd_shipping_id' : vdata.mtd_shipping_id.id,
@@ -365,16 +366,45 @@ export class PoSvService {
   getpotf_cfwin(type,vdata:any,padding: number, limit: number = 9999999999): Observable<data> {
     const header = { 'Content-Type': 'application/json' };
     let apiUrl = this.configSv.ip + 'tf_cfwin.php';
-     let data = {
-      'padding': padding,
-      'limit': limit,
-      'typeserch': vdata.typeserch_id,
-      'serchtxt': vdata.txtserach,
-      'po_recivedate' : vdata.po_recivedate,
-      'type_sql': type,
+    let data;
+    if(type === 'viewpayment'){
+      data = {
+        'poid': vdata,
+        'type_sql': type,
+      }
+    }else{
+      data = {
+        'padding': padding,
+        'limit': limit,
+        'typeserch': vdata.typeserch_id,
+        'serchtxt': vdata.txtserach,
+        'po_recivedate' : vdata.po_recivedate,
+        'type_sql': type,
+      }
     }
-    //console.log(data);
+   
     return this.http.post<data>(apiUrl, data, { headers: header });
   }
+
+  crudtf_cfwin(vdata: any, type: string, cause?): Observable<FeedBack> {
+    const header = { 'Content-Type': 'application/json' };
+    const apiUrl = this.configSv.ip + 'tf_cfwin.php';
+    let data;
+    //console.log(vdata,vdata[0].assign_id);
+      data = {
+        'poid' : vdata.poid,
+        'typepayment' : vdata.typepayment.id,
+        'cashmoney_0' : vdata.cashmoney_0,
+        'change_0' : vdata.change_0,
+        'ems_2' : vdata.ems_2,  
+        'payment_cancel_3' : vdata.payment_cancel_3, 
+        'emp_id': this.configSv.emp_id,
+        'tmpproduct' : vdata.tmpproduct,
+        'type_sql': type
+      }
+    
+    return this.http.post<FeedBack>(apiUrl, data, { headers: header });
+  }
+
 }
   

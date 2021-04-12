@@ -5,7 +5,7 @@ const routes: Routes = [
   {
     path: '',
     //redirectTo: 'folder/Inbox',
-    redirectTo: 'mtd01',
+    redirectTo: 'potf03',
     //redirectTo: 'signin',
     pathMatch: 'full'
   },

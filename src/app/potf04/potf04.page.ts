@@ -43,7 +43,7 @@ export class Potf04Page implements OnInit {
     .getpotf_cfwin('view',this.ionicForm.value,padding)
     .subscribe((data) => {
       if (data !== null) {
-        console.log(data.data_detail);
+        //console.log(data.data_detail);
         this.data =  data.data_detail.map((item) => Object.assign({}, item));   
       }else{
         this.maxpadding = 0;
@@ -51,23 +51,27 @@ export class Potf04Page implements OnInit {
     });
   }
 
-  async View(id,po_running){
-    //let item = this.data.filter((val) => val.po_recivedate == recivedate);
+  async View(id,po_running,status){
+    let item = this.data.filter((val) => val.id == id);
     //console.log(item);
+    let modepay
+    if(item[0].po_status == 6){
+      modepay = 'view';
+    }else{
+      modepay = 'ok';
+    }
     const modal = await this.modalCtrl.create({
       component:Po01Page,
       cssClass: 'my-modal',
-      //componentProps:{recivedate:recivedate},
-      componentProps:{id:id,po_running:po_running,mode:'view',modepayment:'ok'},
+      componentProps:{id:id,po_running:po_running,mode:'view',modepayment:modepay},
     });
     await modal.present();
     const {data,role} = await modal.onWillDismiss();
-    if(role === 'confirm'){
+    if(role === 'confirm'){ 
       //console.log(data);
-      // if( data > 0){ 
-      //   item[0].countjustsend = item[0].countjustsend - Number(data);
-      //   item[0].countgoingsend = data;
-      // }
+      item[0].po_status = data[0]['po_status'];
+      item[0].po_statustext = data[0]['po_statustext'];
+
      }
   }
 
