@@ -15,7 +15,7 @@ import * as $ from 'jquery';
 })
 export class Mtd01Page implements OnInit {
   @ViewChild('fileIngimg') fileIngimg: ElementRef;
-  @ViewChild('pwaphoto') pwaphoto: ElementRef;
+  //@ViewChild('pwaphoto') pwaphoto: ElementRef;
   ionicForm: FormGroup;isSubmitted = false;
   portControl: FormControl;sub: Subscription;
   filterTerm: string;page = 0;maxpadding = 0;limit = 50;

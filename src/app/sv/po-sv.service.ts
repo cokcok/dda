@@ -400,6 +400,7 @@ export class PoSvService {
         'payment_cancel_3' : vdata.payment_cancel_3, 
         'emp_id': this.configSv.emp_id,
         'tmpproduct' : vdata.tmpproduct,
+        'pic' : vdata.picresizbase64List,
         'type_sql': type
       }
     

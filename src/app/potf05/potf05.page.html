@@ -1,31 +1,68 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button (click)="dismissModal()">
-        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
-      </ion-button>
+      <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>potf05</ion-title>
+    <ion-title>งานส่งสินค้า หน้าร้าน</ion-title>
   </ion-toolbar>
 </ion-header>
-
+<form [formGroup]="ionicForm" novalidate>
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label class="showlabel" position="floating">ค้นหาวันที่นัดรับ</ion-label>
+          <ion-input formControlName="txtserach" readonly [liIonic4Datepicker]="datePickerObj" type="text"></ion-input>
+          <span class="error" *ngIf="isSubmitted && errorControl.txtserach.errors?.required">
+            กรุณาระบุ คำค้นหา
+          </span>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-button [disabled]="ionicForm.invalid" (click)="SearchData(0)" expand="block" shape="round">
+          ค้นหาข้อมูล
+        </ion-button>
+        <ion-button (click)="loaddata(0)" expand="block" shape="round">
+          ค้นหาที่รอส่งทั้งหมด
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row class="content_alert" *ngIf="ionicForm.controls['typeserch_id'].value !== '9'">
+      <ion-col>
+        พบข้อมูลที่ค้นหา จำนวน {{maxdatalimit}} ข้อมูล
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</form>
 <ion-content>
-  <ion-button expand="full" color="primary" (click)="takePicture()">ถ่ายรูป!!
-  </ion-button>
-  <ion-card *ngIf="myImg">
-  <img [src]="myImg">
-  </ion-card>
-
-  <h2>Take a photo or use the gallery</h2>
-
-  <button ion-button (click)="openPWAPhotoPicker()">Let's go!</button>
-
-  <div *ngIf="imgURI != null">
-    <img [src]="imgURI" #imageSrc style="width: 200px;">
+  <div>
+    <ion-searchbar placeholder="ค้นหา..." [(ngModel)]="filterTerm" animated="true"></ion-searchbar>
+    <ion-card *ngFor="let c of data  | filter:filterTerm;index as i">
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label class="showlabel">วันที่นัดรับ {{ c.po_recivedate }}</ion-label>
+            <ion-button fill="outline" slot="end" color="success" (click)="View(c.po_recivedate)">ดูรายละเอียด </ion-button>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label class="showlabelheader"> รอส่ง {{ c.countid }} รายการ</ion-label>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-label class="showlabelheader"> ส่งสำเร็จ {{ c.countsus }} รายการ</ion-label>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-label class="showlabelheader"> ยกเลิกส่ง/มีปัญหา {{ c.counterr }} รายการ</ion-label>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-card>
   </div>
-
-  <div id="pwa">
-    <input type="file" id="pwaphoto" #pwaphoto accept="image/x-png,image/jpeg" (change)="uploadPWA()">
-  </div>
- 
 </ion-content>

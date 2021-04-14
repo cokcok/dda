@@ -92,10 +92,11 @@ export class Potf03Page implements OnInit {
     const {data,role} = await modal.onWillDismiss();
     if(role === 'confirm'){
       //console.log(data);
-      // if( data > 0){ 
-      //   item[0].countjustsend = item[0].countjustsend - Number(data);
-      //   item[0].countgoingsend = data;
-      // }
+      if( data[0]['countcf'] > 0 || data[0]['counterr'] > 0 ){ 
+        item[0].countid = item[0].countid - (Number(data[0]['countcf']) + Number(data[0]['counterr']));
+        item[0].countsus = Number(item[0].countsus) + Number(data[0]['countcf']);
+        item[0].counterr = Number(item[0].counterr) + Number(data[0]['counterr']);
+      }
      }
   }
 

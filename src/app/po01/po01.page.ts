@@ -1,6 +1,6 @@
 import { Component, OnInit,Input, ViewChild, ElementRef } from '@angular/core';
 import { ModalController, NavController,AlertController } from '@ionic/angular';
-import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators, FormControl,FormArray } from "@angular/forms";
 import { ConfigService } from "../sv/config.service";
 import { Subscription } from "rxjs";
 import { MtdSvService} from '../sv/mtd-sv.service';
@@ -21,6 +21,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 export class Po01Page implements OnInit {
   @Input() id:number;@Input() po_running:string;@Input() mode:string;@Input() modepayment:string;
   @ViewChild('fileIngimg') fileIngimg: ElementRef;
+  @ViewChild('fileIngimg1') fileIngimg1: ElementRef;
   ionicForm: FormGroup;isSubmitted = false;  ionicFormPayment: FormGroup;
   sub: Subscription;
   //id: number; 
@@ -165,7 +166,19 @@ export class Po01Page implements OnInit {
                            })[0];
                            this.portControl_payment.setValue(value_a);
                            this.paymenttype = Number(value);
-                         }else{
+                         }else if(key === 'picresizbase64List'){
+                           this.showrowpaymenttype1 = false;
+                          this.picpreview = Object(value).map((item) => Object.assign({}, item));
+                          //console.log(this.picpreview);
+                          this.picpreview.forEach(task => {
+                             //console.log(task)
+                              this.indexpic++;
+                              this.picresizbase64Array.push(this.formBuilder.group({
+                              id: [task.id],
+                              url: [task.url],
+                            }));
+                        });
+                        }else{
                           this.ionicFormPayment.controls[key].setValue(value);
                         }
                       }
@@ -702,9 +715,11 @@ export class Po01Page implements OnInit {
     });
     confirm.present();
   }
-
+  
+  src:any;
   loadform_payment(){
     this.portControl_payment = this.formBuilder.control("", Validators.required);
+    this.picresizbase64Array = this.formBuilder.array([]);
     this.ionicFormPayment = this.formBuilder.group({
       poid : [this.id],
       typepayment: this.portControl_payment,
@@ -714,7 +729,9 @@ export class Po01Page implements OnInit {
       ems_2:[""],
       payment_cancel_3:[""],
       tmpproduct:[""],
+      picresizbase64List: this.picresizbase64Array,
     }); 
+    
     this.loaddata_paymenttype();
   }
 
@@ -739,6 +756,12 @@ export class Po01Page implements OnInit {
     if(this.paymenttype === 0){
       this.ionicFormPayment.get('cashmoney_0').setValidators(Validators.required);
       this.ionicFormPayment.get('change_0').setValidators(Validators.min(0));
+    }
+    else if(this.paymenttype === 1){
+      this.src = "./assets/img/qr_payment.jpg";
+      //this.ionicFormPayment.get('picresizbase64List').setValidators(Validators.required);
+      this.picresizbase64Array.setValidators(Validators.required);
+      this.picresizbase64Array.updateValueAndValidity();
     }
     else if(this.paymenttype === 2){
       this.ionicFormPayment.get('ems_2').setValidators(Validators.required);
@@ -801,5 +824,63 @@ export class Po01Page implements OnInit {
   }
  }
   
+ showqr_payment(){
+  let url = this.configSv.ip + 'img/qr_payment.jpg'
+  const browser = this.iab.create(url).show();
+ }
 
+ picresizbase64Array: FormArray; picresizbase64:any;  picpreview =[];indexpic_payment = 0; showrowpaymenttype1:boolean= true;
+ fileUpload_payment() {
+  this.fileIngimg1.nativeElement.click();
+}
+
+fileUpload_imgpayment(event) {
+   const fileList: FileList =  this.fileIngimg1.nativeElement.files;
+   //console.log(fileList[0].type);
+   if (typeof fileList[0] !== 'undefined') {
+     if (fileList[0].type.match(/image.*/)) {
+       var reader = new FileReader();
+       var self = this;
+       reader.onloadend = function () {
+         //self.picbase64 = reader.result
+         var canvas = document.createElement("canvas");
+         var ctx = canvas.getContext("2d");
+         canvas.width = 200; // target width
+         canvas.height = 200; // target height
+         var image = new Image();
+         image.src = reader.result as string;
+         image.onload = function (e) {
+           ctx.drawImage(image,
+             0, 0, image.width, image.height,
+             0, 0, canvas.width, canvas.height
+           );
+           var resampledImage = new Image();
+           resampledImage.src = canvas.toDataURL();
+           self.picresizbase64 = resampledImage.src;
+             self.picpreview.push({
+               id:self.indexpic_payment,
+               url:resampledImage.src
+             });
+             
+            self.picresizbase64Array.push(self.formBuilder.group({
+               id:[self.indexpic_payment],
+               url: [self.picresizbase64],
+              
+             }));
+             self.indexpic_payment++;
+         };
+       }
+       reader.readAsDataURL(fileList[0]);
+     }
+     else {
+       alert('กรุณาระบุชนิดไฟล์รูปภาพ');
+     }
+   }
+ }
+
+ delImg_payment(index){
+  this.picpreview = this.picpreview.filter(obj => obj.id !== index);
+ this.picresizbase64Array.removeAt(this.picresizbase64Array.value.findIndex(value => value.id === index));
+
+}
 }

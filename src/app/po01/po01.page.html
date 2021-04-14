@@ -31,90 +31,118 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<div *ngIf="modepayment === 'ok' || modepayment === 'view' ">
-  <form [formGroup]="ionicFormPayment" novalidate>
-    <ion-grid >
-      <div class="table1">
-      <ion-row>
-        <ion-col>การรับสินค้า</ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col>
-          <ion-item>
-            <ion-label class="showlabel" position="floating">เงินที่ต้องชำระ</ion-label>
-            <ion-input formControlName="moneypay" type="text" readonly></ion-input>
-          </ion-item>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col >
-          <ion-item>
-            <ion-label class="showlabel" position="floating" >วิธีการรับเงิน</ion-label>
-            <ionic-selectable
-              interface="floating"
-              item-content
-              formControlName="typepayment"
-              itemValueField="id"
-              itemTextField="typeserch"
-              [items]="ports_payment"
-              [canSearch]="true" 
-              closeButtonText="ยกเลิก"
-              (onChange)="portChange_payment($event)"
-              >
-            </ionic-selectable>
-            <span class="error" *ngIf="isSubmitted && errorControl_Payment.typepayment.errors?.required">
-              กรุณาระบุ วิธีการรับเงิน
-            </span>
-          </ion-item>
-        </ion-col>
-      </ion-row>
-      <ion-row *ngIf="paymenttype === 0">
-        <ion-col>
-          <ion-item>
-            <ion-label class="showlabel" position="floating">รับเงิน</ion-label>
-            <ion-input formControlName="cashmoney_0" type="number"  (keyup)="cul_cashmoney_0()" ></ion-input>
-            <span class="error" *ngIf="isSubmitted && errorControl_Payment.cashmoney_0.errors?.required">
-              กรุณาระบุ รับเงิน
-            </span>
-          </ion-item>
-        </ion-col>
-        <ion-col>
-          <ion-item>
-            <ion-label class="showlabel" position="floating">เงินทอน</ion-label>
-            <ion-input formControlName="change_0" type="text" readonly></ion-input>
-            <span class="error" *ngIf="isSubmitted && errorControl_Payment.change_0.errors?.min">
-              เงินทอน ไม่ควรเป็นค่าติดลบ
-            </span>
-          </ion-item>
-        </ion-col>
-      </ion-row>
-      <ion-row *ngIf="paymenttype === 2">
-        <ion-col>
-          <ion-item>
-            <ion-label class="showlabel" position="floating">เลข EMS</ion-label>
-            <ion-input formControlName="ems_2" type="text"></ion-input>
-            <span class="error" *ngIf="isSubmitted && errorControl_Payment.ems_2.errors?.required">
-              กรุณาระบุ เลข EMS
-            </span>
-          </ion-item>
-        </ion-col>
-      </ion-row>
-      <ion-row *ngIf="paymenttype === 3">
-        <ion-col>
-          <ion-item>
-            <ion-label class="showlabel" position="floating">สาเหตุที่ยกเลิก</ion-label>
-            <ion-input formControlName="payment_cancel_3" type="text"></ion-input>
-            <span class="error" *ngIf="isSubmitted && errorControl_Payment.payment_cancel_3.errors?.required">
-              กรุณาระบุ สาเหตุที่ยกเลิก
-            </span>
-          </ion-item>
-        </ion-col>
-      </ion-row>
-      </div>
-    </ion-grid>
-  </form>
-</div>
+
  <ion-content>
+  <div *ngIf="modepayment === 'ok' || modepayment === 'view' ">
+    <form [formGroup]="ionicFormPayment" novalidate>
+      <ion-grid >
+        <div class="table1">
+        <ion-row>
+          <ion-col>การรับสินค้า</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label class="showlabel" position="floating">เงินที่ต้องชำระ</ion-label>
+              <ion-input formControlName="moneypay" type="text" readonly></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col >
+            <ion-item>
+              <ion-label class="showlabel" position="floating" >วิธีการรับเงิน</ion-label>
+              <ionic-selectable
+                interface="floating"
+                item-content
+                formControlName="typepayment"
+                itemValueField="id"
+                itemTextField="typeserch"
+                [items]="ports_payment"
+                [canSearch]="true" 
+                closeButtonText="ยกเลิก"
+                (onChange)="portChange_payment($event)"
+                >
+              </ionic-selectable>
+              <span class="error" *ngIf="isSubmitted && errorControl_Payment.typepayment.errors?.required">
+                กรุณาระบุ วิธีการรับเงิน
+              </span>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="paymenttype === 0">
+          <ion-col>
+            <ion-item>
+              <ion-label class="showlabel" position="floating">รับเงิน</ion-label>
+              <ion-input formControlName="cashmoney_0" type="number"  (keyup)="cul_cashmoney_0()" ></ion-input>
+              <span class="error" *ngIf="isSubmitted && errorControl_Payment.cashmoney_0.errors?.required">
+                กรุณาระบุ รับเงิน
+              </span>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label class="showlabel" position="floating">เงินทอน</ion-label>
+              <ion-input formControlName="change_0" type="text" readonly></ion-input>
+              <span class="error" *ngIf="isSubmitted && errorControl_Payment.change_0.errors?.min">
+                เงินทอน ไม่ควรเป็นค่าติดลบ
+              </span>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <div *ngIf="paymenttype === 1">
+          <ion-row *ngIf="showrowpaymenttype1 === true">
+            <ion-col>
+               <ion-img id="img2" [src]="src"></ion-img>
+           </ion-col>
+         </ion-row>
+         <ion-row>
+          <ion-col>
+            <p>แนบสลิปการโอน 
+              <input type="file" (change)="fileUpload_imgpayment($event)" id="file-input" accept="image/x-png,image/jpeg"  style="position:absolute; top: -999999px" #fileIngimg1>
+              <button ion-button (click)="fileUpload_payment()">Upload</button>
+              <div>
+             <div  style="display: inline-block;" *ngFor="let img of picpreview" >
+              <ion-img style="width: 100px; height: 100px;"  [src]="img.url"></ion-img>
+              <ion-button (click)="delImg_payment(img.id)">
+                <ion-icon slot="icon-only" size="small" name="trash"></ion-icon>
+              </ion-button>
+             </div>
+            </div>
+          <p>
+            <span class="error" *ngIf="isSubmitted && errorControl_Payment.picresizbase64List.errors?.required">
+              กรุณาแนบ สลิปการโอน
+            </span>
+          </ion-col>
+         </ion-row>
+        </div>
+        
+        <ion-row *ngIf="paymenttype === 2">
+          <ion-col>
+            <ion-item>
+              <ion-label class="showlabel" position="floating">เลข EMS</ion-label>
+              <ion-input formControlName="ems_2" type="text"></ion-input>
+              <span class="error" *ngIf="isSubmitted && errorControl_Payment.ems_2.errors?.required">
+                กรุณาระบุ เลข EMS
+              </span>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="paymenttype === 3">
+          <ion-col>
+            <ion-item>
+              <ion-label class="showlabel" position="floating">สาเหตุที่ยกเลิก</ion-label>
+              <ion-input formControlName="payment_cancel_3" type="text"></ion-input>
+              <span class="error" *ngIf="isSubmitted && errorControl_Payment.payment_cancel_3.errors?.required">
+                กรุณาระบุ สาเหตุที่ยกเลิก
+              </span>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        </div>
+      </ion-grid>
+    </form>
+  </div>
   <form [formGroup]="ionicForm" novalidate>
     <ion-grid >
       <div class="table1">
