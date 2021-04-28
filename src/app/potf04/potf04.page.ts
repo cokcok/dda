@@ -60,7 +60,7 @@ export class Potf04Page implements OnInit {
     let item = this.data.filter((val) => val.id == id);
     //console.log(item);
     let modepay
-    if(item[0].po_status == 6 || item[0].po_status == 3){
+    if(item[0].po_status == 6 || item[0].po_status == 3 || item[0].po_status == 5){
       modepay = 'view';
     }else{
       modepay = 'ok';

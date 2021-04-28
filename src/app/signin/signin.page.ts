@@ -4,18 +4,19 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import {SigninSvService} from '../sv/signin-sv.service';
 import {ConfigService} from '../sv/config.service';
- 
+
+
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.page.html',
   styleUrls: ['./signin.page.scss'],
-})
+}) 
 export class SigninPage implements OnInit {
   ionicForm: FormGroup;sub: Subscription;
   isSubmitted = false;
   versionNumber: string|number;
  
-ConfigService
+
   constructor(public formBuilder: FormBuilder,public menuCtrl: MenuController,private navCtrl: NavController,private signinSv:SigninSvService,public configSv:ConfigService) { 
 
 

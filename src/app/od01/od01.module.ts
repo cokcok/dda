@@ -2,18 +2,20 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { Po01PageRoutingModule } from './po01-routing.module';
-import { Po01Page } from './po01.page';
+import { Od01PageRoutingModule } from './od01-routing.module';
+import { Od01Page } from './od01.page';
 import { IonicSelectableModule } from 'ionic-selectable';
 import { Ionic4DatepickerModule } from '@logisticinfotech/ionic4-datepicker';
 import { AutoCompleteModule } from 'ionic4-auto-complete'; 
+import {PipesCommonModule} from '../pipes/pipes-common/pipes-common.module';
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    Po01PageRoutingModule,ReactiveFormsModule,IonicSelectableModule,Ionic4DatepickerModule,AutoCompleteModule
+    Od01PageRoutingModule,ReactiveFormsModule,IonicSelectableModule,Ionic4DatepickerModule,AutoCompleteModule,PipesCommonModule
   ],
-  declarations: [Po01Page]
+  declarations: [Od01Page]
 })
-export class Po01PageModule {}
+export class Od01PageModule {}

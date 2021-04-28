@@ -8,7 +8,7 @@ import { FeedBack } from '../models/feedback';
   providedIn: 'root'
 })
 export class PoSvService {
-
+ 
   constructor(private http: HttpClient, private configSv: ConfigService) { }
 
 
@@ -398,6 +398,7 @@ export class PoSvService {
         'change_0' : vdata.change_0,
         'ems_2' : vdata.ems_2,  
         'payment_cancel_3' : vdata.payment_cancel_3, 
+        'problem_cause_4' : vdata.problem_cause_4, 
         'emp_id': this.configSv.emp_id,
         'tmpproduct' : vdata.tmpproduct,
         'pic' : vdata.picresizbase64List,

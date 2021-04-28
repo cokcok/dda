@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
      </ion-buttons>
-    <ion-title>ข้อมูลตัวแทนจำหน่าย</ion-title>
+    <ion-title>ข้อมูลร้านค้า</ion-title>
     <ion-buttons slot="primary">
       <ion-button (click)="refreshForm()">
         <ion-icon slot="icon-only" src="./assets/icons/refresh.svg"></ion-icon>
@@ -26,10 +26,10 @@
     <ion-row>
       <ion-col>
         <ion-item>
-          <ion-label class="showlabel" position="floating">ชื่อตัวแทน</ion-label>
+          <ion-label class="showlabel" position="floating">ชื่อร้านค้า</ion-label>
           <ion-input formControlName="supply_name" type="text"></ion-input>
           <span class="error" *ngIf="isSubmitted && errorControl.supply_name.errors?.required">
-            กรุณาระบุ ชื่อตัวแทน
+            กรุณาระบุ ชื่อร้านค้า
           </span>
         </ion-item>
       </ion-col>

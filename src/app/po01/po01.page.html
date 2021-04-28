@@ -139,6 +139,17 @@
             </ion-item>
           </ion-col>
         </ion-row>
+        <ion-row *ngIf="paymenttype === 4">
+          <ion-col>
+            <ion-item>
+              <ion-label class="showlabel" position="floating">ปัญหา</ion-label>
+              <ion-input formControlName="problem_cause_4" type="text"></ion-input>
+              <span class="error" *ngIf="isSubmitted && errorControl_Payment.problem_cause_4.errors?.required">
+                กรุณาระบุ ปัญหา
+              </span>
+            </ion-item>
+          </ion-col>
+        </ion-row>
         </div>
       </ion-grid>
     </form>
@@ -190,15 +201,18 @@
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-item>
-          <ion-label class="showlabel" position="floating">ประเภทลูกค้า</ion-label>
-          <ionic-selectable interface="floating" item-content formControlName="customer_type_id" itemValueField="id"
-            itemTextField="type" [items]="portscustomertype" [canSearch]="true" closeButtonText="ยกเลิก" (onChange)="portChangeCus($event)">
-          </ionic-selectable>
-          <span class="error" *ngIf="isSubmitted && errorControl.customer_type_id.errors?.required">
-            กรุณาระบุ ประเภทลูกค้า
-          </span>
-        </ion-item>
+        <ion-col>
+          <ion-item>
+            <ion-label class="showlabel" position="floating">ประเภทลูกค้า</ion-label>
+            <ionic-selectable interface="floating" item-content formControlName="customer_type_id" itemValueField="id"
+              itemTextField="type" [items]="portscustomertype" [canSearch]="true" closeButtonText="ยกเลิก" (onChange)="portChangeCus($event)">
+            </ionic-selectable>
+            <span class="error" *ngIf="isSubmitted && errorControl.customer_type_id.errors?.required">
+              กรุณาระบุ ประเภทลูกค้า
+            </span>
+          </ion-item>
+        </ion-col>
+      
         <ion-col *ngIf="cus_type==0">
           <ion-item>
             <ion-label class="showlabel" position="floating">ชื่อลูกค้า</ion-label>
@@ -298,7 +312,7 @@
         <ion-row>
           <ion-col> 
             <ion-item>
-            <ion-label class="showlabelmain" position="floating">เลือกสินค้า</ion-label>
+            <ion-label class="showlabelmain" position="floating">เลือกสินค้า</ion-label> 
            <ionic-selectable item-content itemValueField="id" itemTextField="name" [isMultiple]="true" [canSearch]="true" [items]="ports_productmain" (onChange)="portChange_Product($event)">
             <ng-template ionicSelectableItemTemplate let-port="item" let-isPortSelected="isItemSelected">
               <div [ngClass]="{'qtychk': inqtyerror(port.qty,port.qty_remain)}" >{{port.name}} remain: {{port.qty_remain}} qty: {{port.qty}}</div>
@@ -324,11 +338,11 @@
           <ion-col size="2">{{c.name}}</ion-col>
           <!-- <ion-col size="2">{{c.size}}/{{c.price}}</ion-col> -->
           <ion-col size="2"> 
-          <ion-input  class="showborder" type="number"  [(ngModel)]="discount[i]" [ngModelOptions]="{standalone: true}" (change)="Discount(c.id,discount[i])"></ion-input> 
+          <ion-input  class="showborder" type="number"  [(ngModel)]="discount[c.id]" [ngModelOptions]="{standalone: true}" (change)="Discount(c.id,discount[c.id])"></ion-input> 
           </ion-col>
           <ion-col size="2">{{c.total|number}}</ion-col>
           <ion-col size="3"> 
-            <ion-input  class="showborder" type="text"  [(ngModel)]="commentproduct[i]" [ngModelOptions]="{standalone: true}" (change)="Commentproduct(c.id,commentproduct[i])"></ion-input> 
+            <ion-input  class="showborder" type="text"  [(ngModel)]="commentproduct[c.id]" [ngModelOptions]="{standalone: true}" (change)="Commentproduct(c.id,commentproduct[c.id])"></ion-input> 
           </ion-col>
             <ion-col size="2.5" > 
               <div *ngIf="mode !== 'view'">
@@ -339,7 +353,7 @@
               <ion-button (click)="Addnumber(i+1,c.id)">
                 <ion-icon slot="icon-only" class="iconSize" name="add"></ion-icon>
               </ion-button>
-              <ion-button (click)="Deltmpproduct(c.id,i)">
+              <ion-button (click)="Deltmpproduct(c.id,c.id)">
                 <ion-icon slot="icon-only" class="iconSize" name="trash"></ion-icon>
               </ion-button>
               </div>

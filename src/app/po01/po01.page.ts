@@ -11,7 +11,7 @@ const moment = moment_;
 import { IonicSelectableComponent } from 'ionic-selectable';
 import {PlaceSvService} from '../sv/place-sv.service';
 import {Po01numberPage} from '../po01number/po01number.page';
-import * as $ from 'jquery';
+//import * as $ from 'jquery';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 @Component({
   selector: 'app-po01',
@@ -637,6 +637,9 @@ export class Po01Page implements OnInit {
       this.ionicForm.get('po_customer').setValidators(Validators.required);
       this.ionicForm.get('po_customer_tel').setValidators(Validators.required);
       this.ionicForm.get('mtd_member_id').setValidators(null);
+      this.ionicForm.get('mtd_member_id').setValue(null);
+      this.ionicForm.controls['po_customer'].setValue(null);
+      this.ionicForm.controls['po_customer_tel'].setValue(null);
     }else{
       this.ionicForm.get('mtd_member_id').setValidators(Validators.required);
       this.ionicForm.get('po_customer').setValidators(null);
@@ -728,6 +731,7 @@ export class Po01Page implements OnInit {
       change_0:[""],
       ems_2:[""],
       payment_cancel_3:[""],
+      problem_cause_4:[""],
       tmpproduct:[""],
       picresizbase64List: this.picresizbase64Array,
     }); 
@@ -768,6 +772,9 @@ export class Po01Page implements OnInit {
     }
     else if(this.paymenttype === 3){
       this.ionicFormPayment.get('payment_cancel_3').setValidators(Validators.required);
+    }
+    else if(this.paymenttype === 4){
+      this.ionicFormPayment.get('problem_cause_4').setValidators(Validators.required);
     }
   }
 
