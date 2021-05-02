@@ -92,7 +92,7 @@ export class PoSvService {
     //console.log(vdata,vdata.typeserch_id.id);
     let typeserch;
     if(  typeof vdata.typeserch_id.id === 'undefined' ){
-      typeserch = vdata.typeserch_id;
+      typeserch = 9;
     }else{
       typeserch = vdata.typeserch_id.id ;
     }

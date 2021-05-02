@@ -25,12 +25,13 @@ export class Od01Page implements OnInit {
   ionicForm: FormGroup;isSubmitted = false;
   sub: Subscription;
   myDate = new Date().toISOString();
-  datePickerObj: any = {};
+  datePickerObj: any = {}; 
   tmpproduct = []; od_qty = []; od_price = [];od_unit=[];
   portControl_sale: FormControl; ports_sale: any;
   portControl_suppliertype: FormControl; ports_suppliertype: any;
   portControl_supplier: FormControl; ports_supplier: any;
   ports_productmain: any;alltotalproduct:number; vat7:number; sumtotal:number;
+  
   constructor(private navCtrl: NavController,public formBuilder: FormBuilder,
     public configSv: ConfigService,public mtdSv: MtdSvService,
     private alertCtrl: AlertController,private modalCtrl:ModalController,private iab: InAppBrowser,public placeSv:PlaceSvService,private poSv: PoSvService , private odSv: OdSvService) { }
@@ -60,6 +61,8 @@ export class Od01Page implements OnInit {
       vat:[this.vat7],
       sumtotal:[this.sumtotal],
       tmpproduct:["",[Validators.required]],
+      od_status:[""],
+      oldtmpproduct:[""],
     });
     this.loaddata_sale(0);this.fndate(); this.loaddata_suppliertype();this.loaddata_supplier(0);this.loaddata_product();
    
@@ -276,18 +279,27 @@ export class Od01Page implements OnInit {
     this.vat7 = this.alltotalproduct * 0.07;
     this.sumtotal = this.alltotalproduct + this.vat7;
   }
-
+ 
   async submitForm(){
+    console.log(this.ionicForm.value)
+    
+    
+    let foundnull = this.tmpproduct.find(function (value){
+      if(value.od_total === 0 || value.od_unit == null || typeof value.od_unit == 'undefined'){
+        return true;
+      }
+   });
+
     this.ionicForm.controls['tmpproduct'].setValue(this.tmpproduct);
     if( typeof this.alltotalproduct !== 'undefined'){
-      this.ionicForm.controls['total'].setValue(this.alltotalproduct.toFixed(2));
-      this.ionicForm.controls['vat'].setValue(this.vat7.toFixed(2));
-      this.ionicForm.controls['sumtotal'].setValue(this.sumtotal.toFixed(2));
+      this.ionicForm.controls['total'].setValue(Number(this.alltotalproduct).toFixed(2));
+      this.ionicForm.controls['vat'].setValue(Number(this.vat7).toFixed(2));
+      this.ionicForm.controls['sumtotal'].setValue(Number(this.sumtotal).toFixed(2));
     }
     
-    console.log(this.ionicForm.value)
+   
     this.isSubmitted = true;
-    if (!this.ionicForm.valid) {
+    if (!this.ionicForm.valid || foundnull) {
       console.log("Please provide all the required values!");
       return false;
     } else {
@@ -314,36 +326,24 @@ export class Od01Page implements OnInit {
               if (data !== null) {
                 if(typesql === 'insert'){
                   if(data.status === 'ok'){
-                    //this.refreshForm();
+                    this.refreshForm();
                     this.configSv.ChkformAlert(data.message);
                   }
                 }else if(typesql === 'update'){
                 //   //console.log('update');
-                //   this.configSv.ChkformAlert(data.message);
-                //   let dataarray = []; 
-                //   let ponumberdetail = this.tmpproduct.map(function (item) {
-                //     return item.numbervalue
-                //   });
-                
-                //   if(ponumberdetail[0] !== null){
-                //     ponumberdetail = ponumberdetail;
-                //   }else{
-                //     ponumberdetail = null;
-                //   }
-                //   dataarray.push({ 
-                //     po_date:this.ionicForm.controls.po_date.value,
-                //     po_recivedate:this.ionicForm.controls.po_recivedate.value,
-                //     po_namewin:this.ionicForm.controls.po_namewin.value,
-                //     area_name:this.ionicForm.controls.mtd_area_id.value.area_name,
-                //     po_customer:this.ionicForm.controls.po_customer.value,
-                //     po_customer_tel:this.ionicForm.controls.po_customer_tel.value,
-                //     po_total: this.ionicForm.controls.po_total.value,
-                //     qty:this.tmpproduct.length,
-                //     ponumberdetail:ponumberdetail,
-                //   });
-                //   //console.log(dataarray);
-                //   this.modalCtrl.dismiss(dataarray,'comfirm');
-                //  // this.ionicForm.controls.podetail_number.value
+                  this.configSv.ChkformAlert(data.message);
+                  let dataarray = []; 
+                  dataarray.push({ 
+                    od_date:this.ionicForm.controls.od_date.value,
+                    supply_name:this.ionicForm.controls.supply_name.value,
+                    countod:this.tmpproduct.length,
+                    total:this.ionicForm.controls.total.value,
+                    vat:this.ionicForm.controls.vat.value,
+                    sumtotal:this.ionicForm.controls.sumtotal.value,
+                  });
+                  //console.log(dataarray);
+                  this.modalCtrl.dismiss(dataarray,'comfirm');
+                 // this.ionicForm.controls.podetail_number.value
 
                 }
               }
@@ -358,6 +358,116 @@ export class Od01Page implements OnInit {
       });
       confirm.present();
     }
+  }
+
+
+  refreshForm() {
+    this.ionicForm.reset({od_date:moment().format("DD/MM/YYYY")});
+    let item = this.ports_sale.filter((val) => val.id == this.configSv.emp_id)[0];
+    this.portControl_sale.setValue(item);
+    this.isSubmitted = false;
+    this.tmpproduct = []; this.od_qty = []; this.od_price = []; this.od_unit=[];
+    this.alltotalproduct=0; this.vat7 = 0; this.sumtotal=0;
+  }
+
+  ionViewDidEnter(){
+    this.loaddata_edit(); 
+  }
+
+  loaddata_edit(){
+    if(typeof this.id !== 'undefined'){
+      this.sub = this.odSv
+      .getod_edit(this.id)
+      .subscribe((data) => {
+        if (data !== null) {
+          console.log(data);
+
+          data.data_detail.forEach((item) => {
+            for (const [key, value] of Object.entries(item)) {
+              if(key === "mtd_user_id"){
+                let value_a = this.ports_sale.filter(function (item1) {
+                     return item1.id === value;
+                 })[0];
+                 this.portControl_sale.setValue(value_a);
+               }else if(key === "supplier_type"){
+                let value_a = this.ports_suppliertype.filter(function (item1) {
+                  return item1.id === value;
+                })[0];
+                this.portControl_suppliertype.setValue(value_a);
+                this.supplier_type = value_a['id'];
+               }else if(key === "mtd_supplier_id"){
+                let value_a = this.ports_supplier.filter(function (item1) {
+                  return item1.id === value;
+                })[0];
+                this.portControl_supplier.setValue(value_a);
+               }else{
+                this.ionicForm.controls[key].setValue(value);
+              }
+             
+            }
+            this.tmpproduct = data.data_detail[0]['tmpproduct'];
+            this.tmpproduct.forEach((item,index) => {
+              this.od_qty[index] = item['od_qty'];
+              this.od_unit[index] = item['od_unit'];
+              this.od_price[index] = item['od_price'];
+            });
+            this.alltotalproduct = data.data_detail[0]['total'];
+            this.vat7 = data.data_detail[0]['vat'];
+            this.sumtotal =  data.data_detail[0]['sumtotal'];
+          });
+        }
+      });
+    }
+  }
+
+  async cancelData() {
+    const confirm =  await this.alertCtrl.create({
+      header: 'ยืนยันการลบข้อมูล',
+      message: 'แน่ใจว่าต้องการลบใบสั่งของที่ '+ this.od_running +' ? ',
+      inputs: [
+        {
+          name: 'cause',
+          placeholder: 'ระบุเหตุผลในการยกเลิก',
+        },
+      ],
+      buttons: [{
+        text: 'ยกเลิก',
+        handler: (data: any) => {
+           console.log('cancel ',data);
+        }
+      },
+      {
+        text: 'ตกลง',
+          handler: (data: any) => {
+           if(data['cause']){
+             this.sub = this.odSv.crudod(this.ionicForm.value,'cancel',data['cause']).subscribe(
+              (data) => {
+                if(data.status == 'ok')
+                {   
+                  this.configSv.ChkformAlert(data.message);
+                  let dataarray = []; 
+                  dataarray.push({
+                    od_statustext:'ยกเลิกใบสั่งของ',
+                  });
+                  this.modalCtrl.dismiss(dataarray,'cancel');
+                }
+                else
+                {
+                  this.configSv.ChkformAlert(data.message);
+                }
+              }, (error) => {
+                console.log(JSON.stringify(error));
+              }, () => {
+              }
+            );
+          } 
+          else{
+            this.configSv.ChkformAlert('กรุณาระบุเหตุผลในการลบด้วย');
+          }
+        }
+      }]
+    });
+    confirm.present();
   }
 
 }

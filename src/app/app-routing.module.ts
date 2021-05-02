@@ -5,7 +5,7 @@ const routes: Routes = [
   {
     path: '',
     //redirectTo: 'folder/Inbox',
-    redirectTo: 'od01',
+    redirectTo: 'od02',
     //redirectTo: 'signin',
     pathMatch: 'full'
   },
@@ -192,6 +192,10 @@ const routes: Routes = [
   {
     path: 'od01',
     loadChildren: () => import('./od01/od01.module').then( m => m.Od01PageModule)
+  },
+  {
+    path: 'od02',
+    loadChildren: () => import('./od02/od02.module').then( m => m.Od02PageModule)
   }
 ];
 

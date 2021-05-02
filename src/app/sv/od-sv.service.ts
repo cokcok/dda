@@ -13,6 +13,36 @@ export class OdSvService {
   constructor(private http: HttpClient, private configSv: ConfigService) { }
 
 
+  getod(vdata:any,padding: number, limit: number = 9999999999): Observable<data> {
+    const header = { 'Content-Type': 'application/json' };
+    let apiUrl = this.configSv.ip + 'od.php';
+    //console.log(vdata,vdata.typeserch_id.id);
+    let typeserch;
+    if(  typeof vdata.typeserch_id.id === 'undefined' ){
+      typeserch = 9;
+    }else{
+      typeserch = vdata.typeserch_id.id ;
+    }
+     let data = {
+      'padding': padding,
+      'limit': limit,
+      'typeserch': typeserch,
+      'serchtxt': vdata.txtserach,
+      'type_sql': 'read'
+    }
+    return this.http.post<data>(apiUrl, data, { headers: header });
+  }
+
+  getod_edit(id): Observable<data> {
+    const header = { 'Content-Type': 'application/json' };
+    const apiUrl = this.configSv.ip + 'od.php';
+    let data;
+    data = {
+      'id': id,
+      'type_sql': 'readedit'
+    }
+    return this.http.post<data>(apiUrl, data, { headers: header });
+  }
 
   crudod(vdata: any, type: string, cause?): Observable<FeedBack> {
     const header = { 'Content-Type': 'application/json' };
@@ -22,23 +52,22 @@ export class OdSvService {
       data = {
         'id': vdata.id,
         'emp_id': this.configSv.emp_id,
-        'oldtmpproduct' : vdata.oldtmpproduct,
         'type_sql': type,
         'cause': cause
       }
     }
     else {
-      // let mid:number;
-      // if(vdata.customer_type_id.id === '0'){
-      //   mid = 0;
-      // }else{
-      //   mid =  vdata.mtd_member_id.id;
-      // }
+      let mid:number;
+      if(vdata.supplier_type_id.id === '0'){
+        mid = 0;
+      }else{
+        mid =  vdata.mtd_supplier_id.id;
+      }
       data = {
         'id': vdata.id,
         'od_date':vdata.od_date,
         'mtd_user_id': vdata.mtd_user_id.id,
-        'mtd_supplier_id': vdata.mtd_supplier_id.id,
+        'mtd_supplier_id': mid,
         'supplier_type':vdata.supplier_type_id.id,
         'supply_name' : vdata.supply_name,
         'supply_address': vdata.supply_address,
@@ -53,6 +82,7 @@ export class OdSvService {
         'vat' : vdata.vat,
         'sumtotal' : vdata.sumtotal,
         'tmpproduct' : vdata.tmpproduct,
+        'oldtmpproduct' : vdata.oldtmpproduct,
         'emp_id': this.configSv.emp_id,
         'type_sql': type
       }

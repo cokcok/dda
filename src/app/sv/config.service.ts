@@ -91,7 +91,7 @@ export class ConfigService {
 
     // sets the ping interval to 15 seconds
     this.keepalive.interval(15);
-
+ 
     this.keepalive.onPing.subscribe(() => this.lastPing = new Date());
 
     this.resetidle();
