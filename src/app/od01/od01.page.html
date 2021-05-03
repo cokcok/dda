@@ -214,9 +214,14 @@
               {{c.od_total|number}}
             </ion-col>
             <ion-col size="1">
-              <ion-button (click)="Deltmpproduct(c.id,c.id)">
+              <ion-button *ngIf="mode !== 'view'" (click)="Deltmpproduct(c.id,c.id)">
                 <ion-icon slot="icon-only" class="iconSize" name="trash"></ion-icon>
               </ion-button>
+          
+                <ion-button *ngIf="modedelivered == 'recive'"  (click)="recive(id,od_running,c.id)">
+                  <ion-icon  slot="icon-only" src="./assets/icons/inventory.svg"></ion-icon>
+                </ion-button>
+
             </ion-col>
             <ion-col *ngIf="isSubmitted && c.od_total === 0">
               <span class="error" >
@@ -227,6 +232,11 @@
               <span class="error" >
                 สินค้าลำดับที่ {{i+1}} ไม่ได้ระบุหน่วย
                </span>
+            </ion-col>
+            <ion-col>
+              <span class="error" >
+               สินค้าลำดับที่ {{i+1}} รับสินค้าเป็นจำนวน 
+              </span>
             </ion-col>
           </ion-row>
           <div class="table1_footer">

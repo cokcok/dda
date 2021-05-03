@@ -1,0 +1,79 @@
+<ion-header> 
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="dismissModal()">
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+    </ion-button>
+    </ion-buttons> 
+    <ion-title> รับสินค้า {{ od_running }}</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="submitForm()">
+        <ion-icon slot="icon-only" src="./assets/icons/save.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<form [formGroup]="ionicForm" novalidate>
+  <ion-grid>
+    <ion-row>
+      <ion-col >
+        <ion-item>
+          <ion-label class="showlabel" position="floating">วันที่รับสินค้า</ion-label>
+          <ion-input readonly [liIonic4Datepicker]="datePickerObj" type="text" formControlName="od_recive_date"></ion-input>
+          <span class="error" *ngIf="isSubmitted && errorControl.od_recive_date.errors?.required">
+            กรุณาระบุ วันที่รับสินค้า
+          </span>
+        </ion-item>
+      </ion-col>
+      <ion-col >
+        <ion-item>
+          <ion-label class="showlabel" position="floating">ครั้งที่</ion-label>
+          <ion-input readonly type="text" formControlName="recive_seq"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col >
+        <ion-item>
+          <ion-label class="showlabel" position="floating">สินค้า</ion-label>
+          <ion-input readonly type="text" formControlName="product_name"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col >
+        <ion-item>
+          <ion-label class="showlabel" position="floating">ขนาด</ion-label>
+          <ion-input readonly type="text" formControlName="size"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col >
+        <ion-item>
+          <ion-label class="showlabel" position="floating">จำนวนที่สั่ง/หน่วย</ion-label>
+          <ion-input readonly type="text" formControlName="od_qty"></ion-input>
+        </ion-item>
+      </ion-col>
+      <!-- <ion-col >
+        <ion-item>
+          <ion-label class="showlabel" position="floating">หน่วย</ion-label>
+          <ion-input readonly type="text" formControlName="od_unit"></ion-input>
+        </ion-item>
+      </ion-col> -->
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label class="showlabel" position="floating">จำนวนที่รับสินค้า</ion-label>
+          <ion-input  type="number" formControlName="qty_recive"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-label class="showlabel" position="floating">รายละเอียดการรับสินค้า</ion-label>
+          <ion-input  type="text" formControlName="od_recive_detail"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</form>
+<ion-content>
+
+</ion-content>

@@ -1,4 +1,4 @@
-import { Component, OnInit,Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
 import { ModalController, NavController,AlertController } from '@ionic/angular';
 import { FormBuilder, FormGroup, Validators, FormControl,FormArray } from "@angular/forms";
 import { ConfigService } from "../sv/config.service";
@@ -13,6 +13,7 @@ import { IonicSelectableComponent } from 'ionic-selectable';
 import {PlaceSvService} from '../sv/place-sv.service';
 //import * as $ from 'jquery';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import {Od03Page} from '../od03/od03.page';
 
 
 @Component({
@@ -380,8 +381,7 @@ export class Od01Page implements OnInit {
       .getod_edit(this.id)
       .subscribe((data) => {
         if (data !== null) {
-          console.log(data);
-
+          //console.log(data);
           data.data_detail.forEach((item) => {
             for (const [key, value] of Object.entries(item)) {
               if(key === "mtd_user_id"){
@@ -470,4 +470,26 @@ export class Od01Page implements OnInit {
     confirm.present();
   }
 
+
+  async recive(id,od_running,iddetail){
+    // console.log(id);
+     let item = this.tmpproduct.filter((val) => val.id == iddetail);
+     //console.log(item);  
+     const modal = await this.modalCtrl.create({
+       component:Od03Page,
+       cssClass: 'my-modal',
+       componentProps:{id:id,od_running:od_running,item:item},
+     });
+     await modal.present();
+     const {data,role} = await modal.onWillDismiss();
+     //console.log(data,role);
+     if(role === 'comfirm'){ 
+      //  item[0].od_date = data[0]['od_date'];
+      //  item[0].supply_name = data[0]['supply_name'];
+      //  item[0].countod = data[0]['countod'];
+      //  item[0].total = data[0]['total'];
+      //  item[0].vat = data[0]['vat'];
+      //  item[0].sumtotal = data[0]['sumtotal'];
+     }
+   }
 }

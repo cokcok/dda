@@ -89,5 +89,22 @@ export class OdSvService {
     }
     return this.http.post<FeedBack>(apiUrl, data, { headers: header });
   }
+
+
+  crudod_recive(vdata: any, type: string, cause?): Observable<FeedBack> {
+    const header = { 'Content-Type': 'application/json' };
+    const apiUrl = this.configSv.ip + 'od_recive.php';
+     let  data = {
+        'od_main_id' : vdata.od_main_id,
+        'od_main_detail_id' : vdata.od_main_detail_id,
+        'od_recive_date' : vdata.od_recive_date,
+        'recive_seq' : vdata.recive_seq,
+        'qty_recive' : vdata.qty_recive,
+        'od_recive_detail' : vdata.od_recive_detail,
+        'emp_id': this.configSv.emp_id,
+        'type_sql': type
+      }
+    return this.http.post<FeedBack>(apiUrl, data, { headers: header });
+  }
 }
  

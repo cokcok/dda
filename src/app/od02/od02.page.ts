@@ -142,5 +142,28 @@ export class Od02Page implements OnInit {
      }
    }
 
+
+   async recive(id,od_running){
+    // console.log(id);
+     let item = this.data.filter((val) => val.id == id);
+     //console.log(item);  
+     const modal = await this.modalCtrl.create({
+       component:Od01Page,
+       cssClass: 'my-modal',
+       componentProps:{id:id,od_running:od_running,mode:'view',modedelivered:'recive'},
+     });
+     await modal.present();
+     const {data,role} = await modal.onWillDismiss();
+     //console.log(data,role);
+     if(role === 'comfirm'){ 
+      //  item[0].od_date = data[0]['od_date'];
+      //  item[0].supply_name = data[0]['supply_name'];
+      //  item[0].countod = data[0]['countod'];
+      //  item[0].total = data[0]['total'];
+      //  item[0].vat = data[0]['vat'];
+      //  item[0].sumtotal = data[0]['sumtotal'];
+     }
+   }
+
 }
  

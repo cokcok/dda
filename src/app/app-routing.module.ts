@@ -196,6 +196,10 @@ const routes: Routes = [
   {
     path: 'od02',
     loadChildren: () => import('./od02/od02.module').then( m => m.Od02PageModule)
+  },
+  {
+    path: 'od03',
+    loadChildren: () => import('./od03/od03.module').then( m => m.Od03PageModule)
   }
 ];
 
