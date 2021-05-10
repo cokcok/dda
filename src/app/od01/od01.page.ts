@@ -14,6 +14,7 @@ import {PlaceSvService} from '../sv/place-sv.service';
 //import * as $ from 'jquery';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import {Od03Page} from '../od03/od03.page';
+import { exit } from 'process';
 
 
 @Component({
@@ -22,7 +23,7 @@ import {Od03Page} from '../od03/od03.page';
   styleUrls: ['./od01.page.scss'],
 })
 export class Od01Page implements OnInit {
-  @Input() id:number;@Input() od_running:string;@Input() mode:string;@Input() modedelivered:string;
+  @Input() id:number;@Input() od_running:string;@Input() mode:string;@Input() modedelivered:string;@Input() odstatus:string;
   ionicForm: FormGroup;isSubmitted = false;
   sub: Subscription;
   myDate = new Date().toISOString();
@@ -32,7 +33,7 @@ export class Od01Page implements OnInit {
   portControl_suppliertype: FormControl; ports_suppliertype: any;
   portControl_supplier: FormControl; ports_supplier: any;
   ports_productmain: any;alltotalproduct:number; vat7:number; sumtotal:number;
-  
+  edit = ['1']; editdata = ['0']
   constructor(private navCtrl: NavController,public formBuilder: FormBuilder,
     public configSv: ConfigService,public mtdSv: MtdSvService,
     private alertCtrl: AlertController,private modalCtrl:ModalController,private iab: InAppBrowser,public placeSv:PlaceSvService,private poSv: PoSvService , private odSv: OdSvService) { }
@@ -105,7 +106,8 @@ export class Od01Page implements OnInit {
   }
 
   dismissModal(){
-    this.modalCtrl.dismiss();
+    //this.modalCtrl.dismiss();
+    this.modalCtrl.dismiss(this.odstatus ,'back');
   }
 
   loaddata_sale(padding: number, infiniteScroll?) {
@@ -470,20 +472,23 @@ export class Od01Page implements OnInit {
     confirm.present();
   }
 
-
-  async recive(id,od_running,iddetail){
-    // console.log(id);
+  
+  async recive(id,od_running,iddetail,odstatus){
+   //console.log(odstatus);
      let item = this.tmpproduct.filter((val) => val.id == iddetail);
      //console.log(item);  
      const modal = await this.modalCtrl.create({
        component:Od03Page,
        cssClass: 'my-modal',
-       componentProps:{id:id,od_running:od_running,item:item},
-     });
+       componentProps:{id:id,od_running:od_running,item:item,odstatus:odstatus},
+     }); 
      await modal.present();
      const {data,role} = await modal.onWillDismiss();
      //console.log(data,role);
-     if(role === 'comfirm'){ 
+     if(role === 'confirm'){ 
+       console.log(data);
+       this.odstatus = data[0]['odstatus'];
+       item[0].qty_recive = Number(item[0].qty_recive) + Number(data[0]['totalrecive']);
       //  item[0].od_date = data[0]['od_date'];
       //  item[0].supply_name = data[0]['supply_name'];
       //  item[0].countod = data[0]['countod'];
@@ -492,4 +497,47 @@ export class Od01Page implements OnInit {
       //  item[0].sumtotal = data[0]['sumtotal'];
      }
    }
+
+   async submitForm_recive() {
+     console.log(this.id);
+    const confirm =  await this.alertCtrl.create({
+      header: 'ยืนยันการเสร็จสิ้นการรับสินค้า',
+      message: 'แน่ใจว่ารับสินค้าใบสั่งของที่ '+ this.od_running +' เสร็จสิ้นทั้งหมดแล้ว ',
+      buttons: [{
+        text: 'ยกเลิก',
+        handler: (data: any) => {
+           console.log('cancel ',data);
+        }
+      },
+      {
+        text: 'ตกลง',
+          handler: (data: any) => {
+             this.sub = this.odSv.crudod_recive(this.id,'update').subscribe(
+              (data) => {
+                if(data.status == 'ok')
+                {   
+                  this.configSv.ChkformAlert(data.message);
+                  let dataarray = []; 
+                  dataarray.push({
+                    od_status:2,
+                    od_statustext:'รับสินค้าทั้งหมดแล้ว',
+                  });
+                  this.modalCtrl.dismiss(dataarray,'updateAll');
+                }
+                else
+                {
+                  this.configSv.ChkformAlert(data.message);
+                }
+              }, (error) => {
+                console.log(JSON.stringify(error));
+              }, () => {
+              }
+            );
+
+        }
+      }]
+    });
+    confirm.present();
+  }
+
 }

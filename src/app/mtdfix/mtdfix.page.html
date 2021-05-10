@@ -1,9 +1,9 @@
-<ion-header> 
+<ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>ข้อมูลป้ายเขียว</ion-title>
+    <ion-title>ข้อมูลการเปลี่ยน แก้ไข เสื้อวิน</ion-title>
     <ion-buttons slot="primary">
       <ion-button (click)="refreshForm()">
         <ion-icon slot="icon-only" src="./assets/icons/refresh.svg"></ion-icon>
@@ -26,39 +26,47 @@
     <ion-row>
       <ion-col>
         <ion-item>
-          <ion-label class="showlabel" position="floating">ชื่อวิน</ion-label>
-          <ion-input formControlName="namewin" type="text"></ion-input>
-          <span class="error" *ngIf="isSubmitted && errorControl.namewin.errors?.required">
-            กรุณาระบุ ชื่อวิน
+          <ion-label class="showlabel" position="floating">รายการเปลี่ยน แก้ไข</ion-label>
+          <ion-input formControlName="fix_name" type="text"></ion-input>
+          <span class="error" *ngIf="isSubmitted && errorControl.fix_name.errors?.required">
+            กรุณาระบุ รายการเปลี่ยน แก้ไข
           </span>
         </ion-item>
       </ion-col>
       <ion-col>
         <ion-item>
-          <ion-label class="showlabel" position="floating">เขต</ion-label>
-          <ionic-selectable interface="floating" item-content formControlName="mtd_area_id" itemValueField="id"
-            itemTextField="area_name" [items]="ports_area" [canSearch]="true" closeButtonText="ยกเลิก">
-          </ionic-selectable>
-          <span class="error" *ngIf="isSubmitted && errorControl.mtd_area_id.errors?.required">
-            กรุณาระบุ เขต
+          <ion-label class="showlabel" position="floating">ราคา</ion-label>
+          <ion-input formControlName="fix_price" type="number"></ion-input>
+          <span class="error" *ngIf="isSubmitted && errorControl.fix_price.errors?.required">
+            กรุณาระบุ ราคา
           </span>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-checkbox color="dark"  formControlName="cut_number"  slot="start"></ion-checkbox><ion-label class="showlabel" >ตัด Stock ตัวเลข</ion-label>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-checkbox color="dark"  formControlName="cut_green"  slot="start"></ion-checkbox><ion-label class="showlabel" >ตัด Stock ป้ายเขียว</ion-label>
         </ion-item>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
         <ion-item>
-          <ion-label class="showlabel" position="floating">จำนวนคงเหลือ</ion-label>
-          <ion-input formControlName="qty" type="number"></ion-input>
-          <span class="error" *ngIf="isSubmitted && errorControl.qty.errors?.required">
-            กรุณาระบุ จำนวนคงเหลือ
-          </span>
+          <ion-checkbox color="dark"  formControlName="fix_cupon"  slot="start"></ion-checkbox><ion-label class="showlabel" >งานปัก</ion-label>
         </ion-item>
       </ion-col>
       <ion-col>
         <ion-item>
-          <ion-label class="showlabel" position="floating">จำนวนรอตัดยอด</ion-label>
-          <ion-input formControlName="tmpqty" type="number"></ion-input>
+          <ion-checkbox color="dark"  formControlName="fix_green"  slot="start"></ion-checkbox><ion-label class="showlabel" >งานป้ายเขียว</ion-label>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-checkbox color="dark"  formControlName="fix_install"  slot="start"></ion-checkbox><ion-label class="showlabel" >งานประกอบ</ion-label>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -68,20 +76,19 @@
   <div scrollY="true" id="myFixZone">
     <ion-searchbar placeholder="ค้นหา..." [(ngModel)]="filterTerm" animated="true"></ion-searchbar>
     <ion-list>
-      <div class="content_alert">**จะลบได้ก็ต่อเมื่อ ยอดคงเหลือทั้งหมดเท่ากับ 0</div>
       <ion-item-sliding *ngFor="let c of data  | filter:filterTerm" [ngClass]="c.highlight ? 'newdata': ''"
         (click)="selectData(c.id)">
         <ion-item>
           <ion-label>
             <ion-text color="primary">
-              <h3>ชื่อวิน : {{ c.namewin }} เขต : {{ c.area_name }}</h3>
-              <h3>จำนวน : {{ c.qty }}</h3>
+              <h3>รายการ : {{ c.fix_name }} </h3>
+              <h3>ราคา : {{ c.fix_price | number }}</h3>
             </ion-text>
           </ion-label>
           <ion-badge slot="end" color="success">{{ c.id }}</ion-badge>
         </ion-item>
         <ion-item-options>
-          <ion-item-option *ngIf="c.qty==0" color="danger" (click)="cancelData(c.id)">
+          <ion-item-option  color="danger" (click)="cancelData(c.id)">
             <ion-icon slot="end" name="trash"></ion-icon>
             ลบ
           </ion-item-option>

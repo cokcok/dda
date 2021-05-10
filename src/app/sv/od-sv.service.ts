@@ -94,17 +94,42 @@ export class OdSvService {
   crudod_recive(vdata: any, type: string, cause?): Observable<FeedBack> {
     const header = { 'Content-Type': 'application/json' };
     const apiUrl = this.configSv.ip + 'od_recive.php';
-     let  data = {
+    let data;
+    if(type === 'insert'){
+      data = {
         'od_main_id' : vdata.od_main_id,
         'od_main_detail_id' : vdata.od_main_detail_id,
         'od_recive_date' : vdata.od_recive_date,
         'recive_seq' : vdata.recive_seq,
         'qty_recive' : vdata.qty_recive,
         'od_recive_detail' : vdata.od_recive_detail,
+        'product_id' : vdata.product_id,
         'emp_id': this.configSv.emp_id,
         'type_sql': type
       }
+    }else if(type === 'update'){
+      data = {
+      'od_main_id' : vdata,
+      'emp_id': this.configSv.emp_id,
+      'type_sql': type
+      }
+    }
+   
     return this.http.post<FeedBack>(apiUrl, data, { headers: header });
   }
+
+  getod_recive(id): Observable<data> {
+    const header = { 'Content-Type': 'application/json' };
+    const apiUrl = this.configSv.ip + 'od_recive.php';
+    let data;
+    data = {
+      'od_main_detail_id': id,
+      'type_sql': 'read'
+    }
+    return this.http.post<data>(apiUrl, data, { headers: header });
+  }
+
+
+  
 }
  

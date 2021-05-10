@@ -14,15 +14,17 @@ const moment = moment_;
   styleUrls: ['./od03.page.scss'],
 })
 export class Od03Page implements OnInit {
-  @Input() id:number;@Input() od_running:string; @Input() item:any;
+  @Input() id:number;@Input() od_running:string; @Input() item:any; @Input() odstatus:string;
   ionicForm: FormGroup;isSubmitted = false;
   sub: Subscription;
   myDate = new Date().toISOString();
   datePickerObj: any = {}; 
+  data = []; filterTerm: string;
+  edit = ['0','1'];totalrecive:number =0;
   constructor(private modalCtrl:ModalController,public formBuilder: FormBuilder,private poSv: PoSvService,private odSv: OdSvService,public configSv: ConfigService,private alertCtrl: AlertController) { }
 
   ngOnInit() {
-    console.log(this.item);
+    //console.log(this.item);
     this.ionicForm = this.formBuilder.group({
       od_main_id:[this.id],
       od_main_detail_id:[this.item[0]['detail_id']],
@@ -32,14 +34,23 @@ export class Od03Page implements OnInit {
       od_recive_detail:[""],
       od_qty:[this.item[0]['od_qty'] + ' ' + this.item[0]['od_unit'] ],
       od_unit:[this.item[0]['od_unit']],
+      product_id:[this.item[0]['product_id']],
       product_name:[this.item[0]['product_name']],
       size:[this.item[0]['size']],
+      highlight: [""],
     });
-    this.fndate();
+    this.fndate();this.loaddata(0);
   }
 
   dismissModal(){
-    this.modalCtrl.dismiss();
+    let dataarray = []; 
+    dataarray.push({ 
+     odstatus:this.odstatus,
+     totalrecive:this.totalrecive,
+    });
+ 
+    this.modalCtrl.dismiss(dataarray,'confirm');
+    //this.modalCtrl.dismiss();
   }
 
   fndate(){
@@ -78,7 +89,7 @@ export class Od03Page implements OnInit {
   }
 
   async submitForm(){
-    console.log(this.ionicForm.value)
+    //console.log(this.ionicForm.value)
     this.isSubmitted = true;
     if (!this.ionicForm.valid ) {
       console.log("Please provide all the required values!");
@@ -101,6 +112,17 @@ export class Od03Page implements OnInit {
               if (data !== null) {
                   if(data.status === 'ok'){
                     this.configSv.ChkformAlert(data.message);
+                    this.totalrecive += this.ionicForm.controls.qty_recive.value;
+                    this.data.unshift({
+                      od_recive_date: this.ionicForm.controls.od_recive_date.value,
+                      recive_seq: this.ionicForm.controls.recive_seq.value,
+                      qty_recive: this.ionicForm.controls.qty_recive.value,
+                      od_recive_detail: this.ionicForm.controls.od_recive_detail.value,
+                      highlight: true,
+                    });
+                    this.ionicForm.controls.qty_recive.setValue(null);
+                    this.ionicForm.controls.od_recive_detail.setValue(null);
+                    this.odstatus = '1';
                   }
               }
             },
@@ -113,8 +135,18 @@ export class Od03Page implements OnInit {
         }]
       });
       confirm.present();
-
     }
+  }
+
+  loaddata(padding: number, infiniteScroll?){
+    this.sub = this.odSv
+    .getod_recive(this.item[0]['detail_id'])
+    .subscribe((data) => {
+      if (data !== null) {
+        //console.log(data);
+        this.data =  data.data_detail.map((item) => Object.assign({}, item));
+      }
+    });
   }
 
 }

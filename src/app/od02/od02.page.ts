@@ -117,14 +117,14 @@ export class Od02Page implements OnInit {
     }
   }
 
-  async View(id,od_running){
+  async View(id,od_running,od_status){
     // console.log(id);
      let item = this.data.filter((val) => val.id == id);
      //console.log(item);  
      const modal = await this.modalCtrl.create({
        component:Od01Page,
        cssClass: 'my-modal',
-       componentProps:{id:id,od_running:od_running},
+       componentProps:{id:id,od_running:od_running,odstatus:od_status},
      });
      await modal.present();
      const {data,role} = await modal.onWillDismiss();
@@ -140,29 +140,31 @@ export class Od02Page implements OnInit {
        item[0].od_statustext = data[0]['od_statustext']; 
        item[0].od_status = 3; 
      }
+     console.log('View')
    }
 
 
-   async recive(id,od_running){
-    // console.log(id);
+   async recive(id,od_running,od_status){
+     //console.log(od_status);
      let item = this.data.filter((val) => val.id == id);
      //console.log(item);  
      const modal = await this.modalCtrl.create({
        component:Od01Page,
        cssClass: 'my-modal',
-       componentProps:{id:id,od_running:od_running,mode:'view',modedelivered:'recive'},
+       componentProps:{id:id,od_running:od_running,mode:'view',modedelivered:'recive',odstatus:od_status},
      });
      await modal.present();
      const {data,role} = await modal.onWillDismiss();
      //console.log(data,role);
-     if(role === 'comfirm'){ 
-      //  item[0].od_date = data[0]['od_date'];
-      //  item[0].supply_name = data[0]['supply_name'];
-      //  item[0].countod = data[0]['countod'];
-      //  item[0].total = data[0]['total'];
-      //  item[0].vat = data[0]['vat'];
-      //  item[0].sumtotal = data[0]['sumtotal'];
+     if(role === 'back'){ 
+       item[0].od_statustext = this.configSv.od_statustext[data]; 
+       item[0].od_status = data; 
+     }else if(role === 'updateAll'){
+      item[0].od_statustext = data[0]['od_statustext']; 
+      item[0].od_status = data[0]['od_status']; ; 
+
      }
+    
    }
 
 }

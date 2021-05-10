@@ -5,7 +5,7 @@ const routes: Routes = [
   {
     path: '',
     //redirectTo: 'folder/Inbox',
-    redirectTo: 'od02',
+    redirectTo: 'mtdfix',
     //redirectTo: 'signin',
     pathMatch: 'full'
   },
@@ -200,6 +200,10 @@ const routes: Routes = [
   {
     path: 'od03',
     loadChildren: () => import('./od03/od03.module').then( m => m.Od03PageModule)
+  },
+  {
+    path: 'mtdfix',
+    loadChildren: () => import('./mtdfix/mtdfix.module').then( m => m.MtdfixPageModule)
   }
 ];
 

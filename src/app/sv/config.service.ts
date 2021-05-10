@@ -23,6 +23,7 @@ export class ConfigService {
   numberalltxt = ['รอปักเลขทั้งหมด','ปักเลขทั้งหมดแล้ว','รอปักเลขบางส่วน'];
   greenalltxt = ['รอปักป้ายเขียวทั้งหมด','ปักป้ายเขียวทั้งหมดแล้ว','รอปักป้ายเขียวบางส่วน'];
   installalltxt = ['รอประกอบทั้งหมด','ประกอบทั้งหมดแล้ว','รอประกอบบางส่วน'];
+  od_statustext = ['รอรับสินค้า','รับสินค้าบางส่วน','รับสินค้าทั้งหมดแล้ว','ยกเลิกใบส่งของ'];
   constructor(private plt: Platform, private file: File, private fileOpener: FileOpener,private loadingController: LoadingController,private alertCtrl: AlertController,private idle: Idle, private keepalive: Keepalive,private navCtrl: NavController) { }
 
 

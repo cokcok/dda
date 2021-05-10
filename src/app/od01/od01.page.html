@@ -14,21 +14,21 @@
         <ion-icon slot="icon-only" src="./assets/icons/refresh.svg"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-buttons slot="primary"  *ngIf="id !== undefined && mode !== 'view'">
+    <ion-buttons slot="primary"  *ngIf="id !== undefined && mode !== 'view' && editdata.includes(odstatus)">
       <ion-button (click)="cancelData()">
         <ion-icon slot="icon-only" name="trash"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-buttons slot="primary" *ngIf="mode !== 'view'">
+    <ion-buttons slot="primary" *ngIf="mode !== 'view' && editdata.includes(odstatus)">
       <ion-button (click)="submitForm()">
         <ion-icon slot="icon-only" src="./assets/icons/save.svg"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <!-- <ion-buttons slot="primary" *ngIf="modepayment === 'ok'">
-      <ion-button (click)="submitForm_Payment()">
+    <ion-buttons slot="primary" *ngIf="modedelivered === 'recive' && edit.includes(odstatus)">
+      <ion-button (click)="submitForm_recive()">
         <ion-icon slot="icon-only" src="./assets/icons/save.svg"></ion-icon>
       </ion-button>
-    </ion-buttons> -->
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
  
@@ -214,11 +214,11 @@
               {{c.od_total|number}}
             </ion-col>
             <ion-col size="1">
-              <ion-button *ngIf="mode !== 'view'" (click)="Deltmpproduct(c.id,c.id)">
+              <ion-button *ngIf="mode !== 'view' && editdata.includes(odstatus)" (click)="Deltmpproduct(c.id,c.id)">
                 <ion-icon slot="icon-only" class="iconSize" name="trash"></ion-icon>
               </ion-button>
           
-                <ion-button *ngIf="modedelivered == 'recive'"  (click)="recive(id,od_running,c.id)">
+                <ion-button *ngIf="modedelivered == 'recive'"  (click)="recive(id,od_running,c.id,odstatus)">
                   <ion-icon  slot="icon-only" src="./assets/icons/inventory.svg"></ion-icon>
                 </ion-button>
 
@@ -235,7 +235,7 @@
             </ion-col>
             <ion-col>
               <span class="error" >
-               สินค้าลำดับที่ {{i+1}} รับสินค้าเป็นจำนวน 
+               สินค้าลำดับที่ {{i+1}} รับสินค้าเป็นจำนวน  {{c.qty_recive|number}} {{c.od_unit}}
               </span>
             </ion-col>
           </ion-row>

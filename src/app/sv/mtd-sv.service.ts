@@ -10,7 +10,7 @@ import { place } from '../models/place';
   providedIn: 'root'
 })
 export class MtdSvService {
-  getpage = ['mtd01.php','mtd_area.php','mtd_producttype.php','mtd_size.php','mtd_shipping.php','mtd_number.php','mtd_numberdetail.php','mtd_product.php','mtd_productdetail.php','mtd_member.php','mtd_green.php']//10 indexล่าสุด
+  getpage = ['mtd01.php','mtd_area.php','mtd_producttype.php','mtd_size.php','mtd_shipping.php','mtd_number.php','mtd_numberdetail.php','mtd_product.php','mtd_productdetail.php','mtd_member.php','mtd_green.php','mtd_fix.php']//11 indexล่าสุด
   constructor(private http: HttpClient, private configSv: ConfigService) { }
 
   getplace(): Observable<place[]> {
@@ -329,6 +329,36 @@ export class MtdSvService {
         'namewin': vdata.namewin,
         'mtd_area_id': vdata.mtd_area_id,
         'qty': vdata.qty,
+        'emp_id': this.configSv.emp_id,
+        'type_sql': type
+      }
+    }
+    return this.http.post<FeedBack>(apiUrl, data, { headers: header });
+  }
+
+
+  crudmtdfix(vdata: any, type: string, cause?): Observable<FeedBack> {
+    const header = { 'Content-Type': 'application/json' };
+    const apiUrl = this.configSv.ip + 'mtd_fix.php';
+    let data;
+    if (type === 'cancel') {
+      data = {
+        'id': vdata,
+        'emp_id': this.configSv.emp_id,
+        'type_sql': type,
+        'cause': cause
+      }
+    }
+    else {
+      data = {
+        'id': vdata.id,
+        'fix_name': vdata.fix_name,
+        'fix_price': vdata.fix_price,
+        'fix_cupon': vdata.fix_cupon,
+        'fix_green': vdata.fix_green,
+        'fix_install': vdata.fix_install,
+        'cut_number': vdata.cut_number,
+        'cut_green': vdata.cut_green,
         'emp_id': this.configSv.emp_id,
         'type_sql': type
       }
