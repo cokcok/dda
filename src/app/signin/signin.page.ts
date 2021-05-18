@@ -62,7 +62,7 @@ export class SigninPage implements OnInit {
      this.configSv.loadingAlert(2000);
       this.sub = this.signinSv.signin(this.ionicForm.controls.name.value,this.ionicForm.controls.password.value,this.configSv.token).subscribe(
         (data) => {
-          console.log(data);
+          //console.log(data);
           if (data !== null){
             //console.log(data); 
             this.signinSv.publishSomeData(data); 
@@ -88,7 +88,9 @@ export class SigninPage implements OnInit {
     }
   }
 
-
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
+  }
 
 
 }

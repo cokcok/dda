@@ -18,7 +18,7 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-item>
+<ion-item *ngIf="mode !== 'fix'">
   <ion-label class="showlabel" position="floating" >หมวด</ion-label>
   <ionic-selectable
     interface="floating"

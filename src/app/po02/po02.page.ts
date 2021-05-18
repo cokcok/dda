@@ -144,7 +144,7 @@ export class Po02Page implements OnInit {
       this.SearchData(this.page * this.limit, infiniteScroll);
     }
   }
-
+ 
   async View(id,po_running){
    // console.log(id);
     let item = this.data.filter((val) => val.id == id);
@@ -173,6 +173,10 @@ export class Po02Page implements OnInit {
       item[0].po_statustext = data[0]['po_statustext']; 
       item[0].po_status = 8; 
     }
+  }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
   }
   
 }

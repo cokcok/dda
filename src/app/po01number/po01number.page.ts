@@ -12,7 +12,7 @@ import { IonicSelectableComponent } from 'ionic-selectable';
   styleUrls: ['./po01number.page.scss'],
 })
 export class Po01numberPage implements OnInit {
-  @Input() index:number;@Input() id:number;
+  @Input() index:number;@Input() id:number;@Input() mode:string;
   ionicForm: FormGroup;isSubmitted = false; 
   ionicForm1: FormGroup;isSubmitted1 = false; 
   sub: Subscription;filterfront: string;filterback: string; 
@@ -45,11 +45,15 @@ export class Po01numberPage implements OnInit {
   }
 
   loaddata_typeserch(){
+
     this.portscategory = [
       {id: '0',typecategory: 'ตัวเลข'},
       {id: '1',typecategory: 'สินค้าอื่นๆ'},
     ];
-    //console.log(this.portscategory);
+    if(this.mode === 'fix'){
+      this.portscategoryid = '0';
+    }
+
   }
 
   loaddata_product() {

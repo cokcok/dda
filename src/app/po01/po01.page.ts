@@ -522,7 +522,7 @@ export class Po01Page implements OnInit {
     this.ionicForm.controls['po_discount'].setValue(this.allDiscount);
     this.ionicForm.controls['po_totalproduct'].setValue(this.alltotalproduct);
     this.ionicForm.controls['po_total'].setValue(this.alltotal);
-    console.log(this.ionicForm.value)
+    //console.log(this.ionicForm.value)
     this.isSubmitted = true;
     if (!this.ionicForm.valid || founddiscount) {
       console.log("Please provide all the required values!");
@@ -565,7 +565,9 @@ export class Po01Page implements OnInit {
                   });
                 
                   if(ponumberdetail[0] !== null){
-                    ponumberdetail = ponumberdetail;
+                    ponumberdetail = ponumberdetail.filter(function(val){
+                      return val;
+                    });
                   }else{
                     ponumberdetail = null;
                   }
@@ -600,7 +602,7 @@ export class Po01Page implements OnInit {
     }
   }
 
-
+ 
 
   ngOnDestroy(): void {
     this.sub.unsubscribe();
@@ -701,7 +703,7 @@ export class Po01Page implements OnInit {
                 else
                 {
                   this.configSv.ChkformAlert(data.message);
-                }              
+                }
               }, (error) => {
                 console.log(JSON.stringify(error));
               }, () => {

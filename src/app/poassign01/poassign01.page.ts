@@ -73,6 +73,7 @@ export class Poassign01Page implements OnInit {
     .getpoassign('read',this.ionicForm.value,padding,this.limit)
     .subscribe((data) => {
       if (data !== null) {
+        //console.log(data);
         this.maxpadding = data["maxpadding"];
         this.maxdatalimit = data["limit"];
         this.ionicForm.controls['seq'].setValue(data["seq"]);
