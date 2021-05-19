@@ -22,7 +22,7 @@
         <ion-checkbox color="dark" (click)="selectData(i,data[i],c.checked)" [(ngModel)]="c.checked" slot="start"></ion-checkbox>
         <ion-row>
           <ion-col>
-            <ion-label class="showlabelheader">{{ c.po_running }}</ion-label>
+            <ion-label [ngClass]="(c.assign_type== 0)?'showlabelheader':'postatus_ok'">{{ c.po_running }}</ion-label>
           </ion-col>
         </ion-row>
         <ion-button fill="outline" slot="end" color="success" (click)="View(c.id,c.po_running,c.assign_type)">ดูรายละเอียดลำดับที่ {{i+1}}</ion-button>

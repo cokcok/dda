@@ -192,6 +192,14 @@ export class Poassign03Page implements OnInit {
       // let a = moment(element['po_recivedate']).format("DD/MM/YYYY")
       // console.log(element['po_recivedate'], a,moment(a).isoWeekday(),moment(element['po_recivedate'],'DD/MM/YYYY').isoWeekday());
       //moment(element['po_recivedate'],'DD/MM/YYYY').isoWeekday();
+      let head1,head2;
+      if(element['assign_type'] === '0'){
+        head1 = 'วันสั่งซื้อ: ';
+        head2 = 'สถานะใบสั่งซื้อ: ';
+      }else{
+        head1 = 'วันเปลี่ยน: ';
+        head2 = 'สถานะใบเปลี่ยน: ';
+      }
       exs.push(
         [
           {
@@ -208,7 +216,7 @@ export class Poassign03Page implements OnInit {
           },
           {
             border: [false, true, true, false],
-            text: 'วันสั่งซื้อ: ' + element['po_date']
+            text: head1 + element['po_date']
           },
         ],
         [
@@ -245,7 +253,7 @@ export class Poassign03Page implements OnInit {
             text:  'สินค้าอื่น: ' + element['etc']
           },'','',{
             border: [false, false, true, false],
-            text: 'สถานะใบสั่งซื้อ: ' + element['po_statustxt'] 
+            text: head2 + element['po_statustxt'] 
           },
         ],
         [
@@ -293,7 +301,7 @@ export class Poassign03Page implements OnInit {
     let items = [];
    var self = this;
     items = vdata.map(function (item) {
-      return [item.seq, item.po_date, item.po_namewin, item.area_name, { text: item.countid, alignment: 'center' }, {  fillColor: self.configSv.colortxt[moment(item.po_recivedate,'DD/MM/YYYY').isoWeekday()],text:item.po_recivedate } ,item.detail,{ text: item.status_greendup, alignment: 'center' }];
+      return [item.seq, item.po_namewin, item.area_name, { text: item.countid, alignment: 'center' }, {  fillColor: self.configSv.colortxt[moment(item.po_recivedate,'DD/MM/YYYY').isoWeekday()],text:item.po_recivedate } ,item.detail,{ text: item.status_greendup, alignment: 'center' }];
     });
     //console.log(vdata,items);
     var docDefinition = {
@@ -320,11 +328,11 @@ export class Poassign03Page implements OnInit {
         {
           style: 'tableExample',
           table: {
-            widths: ['3%','7%','20%','20%','5%','7%','*','7%'], //headerRows: 2,
+            widths: ['3%','20%','20%','5%','7%','*','7%'], //headerRows: 2,
             headerRows: 2,
             body: [
-              [{text: 'รายชื่อวิน-ส่งปัก ปักที่ร้าน', style: 'tableHeader', colSpan: 4, alignment: 'center'}, '','','', { text: 'วันที่มอบหมายของวันที่ ' + assign_date +' ครั้งที่ ' + seq, style: 'tableHeader', colSpan: 4, alignment: 'center' }, '', '',''],
-              [{text: '#', style: 'tableHeader', alignment: 'center'}, {text: 'วันสั่งซื้อ', style: 'tableHeader', alignment: 'center'}, {text: 'ชื่อวิน', style: 'tableHeader', alignment: 'center'}, {text: 'เขต', style: 'tableHeader', alignment: 'center'}, {text: 'จำนวนปัก', style: 'tableHeader', alignment: 'center'}, {text: 'วันนัดรับ', style: 'tableHeader', alignment: 'center'},{text: 'รายละเอียด', style: 'tableHeader', alignment: 'center'}, {text: 'ป้ายซ้ำ', style: 'tableHeader', alignment: 'center'}],
+              [{text: 'รายชื่อวิน-ส่งปัก ปักที่ร้าน', style: 'tableHeader', colSpan: 3, alignment: 'center'},'','', { text: 'วันที่มอบหมายของวันที่ ' + assign_date +' ครั้งที่ ' + seq, style: 'tableHeader', colSpan: 4, alignment: 'center' }, '', '',''],
+              [{text: '#', style: 'tableHeader', alignment: 'center'}, {text: 'ชื่อวิน', style: 'tableHeader', alignment: 'center'}, {text: 'เขต', style: 'tableHeader', alignment: 'center'}, {text: 'จำนวนปัก', style: 'tableHeader', alignment: 'center'}, {text: 'วันนัดรับ', style: 'tableHeader', alignment: 'center'},{text: 'รายละเอียด', style: 'tableHeader', alignment: 'center'}, {text: 'ป้ายซ้ำ', style: 'tableHeader', alignment: 'center'}],
             ].concat( items)// detail data
           }
 
@@ -357,7 +365,7 @@ export class Poassign03Page implements OnInit {
         this.data = this.data.filter(obj => obj.id !== id);
         this.maxdatalimit = this.maxdatalimit - 1;
       }else{
-        item[0].total  = item[0].total - Number(data[0]['id']);
+        item[0].total  = data[0]['id'];
       }
     }
   }

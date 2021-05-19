@@ -5,6 +5,7 @@ import { ConfigService } from "../sv/config.service";
 import { Subscription } from "rxjs";
 import { PoSvService } from '../sv/po-sv.service';
 import {Po01Page} from '../po01/po01.page';
+import {Fix01Page} from '../fix01/fix01.page';
 
 @Component({
   selector: 'app-poassign04',
@@ -41,7 +42,7 @@ export class Poassign04Page implements OnInit {
     .getpoassignreport('readcancel',this.ionicForm.value.id,padding,this.limit)
     .subscribe((data) => {
       if (data !== null) {
-        //console.log(data); 
+        console.log(data); 
         
         this.maxpadding = data["maxpadding"];
         datalimit = data["limit"];
@@ -65,11 +66,13 @@ export class Poassign04Page implements OnInit {
   }
 
   selectData(index,data,checked){
+    //let data_all = this.data.filter(val=> val.running === data['running']);
     if(checked){
       this.dataallarray = this.dataallarray.filter(item => item.id !== data['id'])
      }else{
       this.dataallarray.push(data);
      }
+     console.log(this.dataallarray);
    }
 
 
@@ -126,27 +129,48 @@ export class Poassign04Page implements OnInit {
     confirm.present();
   }
 
-  async View(id,po_running){
+  async View(id,po_running,assign_type){
     // console.log(id);
-     let item = this.data.filter((val) => val.id == id);
+     let item = this.data.filter((val) => val.id == id && val.assign_type == assign_type);
      //console.log(item);
-     const modal = await this.modalCtrl.create({
-       component:Po01Page,
-       cssClass: 'my-modal',
-       componentProps:{id:id,po_running:po_running,mode:'view'},
-     });
-     await modal.present();
-     const {data,role} = await modal.onWillDismiss();
-     //console.log(data,role);
-     if(role === 'comfirm'){
-       item[0].po_date = data[0]['po_date'];
-       item[0].po_recivedate = data[0]['po_recivedate'];
-       item[0].po_namewin = data[0]['po_namewin'];
-       item[0].po_customer = data[0]['po_customer'];
-       item[0].qty = data[0]['qty'];
-       item[0].po_total = data[0]['po_total'];
-     }else if(role === 'cancel'){
-       item[0].po_statustext = data[0]['po_statustext'];
+    //  const modal = await this.modalCtrl.create({
+    //    component:Po01Page,
+    //    cssClass: 'my-modal',
+    //    componentProps:{id:id,po_running:po_running,mode:'view'},
+    //  });
+    //  await modal.present();
+    //  const {data,role} = await modal.onWillDismiss();
+
+     if(assign_type === '0'){
+      const modal = await this.modalCtrl.create({
+        component:Po01Page,
+        cssClass: 'my-modal',
+        componentProps:{id:id,po_running:po_running,mode:'view'},
+      });
+      await modal.present();
+      const {data,role} = await modal.onWillDismiss();
+     }else if(assign_type === '1'){
+      const modal = await this.modalCtrl.create({
+        component:Fix01Page,
+        cssClass: 'my-modal',
+        componentProps:{id:id,po_running:po_running,mode:'view'},
+      });
+      await modal.present();
+      const {data,role} = await modal.onWillDismiss();
+
      }
+
+
+     //console.log(data,role);
+    //  if(role === 'comfirm'){
+    //    item[0].po_date = data[0]['po_date'];
+    //    item[0].po_recivedate = data[0]['po_recivedate'];
+    //    item[0].po_namewin = data[0]['po_namewin'];
+    //    item[0].po_customer = data[0]['po_customer'];
+    //    item[0].qty = data[0]['qty'];
+    //    item[0].po_total = data[0]['po_total'];
+    //  }else if(role === 'cancel'){
+    //    item[0].po_statustext = data[0]['po_statustext'];
+    //  }
    }
 }
