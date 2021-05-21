@@ -292,6 +292,8 @@ export class Poassign03Page implements OnInit {
           //console.log(data);
           this.DownloadPdf1(data.data_detail,seq,assign_date);
           //console.log(this.getDataObject(data.data_detail));
+        }else{
+          this.configSv.ChkformAlert('ไม่พบข้อมูล');
         } 
       });
   }

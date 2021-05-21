@@ -266,6 +266,7 @@ export class PoSvService {
         'assignid': vdata[0].assign_id,
         'poid': vdata[0].poid,
         'total': vdata[0].total,
+        'assign_type' : vdata[0].assign_type,
         'emp_id': this.configSv.emp_id,
         'cause': cause,
         'type_restore' : type_restore,

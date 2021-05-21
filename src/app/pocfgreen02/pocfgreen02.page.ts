@@ -92,7 +92,7 @@ export class Pocfgreen02Page implements OnInit {
 
   async submitForm(){
    this.ionicForm.controls['dataall'].setValue(this.dataallarray);
-   console.log(this.ionicForm.value);
+   //console.log(this.ionicForm.value);
    const confirm =  await this.alertCtrl.create({
      header: 'ยืนยันข้อมูลในการปรับสถานะการปักป้ายเขียว',
      //message: 'แน่ใจว่าต้องการลบเลขระบบที่ '+ item +' ? ',
