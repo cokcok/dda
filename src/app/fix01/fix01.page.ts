@@ -5,6 +5,7 @@ import { ConfigService } from "../sv/config.service";
 import { Subscription } from "rxjs";
 import { MtdSvService} from '../sv/mtd-sv.service';
 import {FxSvService} from '../sv/fx-sv.service';
+import {PoSvService} from '../sv/po-sv.service';
 import * as moment_ from 'moment';
 import 'moment/locale/th';
 const moment = moment_;
@@ -20,7 +21,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
   styleUrls: ['./fix01.page.scss'],
 })
 export class Fix01Page implements OnInit {
-  @Input() id:number;@Input() po_running:string;@Input() mode:string;@Input() modepayment:string;
+  @Input() id:number;@Input() po_running:string;@Input() mode:string;@Input() modepayment:string;assign_type:number;
   @ViewChild('fileIngimg') fileIngimg: ElementRef;
   @ViewChild('fileIngimg1') fileIngimg1: ElementRef;
   ionicForm: FormGroup;isSubmitted = false;  ionicFormPayment: FormGroup;
@@ -40,7 +41,7 @@ export class Fix01Page implements OnInit {
   datePickerObj: any = {};
   constructor(private navCtrl: NavController,public formBuilder: FormBuilder,
     public configSv: ConfigService,public mtdSv: MtdSvService,
-    private alertCtrl: AlertController,private fxSv: FxSvService,public placeSv:PlaceSvService,private modalCtrl:ModalController,private iab: InAppBrowser) { }
+    private alertCtrl: AlertController,private fxSv: FxSvService,public placeSv:PlaceSvService,private modalCtrl:ModalController,private iab: InAppBrowser,private poSv: PoSvService) { }
 
   ngOnInit() {
     this.portControl_sale = this.formBuilder.control("", Validators.required);
@@ -77,7 +78,7 @@ export class Fix01Page implements OnInit {
       fx_deposit:["0"],
     });
     this.loaddata_sale(0);this.loaddata_area(0);this.loaddata_shipping(0);this.loaddata_customertype();this.loaddata_member(0);
-    this.fndate(); this.loaddata_product(0);//this.loadform_payment();
+    this.fndate(); this.loaddata_product(0);this.loadform_payment();
 
   }
 
@@ -427,7 +428,7 @@ export class Fix01Page implements OnInit {
         }
     });
  
-   
+    
     this.ionicForm.controls['tmpproduct'].setValue(this.tmpproduct);
     this.ionicForm.controls['fx_discount'].setValue(this.allDiscount);
     this.ionicForm.controls['fx_totalproduct'].setValue(this.alltotalproduct);
@@ -653,42 +654,46 @@ export class Fix01Page implements OnInit {
                });
              });
  
-            //  if(this.modepayment === 'ok' || this.modepayment === 'view' ){
-            //    let moneypad = Number(data.data_detail[0]['po_total']) - Number(data.data_detail[0]['po_deposit']);
-            //    this.ionicFormPayment.controls['moneypay'].setValue(moneypad);
+             if(this.modepayment === 'ok' || this.modepayment === 'view' ){
+               let moneypad = Number(data.data_detail[0]['fx_total']) - Number(data.data_detail[0]['fx_deposit']);
+               this.ionicFormPayment.controls['moneypay'].setValue(moneypad);
  
-            //    if(this.modepayment === 'view'){
-            //      this.sub = this.poSv.getpotf_cfwin('viewpayment',this.id,0).subscribe((data1) => {
-            //        if (data1 !== null) {
-            //          data1.data_detail.forEach((item) => {
-            //            for (const [key, value] of Object.entries(item)) {
-            //              if(key === "typepayment"){
-            //                let value_a = this.ports_payment.filter(function (item1) {
-            //                     return item1.id == value;
-            //                 })[0];
-            //                 this.portControl_payment.setValue(value_a);
-            //                 this.paymenttype = Number(value);
-            //               }else if(key === 'picresizbase64List'){
-            //                 this.showrowpaymenttype1 = false;
-            //                this.picpreview = Object(value).map((item) => Object.assign({}, item));
-            //                //console.log(this.picpreview);
-            //                this.picpreview.forEach(task => {
-            //                   //console.log(task)
-            //                    this.indexpic++;
-            //                    this.picresizbase64Array.push(this.formBuilder.group({
-            //                    id: [task.id],
-            //                    url: [task.url],
-            //                  }));
-            //              });
-            //              }else{
-            //                this.ionicFormPayment.controls[key].setValue(value);
-            //              }
-            //            }
-            //          });
-            //        }
-            //      });
-            //    }
-            //  }
+               if(this.modepayment === 'view'){
+                let data = {
+                  poid : this.id,
+                  assign_type : this.assign_type,
+                };
+                 this.sub = this.poSv.getpotf_cfwin('viewpayment',data,this.assign_type,0).subscribe((data1) => {
+                   if (data1 !== null) {
+                     data1.data_detail.forEach((item) => {
+                       for (const [key, value] of Object.entries(item)) {
+                         if(key === "typepayment"){
+                           let value_a = this.ports_payment.filter(function (item1) {
+                                return item1.id == value;
+                            })[0];
+                            this.portControl_payment.setValue(value_a);
+                            this.paymenttype = Number(value);
+                          }else if(key === 'picresizbase64List'){
+                            this.showrowpaymenttype1 = false;
+                           this.picpreview = Object(value).map((item) => Object.assign({}, item));
+                           //console.log(this.picpreview);
+                           this.picpreview.forEach(task => {
+                              //console.log(task)
+                               this.indexpic++;
+                               this.picresizbase64Array.push(this.formBuilder.group({
+                               id: [task.id],
+                               url: [task.url],
+                             }));
+                         });
+                         }else{
+                           this.ionicFormPayment.controls[key].setValue(value);
+                         }
+                       }
+                     });
+                   }
+                 });
+               }
+             }
 
 
            });
@@ -698,4 +703,180 @@ export class Fix01Page implements OnInit {
      }
    }
 
+   src:any;
+   loadform_payment(){
+     this.portControl_payment = this.formBuilder.control("", Validators.required);
+     this.picresizbase64Array = this.formBuilder.array([]);
+     this.ionicFormPayment = this.formBuilder.group({
+       poid : [this.id],
+       assign_type :[this.assign_type],
+       typepayment: this.portControl_payment,
+       moneypay: [""],
+       cashmoney_0:[""],
+       change_0:[""],
+       ems_2:[""],
+       payment_cancel_3:[""],
+       problem_cause_4:[""],
+       tmpproduct:[""],
+       picresizbase64List: this.picresizbase64Array,
+     }); 
+     
+     this.loaddata_paymenttype();
+   }
+ 
+   loaddata_paymenttype(){
+     this.ports_payment = [
+       {id: 0,typeserch: 'เงินสด'},
+       {id: 1,typeserch: 'โอนเงิน'},
+       {id: 2,typeserch: 'พัสดุ'},
+       {id: 3,typeserch: 'ยกเลิกการส่ง'},
+       {id: 4,typeserch: 'งานมีปัญหา'},
+     ];
+     //console.log(this.ports);
+   }
+   paymenttype:number;
+   portChange_payment(event: {
+     component: IonicSelectableComponent,
+     value: any
+   }) {
+     this.ionicFormPayment.setValidators(null);
+     let port = event.value; 
+     this.paymenttype = port['id'];
+     if(this.paymenttype === 0){
+       this.ionicFormPayment.get('cashmoney_0').setValidators(Validators.required);
+       this.ionicFormPayment.get('change_0').setValidators(Validators.min(0));
+     }
+     else if(this.paymenttype === 1){
+       this.src = "./assets/img/qr_payment.jpg";
+       //this.ionicFormPayment.get('picresizbase64List').setValidators(Validators.required);
+       this.picresizbase64Array.setValidators(Validators.required);
+       this.picresizbase64Array.updateValueAndValidity();
+     }
+     else if(this.paymenttype === 2){
+       this.ionicFormPayment.get('ems_2').setValidators(Validators.required);
+     }
+     else if(this.paymenttype === 3){
+       this.ionicFormPayment.get('payment_cancel_3').setValidators(Validators.required);
+     }
+     else if(this.paymenttype === 4){
+       this.ionicFormPayment.get('problem_cause_4').setValidators(Validators.required);
+     }
+   }
+ 
+   cul_cashmoney_0(){
+     let total =  Number(this.ionicFormPayment.controls['cashmoney_0'].value) - Number(this.ionicFormPayment.controls['moneypay'].value);
+     this.ionicFormPayment.controls['change_0'].setValue(total);
+   }
+ 
+   async submitForm_Payment() {
+     this.ionicFormPayment.controls['tmpproduct'].setValue(this.ionicForm.controls['oldtmpproduct'].value);
+     console.log(this.ionicFormPayment.value)
+     this.isSubmitted = true;
+     if (!this.ionicFormPayment.valid ) {
+       console.log("Please provide all the required values!");
+       return false;
+     } else {
+       const confirm =  await this.alertCtrl.create({
+       header: 'ยืนยันการบันทึกการส่งสินค้า ' + this.po_running,
+      // message: 'แน่ใจว่าต้องการลบใบสั่งซื้อที่ '+ this.po_running +' ? ',
+       buttons: [{
+         text: 'ยกเลิก',
+         handler: (data: any) => {
+            console.log('cancel ',data);
+         }
+       },
+       {
+         text: 'ตกลง',
+           handler: (data: any) => {
+              this.sub = this.poSv.crudtf_cfwin(this.ionicFormPayment.value,'insert').subscribe(
+               (data) => {
+                 if(data.status == 'ok')
+                 {   
+                   this.configSv.ChkformAlert(data.message);
+                   let dataarray = []; 
+                   dataarray.push({
+                     po_status: data.id,
+                     po_statustext: data._value,
+                   });
+                   this.modalCtrl.dismiss(dataarray,'confirm');
+                 }
+                 else
+                 {
+                   this.configSv.ChkformAlert(data.message);
+                 }              
+               }, (error) => {
+                 console.log(JSON.stringify(error));
+               }
+             );
+          
+         }
+       }]
+     });
+     confirm.present();
+   }
+  }
+   
+  showqr_payment(){
+   let url = this.configSv.ip + 'img/qr_payment.jpg'
+   const browser = this.iab.create(url).show();
+  }
+ 
+  picresizbase64Array: FormArray; picresizbase64:any;  picpreview =[];indexpic_payment = 0; showrowpaymenttype1:boolean= true;
+  fileUpload_payment() {
+   this.fileIngimg1.nativeElement.click();
+ }
+ 
+ fileUpload_imgpayment(event) {
+    const fileList: FileList =  this.fileIngimg1.nativeElement.files;
+    //console.log(fileList[0].type);
+    if (typeof fileList[0] !== 'undefined') {
+      if (fileList[0].type.match(/image.*/)) {
+        var reader = new FileReader();
+        var self = this;
+        reader.onloadend = function () {
+          //self.picbase64 = reader.result
+          var canvas = document.createElement("canvas");
+          var ctx = canvas.getContext("2d");
+          canvas.width = 200; // target width
+          canvas.height = 200; // target height
+          var image = new Image();
+          image.src = reader.result as string;
+          image.onload = function (e) {
+            ctx.drawImage(image,
+              0, 0, image.width, image.height,
+              0, 0, canvas.width, canvas.height
+            );
+            var resampledImage = new Image();
+            resampledImage.src = canvas.toDataURL();
+            self.picresizbase64 = resampledImage.src;
+              self.picpreview.push({
+                id:self.indexpic_payment,
+                url:resampledImage.src
+              });
+              
+             self.picresizbase64Array.push(self.formBuilder.group({
+                id:[self.indexpic_payment],
+                url: [self.picresizbase64],
+               
+              }));
+              self.indexpic_payment++;
+          };
+        }
+        reader.readAsDataURL(fileList[0]);
+      }
+      else {
+        alert('กรุณาระบุชนิดไฟล์รูปภาพ');
+      }
+    }
+  }
+ 
+  delImg_payment(index){
+   this.picpreview = this.picpreview.filter(obj => obj.id !== index);
+  this.picresizbase64Array.removeAt(this.picresizbase64Array.value.findIndex(value => value.id === index));
+ 
+ }
+
+ get errorControl_Payment() {
+  return this.ionicFormPayment.controls;
+ }
 }

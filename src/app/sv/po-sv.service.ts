@@ -365,12 +365,14 @@ export class PoSvService {
   }
 
   getpotf_cfwin(type,vdata:any,padding: number, limit: number = 9999999999): Observable<data> {
+    console.log(vdata);
     const header = { 'Content-Type': 'application/json' };
     let apiUrl = this.configSv.ip + 'tf_cfwin.php';
     let data;
     if(type === 'viewpayment'){
       data = {
-        'poid': vdata,
+        'poid': vdata.poid,
+        'assign_type':vdata.assign_type,
         'type_sql': type,
       }
     }else{
@@ -394,6 +396,7 @@ export class PoSvService {
     //console.log(vdata,vdata[0].assign_id);
       data = {
         'poid' : vdata.poid,
+        'assign_type' : vdata.assign_type,
         'typepayment' : vdata.typepayment.id,
         'cashmoney_0' : vdata.cashmoney_0,
         'change_0' : vdata.change_0,

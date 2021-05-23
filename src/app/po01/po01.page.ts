@@ -19,7 +19,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
   styleUrls: ['./po01.page.scss'],
 })
 export class Po01Page implements OnInit {
-  @Input() id:number;@Input() po_running:string;@Input() mode:string;@Input() modepayment:string;
+  @Input() id:number;@Input() po_running:string;@Input() mode:string;@Input() modepayment:string;assign_type:number;
   @ViewChild('fileIngimg') fileIngimg: ElementRef;
   @ViewChild('fileIngimg1') fileIngimg1: ElementRef;
   ionicForm: FormGroup;isSubmitted = false;  ionicFormPayment: FormGroup;
@@ -156,7 +156,11 @@ export class Po01Page implements OnInit {
               this.ionicFormPayment.controls['moneypay'].setValue(moneypad);
 
               if(this.modepayment === 'view'){
-                this.sub = this.poSv.getpotf_cfwin('viewpayment',this.id,0).subscribe((data1) => {
+                let data = {
+                  poid : this.id,
+                  assign_type : this.assign_type,
+                };
+                this.sub = this.poSv.getpotf_cfwin('viewpayment',data,0).subscribe((data1) => {
                   if (data1 !== null) {
                     data1.data_detail.forEach((item) => {
                       for (const [key, value] of Object.entries(item)) {
@@ -727,6 +731,7 @@ export class Po01Page implements OnInit {
     this.picresizbase64Array = this.formBuilder.array([]);
     this.ionicFormPayment = this.formBuilder.group({
       poid : [this.id],
+      assign_type :[this.assign_type],
       typepayment: this.portControl_payment,
       moneypay: [""],
       cashmoney_0:[""],
