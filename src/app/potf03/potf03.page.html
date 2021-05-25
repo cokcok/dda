@@ -41,7 +41,7 @@
       <ion-row>
         <ion-col>
           <ion-item>
-            <ion-label class="showlabel">วันที่นัดรับ {{ c.po_recivedate }}</ion-label>
+            <label class="showlabelheader">วันที่นัดรับ</label>&nbsp;&nbsp;&nbsp;&nbsp; {{ c.po_recivedate }}
             <ion-button fill="outline" slot="end" color="success" (click)="View(c.po_recivedate)">ดูรายละเอียด </ion-button>
           </ion-item>
         </ion-col>
@@ -49,17 +49,17 @@
       <ion-row>
         <ion-col>
           <ion-item>
-            <ion-label class="showlabelheader"> รอส่ง {{ c.countid }} รายการ</ion-label>
+            <label class="postatus_alert"> รอส่ง </label>&nbsp;&nbsp;&nbsp;&nbsp; <label>{{ c.countid }}</label> &nbsp;&nbsp;&nbsp;&nbsp; <label class="postatus_alert"> รายการ </label>
           </ion-item>
         </ion-col>
         <ion-col>
           <ion-item>
-            <ion-label class="showlabelheader"> ส่งสำเร็จ {{ c.countsus }} รายการ</ion-label>
+            <label class="showlabel"> ส่งสำเร็จ</label>&nbsp;&nbsp;&nbsp;&nbsp; <label>{{ c.countsus }}</label>&nbsp;&nbsp;&nbsp;&nbsp;  <label class="showlabel">รายการ</label>
           </ion-item>
         </ion-col>
         <ion-col>
           <ion-item>
-            <ion-label class="showlabelheader"> ยกเลิกส่ง/มีปัญหา {{ c.counterr }} รายการ</ion-label>
+            <label class="status_ok0"> ยกเลิกส่ง/มีปัญหา </label>&nbsp;&nbsp;&nbsp;&nbsp;<label>{{ c.counterr }}</label>&nbsp;&nbsp;&nbsp;&nbsp;  <label class="status_ok0">รายการ</label> 
           </ion-item>
         </ion-col>
       </ion-row>

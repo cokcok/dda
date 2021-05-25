@@ -101,6 +101,7 @@ export class PoSvService {
       'limit': limit,
       'typeserch': typeserch,
       'serchtxt': vdata.txtserach,
+      'typeassign': vdata.typeassign,
       'type_sql': 'readpo'
     }
     return this.http.post<data>(apiUrl, data, { headers: header });

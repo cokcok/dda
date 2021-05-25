@@ -19,6 +19,8 @@ export class Poassign02Page implements OnInit {
   data = []; page = 0;maxpadding:number;limit = 50;
   sub: Subscription; maxdatalimit=0;filterTerm: string;
   dataallarray = []; 
+  postatuscolor1 = ['1','2','3','4'];
+  postatuscolor2 = ['5','7','8'];
   constructor(public formBuilder: FormBuilder,
     public configSv: ConfigService,private alertCtrl: AlertController,private poSv: PoSvService,private modalCtrl:ModalController) { }
 
@@ -26,7 +28,7 @@ export class Poassign02Page implements OnInit {
     this.ionicForm = this.formBuilder.group({
       typeserch_id: [{id:4}],
       txtserach: [this.recivedate],
-      
+      typeassign:['1'],
     }); 
     this.loaddata(0);
     this.dataallarray = this.itemsomedata;

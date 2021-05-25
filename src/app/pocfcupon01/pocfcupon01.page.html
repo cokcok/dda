@@ -44,18 +44,18 @@
     <ion-card *ngFor="let c of data  | filter:filterTerm;index as i">
       <ion-row>
         <ion-col>
+          <ion-item> 
+            <label class="showlabelheader"> วันที่มอบหมายงาน</label> &nbsp;&nbsp;&nbsp;&nbsp; <label>{{c.po_assign_date }}</label>
+          </ion-item>
+        </ion-col>
+        <ion-col size="2">
           <ion-item>
-            <ion-label class="showlabelheader"> วันที่มอบหมายงาน {{c.po_assign_date }}</ion-label>
+            <label class="showlabelheader"> ครั้งที่</label> &nbsp;&nbsp;&nbsp;&nbsp; <label>{{c.seq }}</label>
           </ion-item>
         </ion-col>
         <ion-col>
           <ion-item>
-            <ion-label class="showlabelheader"> ครั้งที่ {{c.seq }}</ion-label>
-          </ion-item>
-        </ion-col>
-        <ion-col>
-          <ion-item>
-            <ion-label class="showlabelheader"> งานปักทั้งหมด {{c.total }} รายการ</ion-label>
+            <label class="showlabelheader"> งานปักทั้งหมด </label>&nbsp;&nbsp;&nbsp;&nbsp; <label>{{c.total }}</label>  &nbsp;&nbsp;&nbsp;&nbsp; <label class="showlabelheader">รายการ</label>
             <ion-button fill="outline" slot="end" color="success" (click)="View(c.id,c.po_assign_date,c.seq,c.total)">
               ดูรายละเอียด</ion-button>
           </ion-item>

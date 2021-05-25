@@ -60,14 +60,14 @@
             <ion-checkbox color="dark" *ngIf="c.checksomedata === false" (click)="selectData(i,data[i],c.checkall)" [(ngModel)]="c.checkall" slot="start"></ion-checkbox>
             <ion-checkbox color="tertiary" *ngIf="c.checksomedata === true" (click)="selectDatasome(i,data[i],c.checksomedata)"  [(ngModel)]="c.checksomedata" slot="start"></ion-checkbox>   
             <!-- (click)="selectDatasome(i,data[i],c.checksomedata)" -->
-            <ion-label class="showlabelheader">วันที่นัดรับ {{ c.po_recivedate }}</ion-label>  
+            <label class="showlabelheader">วันที่นัดรับ</label>&nbsp;&nbsp;&nbsp;&nbsp; <label>{{ c.po_recivedate }} </label>  
           </ion-item>
         </ion-col>
       </ion-row>
       <ion-row> 
         <ion-col>
           <ion-item>
-            <ion-label class="showlabelheader"> จำนวนรายการทั้งหมด {{ c.countid }} รายการ</ion-label>
+            <label class="showlabelheader"> จำนวนรายการทั้งหมด</label>&nbsp;&nbsp;&nbsp;&nbsp; <label>{{ c.countid }}</label> <label class="showlabelheader">&nbsp;&nbsp;&nbsp;&nbsp;รายการ</label>
             <ion-button fill="outline" slot="end" color="success" (click)="View(c.po_recivedate)">ดูรายละเอียดวันที่นัดรับ {{c.po_recivedate}}</ion-button>
           </ion-item>
         </ion-col>

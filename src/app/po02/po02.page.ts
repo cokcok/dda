@@ -22,6 +22,8 @@ export class Po02Page implements OnInit {
   sub: Subscription; maxdatalimit=0;filterTerm: string;
   portControl: FormControl; portssearch: any;typeserch:number = 9;
   myarraytxt = [9,2,3]; myarraytxtdate = [0,1];
+  postatuscolor1 = ['1','2','3','4'];
+  postatuscolor2 = ['5','7','8'];
   datePickerObj: any = {};
   constructor( public configSv: ConfigService,private poSv: PoSvService,public formBuilder: FormBuilder,private modalCtrl:ModalController) { }
 

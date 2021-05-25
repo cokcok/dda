@@ -23,6 +23,8 @@ export class Potf04Page implements OnInit {
   data = []; page = 0;maxpadding:number;limit = 50;
   sub: Subscription; maxdatalimit=0;filterTerm: string;
   countcf=0;counterr=0;
+  postatuscolor1 = ['1','2','3','4'];
+  postatuscolor2 = ['5','7','8'];
   constructor(public formBuilder: FormBuilder,
     public configSv: ConfigService,private alertCtrl: AlertController,private poSv: PoSvService,private modalCtrl:ModalController,private iab: InAppBrowser) { }
 

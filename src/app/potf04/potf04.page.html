@@ -69,7 +69,12 @@
           </ion-row>
           <ion-row>
             <ion-col> 
-              <ion-label> <u class="showlabel">สถานะ :</u> <span  [ngClass]="(c.po_status != 6)?'postatus_alert':'postatus_ok'" > {{ c.po_statustext }}</span></ion-label> 
+              <!-- <ion-label> <u class="showlabel">สถานะ :</u> <span  [ngClass]="(c.po_status != 6)?'postatus_alert':'postatus_ok'" > {{ c.po_statustext }}</span></ion-label>  -->
+
+              <ion-label> 
+                <u class="showlabel">สถานะ :</u> 
+                <span   [ngClass]="{'postatus_alert': c.po_status==0,'status_ok1':postatuscolor1.includes(c.po_status),'status_ok0':postatuscolor2.includes(c.po_status),'postatus_ok': c.po_status==6 }" > {{ c.po_statustext }}</span>
+              </ion-label> 
             </ion-col>
           </ion-row>
         </ion-grid>

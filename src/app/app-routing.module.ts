@@ -5,8 +5,8 @@ const routes: Routes = [
   {
     path: '',
     //redirectTo: 'folder/Inbox',
-   // redirectTo: 'potf03',
-   redirectTo: 'signin',
+    redirectTo: 'po03',
+   //redirectTo: 'signin',
     pathMatch: 'full'
   },
   {
@@ -212,6 +212,10 @@ const routes: Routes = [
   {
     path: 'fix02',
     loadChildren: () => import('./fix02/fix02.module').then( m => m.Fix02PageModule)
+  },
+  {
+    path: 'po03',
+    loadChildren: () => import('./po03/po03.module').then( m => m.Po03PageModule)
   }
 ];
 
