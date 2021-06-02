@@ -540,4 +540,8 @@ export class Od01Page implements OnInit {
     confirm.present();
   }
 
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
+  }
+
 }

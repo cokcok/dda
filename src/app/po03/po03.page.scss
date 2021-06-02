@@ -1,0 +1,82 @@
+ion-auto-complete {
+  width: 40vw;
+}
+
+.qtychk {
+  color: #ec1628;
+}
+
+
+.table1 {
+  border: 3px ridge #c2f7a3;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.showlabelmain {
+  color: #15a3f5 !important;
+}
+
+
+
+.showborder {
+  border: inset 2px #EBE9ED;
+  background-color: #b2f0c6;
+  padding-left: 10px;
+  // border-right:solid 1px #CCCCCC;
+  // border-bottom:solid 1px #CCCCCC;
+  // align-content: center;
+}
+
+.table1_header {
+  background-color: #4c8492;
+  color: whitesmoke;
+  padding: -2px -2px -2px -2px;
+  text-align: center;
+}
+
+.table1_detail_odd {
+  border: 1px dashed #4c8492;
+}
+
+.table1_detail_odd ion-col {
+  border: 1px dashed #4c8492;
+  background-color: #f0eec8;
+  font-weight: bold;
+  text-align: center;
+}
+
+.table1_detail_odd div ion-col {
+  border: 1px dashed #0a0a0a !important;
+  background-color: #f8f8f8 !important;
+}
+
+
+.table1_detail_even {
+  border: 1px dashed #4c8492;
+}
+
+.table1_detail_even ion-col {
+  border: 1px dashed #4c8492;
+  background-color: #d5bff1;
+  font-weight: bold;
+  text-align: center;
+}
+
+.table1_detail_even div ion-col {
+  border: 1px dashed #0a0a0a !important;
+  background-color: #f8f8f8 !important;
+}
+
+
+
+.table1_footer {
+  background-color: #c4eff6;
+  color: rgb(235, 60, 60);
+  padding: -2px -2px -2px -2px;
+  text-align: center;
+}
+
+.iconSize {
+  font-size: 10px;
+}

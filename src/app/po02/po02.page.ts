@@ -21,9 +21,9 @@ export class Po02Page implements OnInit {
   data = []; page = 0;maxpadding:number;limit = 50;
   sub: Subscription; maxdatalimit=0;filterTerm: string;
   portControl: FormControl; portssearch: any;typeserch:number = 9;
-  myarraytxt = [9,2,3]; myarraytxtdate = [0,1];
+  myarraytxt = [9,2,3,5]; myarraytxtdate = [0,1];
   postatuscolor1 = ['1','2','3','4'];
-  postatuscolor2 = ['5','7','8'];
+  postatuscolor2 = ['5','7','8']; 
   datePickerObj: any = {};
   constructor( public configSv: ConfigService,private poSv: PoSvService,public formBuilder: FormBuilder,private modalCtrl:ModalController) { }
 
@@ -63,9 +63,10 @@ export class Po02Page implements OnInit {
   loaddata_typeserch(){
     this.portssearch = [
       {id: 0,typeserch: 'วันที่สั่งซื้อ'},
-      {id: 1,typeserch: 'วันที่รับ'},
+      {id: 1,typeserch: 'วันที่นัดรับ'},
       {id: 2,typeserch: 'ชื่อวิน'},
       {id: 3,typeserch: 'ชื่อลูกค้า'},
+      {id: 5,typeserch: 'เลขที่ใบสั่งซื้อ'},
     ];
     //console.log(this.ports);
   }

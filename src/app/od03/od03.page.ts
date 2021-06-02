@@ -149,4 +149,7 @@ export class Od03Page implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
+  }
 }

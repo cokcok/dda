@@ -5,7 +5,7 @@ const routes: Routes = [
   {
     path: '',
     //redirectTo: 'folder/Inbox',
-    redirectTo: 'po03',
+    redirectTo: 'po04',
    //redirectTo: 'signin',
     pathMatch: 'full'
   },
@@ -216,6 +216,10 @@ const routes: Routes = [
   {
     path: 'po03',
     loadChildren: () => import('./po03/po03.module').then( m => m.Po03PageModule)
+  },
+  {
+    path: 'po04',
+    loadChildren: () => import('./po04/po04.module').then( m => m.Po04PageModule)
   }
 ];
 

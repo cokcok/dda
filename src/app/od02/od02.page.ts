@@ -167,5 +167,8 @@ export class Od02Page implements OnInit {
     
    }
 
+   ngOnDestroy(): void {
+    this.sub.unsubscribe();
+  }
 }
  

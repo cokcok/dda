@@ -413,5 +413,64 @@ export class PoSvService {
     return this.http.post<FeedBack>(apiUrl, data, { headers: header });
   }
 
+
+  crudto(vdata: any, type: string, cause?): Observable<FeedBack> {
+    const header = { 'Content-Type': 'application/json' };
+    const apiUrl = this.configSv.ip + 'to.php';
+    let data;
+    if (type === 'cancel') {
+      data = {
+        'id': vdata.id,
+        'emp_id': this.configSv.emp_id,
+        'type_sql': type,
+        'cause': cause
+      }
+    }
+    else {
+      data = {
+        'id': vdata.id,
+        'od_date':vdata.to_date,
+        'mtd_user_id': vdata.mtd_user_id.id,
+        'company_name': vdata.company_name,
+        'company_address': vdata.company_address,
+        'company_address_place': vdata.company_address_place,
+        'company_addresssend': vdata.company_addresssend,
+        'company_addresssend_place': vdata.company_addresssend_place,
+        'contact_name': vdata.contact_name,
+        'contact_tel': vdata.contact_tel,
+        'contact_fax': vdata.contact_fax,
+        'vat_type': vdata.vat_type.id,
+        'total' : vdata.total,
+        'vat' : vdata.vat,
+        'sumtotal' : vdata.sumtotal,
+        'tmpproduct' : vdata.tmpproduct,
+        'oldtmpproduct' : vdata.oldtmpproduct,
+        'emp_id': this.configSv.emp_id,
+        'type_sql': type
+      }
+    }
+    return this.http.post<FeedBack>(apiUrl, data, { headers: header });
+  }
+
+  getto(vdata:any,padding: number, limit: number = 9999999999): Observable<data> {
+    const header = { 'Content-Type': 'application/json' };
+    let apiUrl = this.configSv.ip + 'po_getproduct.php';
+    //console.log(vdata,vdata.typeserch_id.id);
+    let typeserch;
+    if(  typeof vdata.typeserch_id.id === 'undefined' ){
+      typeserch = 9;
+    }else{
+      typeserch = vdata.typeserch_id.id ;
+    }
+     let data = {
+      'padding': padding,
+      'limit': limit,
+      'typeserch': typeserch,
+      'serchtxt': vdata.txtserach,
+      'type_sql': 'readpoto'
+    }
+    return this.http.post<data>(apiUrl, data, { headers: header });
+  }
+
 }
   

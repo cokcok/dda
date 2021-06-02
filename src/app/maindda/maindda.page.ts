@@ -30,4 +30,8 @@ export class MainddaPage implements OnInit {
       });
   }
 
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
+  }
+
 }

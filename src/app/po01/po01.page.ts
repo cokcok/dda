@@ -6,7 +6,7 @@ import { Subscription } from "rxjs";
 import { MtdSvService} from '../sv/mtd-sv.service';
 import {PoSvService} from '../sv/po-sv.service';
 import * as moment_ from 'moment';
-import 'moment/locale/th';
+import 'moment/locale/th'; 
 const moment = moment_;
 import { IonicSelectableComponent } from 'ionic-selectable';
 import {PlaceSvService} from '../sv/place-sv.service';

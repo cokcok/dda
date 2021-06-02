@@ -88,6 +88,7 @@ export class ChpassPage implements OnInit {
     this.fileIngimg.nativeElement.click();
   }
 
+
   fileUpload_img(event) {
     var file = event.srcElement.files[0];
     if (typeof file !== 'undefined') {      
