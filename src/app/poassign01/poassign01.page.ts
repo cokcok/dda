@@ -94,7 +94,7 @@ export class Poassign01Page implements OnInit {
    // }
     // if(this.tmptxtser != this.ionicForm.controls['txtserach'].value || padding == 0){
     //   this.data = [];
-    // }
+    // } 
     if(padding == 0){this.data = []};
     this.ionicForm.controls['typeserch_id'].setValue(0);
     this.sub = this.poSv

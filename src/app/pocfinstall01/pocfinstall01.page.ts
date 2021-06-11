@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from '@angular/core';
 import { ModalController,AlertController } from '@ionic/angular';
 import { ConfigService } from "../sv/config.service";

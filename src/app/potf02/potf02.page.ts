@@ -37,7 +37,7 @@ export class Potf02Page implements OnInit {
    
     this.modalCtrl.dismiss(this.countassign,'confirm');
   }
-
+ 
   loaddata(padding: number, infiniteScroll?){
     let datalimit;
     //console.log(padding,this.data);

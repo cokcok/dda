@@ -1,31 +1,83 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+    <ion-buttons slot="start" *ngIf="id === undefined">
+      <ion-menu-button  ></ion-menu-button>
     </ion-buttons>
-    <ion-title>ใบสั่งซื้อ โตโยต้า</ion-title>
+    <ion-buttons slot="start"  *ngIf="id !== undefined">
+      <ion-button (click)="dismissModal()">
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+    </ion-button>
+    </ion-buttons> 
+    <ion-title>ใบสั่งซื้อ โตโยต้า {{to_running}}</ion-title>
     <ion-buttons slot="primary" *ngIf="id === undefined && mode !== 'view'">
       <ion-button (click)="refreshForm()">
         <ion-icon slot="icon-only" src="./assets/icons/refresh.svg"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-buttons slot="primary"  *ngIf="id !== undefined && mode !== 'view'">
+    <ion-buttons slot="primary"  *ngIf="mode === 'transport' && to_status === '0'">
+      <ion-button (click)="submitForm_transport()">
+        <ion-icon slot="icon-only" src="./assets/icons/transport.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="primary"  *ngIf="to_status === '0' && mode !== 'transport'">
       <ion-button (click)="cancelData()">
         <ion-icon slot="icon-only" name="trash"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-buttons slot="primary" *ngIf="mode !== 'view'">
+    <ion-buttons slot="primary" *ngIf="(to_status === '0' && mode !== 'transport') || id === undefined">
       <ion-button (click)="submitForm()">
-        <ion-icon slot="icon-only" src="./assets/icons/save.svg"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-buttons slot="primary" *ngIf="modepayment === 'ok'">
-      <ion-button (click)="submitForm_Payment()">
         <ion-icon slot="icon-only" src="./assets/icons/save.svg"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+<form *ngIf="mode === 'transport'" [formGroup]="ionicForm_transport" novalidate>
+  <ion-grid >
+    <div class="table1">
+    <ion-row>
+      <ion-col>การส่งสินค้า</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col >
+        <ion-item>
+          <ion-label class="showlabel" position="floating">วันที่ส่งสินค้า</ion-label>
+          <ion-input readonly [liIonic4Datepicker]="datePickerObj" type="text" formControlName="transport_date"></ion-input>
+          <span class="error" *ngIf="isSubmitted && errorControl1.transport_date.errors?.required">
+            กรุณาระบุ วันที่ส่งสินค้า
+          </span>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label class="showlabel" position="floating">รายละเอียดการส่ง</ion-label>
+          <ion-input formControlName="transport_detail" type="text"></ion-input>
+          <span class="error" *ngIf="isSubmitted && errorControl1.transport_detail.errors?.required">
+            กรุณาระบุ รายละเอียดการส่ง
+          </span> 
+        </ion-item>
+      </ion-col>
+    </ion-row>
+     <ion-row>
+      <ion-col>
+        <p>แนบหลักฐานการส่ง 
+          <input type="file" (change)="fileUpload_imgpayment($event)" id="file-input" accept="image/x-png,image/jpeg"  style="position:absolute; top: -999999px" #fileIngimg1>
+          <button ion-button (click)="fileUpload_payment()">Upload</button>
+          <div>
+         <div  style="display: inline-block;" *ngFor="let img of picpreview" >
+          <ion-img style="width: 100px; height: 100px;"  [src]="img.url"></ion-img>
+          <ion-button (click)="delImg_payment(img.id)">
+            <ion-icon slot="icon-only" size="small" name="trash"></ion-icon>
+          </ion-button>
+         </div>
+        </div>
+      <p>
+      </ion-col>
+     </ion-row>
+    </div>
+  </ion-grid>
+</form>
  <ion-content>
   <form [formGroup]="ionicForm" novalidate>
     <ion-grid>
@@ -164,20 +216,23 @@
         <div *ngIf="tmpproduct.length>0">
           <ion-row  class="table1_header">
             <ion-col size="0.5">#</ion-col>
-            <ion-col size="4">สินค้า/ขนาด/ราคา</ion-col>
-            <ion-col size="2">ราคา</ion-col>
-            <ion-col size="2">จำนวน</ion-col>
+            <ion-col size="4">สินค้า/ขนาด/ราคาสินค้า</ion-col>
+            <ion-col size="1">คงเหลือ</ion-col>
+            <ion-col size="1.5">จำนวน</ion-col>
+            <ion-col size="1.5">ราคาขาย</ion-col>
+           
             <ion-col size="2">ราคารวม</ion-col>
             <ion-col size="2"></ion-col>
           </ion-row>
           <ion-row  *ngFor="let c of tmpproduct;let i = index; " [ngClass]="(i % 2 == 0) ? 'table1_detail_odd' : 'table1_detail_even'">
             <ion-col  size="0.5">{{i+1}}</ion-col>
             <ion-col size="4">{{c.name}}</ion-col>
-            <ion-col size="2">
-              <ion-input  class="showborder" type="number"  [(ngModel)]="per_price[c.id]" [ngModelOptions]="{standalone: true}" (keyup)="Caltotal(c.id,per_price[c.id],'price')"></ion-input>
-            </ion-col>
-            <ion-col size="2">
+            <ion-col size="1">{{c.qty}}</ion-col>
+            <ion-col size="1.5">
               <ion-input  class="showborder" type="number"  [(ngModel)]="per_qty[c.id]" [ngModelOptions]="{standalone: true}" (keyup)="Caltotal(c.id,per_qty[c.id],'qty')"></ion-input>
+            </ion-col>
+            <ion-col size="1.5">
+              <ion-input  class="showborder" type="number"  [(ngModel)]="per_price[c.id]" [ngModelOptions]="{standalone: true}" (keyup)="Caltotal(c.id,per_price[c.id],'price')"></ion-input>
             </ion-col>
             <ion-col size="2">
               {{c.total|number : '1.2-2'}}

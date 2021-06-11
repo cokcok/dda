@@ -13,6 +13,7 @@ import {PlaceSvService} from '../sv/place-sv.service';
 import {Po01numberPage} from '../po01number/po01number.page';
 //import * as $ from 'jquery';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+
 @Component({
   selector: 'app-po01',
   templateUrl: './po01.page.html',
@@ -28,8 +29,9 @@ export class Po01Page implements OnInit {
   portControl_sale: FormControl; ports_sale: any;
   portControl_area: FormControl; ports_area: any;
   portControl_shipping: FormControl; ports_shipping: any;
-  portControl_productmain: FormControl; ports_productmain: any;
+  portControl_productmain: FormControl; ports_productmain: any;ports_productmain_number: any;
   portControl_customertype: FormControl; portscustomertype:any;
+  portControl_green: FormControl; ports_green:any;
   portControl_payment: FormControl; ports_payment: any;
   portControl_member: FormControl; ports_member: any;
   tmpproduct =[];discount = []; commentproduct = [];
@@ -51,6 +53,7 @@ export class Po01Page implements OnInit {
     this.portControl_area = this.formBuilder.control("", Validators.required);
     this.portControl_shipping = this.formBuilder.control("", Validators.required);
     this.portControl_customertype = this.formBuilder.control("", Validators.required);
+    this.portControl_green = this.formBuilder.control("", Validators.required);
     this.portControl_member = this.formBuilder.control("");
     this.ionicForm = this.formBuilder.group({
       id:[this.id],
@@ -63,7 +66,8 @@ export class Po01Page implements OnInit {
       po_customer:[""], 
       po_customer_tel:[""],
       mtd_member_id: this.portControl_member,
-      po_green:["0"],
+      //po_green:["0"],
+      po_green: this.portControl_green,
       po_totalproduct:[""],
       po_discount:[""],
       po_total:[""],
@@ -81,8 +85,8 @@ export class Po01Page implements OnInit {
       namewin_comment:[""],
       po_deposit:["0"],
     });
-    this.loaddata_sale(0);this.loaddata_area(0);this.loaddata_shipping(0);this.loaddata_product();this.loaddata_customertype();this.loaddata_member(0);
-    this.fndate();   this.loadform_payment();
+    this.loaddata_sale(0);this.loaddata_area(0);this.loaddata_shipping(0);this.loaddata_product(0);this.loaddata_customertype();this.loaddata_member(0);
+    this.fndate();   this.loadform_payment();this.loaddata_greentype();
   }
 
   ionViewDidEnter(){
@@ -134,11 +138,16 @@ export class Po01Page implements OnInit {
                 }else{
                   this.ionicForm.get('mtd_member_id').setValidators(Validators.required);
                 }
+              }else if(key === "po_green"){
+                let value_a = this.ports_green.filter(function (item1) {
+                  return item1.id == value;
+                })[0];
+                this.portControl_green.setValue(value_a);
               }else{
                 this.ionicForm.controls[key].setValue(value);
               }
             }
-
+            console.log(this.ionicForm.value);
             this.tmpproduct = data.data_detail[0]['tmpproduct'];
             this.allDiscount = data.data_detail[0]['po_discount'];
             this.alltotalproduct = data.data_detail[0]['po_totalproduct'];
@@ -191,7 +200,7 @@ export class Po01Page implements OnInit {
                 });
               }
             }
-          });
+          }); 
           this.indexpic++
         }
       });
@@ -301,10 +310,38 @@ export class Po01Page implements OnInit {
       });
   }
 
-  loaddata_product() {
+  loaddata_greentype(){
+    this.ports_green = [
+      {id: 0,typegreen: 'ปักป้ายเขียว'},
+      {id: 1,typegreen: 'ไม่ต้องปักป้ายเขียว'},
+    ];
+    this.portControl_green.setValue(this.ports_green[0]);
+    //console.log(this.ports);
+  }
+
+  portChange_green(event: {
+    component: IonicSelectableComponent,
+    value: any
+  }) {
+   // let port = event.value;
+    //console.log(port,port['shipping_price']);
+    //this.ionicForm.controls['po_shipping_price'].setValue(port['shipping_price']);
+   // this.cul_total();
+   this.tmpproduct =[];this.discount = []; this.commentproduct = [];
+   this.tmpproductetc =[];this.indexpic = 0;
+   this.alltotalproduct=0;this.allDiscount=0;this.po_shipping_price=0;this.alltotal=0;this.cus_type
+   if(event.value === 0 ){
+     this. loaddata_product(0);
+   }else{
+    this.loaddata_product(null);
+    this.loaddata_productnumber();
+   }
+  }
+
+  loaddata_product(type) {
     let datalimit;
     this.sub = this.poSv
-      .getproduct('readproduct',0)
+      .getproduct('readproduct',type)
       .subscribe((data) => {
         if (data !== null) {
           this.ports_productmain = data.data_detail.map((item) => Object.assign({}, item));
@@ -321,6 +358,18 @@ export class Po01Page implements OnInit {
     this.ionicForm.controls['po_shipping_price'].setValue(port['shipping_price']);
     this.cul_total();
   }
+
+  loaddata_productnumber() {
+    let datalimit;
+    this.sub = this.poSv
+      .getproduct('readnumberAll')
+      .subscribe((data) => {
+        if (data !== null) {
+          this.ports_productmain_number = data.data_detail.map((item) => Object.assign({}, item));
+        }
+      });
+  }
+
 
   public inqtyerror(qty: number,qty_remain:number): boolean{
     if (Number(qty) < Number(qty_remain)){
@@ -339,9 +388,10 @@ export class Po01Page implements OnInit {
   portChange_Product(event: {
     component: IonicSelectableComponent,
     value: any
-  }) {
+  },type) {
     let port = event.value;
     let tmpindex:number;
+    console.log(type);
     //this.tmpproduct = port.map((item) => Object.assign({}, item));
   //console.log(this.tmpproduct.length );
    if(this.tmpproduct.length === 0){
@@ -352,27 +402,49 @@ export class Po01Page implements OnInit {
    }
    //console.log(this.tmpproduct[this.tmpproduct.length-1]["id"],tmpindex);
    //let picresizbase64Array = Array;
-   port.forEach((value, index) => {
-    this.tmpproduct.push({
-      id: index+Number(tmpindex),
-      name: value.product_name +'/'+value.size+ '/' +value.price,
-      product_id: value.id,
-      product_name: value.product_name,
-      size: value.size,
-      price: value.price,
-      discount:'0',
-      total: value.price,
-      commentproduct: '',
-      picresizbase64List: [],
-      numbervalue: null,
-      productetc: null,
+   if(type === 'product'){
+    port.forEach((value, index) => {
+      this.tmpproduct.push({
+        id: index+Number(tmpindex),
+        name: value.product_name +'/'+value.size+ '/' +value.price,
+        product_id: value.id,
+        product_name: value.product_name,
+        size: value.size,
+        price: value.price,
+        discount:'0',
+        total: value.price,
+        commentproduct: '',
+        picresizbase64List: [],
+        numbervalue: null,
+        productetc: null,
+      });
     });
-  });
+   }else{
+    port.forEach((value, index) => {
+      this.tmpproduct.push({
+        id: index+Number(tmpindex),
+        name: value.product_name +'/'+value.size+ '/' +value.price,
+        number_id: value.id,
+        product_name: value.product_name,
+        size: value.size,
+        price: value.price,
+        discount:'0',
+        total: value.price,
+        commentproduct: '',
+        picresizbase64List: [],
+        numbervalue: null,
+        productetc: null,
+      });
+    });
+
+   }
+  
     //this.ionicForm.controls['tmpproduct'].setValue(this.tmpproduct);
     event.component.clear();
     this.cul_total();
     
   }
+
 
   Discount(id,value){
     let item = this.tmpproduct.filter((val) => val.id == id);
@@ -511,7 +583,6 @@ export class Po01Page implements OnInit {
 
   dismissModal(){
     this.modalCtrl.dismiss();
-
   }
 
   async submitForm(){
@@ -526,7 +597,7 @@ export class Po01Page implements OnInit {
     this.ionicForm.controls['po_discount'].setValue(this.allDiscount);
     this.ionicForm.controls['po_totalproduct'].setValue(this.alltotalproduct);
     this.ionicForm.controls['po_total'].setValue(this.alltotal);
-    //console.log(this.ionicForm.value)
+    console.log(this.ionicForm.value)
     this.isSubmitted = true;
     if (!this.ionicForm.valid || founddiscount) {
       console.log("Please provide all the required values!");
@@ -614,13 +685,14 @@ export class Po01Page implements OnInit {
 
 
   refreshForm() {
-    this.ionicForm.reset({po_date:moment().format("DD/MM/YYYY"),po_green:0});
+    this.ionicForm.reset({po_date:moment().format("DD/MM/YYYY")});
     let item = this.ports_sale.filter((val) => val.id == this.configSv.emp_id)[0];
     this.portControl_sale.setValue(item);
     this.isSubmitted = false;
     this.tmpproduct =[];this.discount = []; this.commentproduct = [];
     this.tmpproductetc =[];this.indexpic = 0;
-    this.alltotalproduct=0;this.allDiscount=0;this.po_shipping_price=0;this.alltotal=0; this.loaddata_product(); this.cus_type
+    this.alltotalproduct=0;this.allDiscount=0;this.po_shipping_price=0;this.alltotal=0; this.loaddata_product(0); this.cus_type
+    this.portControl_green.setValue(this.ports_green[0]);
     //this.portControl_customertype.setValue(this.portscustomertype[0]);
   }
 
@@ -764,6 +836,17 @@ export class Po01Page implements OnInit {
     this.ionicFormPayment.setValidators(null);
     let port = event.value; 
     this.paymenttype = port['id'];
+    this.ionicFormPayment.controls['cashmoney_0'].setValidators(null);
+    this.ionicFormPayment.controls['change_0'].setValidators(null);
+    this.picresizbase64Array.setValidators(null);
+    this.ionicFormPayment.controls['ems_2'].setValidators(null);
+    this.ionicFormPayment.controls['payment_cancel_3'].setValidators(null);
+    this.ionicFormPayment.controls['problem_cause_4'].setValidators(null);
+    this.ionicFormPayment.controls['cashmoney_0'].updateValueAndValidity();
+    this.ionicFormPayment.controls['change_0'].updateValueAndValidity();
+    this.ionicFormPayment.controls['ems_2'].updateValueAndValidity();
+    this.ionicFormPayment.controls['payment_cancel_3'].updateValueAndValidity();
+    this.ionicFormPayment.controls['problem_cause_4'].updateValueAndValidity();
     if(this.paymenttype === 0){
       this.ionicFormPayment.get('cashmoney_0').setValidators(Validators.required);
       this.ionicFormPayment.get('change_0').setValidators(Validators.min(0));
@@ -782,7 +865,9 @@ export class Po01Page implements OnInit {
     }
     else if(this.paymenttype === 4){
       this.ionicFormPayment.get('problem_cause_4').setValidators(Validators.required);
+      
     }
+   
   }
 
   cul_cashmoney_0(){
@@ -895,6 +980,5 @@ fileUpload_imgpayment(event) {
  delImg_payment(index){
   this.picpreview = this.picpreview.filter(obj => obj.id !== index);
  this.picresizbase64Array.removeAt(this.picresizbase64Array.value.findIndex(value => value.id === index));
-
-}
+ }
 }

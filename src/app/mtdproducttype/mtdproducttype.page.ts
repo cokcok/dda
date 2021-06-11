@@ -39,7 +39,7 @@ export class MtdproducttypePage implements OnInit {
     this.portscategory = [
       {id: '0',typecategory: 'สินค้าหลัก'},
       {id: '1',typecategory: 'สินค้ารอง'},
-      {id: '2',typecategory: 'สินค้า โตโยต้า'},
+      {id: '2',typecategory: 'สินค้า โตโยต้า'}
     ];
     //console.log(this.ports);
   }

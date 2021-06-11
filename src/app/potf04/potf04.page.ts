@@ -51,7 +51,7 @@ export class Potf04Page implements OnInit {
     .getpotf_cfwin('view',this.ionicForm.value,padding)
     .subscribe((data) => {
       if (data !== null) {
-        //console.log(data.data_detail);
+        console.log(data.data_detail);
         this.data =  data.data_detail.map((item) => Object.assign({}, item));   
       }else{
         this.maxpadding = 0;

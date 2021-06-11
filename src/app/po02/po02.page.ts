@@ -59,7 +59,7 @@ export class Po02Page implements OnInit {
     });
   }
 
-
+ 
   loaddata_typeserch(){
     this.portssearch = [
       {id: 0,typeserch: 'วันที่สั่งซื้อ'},
@@ -120,7 +120,7 @@ export class Po02Page implements OnInit {
     .getpo(this.ionicForm.value,padding,this.limit)
     .subscribe((data) => {
       if (data !== null) {
-        console.log(data.data_detail);
+        // console.log(data.data_detail);
          this.maxpadding = data["maxpadding"];
          this.maxdatalimit = data["limit"];
          this.data =  this.data.concat(data.data_detail.map((item) => Object.assign({}, item)));

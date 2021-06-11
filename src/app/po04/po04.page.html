@@ -34,7 +34,7 @@
             กรุณาระบุ คำค้นหา
           </span>
         </ion-item>
-      </ion-col>
+      </ion-col> 
       <ion-col>
           <ion-button [disabled]="ionicForm.invalid" (click)="SearchData(0)" expand="block"
           shape="round">
@@ -59,7 +59,8 @@
             <ion-label class="showlabelheader">{{ c.to_running }}</ion-label>
           </ion-col>
         </ion-row>
-        <ion-button fill="outline" slot="end" color="success" (click)="View(c.id,c.to_running)">ดูรายละเอียดลำดับที่ {{i+1}}</ion-button>
+        <ion-button *ngIf="c.to_status !== '2'"  fill="outline" slot="end" color="warning" (click)="transport(c.id,c.to_running,c.to_status)">ส่งสินค้าลำดับที่ {{i+1}}</ion-button>
+        <ion-button fill="outline" slot="end" color="success" (click)="View(c.id,c.to_running,c.to_status)">ดูรายละเอียดลำดับที่ {{i+1}}</ion-button>
       </ion-item>
       <ion-item>
         <ion-grid fixed>
@@ -77,22 +78,22 @@
           </ion-row>
           <ion-row>
             <ion-col>
-              <ion-label> <u class="showlabel">ราคา:</u> {{ c.total }}</ion-label>
+              <ion-label> <u class="showlabel">ราคา:</u> {{ c.total| number }}</ion-label>
             </ion-col>
             <ion-col>
-              <ion-label> <u class="showlabel">ภาษี:</u> {{ c.vat }}</ion-label>
+              <ion-label> <u class="showlabel">ภาษี:</u> {{ c.vat| number }}</ion-label>
             </ion-col>
             <ion-col>
-              <ion-label> <u class="showlabel">ราคารวม:</u> {{ c.sumtotal }}</ion-label>
+              <ion-label> <u class="showlabel">ราคาทั้งหมด:</u> {{ c.sumtotal| number }}</ion-label>
             </ion-col>
           </ion-row>
           <div *ngIf="c.todetail.length > 0">
             <ion-row *ngFor="let cc of c.todetail;let ii = index;">
               <ion-col  size="auto"><u class="showlabel">สินค้า:</u> {{cc.product_name}}</ion-col>
               <ion-col  size="auto"><u class="showlabel">ขนาด:</u> {{cc.size}}</ion-col>
-              <ion-col  size="auto"><u class="showlabel">ราคา:</u> {{cc.to_price}}</ion-col>
-              <ion-col  size="auto"><u class="showlabel">จำนวน:</u> {{cc.to_qty}}</ion-col>
-              <ion-col  size="auto"><u class="showlabel">ราคารวม:</u> {{cc.to_total}}</ion-col>
+              <ion-col  size="auto"><u class="showlabel">ราคา:</u> {{cc.to_price| number}}</ion-col>
+              <ion-col  size="auto"><u class="showlabel">จำนวน:</u> {{cc.to_qty| number}}</ion-col>
+              <ion-col  size="auto"><u class="showlabel">ราคารวม:</u> {{cc.to_total| number}}</ion-col>
             </ion-row>
           </div>
           
@@ -100,7 +101,7 @@
             <ion-col> 
               <ion-label> 
                 <u class="showlabel">สถานะ :</u> 
-                <span   [ngClass]="{'postatus_alert': c.to_status==0,'status_ok1':c.to_status==1,'postatus_ok': c.to_status==2 }" > {{ c.to_statustext }}</span>
+                <span   [ngClass]="{'postatus_alert': c.to_status==0,'status_ok1':c.to_status==1,'status_ok0': c.to_status==2 }" > {{ c.to_statustext }}</span>
               </ion-label> 
             </ion-col>
           </ion-row>

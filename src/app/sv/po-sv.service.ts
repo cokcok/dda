@@ -472,5 +472,32 @@ export class PoSvService {
     return this.http.post<data>(apiUrl, data, { headers: header });
   }
 
+  
+  getto_edit(id,type): Observable<data> {
+    const header = { 'Content-Type': 'application/json' };
+    const apiUrl = this.configSv.ip + 'to.php';
+    let data;
+    data = {
+      'id': id,
+      'type_sql': type
+    }
+    return this.http.post<data>(apiUrl, data, { headers: header });
+  }
+
+  crudto_transport(vdata: any, type: string, cause?): Observable<FeedBack> {
+    const header = { 'Content-Type': 'application/json' };
+    const apiUrl = this.configSv.ip + 'to.php';
+    let data;
+    data = {
+      'id': vdata.id,
+      'transport_date': vdata.transport_date,
+      'transport_detail': vdata.transport_detail,
+      'tmpproduct' : vdata.tmpproduct,
+      'pic' : vdata.picresizbase64List,
+      'type_sql': type
+    }
+    return this.http.post<FeedBack>(apiUrl, data, { headers: header });
+  }
+
 }
   
