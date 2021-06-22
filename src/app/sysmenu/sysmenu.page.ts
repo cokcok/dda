@@ -27,6 +27,7 @@ export class SysmenuPage implements OnInit {
       svg: [''],
       seq: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
       submenu: [''],
+      group_name:['', [Validators.required]],
       highlight: ['']
     });
     this.loaddata(this.page);
@@ -62,6 +63,7 @@ export class SysmenuPage implements OnInit {
               svg: this.ionicForm.controls.svg.value,
               seq: this.ionicForm.controls.seq.value,
               submenu: this.ionicForm.controls.submenu.value,
+              group_name: this.ionicForm.controls.group_name.value,
               highlight: true
             });
             this.refreshForm();
@@ -106,6 +108,8 @@ export class SysmenuPage implements OnInit {
               'svg': data['data_detail'][i]['svg'],
               'seq': data['data_detail'][i]['seq'],
               'submenu': data['data_detail'][i]['submenu'],
+              'group_name': data['data_detail'][i]['group_name'],
+              
             });
           }
           if (infiniteScroll) {

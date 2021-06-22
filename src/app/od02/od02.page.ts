@@ -140,7 +140,7 @@ export class Od02Page implements OnInit {
        item[0].od_statustext = data[0]['od_statustext']; 
        item[0].od_status = 3; 
      }
-     console.log('View')
+    
    }
 
 

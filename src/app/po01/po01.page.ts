@@ -147,14 +147,14 @@ export class Po01Page implements OnInit {
                 this.ionicForm.controls[key].setValue(value);
               }
             }
-            console.log(this.ionicForm.value);
+           // console.log(this.ionicForm.value);
             this.tmpproduct = data.data_detail[0]['tmpproduct'];
             this.allDiscount = data.data_detail[0]['po_discount'];
             this.alltotalproduct = data.data_detail[0]['po_totalproduct'];
             this.alltotal = data.data_detail[0]['po_total'];
             this.tmpproduct.forEach((item,index) => {
-              this.discount[index] = item['discount'];
-              this.commentproduct[index] = item['commentproduct'];
+              this.discount[item['id']] = item['discount'];
+              this.commentproduct[item['id']] = item['commentproduct'];
               item['picresizbase64List'].forEach(element => {
                 this.indexpic = element['indexpic'];
               });
@@ -368,11 +368,16 @@ export class Po01Page implements OnInit {
           this.ports_productmain_number = data.data_detail.map((item) => Object.assign({}, item));
         }
       });
+  } 
+
+  public inqtywaring(qty: number,qty_remain:number): boolean{
+    if (Number(qty) < Number(qty_remain) && Number(qty) !== 0){
+      return true;
+    }
   }
-
-
+ 
   public inqtyerror(qty: number,qty_remain:number): boolean{
-    if (Number(qty) < Number(qty_remain)){
+    if (Number(qty) === 0){
       return true;
     }
   }
@@ -391,7 +396,7 @@ export class Po01Page implements OnInit {
   },type) {
     let port = event.value;
     let tmpindex:number;
-    console.log(type);
+    //console.log(type);
     //this.tmpproduct = port.map((item) => Object.assign({}, item));
   //console.log(this.tmpproduct.length );
    if(this.tmpproduct.length === 0){

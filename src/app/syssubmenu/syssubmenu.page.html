@@ -79,11 +79,14 @@
             itemValueField="id"
             itemTextField="title"
             [items]="ports"
-            [canSearch]="true"
+            [canSearch]="true" 
             [canClear]="true"
             clearButtonText="ล้างข้อมูล"
             closeButtonText="ยกเลิก"
             >
+            <ng-template ionicSelectableItemTemplate let-port="item" let-isPortSelected="isItemSelected">
+              <div>{{port.title}} กลุ่ม : {{port.group_name}}</div>
+            </ng-template>
           </ionic-selectable>
         </ion-item>
         <span class="error" *ngIf="isSubmitted && errorControl.sys_menu_id.errors?.required">

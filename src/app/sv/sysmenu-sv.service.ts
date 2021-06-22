@@ -46,6 +46,7 @@ export class SysmenuSvService {
         'svg': vdata.svg,
         'seq': vdata.seq,
         'submenu_flg': vdata.submenu,
+        'group_name': vdata.group_name,
         'emp_id': this.configSv.emp_id,
         'type_sql': type
       }

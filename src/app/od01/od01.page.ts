@@ -32,8 +32,9 @@ export class Od01Page implements OnInit {
   portControl_sale: FormControl; ports_sale: any;
   portControl_suppliertype: FormControl; ports_suppliertype: any;
   portControl_supplier: FormControl; ports_supplier: any;
+  ports_productmain_number: any;
   ports_productmain: any;alltotalproduct:number; vat7:number; sumtotal:number;
-  edit = ['1']; editdata = ['0']
+  edit = ['1']; editdata = ['0',undefined]
   constructor(private navCtrl: NavController,public formBuilder: FormBuilder,
     public configSv: ConfigService,public mtdSv: MtdSvService,
     private alertCtrl: AlertController,private modalCtrl:ModalController,private iab: InAppBrowser,public placeSv:PlaceSvService,private poSv: PoSvService , private odSv: OdSvService) { }
@@ -66,8 +67,7 @@ export class Od01Page implements OnInit {
       od_status:[""],
       oldtmpproduct:[""],
     });
-    this.loaddata_sale(0);this.fndate(); this.loaddata_suppliertype();this.loaddata_supplier(0);this.loaddata_product();
-   
+    this.loaddata_sale(0);this.fndate(); this.loaddata_suppliertype();this.loaddata_supplier(0);this.loaddata_product();this.loaddata_productnumber();
   }
 
   fndate(){
@@ -215,9 +215,25 @@ export class Od01Page implements OnInit {
       });
   }
 
+  loaddata_productnumber() {
+    let datalimit;
+    this.sub = this.poSv
+      .getproduct('readnumberAll')
+      .subscribe((data) => {
+        if (data !== null) {
+          this.ports_productmain_number = data.data_detail.map((item) => Object.assign({}, item));
+        }
+      });
+  } 
+
+  public inqtywaring(qty: number,qty_remain:number): boolean{
+    if (Number(qty) < Number(qty_remain) && Number(qty) !== 0){
+      return true;
+    }
+  }
 
   public inqtyerror(qty: number,qty_remain:number): boolean{
-    if (Number(qty) < Number(qty_remain)){
+    if (Number(qty) === 0){
       return true;
     }
   }
@@ -225,7 +241,7 @@ export class Od01Page implements OnInit {
   portChange_Product(event: {
     component: IonicSelectableComponent,
     value: any
-  }) {
+  },type) {
     let port = event.value;
     let tmpindex:number;
    if(this.tmpproduct.length === 0){
@@ -233,25 +249,62 @@ export class Od01Page implements OnInit {
    }else{
     tmpindex = Number(this.tmpproduct[this.tmpproduct.length-1]["id"]) + 1;
    }
-   port.forEach((value, index) => {
-    this.tmpproduct.push({
-      id: index+Number(tmpindex),
-      name: value.product_name +'/'+value.size+ '/' +value.price,
-      product_id: value.id,
-      product_name: value.product_name,
-      size: value.size,
-      price: value.price,
-      total: value.price,
-      od_qty:0,
-      od_price:0,
-      od_total:0,
-      od_unit:null,
+  //  port.forEach((value, index) => {
+  //   this.tmpproduct.push({
+  //     id: index+Number(tmpindex),
+  //     name: value.product_name +'/'+value.size+ '/' +value.price,
+  //     product_id: value.id,
+  //     product_name: value.product_name,
+  //     size: value.size,
+  //     price: value.price,
+  //     total: value.price,
+  //     od_qty:0,
+  //     od_price:0,
+  //     od_total:0,
+  //     od_unit:null,
+  //   });
+  // });
+
+  if(type === 'product'){
+    port.forEach((value, index) => {
+      this.tmpproduct.push({
+        id: index+Number(tmpindex),
+        name: value.product_name +'/'+value.size+ '/' +value.price,
+        product_id: value.id,
+        number_id:0,
+        product_name: value.product_name,
+        size: value.size,
+        price: value.price,
+        total: value.price,
+        od_qty:0,
+        od_price:0,
+        od_total:0,
+        od_unit:'ชิ้น',
+      });
     });
-  });
-    //this.ionicForm.controls['tmpproduct'].setValue(this.tmpproduct);
+   }else{
+    port.forEach((value, index) => {
+      this.tmpproduct.push({
+        id: index+Number(tmpindex),
+        name: value.product_name +'/'+value.size+ '/' +value.price,
+        product_id: 0,
+        number_id: value.id,
+        product_name: value.product_name,
+        size: value.size,
+        price: value.price,
+        total: value.price,
+        od_qty:0,
+        od_price:0,
+        od_total:0,
+        od_unit:'ชิ้น',
+      });
+    });
+
+   }
+
+
+
     event.component.clear();
-    //this.cul_total();
-    
   }
 
   Caltotal(id,value,type){
@@ -284,12 +337,12 @@ export class Od01Page implements OnInit {
   }
  
   async submitForm(){
-    console.log(this.ionicForm.value)
+    
     
     
     let foundnull = this.tmpproduct.find(function (value){
-      if(value.od_total === 0 || value.od_unit == null || typeof value.od_unit == 'undefined'){
-        return true;
+      if(value.od_total === 0 ){
+        return true;  //|| value.od_unit == null || typeof value.od_unit == 'undefined'
       }
    });
 
@@ -300,7 +353,7 @@ export class Od01Page implements OnInit {
       this.ionicForm.controls['sumtotal'].setValue(Number(this.sumtotal).toFixed(2));
     }
     
-   
+    console.log(this.ionicForm.value)
     this.isSubmitted = true;
     if (!this.ionicForm.valid || foundnull) {
       console.log("Please provide all the required values!");
@@ -409,9 +462,9 @@ export class Od01Page implements OnInit {
             }
             this.tmpproduct = data.data_detail[0]['tmpproduct'];
             this.tmpproduct.forEach((item,index) => {
-              this.od_qty[index] = item['od_qty'];
-              this.od_unit[index] = item['od_unit'];
-              this.od_price[index] = item['od_price'];
+              this.od_qty[item['id']] = item['od_qty'];
+              this.od_unit[item['id']] = item['od_unit'];
+              this.od_price[item['id']] = item['od_price'];
             });
             this.alltotalproduct = data.data_detail[0]['total'];
             this.vat7 = data.data_detail[0]['vat'];

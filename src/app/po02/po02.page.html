@@ -44,7 +44,12 @@
           shape="round">
           ค้นหาข้อมูล
         </ion-button>
-      </ion-col>
+      </ion-col> 
+      <ion-col>
+        <ion-button [disabled]="ionicForm.invalid" (click)="get_dataexcel()" expand="block" shape="round"  color="success">
+        ออก excel
+      </ion-button>
+    </ion-col>
     </ion-row>
     <ion-row class="content_alert" *ngIf="maxpadding>=0">
       <ion-col>

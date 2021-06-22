@@ -166,6 +166,8 @@ export class MtdproducttypePage implements OnInit {
                 if(data.status == 'ok')
                 {   
                   this.configSv.ChkformAlert(data.message);
+                  this.data = this.data.filter(obj => obj.id !== item);
+                  this.refreshForm();
                 }
                 else
                 {
@@ -173,10 +175,7 @@ export class MtdproducttypePage implements OnInit {
                 }              
               }, (error) => {
                 console.log(JSON.stringify(error));
-              }, () => {
-                this.data = this.data.filter(obj => obj.id !== item);
-                this.refreshForm();
-              }
+              }, () => {}
             );
           } 
           else{

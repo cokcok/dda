@@ -104,6 +104,7 @@ export class OdSvService {
         'qty_recive' : vdata.qty_recive,
         'od_recive_detail' : vdata.od_recive_detail,
         'product_id' : vdata.product_id,
+        'number_id' : vdata.number_id,
         'emp_id': this.configSv.emp_id,
         'type_sql': type
       }

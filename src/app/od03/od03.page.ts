@@ -35,6 +35,7 @@ export class Od03Page implements OnInit {
       od_qty:[this.item[0]['od_qty'] + ' ' + this.item[0]['od_unit'] ],
       od_unit:[this.item[0]['od_unit']],
       product_id:[this.item[0]['product_id']],
+      number_id:[this.item[0]['number_id']],
       product_name:[this.item[0]['product_name']],
       size:[this.item[0]['size']],
       highlight: [""],
@@ -89,7 +90,7 @@ export class Od03Page implements OnInit {
   }
 
   async submitForm(){
-    //console.log(this.ionicForm.value)
+    console.log(this.ionicForm.value)
     this.isSubmitted = true;
     if (!this.ionicForm.valid ) {
       console.log("Please provide all the required values!");

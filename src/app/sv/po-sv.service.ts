@@ -65,7 +65,7 @@ export class PoSvService {
         'po_customer': vdata.po_customer,
         'po_customer_tel': vdata.po_customer_tel,
         'mtd_member_id' :mid,
-        'po_green' : vdata.po_green,
+        'po_green' : vdata.po_green.id,
         'po_totalproduct' : vdata.po_totalproduct,
         'po_discount' : vdata.po_discount,
         'po_deposit' : vdata.po_deposit,
@@ -497,6 +497,25 @@ export class PoSvService {
       'type_sql': type
     }
     return this.http.post<FeedBack>(apiUrl, data, { headers: header });
+  }
+
+  getpo_excel(vdata:any): Observable<data> {
+    const header = { 'Content-Type': 'application/json' };
+    let apiUrl = this.configSv.ip + 'po_excel.php';
+    //console.log(vdata,vdata.typeserch_id.id);
+    let typeserch;
+    if(  typeof vdata.typeserch_id.id === 'undefined' ){
+      typeserch = 9;
+    }else{
+      typeserch = vdata.typeserch_id.id ;
+    }
+     let data = {
+      'typeserch': typeserch,
+      'serchtxt': vdata.txtserach,
+      'typeassign': vdata.typeassign,
+      'type_sql': 'read'
+    }
+    return this.http.post<data>(apiUrl, data, { headers: header });
   }
 
 }

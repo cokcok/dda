@@ -335,7 +335,9 @@
             <ion-label class="showlabelmain" position="floating">เลือกสินค้า</ion-label> 
            <ionic-selectable item-content itemValueField="id" itemTextField="name" [isMultiple]="true" [canSearch]="true" [items]="ports_productmain" (onChange)="portChange_Product($event,'product')">
             <ng-template ionicSelectableItemTemplate let-port="item" let-isPortSelected="isItemSelected">
-              <div [ngClass]="{'qtychk': inqtyerror(port.qty,port.qty_remain)}" >{{port.name}} remain: {{port.qty_remain}} qty: {{port.qty}}</div>
+              <!-- <div [ngClass]="{'qtychk': inqtyerror(port.qty,port.qty_remain)}" >{{port.name}} remain: {{port.qty_remain}} qty: {{port.qty}}</div> -->
+
+              <div [ngClass]="{'qtychkwaring': inqtywaring(port.qty,port.qty_remain),'qtychk':  inqtyerror(port.qty,port.qty_remain)}" >{{port.name}} remain: {{port.qty_remain}} qty: {{port.qty}}</div>
             </ng-template>
           </ionic-selectable>
           <span class="error" *ngIf="isSubmitted && tmpproduct.length===0">
@@ -350,7 +352,8 @@
             <ion-label class="showlabelmain" position="floating">เลือกสินค้า</ion-label> 
            <ionic-selectable item-content itemValueField="id" itemTextField="name" [isMultiple]="true" [canSearch]="true" [items]="ports_productmain" (onChange)="portChange_Product($event,'product')">
             <ng-template ionicSelectableItemTemplate let-port="item" let-isPortSelected="isItemSelected">
-              <div [ngClass]="{'qtychk': inqtyerror(port.qty,port.qty_remain)}" >{{port.name}} remain: {{port.qty_remain}} qty: {{port.qty}}</div>
+              <!-- <div [ngClass]="{'qtychk': inqtyerror(port.qty,port.qty_remain)}" >{{port.name}} remain: {{port.qty_remain}} qty: {{port.qty}}</div> -->
+              <div [ngClass]="{'qtychkwaring': inqtywaring(port.qty,port.qty_remain),'qtychk':  inqtyerror(port.qty,port.qty_remain)}" >{{port.name}} remain: {{port.qty_remain}} qty: {{port.qty}}</div>
             </ng-template>
           </ionic-selectable>
         
@@ -361,10 +364,12 @@
           <ion-label class="showlabelmain" position="floating">เลือกสินค้าตัวเลข</ion-label> 
          <ionic-selectable item-content itemValueField="id" itemTextField="name" [isMultiple]="true" [canSearch]="true" [items]="ports_productmain_number" (onChange)="portChange_Product($event,'number')">
           <ng-template ionicSelectableItemTemplate let-port="item" let-isPortSelected="isItemSelected">
-            <div [ngClass]="{'qtychk': inqtyerror(port.qty,port.qty_remain)}" >{{port.name}} remain: {{port.qty_remain}} qty: {{port.qty}}</div>
+            <div [ngClass]="{'qtychkwaring': inqtywaring(port.qty,port.qty_remain),'qtychk':  inqtyerror(port.qty,port.qty_remain)}" >{{port.name}} remain: {{port.qty_remain}} qty: {{port.qty}}</div>
+            
+
           </ng-template>
         </ionic-selectable>
-        </ion-item>
+        </ion-item> 
       </ion-col>
         <span class="error" *ngIf="isSubmitted && tmpproduct.length===0">
           กรุณาเลือก สินค้า

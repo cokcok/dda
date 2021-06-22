@@ -8,7 +8,9 @@ import { IonicSelectableComponent } from 'ionic-selectable';
 import * as moment_ from 'moment';
 import 'moment/locale/th';
 import {Po01Page} from '../po01/po01.page';
-
+import { utils, write, WorkBook } from 'xlsx';
+import * as XLSX from 'xlsx'; 
+import { saveAs } from 'file-saver';
 const moment = moment_;
 
 @Component({
@@ -25,6 +27,8 @@ export class Po02Page implements OnInit {
   postatuscolor1 = ['1','2','3','4'];
   postatuscolor2 = ['5','7','8']; 
   datePickerObj: any = {};
+  currentDate = new Date().toLocaleDateString();
+  currentTime = new Date().toLocaleTimeString();
   constructor( public configSv: ConfigService,private poSv: PoSvService,public formBuilder: FormBuilder,private modalCtrl:ModalController) { }
 
   ngOnInit() {
@@ -124,6 +128,7 @@ export class Po02Page implements OnInit {
          this.maxpadding = data["maxpadding"];
          this.maxdatalimit = data["limit"];
          this.data =  this.data.concat(data.data_detail.map((item) => Object.assign({}, item)));
+       
          if (infiniteScroll) {
            infiniteScroll.target.complete();
          }
@@ -181,5 +186,57 @@ export class Po02Page implements OnInit {
   ngOnDestroy(): void {
     this.sub.unsubscribe();
   }
+
+
+  get_dataexcel(){
+    this.sub = this.poSv
+    .getpo_excel(this.ionicForm.value)
+    .subscribe((data) => {
+      if (data !== null) {
+         //this.data =  data.data_detail.map((item) => Object.assign({}, item));
+         this.loadexcel( data.data_detail.map((item) => Object.assign({}, item)));
+       
+      }else{
+        this.maxpadding = 0;this.maxdatalimit=0;
+        this.data = [];
+      }
+    });
+
+  }
+  loadexcel(data) {
+
+    if (data.length === 0) {
+      this.configSv.ChkformAlert('ไม่พบข้อมูล');
+      return false;
+    }
+
+    const ws_name = 'sheetname';
+    const wb: WorkBook = { SheetNames: [], Sheets: {} };
+    //const ws: any = utils.json_to_sheet(this.table);
+    const ws: any = utils.json_to_sheet(data);
+    wb.SheetNames.push(ws_name);
+    wb.Sheets[ws_name] = ws;
+    const wbout = write(wb, {
+      bookType: 'xlsx', bookSST: true, type:
+        'binary'
+    });
+
+
+    function s2ab(s) {
+      const buf = new ArrayBuffer(s.length);
+      const view = new Uint8Array(buf);
+      for (let i = 0; i !== s.length; ++i) {
+        view[i] = s.charCodeAt(i) & 0xFF;
+      };
+      return buf;
+    }
+
+    saveAs(new Blob([s2ab(wbout)], { type: 'application/octet-stream' }), 'po' + this.currentDate + ' ' + this.currentTime + '.xlsx');
+
+
+
+
+  }
+
   
 }

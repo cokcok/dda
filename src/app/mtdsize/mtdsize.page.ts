@@ -138,18 +138,19 @@ export class MtdsizePage implements OnInit {
             this.sub = this.mtdSv.crudmtdsize(item, 'cancel',data['cause']).subscribe(
               (data) => {
                 if(data.status == 'ok')
-                {   
+                {
                   this.configSv.ChkformAlert(data.message);
+                  this.data = this.data.filter(obj => obj.id !== item);
+                  this.refreshForm();
                 }
                 else
                 {
                   this.configSv.ChkformAlert(data.message);
-                }              
+                }
               }, (error) => {
                 console.log(JSON.stringify(error));
               }, () => {
-                this.data = this.data.filter(obj => obj.id !== item);
-                this.refreshForm();
+               
               }
             );
           } 

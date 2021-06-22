@@ -13,7 +13,7 @@
       <ion-button (click)="refreshForm()">
         <ion-icon slot="icon-only" src="./assets/icons/refresh.svg"></ion-icon>
       </ion-button>
-    </ion-buttons>
+    </ion-buttons> 
     <ion-buttons slot="primary"  *ngIf="id !== undefined && mode !== 'view' && editdata.includes(odstatus)">
       <ion-button (click)="cancelData()">
         <ion-icon slot="icon-only" name="trash"></ion-icon>
@@ -176,7 +176,7 @@
           <ion-col> 
             <ion-item>
             <ion-label class="showlabelmain" position="floating">เลือกสินค้า</ion-label>
-           <ionic-selectable item-content itemValueField="id" itemTextField="product_name" [isMultiple]="true" [canSearch]="true" [items]="ports_productmain" (onChange)="portChange_Product($event)">
+           <ionic-selectable item-content itemValueField="id" itemTextField="product_name" [isMultiple]="true" [canSearch]="true" [items]="ports_productmain" (onChange)="portChange_Product($event,'product')">
             <ng-template ionicSelectableItemTemplate let-port="item" let-isPortSelected="isItemSelected">
               <div [ngClass]="{'qtychk': inqtyerror(port.qty,port.qty_remain)}" >{{port.product_name}} / {{port.size}} จำนวนคงเหลือ {{port.qty}} </div>
             </ng-template>
@@ -186,14 +186,26 @@
           </span>
           </ion-item>
         </ion-col>
+        <ion-col> 
+          <ion-item>
+          <ion-label class="showlabelmain" position="floating">เลือกสินค้าตัวเลข</ion-label> 
+         <ionic-selectable item-content itemValueField="id" itemTextField="name" [isMultiple]="true" [canSearch]="true" [items]="ports_productmain_number" (onChange)="portChange_Product($event,'number')">
+          <ng-template ionicSelectableItemTemplate let-port="item" let-isPortSelected="isItemSelected">
+            <div [ngClass]="{'qtychkwaring': inqtywaring(port.qty,port.qty_remain),'qtychk':  inqtyerror(port.qty,port.qty_remain)}" >{{port.product_name}} / {{port.size}} จำนวนคงเหลือ {{port.qty}}</div>
+            
+
+          </ng-template>
+        </ionic-selectable>
+        </ion-item> 
+      </ion-col>
         </ion-row>
         <div *ngIf="tmpproduct.length>0">
           <ion-row  class="table1_header" >
             <ion-col size="0.5">#</ion-col>
             <ion-col size="2">สินค้า</ion-col>
             <ion-col size="1">ขนาด</ion-col>
-            <ion-col size="2">จำนวน</ion-col>
-            <ion-col size="1">หน่วย</ion-col>
+            <ion-col size="2">จำนวน/ชิ้น</ion-col>
+            <!-- <ion-col size="1">หน่วย</ion-col> -->
             <ion-col size="2">ราคา</ion-col>
             <ion-col size="3">ราคารวม</ion-col>
           </ion-row>
@@ -204,16 +216,16 @@
             <ion-col size="2">
               <ion-input  class="showborder" type="number"  [(ngModel)]="od_qty[c.id]" [ngModelOptions]="{standalone: true}" (keyup)="Caltotal(c.id,od_qty[c.id],'qty')" ></ion-input> 
             </ion-col>
-            <ion-col size="1"> 
+            <!-- <ion-col size="1"> 
               <ion-input  class="showborder" type="text"  [(ngModel)]="od_unit[c.id]" [ngModelOptions]="{standalone: true}" (change)="Commentunit(c.id,od_unit[c.id])"></ion-input> 
-            </ion-col>
+            </ion-col> -->
             <ion-col size="2"> 
                 <ion-input  class="showborder" type="number"  [(ngModel)]="od_price[c.id]" [ngModelOptions]="{standalone: true}" (keyup)="Caltotal(c.id,od_price[c.id],'price')"></ion-input> 
             </ion-col>
             <ion-col size="2.5"> 
               {{c.od_total|number}}
             </ion-col>
-            <ion-col size="1">
+            <ion-col size="2">
               <ion-button *ngIf="mode !== 'view' && editdata.includes(odstatus)" (click)="Deltmpproduct(c.id,c.id)">
                 <ion-icon slot="icon-only" class="iconSize" name="trash"></ion-icon>
               </ion-button>
@@ -228,12 +240,12 @@
                 สินค้าลำดับที่ {{i+1}} ไม่ได้ระบุจำนวน/ราคา
                </span>
             </ion-col>
-            <ion-col *ngIf="isSubmitted && !od_unit[c.id] ">
+            <!-- <ion-col *ngIf="isSubmitted && !od_unit[c.id] ">
               <span class="error" >
                 สินค้าลำดับที่ {{i+1}} ไม่ได้ระบุหน่วย
                </span>
-            </ion-col>
-            <ion-col>
+            </ion-col> -->
+            <ion-col *ngIf="odstatus !== undefined">
               <span class="error" >
                สินค้าลำดับที่ {{i+1}} รับสินค้าเป็นจำนวน  {{c.qty_recive|number}} {{c.od_unit}}
               </span>

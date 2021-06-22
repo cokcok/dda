@@ -647,8 +647,8 @@ export class Fix01Page implements OnInit {
              this.alltotalproduct = data.data_detail[0]['fx_totalproduct'];
              this.alltotal = data.data_detail[0]['fx_total'];
              this.tmpproduct.forEach((item,index) => {
-               this.discount[index] = item['discount'];
-               this.commentproduct[index] = item['commentproduct'];
+               this.discount[item['id']] = item['discount'];
+               this.commentproduct[item['id']] = item['commentproduct'];
                item['picresizbase64List'].forEach(element => {
                  this.indexpic = element['indexpic'];
                });
