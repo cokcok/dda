@@ -220,7 +220,11 @@ const routes: Routes = [
   {
     path: 'po04',
     loadChildren: () => import('./po04/po04.module').then( m => m.Po04PageModule)
+  },  {
+    path: 'po05',
+    loadChildren: () => import('./po05/po05.module').then( m => m.Po05PageModule)
   }
+
 ];
 
 @NgModule({

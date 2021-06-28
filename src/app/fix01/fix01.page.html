@@ -344,8 +344,11 @@
                 <input type="file"  (change)="fileUpload_img($event)" id="file-input" accept="image/x-png,image/jpeg" style="position:absolute; top: -999999px" #fileIngimg> 
               <ion-button (click)="onClick_fileUpload(c.id)">
                 <ion-icon slot="icon-only" class="iconSize" name="images"></ion-icon>
+              </ion-button> 
+              <ion-button *ngIf="c.cut_number === 'true'" (click)="Addnumber(i+1,c.id,'fix')">
+                <ion-icon slot="icon-only" class="iconSize" name="add"></ion-icon>
               </ion-button>
-              <ion-button *ngIf="c.cut_number === 'true'" (click)="Addnumber(i+1,c.id)">
+              <ion-button *ngIf="c.cut_product === 'true'" (click)="Addnumber(i+1,c.id,'fixproduct')">
                 <ion-icon slot="icon-only" class="iconSize" name="add"></ion-icon>
               </ion-button>
               <ion-button (click)="Deltmpproduct(c.id,c.id)">
@@ -378,6 +381,22 @@
                 <ion-col  size="auto">ด้านหลังสี {{c.numbervalue.color_back}}</ion-col>
               </ion-row>
             </div>
+            </ion-col>
+            <ion-col size="12" *ngIf="c.productetc !== null">
+              <div>
+                <ion-row>
+                  <ion-text color="primary">
+                   สินค้าอื่นๆ ของลำดับที่ {{i+1}}
+                  </ion-text>
+                </ion-row>
+              <ion-row *ngFor="let cc of c.productetc.tmpproductetc;let ii = index;">
+                <ion-col size="1"> {{ii+1}}</ion-col> 
+                <ion-col size="2"> {{cc.name}}</ion-col>
+                <ion-col size="2"> {{cc.discount}}</ion-col>
+                <ion-col size="2"> {{cc.total}}</ion-col> 
+                <ion-col size="3"> {{cc.commentproduct}}</ion-col>
+              </ion-row>
+              </div>
             </ion-col>
             <ion-col size="12" *ngIf="c.picresizbase64List.length > 0">
               <div>

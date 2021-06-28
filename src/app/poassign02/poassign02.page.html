@@ -19,7 +19,7 @@
     <ion-searchbar placeholder="ค้นหา..." [(ngModel)]="filterTerm" animated="true"></ion-searchbar>
     <ion-card *ngFor="let c of data  | filter:filterTerm;index as i">
       <ion-item>
-        <ion-checkbox color="dark" (click)="selectData(i,data[i],c.checked)" [(ngModel)]="c.checked" slot="start"></ion-checkbox>
+        <ion-checkbox color="dark" (click)="selectData(i,data[i],c.checked)" [(ngModel)]="c.checked"  slot="start"  [disabled]="c.disable_checked"></ion-checkbox>
         <ion-row>
           <ion-col>
             <ion-label [ngClass]="(c.assign_type== 0)?'showlabelheader':'postatus_ok'">{{ c.po_running }}</ion-label>
@@ -79,6 +79,14 @@
               <ion-label> 
                 <u class="showlabelheader">สถานะ :</u> 
                 <span   [ngClass]="{'postatus_alert': c.po_status==0,'status_ok1':postatuscolor1.includes(c.po_status),'status_ok0':postatuscolor2.includes(c.po_status),'postatus_ok': c.po_status==6 }" > {{ c.po_statustext }}</span>
+              </ion-label>  
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="c.flg !== null">
+            <ion-col>  
+              <ion-label> 
+                <u class="showlabelheader">หมายเหตุ :</u> 
+                <span   class="status_ok0" > {{ c.flg }}</span>
               </ion-label>  
             </ion-col>
           </ion-row>

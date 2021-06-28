@@ -29,7 +29,7 @@
         </ion-button>
       </ion-col>
     </ion-row>
-    <ion-row class="content_alert" *ngIf="ionicForm.controls['typeserch_id'].value !== '9'">
+    <ion-row class="content_alert" *ngIf="ionicForm.controls['typeserch_id'].value !== '9'"> 
       <ion-col>
         พบข้อมูลที่ค้นหา จำนวน {{maxdatalimit}} ข้อมูล
       </ion-col>
@@ -56,9 +56,23 @@
     <ion-card *ngFor="let c of data  | filter:filterTerm;index as i">
       <ion-row>
         <ion-col>
+          <ion-item *ngIf="c.countid != c.countsus">
+            <ion-button fill="outline" color="secondary" (click)="Update_status(c.po_recivedate)">ประมวลสินค้าวัน {{c.po_recivedate}} ใหม่</ion-button>
+          </ion-item>
+         
+        </ion-col>
+        <ion-col>
           <ion-item>
-            <ion-checkbox color="dark" *ngIf="c.checksomedata === false" (click)="selectData(i,data[i],c.checkall)" [(ngModel)]="c.checkall" slot="start"></ion-checkbox>
-            <ion-checkbox color="tertiary" *ngIf="c.checksomedata === true" (click)="selectDatasome(i,data[i],c.checksomedata)"  [(ngModel)]="c.checksomedata" slot="start"></ion-checkbox>   
+            <ion-button fill="outline" color="warning" (click)="get_dataexcel(c.po_recivedate)">ออกรายงาน {{c.po_recivedate}} </ion-button>
+          </ion-item>
+         
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-checkbox color="dark" *ngIf="c.checksomedata === false" (click)="selectData(i,data[i],c.checkall)" [(ngModel)]="c.checkall" slot="start"   [disabled]="c.disable_checked"></ion-checkbox>
+            <ion-checkbox color="tertiary" *ngIf="c.checksomedata === true" (click)="selectDatasome(i,data[i],c.checksomedata)"  [(ngModel)]="c.checksomedata" slot="start"   [disabled]="c.disable_checked"></ion-checkbox>   
             <!-- (click)="selectDatasome(i,data[i],c.checksomedata)" -->
             <label class="showlabelheader">วันที่นัดรับ</label>&nbsp;&nbsp;&nbsp;&nbsp; <label>{{ c.po_recivedate }} </label>  
           </ion-item>
@@ -68,8 +82,18 @@
         <ion-col>
           <ion-item>
             <label class="showlabelheader"> จำนวนรายการทั้งหมด</label>&nbsp;&nbsp;&nbsp;&nbsp; <label>{{ c.countid }}</label> <label class="showlabelheader">&nbsp;&nbsp;&nbsp;&nbsp;รายการ</label>
-            <ion-button fill="outline" slot="end" color="success" (click)="View(c.po_recivedate)">ดูรายละเอียดวันที่นัดรับ {{c.po_recivedate}}</ion-button>
           </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <label class="showlabel"> รายการที่มอบหมายได้</label>&nbsp;&nbsp;&nbsp;&nbsp; <label>{{ c.countsus }}</label> <label class="showlabel">&nbsp;&nbsp;&nbsp;&nbsp;รายการ</label>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-button fill="outline" color="success" (click)="View(c.po_recivedate)">ดูรายละเอียดวันที่นัดรับ {{c.po_recivedate}}</ion-button>
+          </ion-item>
+         
         </ion-col>
       </ion-row>
     </ion-card>

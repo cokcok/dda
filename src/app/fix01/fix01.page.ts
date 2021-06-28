@@ -8,7 +8,7 @@ import {FxSvService} from '../sv/fx-sv.service';
 import {PoSvService} from '../sv/po-sv.service';
 import * as moment_ from 'moment';
 import 'moment/locale/th';
-const moment = moment_;
+const moment = moment_; 
 import { IonicSelectableComponent } from 'ionic-selectable';
 import {PlaceSvService} from '../sv/place-sv.service';
 import {Po01numberPage} from '../po01number/po01number.page';
@@ -284,11 +284,13 @@ export class Fix01Page implements OnInit {
       commentproduct: '',
       picresizbase64List: [],
       numbervalue: null,
+      productetc: null,
       fix_cupon: value.fix_cupon ,
 			fix_green: value.fix_green ,
 			fix_install: value.fix_install,
 			cut_number: value.cut_number,
 			cut_green: value.cut_green,
+      cut_product: value.cut_product,
     });
   });
     //console.log(this.tmpproduct);
@@ -354,7 +356,7 @@ export class Fix01Page implements OnInit {
             // create a new base64 encoding
             var resampledImage = new Image();
             resampledImage.src = canvas.toDataURL();
-
+ 
             pic.push({
               tmpproductid : item[0].id,
               indexpic : self.indexpic,
@@ -395,13 +397,13 @@ export class Fix01Page implements OnInit {
     //console.log(item);
   }
 
-  async Addnumber(index,id :number){
+  async Addnumber(index,id :number,mode){
     let item = this.tmpproduct.filter((val) => val.id == id);
    //console.log(item);  
     const modal = await this.modalCtrl.create({
       component:Po01numberPage,
       cssClass: 'my-modal',
-      componentProps:{index:index,id:id,mode:'fix'}
+      componentProps:{index:index,id:id,mode:mode}
     });
     await modal.present();
     const {data,role} = await modal.onWillDismiss();

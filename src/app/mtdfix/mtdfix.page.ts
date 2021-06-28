@@ -26,6 +26,7 @@ export class MtdfixPage implements OnInit {
       fix_install :[false],
       cut_number :[false],
       cut_green : [false],
+      cut_product : [false],
       highlight: [""],
     });
     this.loaddata(0);
@@ -68,6 +69,7 @@ export class MtdfixPage implements OnInit {
                 fix_green: this.ionicForm.controls.fix_green.value,
                 cut_number: this.ionicForm.controls.cut_number.value,
                 cut_green: this.ionicForm.controls.cut_green.value,
+                cut_product: this.ionicForm.controls.cut_product.value,
                 highlight: true,
               });
             }else{

@@ -359,6 +359,7 @@ export class MtdSvService {
         'fix_install': vdata.fix_install,
         'cut_number': vdata.cut_number,
         'cut_green': vdata.cut_green,
+        'cut_product': vdata.cut_product,
         'emp_id': this.configSv.emp_id,
         'type_sql': type
       }

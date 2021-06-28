@@ -8,7 +8,7 @@ import { FeedBack } from '../models/feedback';
   providedIn: 'root'
 })
 export class FxSvService {
-
+ 
   constructor(private http: HttpClient, private configSv: ConfigService) { }
 
   crudfx(vdata: any, type: string, cause?): Observable<FeedBack> {

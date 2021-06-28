@@ -156,6 +156,7 @@ export class PoSvService {
         'datasome' : vdata.datasome,
         'total' : vdata.total,
         'emp_id': this.configSv.emp_id,
+        'po_recivedate' :vdata.po_recivedate,
         'type_sql': type
       }
     }

@@ -11,6 +11,7 @@ import {Po01Page} from '../po01/po01.page';
 import { utils, write, WorkBook } from 'xlsx';
 import * as XLSX from 'xlsx'; 
 import { saveAs } from 'file-saver';
+import {Po05Page} from '../po05/po05.page';
 const moment = moment_;
 
 @Component({
@@ -52,7 +53,7 @@ export class Po02Page implements OnInit {
         //console.log(data);
         this.maxpadding = data["maxpadding"];
         datalimit = data["limit"];
-        this.data =  this.data.concat(data.data_detail.map((item) => Object.assign({}, item)));   
+        this.data =  this.data.concat(data.data_detail.map((item) => Object. assign({}, item)));   
         //console.log( this.data);
         if (infiniteScroll) {
           infiniteScroll.target.complete();
@@ -179,7 +180,7 @@ export class Po02Page implements OnInit {
       }
     }else if(role === 'cancel'){
       item[0].po_statustext = data[0]['po_statustext']; 
-      item[0].po_status = 8; 
+      item[0].po_status = '8'; 
     }
   }
 
@@ -209,7 +210,7 @@ export class Po02Page implements OnInit {
       this.configSv.ChkformAlert('ไม่พบข้อมูล');
       return false;
     }
-
+    console.log(data);
     const ws_name = 'sheetname';
     const wb: WorkBook = { SheetNames: [], Sheets: {} };
     //const ws: any = utils.json_to_sheet(this.table);
@@ -237,6 +238,19 @@ export class Po02Page implements OnInit {
 
 
   }
+
+  async viewassign(id,po_running){
+    // console.log(id);
+     //let item = this.data.filter((val) => val.id == id);
+     //console.log(item);  
+     const modal = await this.modalCtrl.create({
+       component:Po05Page,
+       cssClass: 'my-modal',
+       componentProps:{id:id,po_running:po_running},
+     });
+     await modal.present();
+     const {data,role} = await modal.onWillDismiss();
+   }
 
   
 }

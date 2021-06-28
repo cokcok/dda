@@ -407,8 +407,18 @@ export class Po01Page implements OnInit {
    }
    //console.log(this.tmpproduct[this.tmpproduct.length-1]["id"],tmpindex);
    //let picresizbase64Array = Array;
+   let statusqty,statusqty_flg;
    if(type === 'product'){
     port.forEach((value, index) => {
+      let item = this.ports_productmain.filter((val) => val.id == value.id);
+     
+      if((item[0].qty - 1) >= 0){
+        statusqty = 0; statusqty_flg ='';
+        item[0].qty =  item[0].qty - 1;
+      }else{
+        statusqty =  1;
+        statusqty_flg = value.product_name +'/'+value.size + ' สินค้าขาด';
+      }
       this.tmpproduct.push({
         id: index+Number(tmpindex),
         name: value.product_name +'/'+value.size+ '/' +value.price,
@@ -422,10 +432,22 @@ export class Po01Page implements OnInit {
         picresizbase64List: [],
         numbervalue: null,
         productetc: null,
+        type:type,
+        statusqty:statusqty,
+        statusqty_flg:statusqty_flg,
       });
     });
    }else{
     port.forEach((value, index) => {
+      let item = this.ports_productmain_number.filter((val) => val.id == value.id);
+     
+      if((item[0].qty - 1) >= 0){
+        statusqty = 0; statusqty_flg ='';
+        item[0].qty =  item[0].qty - 1;
+      }else{
+        statusqty = 1;
+        statusqty_flg = value.product_name +'/'+value.size + ' สินค้าขาด';
+      }
       this.tmpproduct.push({
         id: index+Number(tmpindex),
         name: value.product_name +'/'+value.size+ '/' +value.price,
@@ -439,6 +461,9 @@ export class Po01Page implements OnInit {
         picresizbase64List: [],
         numbervalue: null,
         productetc: null,
+        type:type,
+        statusqty:statusqty,
+        statusqty_flg:statusqty_flg,
       });
     });
 
@@ -470,12 +495,23 @@ export class Po01Page implements OnInit {
    // item[0].total = Number(item[0].price) - Number(value);
   }
 
-  Deltmpproduct(id,index){
+  Deltmpproduct(id,index,type,product_id,number_id,statusqty){
     //console.log(id,index);
     this.discount[index] = null; this.commentproduct[index] = null
     this.tmpproduct = this.tmpproduct.filter(obj => obj.id !== id);
     this.tmpproductetc = this.tmpproductetc.filter(obj => obj.id !== id);
     this.cul_total();
+    console.log(statusqty);
+    if(statusqty == 0){
+      if(type === 'product'){
+        let item = this.ports_productmain.filter((val) => val.id == product_id);
+        item[0].qty =  Number(item[0].qty) + 1;
+      }else if(type === 'number'){
+        let item = this.ports_productmain_number.filter((val) => val.id == number_id);
+        item[0].qty =  Number(item[0].qty) + 1;
+      }
+    }
+  
     // this.alltotalproduct = this.tmpproduct.reduce((acc,current) => acc + Number(current.total), 0);
     // this.allDiscount = this.tmpproduct.reduce((acc,current) => acc + Number(current.discount), 0);
 
@@ -571,7 +607,7 @@ export class Po01Page implements OnInit {
     await modal.present();
     const {data,role} = await modal.onWillDismiss();
     //console.log(data,role);
-    if(role === 'comfirm'){
+    if(role === 'comfirm'){ 
       item[0].numbervalue = data;
     }else if(role === 'comfirm1'){
       item[0].productetc = data;
@@ -751,6 +787,7 @@ export class Po01Page implements OnInit {
   }
 
   async cancelData() {
+    //console.log(this.ionicForm.value);
     const confirm =  await this.alertCtrl.create({
       header: 'ยืนยันการลบข้อมูล',
       message: 'แน่ใจว่าต้องการลบใบสั่งซื้อที่ '+ this.po_running +' ? ',

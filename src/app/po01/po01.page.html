@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar> 
     <ion-buttons slot="start" *ngIf="id === undefined">
       <ion-menu-button  ></ion-menu-button>
     </ion-buttons>
@@ -335,9 +335,8 @@
             <ion-label class="showlabelmain" position="floating">เลือกสินค้า</ion-label> 
            <ionic-selectable item-content itemValueField="id" itemTextField="name" [isMultiple]="true" [canSearch]="true" [items]="ports_productmain" (onChange)="portChange_Product($event,'product')">
             <ng-template ionicSelectableItemTemplate let-port="item" let-isPortSelected="isItemSelected">
-              <!-- <div [ngClass]="{'qtychk': inqtyerror(port.qty,port.qty_remain)}" >{{port.name}} remain: {{port.qty_remain}} qty: {{port.qty}}</div> -->
-
-              <div [ngClass]="{'qtychkwaring': inqtywaring(port.qty,port.qty_remain),'qtychk':  inqtyerror(port.qty,port.qty_remain)}" >{{port.name}} remain: {{port.qty_remain}} qty: {{port.qty}}</div>
+              <div [ngClass]="{'qtychkwaring': inqtywaring(port.qty,port.qty_remain),'qtychk':  inqtyerror(port.qty,port.qty_remain)}" >{{port.name}} จำนวนคงเหลือ: {{port.qty}}</div>
+               <!-- remain: {{port.qty_remain}} -->
             </ng-template>
           </ionic-selectable>
           <span class="error" *ngIf="isSubmitted && tmpproduct.length===0">
@@ -353,7 +352,8 @@
            <ionic-selectable item-content itemValueField="id" itemTextField="name" [isMultiple]="true" [canSearch]="true" [items]="ports_productmain" (onChange)="portChange_Product($event,'product')">
             <ng-template ionicSelectableItemTemplate let-port="item" let-isPortSelected="isItemSelected">
               <!-- <div [ngClass]="{'qtychk': inqtyerror(port.qty,port.qty_remain)}" >{{port.name}} remain: {{port.qty_remain}} qty: {{port.qty}}</div> -->
-              <div [ngClass]="{'qtychkwaring': inqtywaring(port.qty,port.qty_remain),'qtychk':  inqtyerror(port.qty,port.qty_remain)}" >{{port.name}} remain: {{port.qty_remain}} qty: {{port.qty}}</div>
+              <div [ngClass]="{'qtychkwaring': inqtywaring(port.qty,port.qty_remain),'qtychk':  inqtyerror(port.qty,port.qty_remain)}" >{{port.name}}  จำนวนคงเหลือ: {{port.qty}}</div>  
+              <!-- remain: {{port.qty_remain}} -->
             </ng-template>
           </ionic-selectable>
         
@@ -364,7 +364,7 @@
           <ion-label class="showlabelmain" position="floating">เลือกสินค้าตัวเลข</ion-label> 
          <ionic-selectable item-content itemValueField="id" itemTextField="name" [isMultiple]="true" [canSearch]="true" [items]="ports_productmain_number" (onChange)="portChange_Product($event,'number')">
           <ng-template ionicSelectableItemTemplate let-port="item" let-isPortSelected="isItemSelected">
-            <div [ngClass]="{'qtychkwaring': inqtywaring(port.qty,port.qty_remain),'qtychk':  inqtyerror(port.qty,port.qty_remain)}" >{{port.name}} remain: {{port.qty_remain}} qty: {{port.qty}}</div>
+            <div [ngClass]="{'qtychkwaring': inqtywaring(port.qty,port.qty_remain),'qtychk':  inqtyerror(port.qty,port.qty_remain)}" >{{port.name}} จำนวนคงเหลือ : {{port.qty}}</div>
             
 
           </ng-template>
@@ -403,7 +403,7 @@
               <ion-button *ngIf="this.ionicForm.controls.po_green.value.id === 0" (click)="Addnumber(i+1,c.id)">
                 <ion-icon slot="icon-only" class="iconSize" name="add"></ion-icon>
               </ion-button>
-              <ion-button (click)="Deltmpproduct(c.id,c.id)">
+              <ion-button (click)="Deltmpproduct(c.id,c.id,c.type,c.product_id,c.number_id,c.statusqty)">
                 <ion-icon slot="icon-only" class="iconSize" name="trash"></ion-icon>
               </ion-button>
               </div>

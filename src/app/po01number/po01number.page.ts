@@ -20,11 +20,12 @@ export class Po01numberPage implements OnInit {
   portControl_back: FormControl; ports_back: any;portscategoryid:any;
   portControl_productmain: FormControl; ports_productmain: any;
   tmpproduct =[];;discount = []; commentproduct = [];
+  fix = ['fix','fixproduct'];
   constructor(private modalCtrl:ModalController,private navCtrl: NavController,public formBuilder: FormBuilder,public configSv: ConfigService,public mtdSv: MtdSvService,private alertCtrl: AlertController,private poSv: PoSvService) { }
 
 
   ngOnInit() {
-    this.loaddata_typeserch();this.loaddata_product();
+    this.loaddata_typeserch();
     this.portControl_front = this.formBuilder.control("", Validators.required);
     this.portControl_back = this.formBuilder.control("", Validators.required);
     this.ionicForm = this.formBuilder.group({
@@ -42,6 +43,14 @@ export class Po01numberPage implements OnInit {
       etctotalall:[""],
     });
 
+    if(this.mode !== 'fixproduct'){
+      this.loaddata_product(1);
+    }else{
+      this.loaddata_product(null);
+    }
+    
+
+
   }
 
   loaddata_typeserch(){
@@ -52,14 +61,16 @@ export class Po01numberPage implements OnInit {
     ];
     if(this.mode === 'fix'){
       this.portscategoryid = '0';
+    }else if(this.mode === 'fixproduct'){
+      this.portscategoryid = '1';
     }
 
   }
 
-  loaddata_product() {
+  loaddata_product(_value) {
     let datalimit;
     this.sub = this.poSv
-      .getproduct('readproduct',1)
+      .getproduct('readproduct',_value)
       .subscribe((data) => {
         if (data !== null) {
           this.ports_productmain = data.data_detail.map((item) => Object.assign({}, item));
@@ -130,7 +141,7 @@ export class Po01numberPage implements OnInit {
     this.cul_total();
 
   }
-
+ 
   public cul_total(){
     this.ionicForm1.controls['etctotaldiscount'].setValue(this.tmpproduct.reduce((acc,current) => acc + Number(current.discount), 0));
     this.ionicForm1.controls['etctotalall'].setValue(this.tmpproduct.reduce((acc,current) => acc + Number(current.total), 0));
@@ -182,7 +193,7 @@ export class Po01numberPage implements OnInit {
 
 
   submitForm(){
-    //console.log(this.ionicForm.value)
+    
     //let data = ['aaa','dddd','ccc'];
     //this.modalCtrl.dismiss(data);
     if(this.portscategoryid === '0'){
@@ -196,6 +207,7 @@ export class Po01numberPage implements OnInit {
     }else{
       //console.log('abc');
       this.ionicForm1.controls['tmpproductetc'].setValue(this.tmpproduct);
+      console.log(this.ionicForm1.value);
       if (!this.ionicForm1.valid) {
         console.log("Please provide all the required values!");
         return false;
