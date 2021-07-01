@@ -8,7 +8,9 @@ import { IonicSelectableComponent } from 'ionic-selectable';
 import * as moment_ from 'moment';
 import 'moment/locale/th';
 import {Fix01Page} from '../fix01/fix01.page';
-
+import { utils, write, WorkBook } from 'xlsx';
+import * as XLSX from 'xlsx'; 
+import { saveAs } from 'file-saver';
 
 const moment = moment_;
 
@@ -22,8 +24,12 @@ export class Fix02Page implements OnInit {
   data = []; page = 0;maxpadding:number;limit = 50;
   sub: Subscription; maxdatalimit=0;filterTerm: string;
   portControl: FormControl; portssearch: any;typeserch:number = 9;
-  myarraytxt = [9,2,3]; myarraytxtdate = [0,1];
+  myarraytxt = [9,2,3,5]; myarraytxtdate = [0,1];
+  postatuscolor1 = ['1','2','3','4'];
+  postatuscolor2 = ['5','7','8']; 
   datePickerObj: any = {};
+  currentDate = new Date().toLocaleDateString();
+  currentTime = new Date().toLocaleTimeString();
   constructor(public configSv: ConfigService,private fxSv: FxSvService,public formBuilder: FormBuilder,private modalCtrl:ModalController) { }
 
   ngOnInit() {
@@ -42,6 +48,7 @@ export class Fix02Page implements OnInit {
       {id: 1,typeserch: 'วันที่รับ'},
       {id: 2,typeserch: 'ชื่อวิน'},
       {id: 3,typeserch: 'ชื่อลูกค้า'},
+      {id: 5,typeserch: 'เลขที่ใบเปลี่ยน'},
     ];
     //console.log(this.ports);
   }
@@ -88,7 +95,7 @@ export class Fix02Page implements OnInit {
     this.sub = this.fxSv
     .getfx(this.ionicForm.value,padding,this.limit)
     .subscribe((data) => {
-      console.log(data);
+      //console.log(data);
       if (data !== null) {
        
         this.maxpadding = data["maxpadding"];
@@ -176,5 +183,55 @@ export class Fix02Page implements OnInit {
        item[0].po_status = 8; 
      }
    }
+
+
+   get_dataexcel(){
+    this.sub = this.fxSv
+    .getfx_excel(this.ionicForm.value)
+    .subscribe((data) => {
+      if (data !== null) {
+         this.loadexcel( data.data_detail.map((item) => Object.assign({}, item)));
+       
+      }else{
+        this.maxpadding = 0;this.maxdatalimit=0;
+        this.data = [];
+      }
+    });
+
+  }
+  loadexcel(data) {
+
+    if (data.length === 0) {
+      this.configSv.ChkformAlert('ไม่พบข้อมูล');
+      return false;
+    }
+    console.log(data);
+    const ws_name = 'sheetname';
+    const wb: WorkBook = { SheetNames: [], Sheets: {} };
+    //const ws: any = utils.json_to_sheet(this.table);
+    const ws: any = utils.json_to_sheet(data);
+    wb.SheetNames.push(ws_name);
+    wb.Sheets[ws_name] = ws;
+    const wbout = write(wb, {
+      bookType: 'xlsx', bookSST: true, type:
+        'binary'
+    });
+
+
+    function s2ab(s) {
+      const buf = new ArrayBuffer(s.length);
+      const view = new Uint8Array(buf);
+      for (let i = 0; i !== s.length; ++i) {
+        view[i] = s.charCodeAt(i) & 0xFF;
+      };
+      return buf;
+    }
+
+    saveAs(new Blob([s2ab(wbout)], { type: 'application/octet-stream' }), 'po' + this.currentDate + ' ' + this.currentTime + '.xlsx');
+
+
+
+
+  }
 
 }

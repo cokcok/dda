@@ -97,17 +97,27 @@ export class Po01numberPage implements OnInit {
    }else{
     tmpindex = this.tmpproduct[this.tmpproduct.length-1]["id"] + 1;
    }
+   let v_price, v_total;
+  
   
    port.forEach((value, index) => {
+    if(this.mode === 'fixproduct')
+    {
+      v_price = 0;v_total=0;
+    }
+    else
+    {
+      v_price = value.price;v_total=value.price;
+    }
     this.tmpproduct.push({
       id: index+tmpindex,
       name: value.product_name +'/'+value.size+ '/' +value.price,
       product_id: value.id,
       product_name: value.product_name,
       size: value.size,
-      price: value.price,
+      price: v_price,
       discount:'0',
-      total: value.price,
+      total: v_total,
       commentproduct: '',
     });
   });
@@ -193,7 +203,6 @@ export class Po01numberPage implements OnInit {
 
 
   submitForm(){
-    
     //let data = ['aaa','dddd','ccc'];
     //this.modalCtrl.dismiss(data);
     if(this.portscategoryid === '0'){
@@ -207,17 +216,14 @@ export class Po01numberPage implements OnInit {
     }else{
       //console.log('abc');
       this.ionicForm1.controls['tmpproductetc'].setValue(this.tmpproduct);
-      console.log(this.ionicForm1.value);
+      //console.log(this.ionicForm1.value);
       if (!this.ionicForm1.valid) {
         console.log("Please provide all the required values!");
         return false;
       } else {
         this.modalCtrl.dismiss(this.ionicForm1.value,'comfirm1');
       }
-
     }
-   
-
   }
 
 }

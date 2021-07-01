@@ -90,4 +90,24 @@ export class FxSvService {
     }
     return this.http.post<data>(apiUrl, data, { headers: header });
   }
+
+  getfx_excel(vdata:any): Observable<data> {
+    const header = { 'Content-Type': 'application/json' };
+    let apiUrl = this.configSv.ip + 'po_excel.php';
+    //console.log(vdata,vdata.typeserch_id.id);
+    let typeserch;
+    if(  typeof vdata.typeserch_id.id === 'undefined' ){
+      typeserch = 9;
+    }else{
+      typeserch = vdata.typeserch_id.id ;
+    }
+     let data = {
+      'typeserch': typeserch,
+      'serchtxt': vdata.txtserach,
+      'typeassign': vdata.typeassign,
+      'type_sql': 'readfix'
+    }
+    return this.http.post<data>(apiUrl, data, { headers: header });
+  }
+
 }
