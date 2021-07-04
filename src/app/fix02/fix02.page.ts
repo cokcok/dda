@@ -180,7 +180,7 @@ export class Fix02Page implements OnInit {
        }
      }else if(role === 'cancel'){
        item[0].po_statustext = data[0]['po_statustext']; 
-       item[0].po_status = 8; 
+       item[0].po_status ='8'; 
      }
    }
 
@@ -205,7 +205,7 @@ export class Fix02Page implements OnInit {
       this.configSv.ChkformAlert('ไม่พบข้อมูล');
       return false;
     }
-    console.log(data);
+    //console.log(data);
     const ws_name = 'sheetname';
     const wb: WorkBook = { SheetNames: [], Sheets: {} };
     //const ws: any = utils.json_to_sheet(this.table);

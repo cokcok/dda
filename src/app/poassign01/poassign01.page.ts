@@ -179,7 +179,7 @@ export class Poassign01Page implements OnInit {
     this.ionicForm.controls['dataall'].setValue(this.dataallarray);
     this.ionicForm.controls['datasome'].setValue(this.datasomearray);
     let total = 0;
-    total = this.dataallarray.reduce((acc,current) => acc + Number(current.countid), 0) + this.datasomearray.reduce((acc,current) => acc + Number(current.qty), 0);
+    total = this.dataallarray.reduce((acc,current) => acc + Number(current.countsus), 0) + this.datasomearray.reduce((acc,current) => acc + Number(current.qty), 0);
     //console.log(total);
     this.ionicForm.controls['total'].setValue(total);
     //console.log(this.ionicForm.value);
@@ -228,7 +228,7 @@ export class Poassign01Page implements OnInit {
     //console.log(data);
 
     this.sub = this.poSv
-    .getpo_excel(data1)
+    .getpo_excel(data1,'readassign')
     .subscribe((data) => {
       if (data !== null) {
          this.loadexcel( data.data_detail.map((item) => Object.assign({}, item)));

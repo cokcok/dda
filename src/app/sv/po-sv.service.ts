@@ -500,7 +500,7 @@ export class PoSvService {
     return this.http.post<FeedBack>(apiUrl, data, { headers: header });
   }
 
-  getpo_excel(vdata:any): Observable<data> {
+  getpo_excel(vdata:any,type): Observable<data> {
     const header = { 'Content-Type': 'application/json' };
     let apiUrl = this.configSv.ip + 'po_excel.php';
     //console.log(vdata,vdata.typeserch_id.id);
@@ -514,7 +514,7 @@ export class PoSvService {
       'typeserch': typeserch,
       'serchtxt': vdata.txtserach,
       'typeassign': vdata.typeassign,
-      'type_sql': 'read'
+      'type_sql': type
     }
     return this.http.post<data>(apiUrl, data, { headers: header });
   }

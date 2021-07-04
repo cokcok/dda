@@ -191,7 +191,7 @@ export class Po02Page implements OnInit {
 
   get_dataexcel(){
     this.sub = this.poSv
-    .getpo_excel(this.ionicForm.value)
+    .getpo_excel(this.ionicForm.value,'read')
     .subscribe((data) => {
       if (data !== null) {
          //this.data =  data.data_detail.map((item) => Object.assign({}, item));
@@ -210,7 +210,7 @@ export class Po02Page implements OnInit {
       this.configSv.ChkformAlert('ไม่พบข้อมูล');
       return false;
     }
-    console.log(data);
+    //console.log(data);
     const ws_name = 'sheetname';
     const wb: WorkBook = { SheetNames: [], Sheets: {} };
     //const ws: any = utils.json_to_sheet(this.table);
