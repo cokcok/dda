@@ -18,13 +18,13 @@ const moment = moment_;
   styleUrls: ['./potf04.page.scss'],
 })
 export class Potf04Page implements OnInit {
-  @Input() recivedate:string;
+  @Input() recivedate:string;  @Input() view:string;
   ionicForm: FormGroup;isSubmitted = false; 
   data = []; page = 0;maxpadding:number;limit = 50;
   sub: Subscription; maxdatalimit=0;filterTerm: string;
   countcf=0;counterr=0;
-  postatuscolor1 = ['1','2','3','4'];
-  postatuscolor2 = ['5','7','8'];
+  postatuscolor1 = ['1','2','4'];
+  postatuscolor2 = ['5','7','8','3'];
   constructor(public formBuilder: FormBuilder,
     public configSv: ConfigService,private alertCtrl: AlertController,private poSv: PoSvService,private modalCtrl:ModalController,private iab: InAppBrowser) { }
 
@@ -48,10 +48,10 @@ export class Potf04Page implements OnInit {
     let datalimit;
     //console.log(padding,this.data);
     this.sub = this.poSv
-    .getpotf_cfwin('view',this.ionicForm.value,padding)
+    .getpotf_cfwin(this.view,this.ionicForm.value,padding)
     .subscribe((data) => {
       if (data !== null) {
-        console.log(data.data_detail);
+        //console.log(data.data_detail);
         this.data =  data.data_detail.map((item) => Object.assign({}, item));   
       }else{
         this.maxpadding = 0;
@@ -95,7 +95,7 @@ export class Potf04Page implements OnInit {
       await modal.present();
       const {data,role} = await modal.onWillDismiss();
       if(role === 'confirm'){ 
-        //console.log(data);
+        //console.log(data); 
         item[0].po_status = data[0]['po_status'];
         item[0].po_statustext = data[0]['po_statustext'];
         if(data[0]['po_status'] == 6){

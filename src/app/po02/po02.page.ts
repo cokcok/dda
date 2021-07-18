@@ -27,6 +27,7 @@ export class Po02Page implements OnInit {
   myarraytxt = [9,2,3,5]; myarraytxtdate = [0,1];
   postatuscolor1 = ['1','2','3','4'];
   postatuscolor2 = ['5','7','8']; 
+   
   datePickerObj: any = {};
   currentDate = new Date().toLocaleDateString();
   currentTime = new Date().toLocaleTimeString();
@@ -161,7 +162,7 @@ export class Po02Page implements OnInit {
     const modal = await this.modalCtrl.create({
       component:Po01Page,
       cssClass: 'my-modal',
-      componentProps:{id:id,po_running:po_running},
+      componentProps:{id:id,po_running:po_running,tmppostatus:item[0].po_status},
     });
     await modal.present();
     const {data,role} = await modal.onWillDismiss();

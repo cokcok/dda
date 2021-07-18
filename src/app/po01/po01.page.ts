@@ -6,7 +6,7 @@ import { Subscription } from "rxjs";
 import { MtdSvService} from '../sv/mtd-sv.service';
 import {PoSvService} from '../sv/po-sv.service';
 import * as moment_ from 'moment';
-import 'moment/locale/th'; 
+import 'moment/locale/th';  
 const moment = moment_;
 import { IonicSelectableComponent } from 'ionic-selectable';
 import {PlaceSvService} from '../sv/place-sv.service';
@@ -18,9 +18,9 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
   selector: 'app-po01',
   templateUrl: './po01.page.html',
   styleUrls: ['./po01.page.scss'],
-})
+}) 
 export class Po01Page implements OnInit {
-  @Input() id:number;@Input() po_running:string;@Input() mode:string;@Input() modepayment:string;assign_type:number;
+  @Input() id:number;@Input() po_running:string;@Input() mode:string;@Input() modepayment:string;assign_type:number;@Input() tmppostatus:string;
   @ViewChild('fileIngimg') fileIngimg: ElementRef;
   @ViewChild('fileIngimg1') fileIngimg1: ElementRef;
   ionicForm: FormGroup;isSubmitted = false;  ionicFormPayment: FormGroup;
@@ -39,16 +39,19 @@ export class Po01Page implements OnInit {
   allDiscount = 0;alltotalproduct=0;po_shipping_price=0;alltotal=0;
   myDate = new Date().toISOString();
   datePickerObj: any = {};
+  group_id:any;
+  privilege_payment = ['1','4','9']; 
+  privilege_saveedit = [undefined,'0','1']; 
 
   constructor(private navCtrl: NavController,public formBuilder: FormBuilder,
     public configSv: ConfigService,public mtdSv: MtdSvService,
     private alertCtrl: AlertController,private poSv: PoSvService,public placeSv:PlaceSvService,private modalCtrl:ModalController,private iab: InAppBrowser) { 
       //this.folder = this.activatedRoute.snapshot.paramMap.get('id');
-      //console.log(this.id);
+      this.group_id = this.configSv.group_id;
     }
 
   ngOnInit() {
-    
+   
     this.portControl_sale = this.formBuilder.control("", Validators.required);
     this.portControl_area = this.formBuilder.control("", Validators.required);
     this.portControl_shipping = this.formBuilder.control("", Validators.required);
@@ -919,7 +922,7 @@ export class Po01Page implements OnInit {
 
   async submitForm_Payment() {
     this.ionicFormPayment.controls['tmpproduct'].setValue(this.ionicForm.controls['oldtmpproduct'].value);
-    console.log(this.ionicFormPayment.value)
+    //console.log(this.ionicFormPayment.value)
     this.isSubmitted = true;
     if (!this.ionicFormPayment.valid ) {
       console.log("Please provide all the required values!");
@@ -938,13 +941,13 @@ export class Po01Page implements OnInit {
         text: 'ตกลง',
           handler: (data: any) => {
              this.sub = this.poSv.crudtf_cfwin(this.ionicFormPayment.value,'insert').subscribe(
-              (data) => {
+              (data) => { 
                 if(data.status == 'ok')
                 {   
                   this.configSv.ChkformAlert(data.message);
                   let dataarray = []; 
                   dataarray.push({
-                    po_status: data.id,
+                    po_status: String(data.id),
                     po_statustext: data._value,
                   });
                   this.modalCtrl.dismiss(dataarray,'confirm');

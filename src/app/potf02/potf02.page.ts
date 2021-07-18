@@ -5,7 +5,7 @@ import { ConfigService } from "../sv/config.service";
 import { Subscription } from "rxjs";
 import { PoSvService } from '../sv/po-sv.service';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
-
+import { IonicSelectableComponent } from 'ionic-selectable';
 import * as moment_ from 'moment';
 import 'moment/locale/th';
 const moment = moment_;
@@ -21,7 +21,8 @@ export class Potf02Page implements OnInit {
   data = []; page = 0;maxpadding:number;limit = 50;
   sub: Subscription; maxdatalimit=0;filterTerm: string;
   dataallarray = []; checkallstatus:boolean = false;data_check=[];checkall:boolean;
-  array_status = ['0','2','9']; countassign=0;
+  array_status = ['0','2','9','null']; countassign=0;
+  ports_sale: any;
   constructor(public formBuilder: FormBuilder,
     public configSv: ConfigService,private alertCtrl: AlertController,private poSv: PoSvService,private modalCtrl:ModalController,private iab: InAppBrowser) { }
 
@@ -30,7 +31,7 @@ export class Potf02Page implements OnInit {
       po_recivedate: [this.recivedate],
       dataall:[],
     }); 
-    this.loaddata(0);
+    this.loaddata(0);this.loaddata_sale(0);
   }
 
   dismissModal(){
@@ -45,7 +46,7 @@ export class Potf02Page implements OnInit {
     .getpotf('view',this.ionicForm.value,padding)
     .subscribe((data) => {
       if (data !== null) {
-        //console.log(data.data_detail);
+        console.log(data.data_detail);
         this.data =  data.data_detail.map((item) => Object.assign({}, item));   
       }else{
         this.maxpadding = 0;
@@ -92,6 +93,20 @@ export class Potf02Page implements OnInit {
    async submitForm(){
     this.ionicForm.controls['dataall'].setValue(this.dataallarray);
     console.log(this.ionicForm.value);
+
+    this.isSubmitted = true;
+
+    let foundempnull = this.dataallarray.find(function (value){
+      if(value.tf_empid === '0'){
+        return true;
+      }
+    });
+
+    if (!this.ionicForm.valid || foundempnull) {
+      console.log("Please provide all the required values!");
+      return false;
+    }
+
     const confirm =  await this.alertCtrl.create({
       header: 'ยืนยันข้อมูลในมอบหมายการส่งสินค้า',
       //message: 'แน่ใจว่าต้องการลบเลขระบบที่ '+ item +' ? ',
@@ -116,7 +131,7 @@ export class Potf02Page implements OnInit {
                   this.dataallarray = [];
                   this.checkallstatus = false;this.checkall =false;
                 }
-                console.log(this.countassign);
+                //console.log(this.countassign);
             }
           },
           (error) => {
@@ -134,8 +149,35 @@ export class Potf02Page implements OnInit {
            if(array1Ttem.assign_id == array2Item.assign_id){
               array1Ttem.disable_checked  = true;
               array1Ttem.status_checked  = true;
+              array1Ttem.transfer_txt  = 'อยู่ระหว่างส่งสินค้า';
+              array1Ttem.transfer_flag  = '1';
+              //array1Ttem.tf_empname  = array2Item.tf_empname;
           }
         });
       });
   }
+
+  loaddata_sale(padding: number, infiniteScroll?) {
+    this.sub = this.poSv
+      .getusertf(0,padding)
+      .subscribe((data) => {
+        if (data !== null) {
+         this.ports_sale = data.data_detail.map((item) => Object.assign({}, item));
+         // let item = this.ports_sale.filter((val) => val.id == this.configSv.emp_id)[0];
+         // this.portControl_sale.setValue(item);
+        }
+      });
+  }
+
+  portChangeEmptf(event: {
+    component: IonicSelectableComponent,
+    value: any
+  },data) {
+    let port = event.value;
+    console.log(port);
+    data.tf_empid = port['id'];
+    data.tf_empname = port['prefix_name'] + ' ' +  port['name'] + ' ' +  port['surname'];
+    //console.log(data.tf_empid);
+  }
+
 }

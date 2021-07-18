@@ -149,8 +149,8 @@ export class Potf01Page implements OnInit {
     if(role === 'confirm'){
       //console.log(data);
       if( data > 0){ 
-        item[0].countjustsend = item[0].countjustsend - Number(data);
-        item[0].countgoingsend = data;
+        item[0].countjustsend = Number(item[0].countjustsend) - Number(data);
+        item[0].countgoingsend = Number(item[0].countgoingsend) + Number(data);
       }
      }
   }
@@ -179,7 +179,7 @@ export class Potf01Page implements OnInit {
            //console.log('cancel ',data);
         }
       },
-      {
+      { 
         text: 'ตกลง',
           handler: (data: any) => {
             

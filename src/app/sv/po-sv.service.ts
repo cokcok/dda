@@ -96,13 +96,15 @@ export class PoSvService {
     }else{
       typeserch = vdata.typeserch_id.id ;
     }
-     let data = {
+     let data = { 
       'padding': padding,
       'limit': limit,
       'typeserch': typeserch,
       'serchtxt': vdata.txtserach,
       'typeassign': vdata.typeassign,
-      'type_sql': 'readpo'
+      'type_sql': 'readpo',
+      'sysgroupid':  this.configSv.group_id,
+      'emp_id': this.configSv.emp_id,
     }
     return this.http.post<data>(apiUrl, data, { headers: header });
   }
@@ -367,7 +369,7 @@ export class PoSvService {
   }
 
   getpotf_cfwin(type,vdata:any,padding: number, limit: number = 9999999999): Observable<data> {
-    console.log(vdata);
+    //console.log(vdata);
     const header = { 'Content-Type': 'application/json' };
     let apiUrl = this.configSv.ip + 'tf_cfwin.php';
     let data;
@@ -384,6 +386,34 @@ export class PoSvService {
         'typeserch': vdata.typeserch_id,
         'serchtxt': vdata.txtserach,
         'po_recivedate' : vdata.po_recivedate,
+        'emp_id': this.configSv.emp_id,
+        'type_sql': type,
+      }
+    }
+   
+    return this.http.post<data>(apiUrl, data, { headers: header });
+  }
+
+
+  getpotf_cfwinper(type,vdata:any,padding: number, limit: number = 9999999999): Observable<data> {
+    //console.log(vdata);
+    const header = { 'Content-Type': 'application/json' };
+    let apiUrl = this.configSv.ip + 'tf_cfwinper.php';
+    let data;
+    if(type === 'viewpayment'){
+      data = {
+        'poid': vdata.poid,
+        'assign_type':vdata.assign_type,
+        'type_sql': type,
+      }
+    }else{
+      data = {
+        'padding': padding,
+        'limit': limit,
+        'typeserch': vdata.typeserch_id,
+        'serchtxt': vdata.txtserach,
+        'po_recivedate' : vdata.po_recivedate,
+        'emp_id': this.configSv.emp_id,
         'type_sql': type,
       }
     }
@@ -515,6 +545,22 @@ export class PoSvService {
       'serchtxt': vdata.txtserach,
       'typeassign': vdata.typeassign,
       'type_sql': type
+    }
+    return this.http.post<data>(apiUrl, data, { headers: header });
+  }
+  
+
+  getusertf(page:number,padding: number, limit: number = 9999999999,condition?): Observable<data> {
+    const header = { 'Content-Type': 'application/json' };
+    let apiUrl = this.configSv.ip + 'mtd01.php';
+    // if(page === 'mtd01'){
+    //    apiUrl = this.configSv.ip + 'mtd01.php';
+    // }
+     let data = {
+      'padding': padding,
+      'limit': limit,
+      'condition':condition,
+      'type_sql': 'readusertf'
     }
     return this.http.post<data>(apiUrl, data, { headers: header });
   }

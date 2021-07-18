@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>งานส่งสินค้า ตามวิน ทั้งหมด</ion-title>
+    <ion-title>งานส่งสินค้าตามวิน รายบุคคล</ion-title>
   </ion-toolbar>
 </ion-header>
 <form [formGroup]="ionicForm" novalidate>
@@ -51,7 +51,7 @@
           <ion-item>
             <label class="postatus_alert"> รอส่ง </label>&nbsp;&nbsp;&nbsp;&nbsp; <label>{{ c.countid }}</label> &nbsp;&nbsp;&nbsp;&nbsp; <label class="postatus_alert"> รายการ </label>
           </ion-item>
-        </ion-col>
+        </ion-col> 
         <ion-col>
           <ion-item>
             <label class="showlabel"> ส่งสำเร็จ</label>&nbsp;&nbsp;&nbsp;&nbsp; <label>{{ c.countsus }}</label>&nbsp;&nbsp;&nbsp;&nbsp;  <label class="showlabel">รายการ</label>

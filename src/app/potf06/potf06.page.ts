@@ -11,11 +11,11 @@ import {Potf04Page} from '../potf04/potf04.page';
 const moment = moment_;
 
 @Component({
-  selector: 'app-potf03',
-  templateUrl: './potf03.page.html',
-  styleUrls: ['./potf03.page.scss'],
+  selector: 'app-potf06',
+  templateUrl: './potf06.page.html',
+  styleUrls: ['./potf06.page.scss'],
 })
-export class Potf03Page implements OnInit {
+export class Potf06Page implements OnInit {
   ionicForm: FormGroup;isSubmitted = false; 
   data = []; page = 0;maxpadding:number;limit = 50;
   sub: Subscription; maxdatalimit=0;filterTerm: string;
@@ -30,7 +30,7 @@ export class Potf03Page implements OnInit {
     }); 
     this.fndate();this.loaddata(0);
   }
-
+ 
   get errorControl() {
     return this.ionicForm.controls;
   }
@@ -61,12 +61,12 @@ export class Potf03Page implements OnInit {
       }
     };
   }
- 
+
   loaddata(padding: number, infiniteScroll?){
     if(padding == 0){this.data = []};
     this.ionicForm.controls['typeserch_id'].setValue(9);
     this.sub = this.poSv
-    .getpotf_cfwin('read',this.ionicForm.value,padding)
+    .getpotf_cfwinper('read',this.ionicForm.value,padding)
     .subscribe((data) => {
       if (data !== null) {
         //console.log(data.data_detail);
@@ -86,7 +86,7 @@ export class Potf03Page implements OnInit {
     const modal = await this.modalCtrl.create({
       component:Potf04Page,
       cssClass: 'my-modal',
-      componentProps:{recivedate:recivedate,view:'view'},
+      componentProps:{recivedate:recivedate,view:'viewper'},
     });
     await modal.present();
     const {data,role} = await modal.onWillDismiss();
@@ -118,4 +118,5 @@ export class Potf03Page implements OnInit {
       }
     });
   }
+
 }

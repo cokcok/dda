@@ -21,7 +21,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
   styleUrls: ['./fix01.page.scss'],
 })
 export class Fix01Page implements OnInit {
-  @Input() id:number;@Input() po_running:string;@Input() mode:string;@Input() modepayment:string;assign_type:number;
+  @Input() id:number;@Input() po_running:string;@Input() mode:string;@Input() modepayment:string;assign_type:number;@Input() tmppostatus:string;
   @ViewChild('fileIngimg') fileIngimg: ElementRef;
   @ViewChild('fileIngimg1') fileIngimg1: ElementRef;
   ionicForm: FormGroup;isSubmitted = false;  ionicFormPayment: FormGroup;
@@ -39,9 +39,14 @@ export class Fix01Page implements OnInit {
   allDiscount = 0;alltotalproduct=0;po_shipping_price=0;alltotal=0;
   myDate = new Date().toISOString();
   datePickerObj: any = {};
+  privilege_payment = ['1','4','9']; 
+  privilege_saveedit = [undefined,'0','1']; 
+  group_id:any;
   constructor(private navCtrl: NavController,public formBuilder: FormBuilder,
     public configSv: ConfigService,public mtdSv: MtdSvService,
-    private alertCtrl: AlertController,private fxSv: FxSvService,public placeSv:PlaceSvService,private modalCtrl:ModalController,private iab: InAppBrowser,private poSv: PoSvService) { }
+    private alertCtrl: AlertController,private fxSv: FxSvService,public placeSv:PlaceSvService,private modalCtrl:ModalController,private iab: InAppBrowser,private poSv: PoSvService) { 
+      this.group_id = this.configSv.group_id;
+    }
 
   ngOnInit() {
     this.portControl_sale = this.formBuilder.control("", Validators.required);

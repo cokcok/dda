@@ -1,6 +1,6 @@
 {
-  "name": "DDA",
-  "short_name": "DDA",
+  "name": "ระบบจัดการ วินดวงดี",
+  "short_name": "ระบบจัดการ วินดวงดี",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",
@@ -36,7 +36,7 @@
       "src": "assets/icons/icon-152x152.png",
       "sizes": "152x152",
       "type": "image/png",
-      "purpose": "maskable any"
+      "purpose": "maskable any" 
     },
     {
       "src": "assets/icons/icon-192x192.png",

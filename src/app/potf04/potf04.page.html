@@ -67,7 +67,7 @@
             <ion-col  size="auto"><u class="showlabel">เลขเสื้อเบอร์:</u> {{cc.podetail_number}}</ion-col>
             <ion-col  size="auto"><u class="showlabel">สี:</u> {{cc.color_front}}/{{cc.color_back}}</ion-col>
           </ion-row>
-          <ion-row>
+          <ion-row> 
             <ion-col> 
               <!-- <ion-label> <u class="showlabel">สถานะ :</u> <span  [ngClass]="(c.po_status != 6)?'postatus_alert':'postatus_ok'" > {{ c.po_statustext }}</span></ion-label>  -->
 
@@ -75,6 +75,10 @@
                 <u class="showlabel">สถานะ :</u> 
                 <span   [ngClass]="{'postatus_alert': c.po_status==0,'status_ok1':postatuscolor1.includes(c.po_status),'status_ok0':postatuscolor2.includes(c.po_status),'postatus_ok': c.po_status==6 }" > {{ c.po_statustext }}</span>
               </ion-label> 
+            </ion-col>
+            <ion-col>
+              <ion-label> <u class="showlabel">ผู้ส่ง :</u> 
+                {{ c.tf_empname }}</ion-label>
             </ion-col>
           </ion-row>
         </ion-grid>

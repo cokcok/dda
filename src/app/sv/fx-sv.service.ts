@@ -75,7 +75,9 @@ export class FxSvService {
       'limit': limit,
       'typeserch': typeserch,
       'serchtxt': vdata.txtserach,
-      'type_sql': 'readpo'
+      'type_sql': 'readpo',
+      'sysgroupid':  this.configSv.group_id,
+      'emp_id': this.configSv.emp_id,
     }
     return this.http.post<data>(apiUrl, data, { headers: header });
   }

@@ -159,7 +159,7 @@ export class Fix02Page implements OnInit {
      const modal = await this.modalCtrl.create({
        component:Fix01Page,
        cssClass: 'my-modal',
-       componentProps:{id:id,po_running:po_running},
+       componentProps:{id:id,po_running:po_running,tmppostatus: item[0].po_status},
      });
      await modal.present();
      const {data,role} = await modal.onWillDismiss();
