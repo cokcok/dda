@@ -16,14 +16,14 @@
       <form [formGroup]="ionicForm"  (ngSubmit)="submitForm()" novalidate >
         <ion-item lines="full" class="un">
           <ion-label class="showlabel"  position="floating">Username</ion-label>
-          <ion-input  formControlName="name" type="text" ></ion-input>
+          <ion-input  formControlName="name" type="text"  (keyup.enter)="submitForm()" ></ion-input>
           <span class="error" *ngIf="isSubmitted && errorControl.name.errors?.required">
             กรุณาระบุ Username
           </span>
         </ion-item>       
         <ion-item lines="full" class="pass">
           <ion-label class="showlabel"  position="floating">Password</ion-label>
-          <ion-input  formControlName="password" type="password"  ></ion-input>
+          <ion-input  formControlName="password" type="password"  (keyup.enter)="submitForm()" ></ion-input>
           <span  class="error" *ngIf="isSubmitted && errorControl.password.errors?.required">
             กรุณาระบุ Password
           </span>

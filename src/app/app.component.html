@@ -24,7 +24,7 @@
             <ion-menu-toggle auto-hide="false" *ngIf="p.url" >
               <ion-item   [routerLink]="[p.url]" routerDirection="root" routerLinkActive='active' lines="none"  >
                 <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"
-                  [src]="'../assets/icons/' + p.svg + '.svg'"></ion-icon>
+                  [src]="'./assets/icons/' + p.svg + '.svg'"></ion-icon>
                 <ion-label>{{ p.title }}</ion-label>
               </ion-item>
             </ion-menu-toggle>

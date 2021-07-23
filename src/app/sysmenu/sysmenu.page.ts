@@ -25,7 +25,8 @@ export class SysmenuPage implements OnInit {
       title: ['', [Validators.required]],
       url: [''],
       svg: [''],
-      seq: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
+      //seq: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
+      seq: ['', [Validators.required, Validators.pattern('^-?[0-9]\\d*(\\.\\d{1,2})?$')]],
       submenu: [''],
       group_name:['', [Validators.required]],
       highlight: ['']

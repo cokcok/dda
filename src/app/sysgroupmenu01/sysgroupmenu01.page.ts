@@ -25,7 +25,7 @@ export class Sysgroupmenu01Page implements OnInit {
     private alertCtrl: AlertController) {
     this.activatedRoute.queryParams.subscribe((res) => {
       let item = JSON.parse(res.value)
-      console.log(item);
+      //console.log(item);
       this.group_id = item[0]['id'];
       this.group_name = item[0]['group_name'];
       // console.log(res['xxx']);

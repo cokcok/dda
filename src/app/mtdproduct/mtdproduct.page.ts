@@ -43,7 +43,7 @@ export class MtdproductPage implements OnInit {
   get errorControl() {
     return this.ionicForm.controls;
   }
-
+ 
   loaddata_producttype(padding: number,  infiniteScroll?) {
     this.sub = this.mtdSv.getmtd(2,padding).subscribe((data) => {
       if (data !== null) {

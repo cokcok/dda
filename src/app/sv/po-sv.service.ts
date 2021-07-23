@@ -529,7 +529,7 @@ export class PoSvService {
     }
     return this.http.post<FeedBack>(apiUrl, data, { headers: header });
   }
-
+ 
   getpo_excel(vdata:any,type): Observable<data> {
     const header = { 'Content-Type': 'application/json' };
     let apiUrl = this.configSv.ip + 'po_excel.php';
@@ -561,6 +561,29 @@ export class PoSvService {
       'limit': limit,
       'condition':condition,
       'type_sql': 'readusertf'
+    }
+    return this.http.post<data>(apiUrl, data, { headers: header });
+  }
+
+  searchpo(vdata:any,padding: number, limit: number = 9999999999): Observable<data> {
+    const header = { 'Content-Type': 'application/json' };
+    let apiUrl = this.configSv.ip + 'searchproduct.php';
+    //console.log(vdata,vdata.typeserch_id.id);
+    // let typeserch;
+    // if(  typeof vdata.typeserch_id.id === 'undefined' ){
+    //   typeserch = 9;
+    // }else{
+    //   typeserch = vdata.typeserch_id.id ;
+    // }
+     let data = { 
+      'padding': padding,
+      'limit': limit,
+      'typeserch': vdata.typeserch_id.id,
+      'serchtxt': vdata.txtserach,
+      'typeassign': vdata.typeassign,
+      'type_sql': 'read',
+      'sysgroupid':  this.configSv.group_id,
+      'emp_id': this.configSv.emp_id,
     }
     return this.http.post<data>(apiUrl, data, { headers: header });
   }

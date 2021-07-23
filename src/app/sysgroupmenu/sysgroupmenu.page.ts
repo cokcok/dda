@@ -26,7 +26,7 @@ export class SysgroupmenuPage implements OnInit {
   loaddata(padding: number, infiniteScroll?) {
     let datalimit;
     this.sub = this.sysmenuSv
-      .getsysgroup(padding, this.limit)
+      .getsysgroupAll(padding, this.limit)
       .subscribe((data) => {
         if (data !== null) {
           //console.log(data.data_detail);

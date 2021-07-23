@@ -108,6 +108,18 @@ export class SysmenuSvService {
     return this.http.post<data>(apiUrl, data, { headers: header });
   }
 
+  getsysgroupAll(padding: number, limit: number = 9999999999): Observable<data> {
+    const header = { 'Content-Type': 'application/json' };
+    const apiUrl = this.configSv.ip + 'sysgroup.php';
+    let data;
+    data = {
+      'padding': padding,
+      'limit': limit,
+      'type_sql': 'readall'
+    }
+    return this.http.post<data>(apiUrl, data, { headers: header });
+  }
+
   crudsysgroup(vdata: any, type: string, cause?): Observable<FeedBack> {
     const header = { 'Content-Type': 'application/json' };
     const apiUrl = this.configSv.ip + 'sysgroup.php';

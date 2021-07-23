@@ -5,8 +5,8 @@ const routes: Routes = [
   {
     path: '',
     //redirectTo: 'folder/Inbox',
-   // redirectTo: 'potf01',
-   redirectTo: 'signin',
+    //redirectTo: 'search01',
+    redirectTo: 'signin',
     pathMatch: 'full'
   },
   {
@@ -228,7 +228,12 @@ const routes: Routes = [
   {
     path: 'potf06',
     loadChildren: () => import('./potf06/potf06.module').then( m => m.Potf06PageModule)
+  },
+  {
+    path: 'search01',
+    loadChildren: () => import('./search01/search01.module').then( m => m.Search01PageModule)
   }
+
 
 ];
 
