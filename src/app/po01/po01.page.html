@@ -343,6 +343,14 @@
             กรุณาเลือก สินค้า
           </span>
           </ion-item>
+          <ion-item>
+            <ion-label text-wrap>
+              <ion-col> 
+                <ion-icon name="radio-button-on-outline" class="qtychkwaring"></ion-icon> = สินค้าเหลืออยู่ต่ำกว่าที่กำหนดใน Stock</ion-col>
+              <ion-col> <ion-icon name="radio-button-on-outline"  color="danger"></ion-icon> = สินค้าไม่เหลือใน Stock
+              </ion-col>
+            </ion-label>
+          </ion-item>
         </ion-col>
         </ion-row >
         <ion-row *ngIf="this.ionicForm.controls.po_green.value.id === 1">
@@ -356,21 +364,26 @@
               <!-- remain: {{port.qty_remain}} -->
             </ng-template>
           </ionic-selectable>
-        
           </ion-item>
         </ion-col>
         <ion-col> 
           <ion-item>
-          <ion-label class="showlabelmain" position="floating">เลือกสินค้าตัวเลข</ion-label> 
+          <ion-label class="showlabelmain" position="floating">เลือกสินค้าตัวเลข </ion-label> 
          <ionic-selectable item-content itemValueField="id" itemTextField="name" [isMultiple]="true" [canSearch]="true" [items]="ports_productmain_number" (onChange)="portChange_Product($event,'number')">
           <ng-template ionicSelectableItemTemplate let-port="item" let-isPortSelected="isItemSelected">
             <div [ngClass]="{'qtychkwaring': inqtywaring(port.qty,port.qty_remain),'qtychk':  inqtyerror(port.qty,port.qty_remain)}" >{{port.name}} จำนวนคงเหลือ : {{port.qty}}</div>
-            
-
           </ng-template>
         </ionic-selectable>
         </ion-item> 
       </ion-col>
+      <ion-item>
+        <ion-label text-wrap>
+          <ion-col> 
+            <ion-icon name="radio-button-on-outline" class="qtychkwaring"></ion-icon> = สินค้าเหลืออยู่ต่ำกว่าที่กำหนดใน Stock</ion-col>
+          <ion-col> <ion-icon name="radio-button-on-outline"  color="danger"></ion-icon> = สินค้าไม่เหลือใน Stock
+          </ion-col>
+        </ion-label>
+      </ion-item>
         <span class="error" *ngIf="isSubmitted && tmpproduct.length===0">
           กรุณาเลือก สินค้า
         </span>
