@@ -67,6 +67,7 @@ export class MtdproducttypePage implements OnInit {
                 id: data.id,
                 product_type: this.ionicForm.controls.product_type.value,
                 product_type_desc: this.ionicForm.controls.product_type_desc.value,
+                category_id : this.ionicForm.controls.category_id.value.id,
                 highlight: true,
               });
             }

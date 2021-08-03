@@ -134,8 +134,14 @@ export class Po03Page implements OnInit {
     ];
   }
 
+  public inqtywaring(qty: number,qty_remain:number): boolean{
+    if (Number(qty) < Number(qty_remain) && Number(qty) !== 0){
+      return true;
+    }
+  }
+ 
   public inqtyerror(qty: number,qty_remain:number): boolean{
-    if (Number(qty) < Number(qty_remain)){
+    if (Number(qty) === 0){
       return true;
     }
   }

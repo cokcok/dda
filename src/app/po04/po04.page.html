@@ -1,5 +1,8 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button  ></ion-menu-button>
+    </ion-buttons>
     <ion-title>จัดการใบสั่งซื้อ โตโยต้า</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -104,7 +107,7 @@
                 <span   [ngClass]="{'postatus_alert': c.to_status==0,'status_ok1':c.to_status==1,'status_ok0': c.to_status==2 }" > {{ c.to_statustext }}</span>
               </ion-label> 
             </ion-col>
-          </ion-row>
+          </ion-row> 
         </ion-grid>
       </ion-item>
     </ion-card>

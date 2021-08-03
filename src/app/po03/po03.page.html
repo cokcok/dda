@@ -2,7 +2,7 @@
   <ion-toolbar> 
     <ion-buttons slot="start" *ngIf="id === undefined">
       <ion-menu-button  ></ion-menu-button>
-    </ion-buttons>
+    </ion-buttons> 
     <ion-buttons slot="start"  *ngIf="id !== undefined">
       <ion-button (click)="dismissModal()">
         <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
@@ -204,9 +204,18 @@
               <ion-label class="showlabelmain" position="floating">เลือกสินค้า</ion-label> 
              <ionic-selectable item-content itemValueField="id" itemTextField="name" [isMultiple]="true" [canSearch]="true" [items]="ports_productmain" (onChange)="portChange_Product($event)">
               <ng-template ionicSelectableItemTemplate let-port="item" let-isPortSelected="isItemSelected">
-                <div [ngClass]="{'qtychk': inqtyerror(port.qty,port.qty_remain)}" >{{port.name}} remain: {{port.qty_remain}} qty: {{port.qty}}</div>
-              </ng-template>
+                <!-- <div [ngClass]="{'qtychk': inqtyerror(port.qty,port.qty_remain)}" >{{port.name}} remain: {{port.qty_remain}} qty: {{port.qty}}</div> -->
+                <div [ngClass]="{'qtychkwaring': inqtywaring(port.qty,port.qty_remain),'qtychk':  inqtyerror(port.qty,port.qty_remain)}" >{{port.name}} จำนวนคงเหลือ : {{port.qty}}</div>
+              </ng-template> 
             </ionic-selectable>
+            <ion-item>
+              <ion-label text-wrap>
+                <ion-col> 
+                  <ion-icon name="radio-button-on-outline" class="qtychkwaring"></ion-icon> = สินค้าเหลืออยู่ต่ำกว่าที่กำหนดใน Stock</ion-col>
+                <ion-col> <ion-icon name="radio-button-on-outline"  color="danger"></ion-icon> = สินค้าไม่เหลือใน Stock
+                </ion-col>
+              </ion-label>
+            </ion-item>
             <span class="error" *ngIf="isSubmitted && tmpproduct.length===0">
               กรุณาเลือก สินค้า
             </span>
