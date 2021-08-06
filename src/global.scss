@@ -92,21 +92,24 @@
        height: 100% !important;
      } 
    }
+}
 
 .postatus_alert{
-    color: #ff0000 !important;
+    color: #ff0000 !important ;
+    -webkit-text-fill-color: #ff0000;
 }
 
 .postatus_ok{
     color: #6140f3 !important;
+    -webkit-text-fill-color: #6140f3;
 }
 
 .status_ok1{
     color: #17f122 !important;
+    -webkit-text-fill-color: #17f122;
 }
 
 .status_ok0{
     color: #ee8a19 !important;
-}
-
+    -webkit-text-fill-color: #ee8a19;
 }
