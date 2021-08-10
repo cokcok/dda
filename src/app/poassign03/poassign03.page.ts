@@ -50,6 +50,7 @@ export class Poassign03Page implements OnInit {
     });
     this.fndate(); this.loaddata(0);
     //console.log(this.currentDate,this.currentTime);
+    //this.xx();
   }
 
   get errorControl() {
@@ -127,7 +128,8 @@ export class Poassign03Page implements OnInit {
   DownloadPdf(vdata) {
     //console.log(vdata);
     var docDefinition = {
-      pageOrientation: 'landscape',
+      pageSize: 'A4',
+      //pageOrientation: 'landscape',
       pageMargins: [ 10,30,10,10 ],
       header: {
         margin: 10,
@@ -307,7 +309,8 @@ export class Poassign03Page implements OnInit {
     });
     //console.log(vdata,items);
     var docDefinition = {
-      pageOrientation: 'landscape',
+      pageSize: 'A4',
+      //pageOrientation: 'landscape',
       pageMargins: [ 10,30,10,10 ],
       header: {
         margin: 10,
@@ -322,24 +325,26 @@ export class Poassign03Page implements OnInit {
           , { text: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString(), alignment: 'right' }
         ]
       },
-      //  content: [
-      //     this.getDataObjectGreen(vdata),
-      //     console.log(this.getDataObjectGreen(vdata))
-      // ],
-      content: [
-        {
-          style: 'tableExample',
-          table: {
-            widths: ['3%','20%','20%','5%','7%','*','7%'], //headerRows: 2,
-            headerRows: 2,
-            body: [
-              [{text: 'รายชื่อวิน-ส่งปัก ปักที่ร้าน', style: 'tableHeader', colSpan: 3, alignment: 'center'},'','', { text: 'วันที่มอบหมายของวันที่ ' + assign_date +' ครั้งที่ ' + seq, style: 'tableHeader', colSpan: 4, alignment: 'center' }, '', '',''],
-              [{text: '#', style: 'tableHeader', alignment: 'center'}, {text: 'ชื่อวิน', style: 'tableHeader', alignment: 'center'}, {text: 'เขต', style: 'tableHeader', alignment: 'center'}, {text: 'จำนวนปัก', style: 'tableHeader', alignment: 'center'}, {text: 'วันนัดรับ', style: 'tableHeader', alignment: 'center'},{text: 'รายละเอียด', style: 'tableHeader', alignment: 'center'}, {text: 'ป้ายซ้ำ', style: 'tableHeader', alignment: 'center'}],
-            ].concat( items)// detail data
-          }
-
-        },
+       content: [
+          this.getDataObjectGreen(vdata,seq,assign_date),
+          //console.log(this.getDataObjectGreen(vdata))
       ],
+      // content: [
+      //   {
+      //     style: 'tableExample',
+      //     table: {
+      //       widths: ['1.5%','20%','17%','7%','9%','*','5%'], //headerRows: 2,
+      //       headerRows: 2,
+      //       body: [
+      //         [{text: 'รายชื่อวิน-ส่งปัก ปักที่ร้าน', style: 'tableHeader', colSpan: 3, alignment: 'center'},'','', { text: 'วันที่มอบหมายของวันที่ ' + assign_date +' ครั้งที่ ' + seq, style: 'tableHeader', colSpan: 4, alignment: 'center' }, '', '',''],
+      //         [{text: '#', style: 'tableHeader', alignment: 'center'}, {text: 'ชื่อวิน', style: 'tableHeader', alignment: 'center'}, {text: 'เขต', style: 'tableHeader', alignment: 'center'}, {text: 'จำนวนปัก', style: 'tableHeader', alignment: 'center'}, {text: 'วันนัดรับ', style: 'tableHeader', alignment: 'center'},{text: 'รายละเอียด', style: 'tableHeader', alignment: 'center'}, {text: 'ป้ายซ้ำ', style: 'tableHeader', alignment: 'center'}],
+      //       ].concat( items)// detail data
+      //     },
+      //     pageBreak: "after",
+          
+      //   },
+       
+      // ],
       defaultStyle: {
         font: 'THSarabunNew'
       }
@@ -373,39 +378,66 @@ export class Poassign03Page implements OnInit {
   }
 
 
-  getDataObjectGreen(vdata){
+  getDataObjectGreen(vdata,seq,assign_date){
     //console.log(vdata);
     const exs = [];
     exs.push(
-      [{text: 'รายชื่อวิน-ส่งปัก ปักที่ร้าน', style: 'tableHeader', colSpan: 4, alignment: 'center'}, '','','', { text: 'งานปัก xxxx', style: 'tableHeader', colSpan: 3, alignment: 'center' }, '',''],
-       [{text: '#', style: 'tableHeader', alignment: 'center'}, {text: 'วันสั่งซื้อ', style: 'tableHeader', alignment: 'center'}, {text: 'ชื่อวิน', style: 'tableHeader', alignment: 'center'}, {text: 'เขต', style: 'tableHeader', alignment: 'center'}, {text: 'จำนวน', style: 'tableHeader', alignment: 'center'}, {text: 'วันนัดรับ', style: 'tableHeader', alignment: 'center'}, {text: 'ป้ายซ้ำ', style: 'tableHeader', alignment: 'center'}]
+      [{text: 'รายชื่อวิน-ส่งปัก ปักที่ร้าน', style: 'tableHeader', colSpan: 3, alignment: 'center'},'','', { text: 'วันที่มอบหมายของวันที่ ' + assign_date +' ครั้งที่ ' + seq, style: 'tableHeader', colSpan: 4, alignment: 'center' }, '', '',''],
+      [{text: '#', style: 'tableHeader', alignment: 'center'}, {text: 'ชื่อวิน', style: 'tableHeader', alignment: 'center'}, {text: 'เขต', style: 'tableHeader', alignment: 'center'}, {text: 'จำนวนปัก', style: 'tableHeader', alignment: 'center'}, {text: 'วันนัดรับ', style: 'tableHeader', alignment: 'center'},{text: 'รายละเอียด', style: 'tableHeader', alignment: 'center'}, {text: 'ป้ายซ้ำ', style: 'tableHeader', alignment: 'center'}],
     );
 
+    let po_recivedate = null;
+
     vdata.forEach((element, index) => {
-      exs.push(
-        [
-          { text: element['seq'] },
-          { text: element['po_date'] },
-          { text: element['po_namewin'] },
-          { text: element['area_name'] },
-          { text: element['countid'] },
-          { text: element['po_recivedate'] },
-          { text: ""},
-        ],
-        [
-          '',this.getdataDetail(element['detail']),'','','','','',
-          //{ text: this.getdataDetail(element['detail']) },'','','','','','',
-        ]
-      )
+      if(element['pagebreak'] === 'false' ){
+        exs.push(
+          [
+            { text: element['seq'] },
+            { text: element['po_namewin'] },
+            { text: element['area_name'] },
+            { text: element['countid'], alignment: 'center' },
+            {  text:element['po_recivedate'] },
+            { text: element['detail'] },
+            { text: element['status_greendup'], alignment: 'center'},
+            //{ text: element['status_greendup'], alignment: 'center',pageBreak: "after"},
+            //{ pageBreak: "after" },
+          ],
+          // [
+          //   '',this.getdataDetail(element['detail']),'','','','','',
+          //   //{ text: this.getdataDetail(element['detail']) },'','','','','','',
+          // ]
+        )
+      }
+      else
+      {
+        exs.push(
+          [
+            { text: element['seq'] },
+            { text: element['po_namewin'] },
+            { text: element['area_name'] },
+            { text: element['countid'], alignment: 'center' },
+            {  text:element['po_recivedate'] },
+            { text: element['detail'] },
+            { text: element['status_greendup'], alignment: 'center',pageBreak: "after"},
+          ],
+        )
+      }
+      po_recivedate = element['po_recivedate'];
     });
     return {
+
       table: {
-        widths: ['*','*','*','*','*','*','*'],
+        widths: ['1.5%','20%','17%','7%','9%','*','5%'],
+        headerRows: 2,
+       // dontBreakRows: true,
+       // keepWithHeaderRows: true, 
+       // unbreakable: true,
         body: [
           ...exs
         ],
      
       }
+
     };
   }
 
@@ -426,5 +458,8 @@ export class Poassign03Page implements OnInit {
       }
     };
   }
+  
+
+
   
 }

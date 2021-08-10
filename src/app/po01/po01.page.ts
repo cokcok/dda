@@ -729,7 +729,7 @@ export class Po01Page implements OnInit {
 
 
   refreshForm() {
-    this.ionicForm.reset({po_date:moment().format("DD/MM/YYYY")});
+    this.ionicForm.reset({po_date:moment().format("DD/MM/YYYY"),po_deposit:0});
     let item = this.ports_sale.filter((val) => val.id == this.configSv.emp_id)[0];
     this.portControl_sale.setValue(item);
     this.isSubmitted = false;

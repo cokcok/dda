@@ -62,8 +62,16 @@
           </ion-button>
         </ion-col>
       </ion-row>
-      <ion-row *ngIf="ports_front.length>0">
-        <ion-col class="table1">
+      <ion-row *ngIf="ports_front.length>0" text-center>
+        <span class="error" *ngIf="isSubmitted && errorControl.mtd_numberfront_id.errors?.required">
+          กรุณาเลือก ตัวเลขด้านหน้า
+        </span>
+        <span class="error" *ngIf="isSubmitted && errorControl.mtd_numberback_id.errors?.required">
+          กรุณาเลือก ตัวเลขด้านหลัง
+        </span>
+        <tabset> 
+        <tab heading="ตัวเลขด้านหน้า" id="tab1">
+        <ion-col >
         <ion-list>
           <ion-radio-group (ionChange)="radioGroupChange_front($event)">
             <ion-list-header>
@@ -71,9 +79,7 @@
                 ตัวเลขด้านหน้า
               </ion-label>
             </ion-list-header>
-            <span class="error" *ngIf="isSubmitted && errorControl.mtd_numberfront_id.errors?.required">
-              กรุณาเลือก ตัวเลขด้านหน้า
-            </span>
+           
             <ion-item>
               <ion-searchbar placeholder="ค้นหา..." [(ngModel)]="filterfront" [ngModelOptions]="{standalone: true}" animated="true"></ion-searchbar>
             </ion-item>
@@ -89,7 +95,9 @@
           </ion-radio-group>
         </ion-list>
         </ion-col>
-        <ion-col class="table1">
+      </tab>
+      <tab heading="ตัวเลขด้านหลัง" id="tab2">
+        <ion-col >
           <ion-list>
             <ion-radio-group (ionChange)="radioGroupChange_back($event)">
               <ion-list-header>
@@ -97,9 +105,7 @@
                   ตัวเลขด้านหลัง
                 </ion-label>
               </ion-list-header>
-              <span class="error" *ngIf="isSubmitted && errorControl.mtd_numberback_id.errors?.required">
-                กรุณาเลือก ตัวเลขด้านหลัง
-              </span>
+            
               <ion-item>
                 <ion-searchbar placeholder="ค้นหา..." [(ngModel)]="filterback" [ngModelOptions]="{standalone: true}" animated="true"></ion-searchbar>
               </ion-item>
@@ -114,7 +120,10 @@
               </ion-list>
             </ion-radio-group>
           </ion-list>
+          
         </ion-col>
+      </tab>
+      </tabset>
       </ion-row>
     </ion-grid>
   </form>

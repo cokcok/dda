@@ -61,7 +61,7 @@
               <ion-label> <u class="showlabelheader">วันที่รับ:</u> {{ c.po_recivedate }}</ion-label>
             </ion-col>
           </ion-row>
-          <ion-row *ngIf="c.podetail_number.length>0">
+          <ion-row *ngIf="c.podetail_number?.length>0">
             <ion-col  size="auto"><u class="showlabelheader">เลขเสื้อเบอร์:</u> {{c.podetail_number}}</ion-col>
             <ion-col  size="auto"><u class="showlabelheader">ด้านหน้าสี:</u> {{c.color_front}}</ion-col>
             <ion-col  size="auto"><u class="showlabelheader">ด้านหลังสี:</u> {{c.color_back}}</ion-col>

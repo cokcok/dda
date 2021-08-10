@@ -42,7 +42,7 @@ export class Poassign04Page implements OnInit {
     .getpoassignreport('readcancel',this.ionicForm.value.id,padding,this.limit)
     .subscribe((data) => {
       if (data !== null) {
-        console.log(data); 
+        //console.log(data); 
         
         this.maxpadding = data["maxpadding"];
         datalimit = data["limit"];
@@ -72,14 +72,14 @@ export class Poassign04Page implements OnInit {
      }else{
       this.dataallarray.push(data);
      }
-     console.log(this.dataallarray);
+     //console.log(this.dataallarray);
    }
 
 
   async cancelData() {
     this.ionicForm.controls['dataall'].setValue(this.dataallarray);
    
-    console.log(this.ionicForm.value);
+    //console.log(this.ionicForm.value);
     const confirm =  await this.alertCtrl.create({
       header: 'ยืนยันการลบข้อมูล',
       message: 'แน่ใจว่าต้องการลบการมอบหมายที่เลือก ' + this.dataallarray.length  + ' รายการ? ',
