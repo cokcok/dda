@@ -16,11 +16,11 @@ const moment = moment_;
   styleUrls: ['./pocfcupon02.page.scss'],
 })
 export class Pocfcupon02Page implements OnInit {
-  @Input() id:number;@Input() assign_date:string; @Input() seq:string;@Input() total:string;
+  @Input() id:number;@Input() assign_date:string; @Input() seq:string;@Input() total:string;@Input() totalsus:string; 
   ionicForm: FormGroup;isSubmitted = false; 
   data = []; page = 0;maxpadding:number;limit = 50;
   sub: Subscription; maxdatalimit=0;filterTerm: string;
-  dataallarray = []; assign_statusAll:number;
+  dataallarray = []; assign_statusAll:number; allsus:number;
   checkallstatus:boolean = false;data_check=[];checkall:boolean;
   constructor(public configSv: ConfigService,private poSv: PoSvService,public formBuilder: FormBuilder,private modalCtrl:ModalController,private alertCtrl: AlertController,private iab: InAppBrowser) { }
 
@@ -28,6 +28,7 @@ export class Pocfcupon02Page implements OnInit {
     this.ionicForm = this.formBuilder.group({
       id:[this.id],
       total:[this.total],
+      totalsus:[this.totalsus],
       dataall:[],
     });
     this.loaddata(0)
@@ -35,7 +36,14 @@ export class Pocfcupon02Page implements OnInit {
 
   dismissModal(){
     //this.modalCtrl.dismiss();
-    this.modalCtrl.dismiss(this.assign_statusAll,'confirm');
+
+    let dataarray = []; 
+    dataarray.push({ 
+     allsus:this.allsus,
+     assign_status:this.assign_statusAll,
+    });
+
+    this.modalCtrl.dismiss(dataarray,'confirm');
   }
 
   loaddata(padding: number, infiniteScroll?){
@@ -111,7 +119,15 @@ export class Pocfcupon02Page implements OnInit {
           .subscribe((data) => {
             if (data !== null) {
                 if(data.status === 'ok'){
-                  this.assign_statusAll = data.id;
+                 this.allsus = Number(data.id) + this.ionicForm.controls.totalsus.value;
+                  if(this.allsus == this.ionicForm.controls.total.value){
+                    this.assign_statusAll = 1;
+                  }else{
+                    this.assign_statusAll = 2;
+
+                  }
+                  //this.assign_statusAll = data.id;
+                  this.ionicForm.controls['totalsus'].setValue(this.allsus);
                   this.compareArray(this.data,this.dataallarray);
                   this.configSv.ChkformAlert(data.message);
                   this.dataallarray = [];

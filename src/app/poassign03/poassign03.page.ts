@@ -385,9 +385,6 @@ export class Poassign03Page implements OnInit {
       [{text: 'รายชื่อวิน-ส่งปัก ปักที่ร้าน', style: 'tableHeader', colSpan: 3, alignment: 'center'},'','', { text: 'วันที่มอบหมายของวันที่ ' + assign_date +' ครั้งที่ ' + seq, style: 'tableHeader', colSpan: 4, alignment: 'center' }, '', '',''],
       [{text: '#', style: 'tableHeader', alignment: 'center'}, {text: 'ชื่อวิน', style: 'tableHeader', alignment: 'center'}, {text: 'เขต', style: 'tableHeader', alignment: 'center'}, {text: 'จำนวนปัก', style: 'tableHeader', alignment: 'center'}, {text: 'วันนัดรับ', style: 'tableHeader', alignment: 'center'},{text: 'รายละเอียด', style: 'tableHeader', alignment: 'center'}, {text: 'ป้ายซ้ำ', style: 'tableHeader', alignment: 'center'}],
     );
-
-    let po_recivedate = null;
-
     vdata.forEach((element, index) => {
       if(element['pagebreak'] === 'false' ){
         exs.push(
@@ -422,7 +419,7 @@ export class Poassign03Page implements OnInit {
           ],
         )
       }
-      po_recivedate = element['po_recivedate'];
+     
     });
     return {
 

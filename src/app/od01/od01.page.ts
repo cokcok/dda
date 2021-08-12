@@ -539,7 +539,7 @@ export class Od01Page implements OnInit {
      const {data,role} = await modal.onWillDismiss();
      //console.log(data,role);
      if(role === 'confirm'){ 
-       console.log(data);
+      // console.log(data);
        this.odstatus = data[0]['odstatus'];
        item[0].qty_recive = Number(item[0].qty_recive) + Number(data[0]['totalrecive']);
       //  item[0].od_date = data[0]['od_date'];
@@ -552,7 +552,7 @@ export class Od01Page implements OnInit {
    }
 
    async submitForm_recive() {
-     console.log(this.id);
+     //console.log(this.id);
     const confirm =  await this.alertCtrl.create({
       header: 'ยืนยันการเสร็จสิ้นการรับสินค้า',
       message: 'แน่ใจว่ารับสินค้าใบสั่งของที่ '+ this.od_running +' เสร็จสิ้นทั้งหมดแล้ว ',
