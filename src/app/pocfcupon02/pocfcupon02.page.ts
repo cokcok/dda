@@ -98,7 +98,7 @@ export class Pocfcupon02Page implements OnInit {
      //console.log(this.dataallarray);
     
    }
-
+ 
    async submitForm(){
     this.ionicForm.controls['dataall'].setValue(this.dataallarray);
     //console.log(this.ionicForm.value);

@@ -146,6 +146,10 @@ export class Po01Page implements OnInit {
                   return item1.id == value;
                 })[0];
                 this.portControl_green.setValue(value_a);
+                
+                if(value_a['id']===1){
+                  this.loaddata_productnumber();
+                }
               }else{
                 this.ionicForm.controls[key].setValue(value);
               }
@@ -641,7 +645,7 @@ export class Po01Page implements OnInit {
     this.ionicForm.controls['po_discount'].setValue(this.allDiscount);
     this.ionicForm.controls['po_totalproduct'].setValue(this.alltotalproduct);
     this.ionicForm.controls['po_total'].setValue(this.alltotal);
-    console.log(this.ionicForm.value)
+    //console.log(this.ionicForm.value)
     this.isSubmitted = true;
     if (!this.ionicForm.valid || founddiscount) {
       console.log("Please provide all the required values!");

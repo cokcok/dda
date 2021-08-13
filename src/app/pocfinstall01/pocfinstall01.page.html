@@ -11,7 +11,7 @@
     <ion-row>
       <ion-col>
         <ion-item>
-          <ion-label class="showlabel" position="floating">ค้นหาวันที่มอบหมายงาน</ion-label>
+          <ion-label class="showlabel" position="floating">ค้นหาวันที่นัดรับ</ion-label>
           <ion-input formControlName="po_assigndate" readonly [liIonic4Datepicker]="datePickerObj" type="text">
           </ion-input>
           <span class="error" *ngIf="isSubmitted && errorControl.po_assigndate.errors?.required">
@@ -44,27 +44,23 @@
       <ion-row>
         <ion-col>
           <ion-item>
-            <label class="showlabelheader2"> วันที่มอบหมายงาน</label>&nbsp;&nbsp;&nbsp;&nbsp; <label>{{c.po_assign_date }}</label>
+            <label class="showlabelheader2"> วันที่นัดรับ</label>&nbsp;&nbsp;&nbsp;&nbsp; <label>{{c.po_assign_date }}</label>
           </ion-item>
         </ion-col>
-        <ion-col size="2">
-          <ion-item>
-            <label class="showlabelheader2"> ครั้งที่ </label> &nbsp;&nbsp;&nbsp;&nbsp; <label>{{c.seq }}</label>
-          </ion-item>
-        </ion-col>
+       
         <ion-col>
           <ion-item>
             <label class="showlabelheader2"> งานประกอบทั้งหมด </label>&nbsp;&nbsp;&nbsp;&nbsp;  <label>{{c.total }}</label>&nbsp;&nbsp;&nbsp;&nbsp; <label class="showlabelheader2">รายการ</label> 
-            <ion-button fill="outline" slot="end" color="success" (click)="View(c.id,c.po_assign_date,c.seq,c.total)">
+            <ion-button fill="outline" slot="end" color="success" (click)="View(c.id,c.po_assign_date,c.seq,c.total,c.totalsus)">
               ดูรายละเอียด</ion-button>
           </ion-item>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-item>
-          <ion-label> <u class="showlabelheader2">สถานะ :</u> <span
-              [ngClass]="{'postatus_alert': array_status.includes(c.po_assign_status),'postatus_ok':!array_status.includes(c.po_assign_status)}">
-              {{ c.po_statustext }}</span></ion-label>
+          <ion-label> <u class="showlabelheader">สถานะ :</u> <span
+            [ngClass]="{'postatus_alert': c.po_assign_status == 0,'status_ok0':c.po_assign_status == 2,'postatus_ok':c.po_assign_status == 1}">
+            {{ c.po_statustext }}</span></ion-label>
         </ion-item>
       </ion-row>
     </ion-card>

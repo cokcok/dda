@@ -70,9 +70,11 @@
             </ion-col>
           </ion-row>
           <ion-row *ngFor="let cc of c.ponumberdetail;let ii = index;">
-            <ion-col  size="auto"><u class="showlabelheader">เลขเสื้อเบอร์:</u> {{cc.podetail_number}}</ion-col>
-            <ion-col  size="auto"><u class="showlabelheader">ด้านหน้าสี:</u> {{cc.color_front}}</ion-col>
-            <ion-col  size="auto"><u class="showlabelheader">ด้านหลังสี:</u> {{cc.color_back}}</ion-col>
+            <ion-col  size="auto" *ngIf="cc.product_name != null"> {{cc.product_name}}</ion-col>
+            <ion-col  size="auto" *ngIf="cc.size != null"><u class="showlabelheader">ขนาด</u> {{cc.size}}</ion-col>
+            <ion-col  size="auto" *ngIf="cc.podetail_number != null"><u class="showlabelheader">#</u> {{cc.podetail_number}}</ion-col>
+            <ion-col  size="auto"  *ngIf="cc.color_front != null"><u class="showlabelheader">ด้านหน้าสี:</u> {{cc.color_front}}</ion-col>
+            <ion-col  size="auto" *ngIf="cc.color_back != null"><u class="showlabelheader">ด้านหลังสี:</u> {{cc.color_back}}</ion-col>
           </ion-row>
           <ion-row>
             <ion-col>  

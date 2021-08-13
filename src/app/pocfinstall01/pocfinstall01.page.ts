@@ -92,19 +92,23 @@ export class Pocfinstall01Page implements OnInit {
     });
   }
 
-  async View(id,assign_date,seq,total){
+  async View(id,assign_date,seq,total,totalsus){
     let item = this.data.filter((val) => val.id == id);
     const modal = await this.modalCtrl.create({
       component:Pocfinstall02Page,
       cssClass: 'my-modal',
-      componentProps:{id:id,assign_date:assign_date,seq:seq,total:total},
+      componentProps:{id:id,assign_date:assign_date,seq:seq,total:total,totalsus:totalsus},
     });
     await modal.present();
     const {data,role} = await modal.onWillDismiss();
     if(role === 'confirm'){
-      if( typeof data != 'undefined'){ 
-        item[0].po_assign_status = String(data);
-        item[0].po_statustext = this.configSv.installalltxt[data];
+     
+
+      if( typeof data[0]['allsus'] != 'undefined'){ 
+        console.log(data);
+        item[0].totalsus = Number(item[0].totalsus) + Number(data[0]['allsus']);
+        item[0].po_assign_status = String(data[0]['assign_status']);
+        item[0].po_statustext = this.configSv.installalltxt[data[0]['assign_status']];
       }
      }
   }

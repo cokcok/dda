@@ -64,9 +64,9 @@
       <ion-row>
         <ion-item> 
           <ion-label> <u class="showlabelheader">สถานะ :</u> <span
-              [ngClass]="{'postatus_alert': array_status.includes(c.po_assign_status),'postatus_ok':!array_status.includes(c.po_assign_status)}">
+              [ngClass]="{'postatus_alert': c.po_assign_status == 0,'status_ok0':c.po_assign_status == 2,'postatus_ok':c.po_assign_status == 1}">
               {{ c.po_statustext }}</span></ion-label>
- 
+  
         </ion-item>
 
       </ion-row>
