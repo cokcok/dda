@@ -43,7 +43,7 @@
               <ion-label> <u class="showlabel">เบอร์ลูกค้า:</u> {{ c.po_customer_tel }}</ion-label>
             </ion-col>
           </ion-row>
-          <div *ngIf="c.fixdetail.length > 0">
+          <div *ngIf="c.fixdetail?.length > 0">
             <ion-row *ngFor="let cc of c.fixdetail;let ii = index;">
               <ion-col  size="auto"><u class="showlabel">รายการเปลี่ยน:</u> {{cc.fixdetail}}</ion-col>
             </ion-row>

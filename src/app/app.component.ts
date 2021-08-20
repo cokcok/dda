@@ -99,6 +99,7 @@ export class AppComponent implements OnInit {
     private router: Router, public configSv: ConfigService, public signinSv: SigninSvService, public menuCtrl: MenuController
   ) {
     this.initializeApp();
+    this.Showversion();
   }
 
   initializeApp() {
@@ -171,6 +172,16 @@ export class AppComponent implements OnInit {
     this.navCtrl.navigateForward(['/chpass']);
     //this.router.navigateByUrl('/chpass');
 
+  }
+  versionNumber: string|number;
+  Showversion() {
+    const aux: any = document.getElementsByTagName('META');
+    // tslint:disable-next-line:prefer-for-of
+    for (let i = 0; i < aux.length; i++) {
+     if (aux[i].name === 'version') {
+       this.versionNumber = aux[i].content;
+      }
+    }
   }
 
 }

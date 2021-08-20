@@ -17,21 +17,27 @@ const moment = moment_;
 })
 export class Potf02Page implements OnInit {
   @Input() recivedate:string;
+  portControl_sale: FormControl; ports_sale: any;
   ionicForm: FormGroup;isSubmitted = false; 
   data = []; page = 0;maxpadding:number;limit = 50;
   sub: Subscription; maxdatalimit=0;filterTerm: string;
-  dataallarray = []; checkallstatus:boolean = false;data_check=[];checkall:boolean;
+  dataallarray = []; checkallstatus:boolean = false;data_check=[];checkall:boolean;tf_empname:any;
   array_status = ['0','2','9','null']; countassign=0;
-  ports_sale: any;
   constructor(public formBuilder: FormBuilder,
     public configSv: ConfigService,private alertCtrl: AlertController,private poSv: PoSvService,private modalCtrl:ModalController,private iab: InAppBrowser) { }
 
   ngOnInit() {
+    this.portControl_sale = this.formBuilder.control("", Validators.required);
     this.ionicForm = this.formBuilder.group({
       po_recivedate: [this.recivedate],
       dataall:[],
+      transfer_userid :this.portControl_sale,
     }); 
     this.loaddata(0);this.loaddata_sale(0);
+  }
+
+  get errorControl() {
+    return this.ionicForm.controls;
   }
 
   dismissModal(){
@@ -46,7 +52,7 @@ export class Potf02Page implements OnInit {
     .getpotf('view',this.ionicForm.value,padding)
     .subscribe((data) => {
       if (data !== null) {
-        console.log(data.data_detail);
+        //console.log(data.data_detail);
         this.data =  data.data_detail.map((item) => Object.assign({}, item));   
       }else{
         this.maxpadding = 0;
@@ -92,17 +98,17 @@ export class Potf02Page implements OnInit {
 
    async submitForm(){
     this.ionicForm.controls['dataall'].setValue(this.dataallarray);
-    console.log(this.ionicForm.value);
+    //console.log(this.ionicForm.value);
 
     this.isSubmitted = true;
 
-    let foundempnull = this.dataallarray.find(function (value){
-      if(value.tf_empid === '0'){
-        return true;
-      }
-    });
+    // let foundempnull = this.dataallarray.find(function (value){
+    //   if(value.tf_empid === '0'){
+    //     return true;
+    //   }
+    // });
 
-    if (!this.ionicForm.valid || foundempnull) {
+    if (!this.ionicForm.valid ) {
       console.log("Please provide all the required values!");
       return false;
     }
@@ -151,7 +157,7 @@ export class Potf02Page implements OnInit {
               array1Ttem.status_checked  = true;
               array1Ttem.transfer_txt  = 'อยู่ระหว่างส่งสินค้า';
               array1Ttem.transfer_flag  = '1';
-              //array1Ttem.tf_empname  = array2Item.tf_empname;
+              array1Ttem.tf_empname  =this.tf_empname;
           }
         });
       });
@@ -172,11 +178,12 @@ export class Potf02Page implements OnInit {
   portChangeEmptf(event: {
     component: IonicSelectableComponent,
     value: any
-  },data) {
+  }) {
     let port = event.value;
-    console.log(port);
-    data.tf_empid = port['id'];
-    data.tf_empname = port['prefix_name'] + ' ' +  port['name'] + ' ' +  port['surname'];
+    //console.log(port);
+    //data.tf_empid = port['id'];
+    //data.tf_empname = port['prefix_name'] + ' ' +  port['name'] + ' ' +  port['surname'];
+    this.tf_empname = port['prefix_name'] + ' ' +  port['name'] + ' ' +  port['surname'];
     //console.log(data.tf_empid);
   }
 

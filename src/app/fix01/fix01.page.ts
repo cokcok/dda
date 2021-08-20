@@ -715,9 +715,10 @@ export class Fix01Page implements OnInit {
      this.portControl_payment = this.formBuilder.control("", Validators.required);
      this.picresizbase64Array = this.formBuilder.array([]);
      this.ionicFormPayment = this.formBuilder.group({
-       poid : [this.id],
+       poid : [this.id], 
        assign_type :[this.assign_type],
        typepayment: this.portControl_payment,
+       payment_date:[ moment().format('DD/MM/YYYY') ,[Validators.required]],
        moneypay: [""],
        cashmoney_0:[""],
        change_0:[""],

@@ -41,7 +41,15 @@
           <ion-col>การรับสินค้า</ion-col>
         </ion-row>
         <ion-row>
-          <ion-col>
+          <ion-col> 
+            <ion-item>
+              <ion-label class="showlabel" position="floating">วันที่ส่ง</ion-label>
+              <ion-input formControlName="payment_date" readonly  type="text"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col> 
             <ion-item>
               <ion-label class="showlabel" position="floating">เงินที่ต้องชำระ</ion-label>
               <ion-input formControlName="moneypay" type="text" readonly></ion-input>
@@ -310,7 +318,7 @@
           <ion-row>
             <ion-col> 
               <ion-item>
-              <ion-label class="showlabelmain" position="floating">เลือกรายการ</ion-label> 
+              <ion-label class="showproduct" position="floating">เลือกรายการ</ion-label> 
              <ionic-selectable item-content itemValueField="id" itemTextField="fix_name" [isMultiple]="true" [canSearch]="true" [items]="ports_productmain" (onChange)="portChange_Product($event)">
               <ng-template ionicSelectableItemTemplate let-port="item" let-isPortSelected="isItemSelected">
                 <div >{{port.fix_name}} ราคา : {{port.fix_price}}</div>

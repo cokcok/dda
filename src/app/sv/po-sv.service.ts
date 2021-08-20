@@ -361,6 +361,7 @@ export class PoSvService {
     //console.log(vdata,vdata[0].assign_id);
       data = {
         'dataall' : vdata.dataall,
+        'transfer_userid' : vdata.transfer_userid.id,
         'emp_id': this.configSv.emp_id,
         'type_sql': type
       }
@@ -429,6 +430,8 @@ export class PoSvService {
       data = {
         'poid' : vdata.poid,
         'assign_type' : vdata.assign_type,
+        'payment_date' : vdata.payment_date,
+        'payment_total' : vdata.moneypay,
         'typepayment' : vdata.typepayment.id,
         'cashmoney_0' : vdata.cashmoney_0,
         'change_0' : vdata.change_0,

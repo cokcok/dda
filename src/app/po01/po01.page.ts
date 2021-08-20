@@ -88,7 +88,7 @@ export class Po01Page implements OnInit {
       namewin_comment:[""],
       po_deposit:["0"],
     });
-    this.loaddata_sale(0);this.loaddata_area(0);this.loaddata_shipping(0);this.loaddata_product(0);this.loaddata_customertype();this.loaddata_member(0);
+    this.loaddata_sale(0);this.loaddata_area(0);this.loaddata_shipping(0);this.loaddata_customertype();this.loaddata_member(0);
     this.fndate();   this.loadform_payment();this.loaddata_greentype();
   }
 
@@ -149,6 +149,9 @@ export class Po01Page implements OnInit {
                 
                 if(value_a['id']===1){
                   this.loaddata_productnumber();
+                  this.loaddata_product(null);
+                }else{
+                  this.loaddata_product(0);
                 }
               }else{
                 this.ionicForm.controls[key].setValue(value);
@@ -211,6 +214,8 @@ export class Po01Page implements OnInit {
           this.indexpic++
         }
       });
+    }else{
+      this.loaddata_product(0);
     }
   }
 
@@ -261,7 +266,7 @@ export class Po01Page implements OnInit {
     };
   }
 
-
+ 
 
   get errorControl() {
     return this.ionicForm.controls;
@@ -854,6 +859,7 @@ export class Po01Page implements OnInit {
       poid : [this.id],
       assign_type :[this.assign_type],
       typepayment: this.portControl_payment,
+      payment_date:[ moment().format('DD/MM/YYYY') ,[Validators.required]],
       moneypay: [""],
       cashmoney_0:[""],
       change_0:[""],

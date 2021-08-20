@@ -41,7 +41,15 @@
           <ion-col>การรับสินค้า</ion-col>
         </ion-row>
         <ion-row>
-          <ion-col>
+          <ion-col> 
+            <ion-item>
+              <ion-label class="showlabel" position="floating">วันที่ส่ง</ion-label>
+              <ion-input formControlName="payment_date" readonly  type="text"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col> 
             <ion-item>
               <ion-label class="showlabel" position="floating">เงินที่ต้องชำระ</ion-label>
               <ion-input formControlName="moneypay" type="text" readonly></ion-input>
@@ -331,10 +339,10 @@
       </div>
       <p></p>
       <div class="table1">
-        <ion-row *ngIf="this.ionicForm.controls.po_green.value.id === 0">
-          <ion-col> 
+        <ion-row  *ngIf="this.ionicForm.controls.po_green.value.id === 0">
+          <ion-col  > 
             <ion-item>
-            <ion-label class="showlabelmain" position="floating">เลือกสินค้า</ion-label> 
+            <ion-label class="showproduct"  position="floating">เลือกสินค้า</ion-label> 
            <ionic-selectable item-content itemValueField="id" itemTextField="name" [isMultiple]="true" [canSearch]="true" [items]="ports_productmain" (onChange)="portChange_Product($event,'product')">
             <ng-template ionicSelectableItemTemplate let-port="item" let-isPortSelected="isItemSelected">
               <div [ngClass]="{'qtychkwaring': inqtywaring(port.qty,port.qty_remain),'qtychk':  inqtyerror(port.qty,port.qty_remain)}" >{{port.name}} จำนวนคงเหลือ: {{port.qty}}</div>
@@ -358,7 +366,7 @@
         <ion-row *ngIf="this.ionicForm.controls.po_green.value.id === 1">
           <ion-col> 
             <ion-item>
-            <ion-label class="showlabelmain" position="floating">เลือกสินค้า</ion-label> 
+            <ion-label class="showproduct" position="floating">เลือกสินค้า</ion-label> 
            <ionic-selectable item-content itemValueField="id" itemTextField="name" [isMultiple]="true" [canSearch]="true" [items]="ports_productmain" (onChange)="portChange_Product($event,'product')">
             <ng-template ionicSelectableItemTemplate let-port="item" let-isPortSelected="isItemSelected">
               <!-- <div [ngClass]="{'qtychk': inqtyerror(port.qty,port.qty_remain)}" >{{port.name}} remain: {{port.qty_remain}} qty: {{port.qty}}</div> -->
@@ -370,7 +378,7 @@
         </ion-col>
         <ion-col> 
           <ion-item>
-          <ion-label class="showlabelmain" position="floating">เลือกสินค้าตัวเลข </ion-label> 
+          <ion-label class="showproduct" position="floating">เลือกสินค้าตัวเลข </ion-label> 
          <ionic-selectable item-content itemValueField="id" itemTextField="name" [isMultiple]="true" [canSearch]="true" [items]="ports_productmain_number" (onChange)="portChange_Product($event,'number')">
           <ng-template ionicSelectableItemTemplate let-port="item" let-isPortSelected="isItemSelected">
             <div [ngClass]="{'qtychkwaring': inqtywaring(port.qty,port.qty_remain),'qtychk':  inqtyerror(port.qty,port.qty_remain)}" >{{port.name}} จำนวนคงเหลือ : {{port.qty}}</div>
@@ -378,6 +386,7 @@
         </ionic-selectable>
         </ion-item> 
       </ion-col> 
+      <ion-col size="12">
       <ion-item>
         <ion-label text-wrap>
           <ion-col> 
@@ -386,6 +395,7 @@
           </ion-col>
         </ion-label>
       </ion-item>
+    </ion-col>
         <span class="error" *ngIf="isSubmitted && tmpproduct.length===0">
           กรุณาเลือก สินค้า
         </span>
@@ -440,6 +450,13 @@
                 <ion-col  size="auto">ด้านหลังสี {{c.numbervalue.color_back}}</ion-col>
               </ion-row>
             </div>
+            </ion-col>
+            <ion-col size="12" *ngIf="isSubmitted && this.ionicForm.controls.po_green.value.id === 0 && c.numbervalue === null">
+              <ion-row >
+                <span class="error" >
+                 สินค้าลำดับที่ {{i+1}}  กรุณาระบุเบอร์เสื้อ
+                </span>
+              </ion-row>
             </ion-col>
             <ion-col size="12" *ngIf="c.productetc !== null">
               <div>

@@ -302,11 +302,11 @@ export class Poassign03Page implements OnInit {
 
   DownloadPdf1(vdata,seq,assign_date) {
    // console.log(vdata);
-    let items = [];
-   var self = this;
-    items = vdata.map(function (item) {
-      return [item.seq, item.po_namewin, item.area_name, { text: item.countid, alignment: 'center' }, {  fillColor: self.configSv.colortxt[moment(item.po_recivedate,'DD/MM/YYYY').isoWeekday()],text:item.po_recivedate } ,item.detail,{ text: item.status_greendup, alignment: 'center' }];
-    });
+   // let items = [];
+  //var self = this;
+    // items = vdata.map(function (item) {
+    //   return [item.seq, item.po_namewin, item.area_name, { text: item.countid, alignment: 'center' }, {  fillColor: self.configSv.colortxt[moment(item.po_recivedate,'DD/MM/YYYY').isoWeekday()],text:item.po_recivedate } ,item.detail,{ text: item.status_greendup, alignment: 'center' }];
+    // });
     //console.log(vdata,items);
     var docDefinition = {
       pageSize: 'A4',
@@ -424,7 +424,7 @@ export class Poassign03Page implements OnInit {
     return {
 
       table: {
-        widths: ['1.5%','20%','17%','7%','9%','*','5%'],
+        widths: ['1.5%','25%','20%','7%','9%','25%','5%'],
         headerRows: 2,
        // dontBreakRows: true,
        // keepWithHeaderRows: true, 
