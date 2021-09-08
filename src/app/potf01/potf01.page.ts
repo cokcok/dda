@@ -24,7 +24,7 @@ export class Potf01Page implements OnInit {
 
   ngOnInit() {
     this.ionicForm = this.formBuilder.group({
-      typeserch_id: ["9"],
+      typeserch_id: ["1"],
       txtserach: ["",[Validators.required]],
       dataall:[],
     }); 

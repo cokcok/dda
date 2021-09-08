@@ -108,7 +108,7 @@ export class Pocfgreen01Page implements OnInit {
       //   item[0].po_statustext = this.configSv.greenalltxt[data];
       // }
       if( typeof data[0]['allsus'] != 'undefined'){ 
-        console.log(data);
+        //console.log(data);
         item[0].totalsus = Number(item[0].totalsus) + Number(data[0]['allsus']);
         item[0].po_assign_status = String(data[0]['assign_status']);
         item[0].po_statustext = this.configSv.greenalltxt[data[0]['assign_status']];

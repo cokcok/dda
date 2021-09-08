@@ -59,8 +59,12 @@
   </ion-grid>
 </form>
 <ion-content>
+ 
   <!-- <div scrollY="true" id="myFixZone"> -->
   <div>
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
     <ion-searchbar placeholder="ค้นหา..." [(ngModel)]="filterTerm" animated="true"></ion-searchbar>
     <ion-card *ngFor="let c of data  | filter:filterTerm;index as i">
       <ion-item>
@@ -108,7 +112,7 @@
             <ion-row *ngFor="let cc of c.ponumberdetail;let ii = index;">
               <ion-col  size="auto" *ngIf="cc.product_name != null"> {{cc.product_name}}</ion-col>
               <ion-col  size="auto" *ngIf="cc.size != null"><u class="showlabelheader">ขนาด</u> {{cc.size}}</ion-col>
-              <ion-col  size="auto" *ngIf="cc.podetail_number != null"><u class="showlabel">#:</u> {{cc.podetail_number}}</ion-col>
+              <ion-col  size="auto" *ngIf="cc.podetail_number != null"><u class="showlabel">เบอร์:</u> {{cc.podetail_number}}</ion-col>
               <ion-col  size="auto" *ngIf="cc.color_front != null"><u class="showlabel">ด้านหน้าสี:</u> {{cc.color_front}}</ion-col>
               <ion-col  size="auto" *ngIf="cc.color_back != null"><u class="showlabel">ด้านหลังสี:</u> {{cc.color_back}}</ion-col>
             </ion-row>

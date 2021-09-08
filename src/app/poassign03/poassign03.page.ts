@@ -388,7 +388,7 @@ export class Poassign03Page implements OnInit {
     vdata.forEach((element, index) => {
       if(element['pagebreak'] === 'false' ){
         exs.push(
-          [
+          [ 
             { text: element['seq'] },
             { text: element['po_namewin'] },
             { text: element['area_name'] },

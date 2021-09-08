@@ -32,7 +32,7 @@ export class Poassign01Page implements OnInit {
       txtserach: ["",[Validators.required]],
       po_assigndate:[ moment().format('DD/MM/YYYY') ,[Validators.required]],
       seq: [],
-      dataall:[],
+      dataall:[], 
       datasome:[],
       total: [],
       //tmpproduct_qty :[{value: 0,disabled: true}],

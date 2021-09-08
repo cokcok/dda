@@ -591,5 +591,18 @@ export class PoSvService {
     return this.http.post<data>(apiUrl, data, { headers: header });
   }
 
+  searchtfsummary(vdata:any): Observable<data> {
+    const header = { 'Content-Type': 'application/json' };
+    let apiUrl = this.configSv.ip + 'tf_summary.php';
+     let data = { 
+      'serchtxt': vdata.txtserach,
+      'serchtxt1': vdata.txtserach1,
+      'type_sql': 'read',
+    }
+    return this.http.post<data>(apiUrl, data, { headers: header });
+  }
+
+
+
 }
   

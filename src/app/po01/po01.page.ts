@@ -406,7 +406,7 @@ export class Po01Page implements OnInit {
     component: IonicSelectableComponent,
     value: any
   },type) {
-    let port = event.value;
+    let port = event.value; 
     let tmpindex:number;
     //console.log(type);
     //this.tmpproduct = port.map((item) => Object.assign({}, item));
@@ -513,7 +513,7 @@ export class Po01Page implements OnInit {
     this.tmpproduct = this.tmpproduct.filter(obj => obj.id !== id);
     this.tmpproductetc = this.tmpproductetc.filter(obj => obj.id !== id);
     this.cul_total();
-    console.log(statusqty);
+    //console.log(statusqty);
     if(statusqty == 0){
       if(type === 'product'){
         let item = this.ports_productmain.filter((val) => val.id == product_id);
@@ -639,12 +639,23 @@ export class Po01Page implements OnInit {
   }
 
   async submitForm(){
+    let foundaddnumber = false;
+    if(this.ionicForm.controls['po_green'].value.id === 0 ){
+      foundaddnumber  = this.tmpproduct.find(function (value){
+        if(value.numbervalue  === null){
+          return true;
+        }
+      });
+    }
+  
+
     let founddiscount = this.tmpproduct.find(function (value){
-        if(value.discount > value.price){
+        if(Number(value.discount) > Number(value.price)){
           return true;
         }
     });
  
+    
    
     this.ionicForm.controls['tmpproduct'].setValue(this.tmpproduct);
     this.ionicForm.controls['po_discount'].setValue(this.allDiscount);
@@ -652,7 +663,7 @@ export class Po01Page implements OnInit {
     this.ionicForm.controls['po_total'].setValue(this.alltotal);
     //console.log(this.ionicForm.value)
     this.isSubmitted = true;
-    if (!this.ionicForm.valid || founddiscount) {
+    if (!this.ionicForm.valid || founddiscount || foundaddnumber) {
       console.log("Please provide all the required values!");
       return false;
     } else {
@@ -1036,4 +1047,12 @@ fileUpload_imgpayment(event) {
   this.picpreview = this.picpreview.filter(obj => obj.id !== index);
  this.picresizbase64Array.removeAt(this.picresizbase64Array.value.findIndex(value => value.id === index));
  }
+
+
+ check_discout(discount,total){
+  if(Number(discount) > Number(total)){
+    return true;
+  }
+ }
+
 }

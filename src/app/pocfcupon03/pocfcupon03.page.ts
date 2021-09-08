@@ -127,7 +127,7 @@ export class Pocfcupon03Page implements OnInit {
 
   async RestoreData(id,type){
     let item = this.data.filter((val) => val.assign_id == id);
-    console.log(item);
+    //console.log(item);
     const confirm =  await this.alertCtrl.create({
       header: 'ยืนยันการคืนค่า',
       message: 'แน่ใจว่าต้องการคืนค่าสถานะใช่ไหม ? ',

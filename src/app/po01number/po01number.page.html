@@ -146,30 +146,34 @@
         </ion-col>
       </ion-row>
         <ion-row  class="table1_header" *ngIf="tmpproduct.length>0">
-          <ion-col >ลำดับ</ion-col>
-          <ion-col >สินค้า</ion-col>
-          <ion-col >ส่วนลด</ion-col>
+          <ion-col size="0.5">#</ion-col>
+          <ion-col size="2">สินค้า</ion-col>
+          <ion-col size="2">ส่วนลด</ion-col>
           <ion-col >ราคา</ion-col>
           <ion-col >หมายเหตุ</ion-col>
           <ion-col ></ion-col>
+          <ion-col >แถม</ion-col>
         </ion-row>
         <ion-row class="table1_detail" *ngFor="let c of tmpproduct;let i = index;">
-          <ion-col size="2">{{i+1}}</ion-col>
+          <ion-col size="0.5">{{i+1}}</ion-col>
           <ion-col size="2">{{c.name}}</ion-col>
           <ion-col > 
-          <ion-input size="2" class="showborder" type="number"  [(ngModel)]="discount[i]" [ngModelOptions]="{standalone: true}" (change)="Discount(c.id,discount[i])"></ion-input> 
+          <ion-input size="2" class="showborder" type="number"  [(ngModel)]="discount[c.id]" [ngModelOptions]="{standalone: true}" (change)="Discount(c.id,discount[c.id])"></ion-input> 
           </ion-col>
           <ion-col >{{c.total|number}}</ion-col>
           <ion-col > 
-            <ion-input  class="showborder" type="text"  [(ngModel)]="commentproduct[i]" [ngModelOptions]="{standalone: true}" (change)="Commentproduct(c.id,commentproduct[i])"></ion-input> 
+            <ion-input  class="showborder" type="text"  [(ngModel)]="commentproduct[c.id]" [ngModelOptions]="{standalone: true}" (change)="Commentproduct(c.id,commentproduct[c.id])"></ion-input> 
           </ion-col>
           <ion-col > 
-            <ion-button (click)="Deltmpproduct(c.id,i)">
+            <ion-button (click)="Deltmpproduct(c.id,c.id)">
               <ion-icon slot="icon-only" class="iconSize" name="trash"></ion-icon>
             </ion-button>
 
           </ion-col>
-          <ion-col size="12" *ngIf="isSubmitted && discount[i]>c.total">
+          <ion-col>
+            <ion-checkbox  color="dark" [(ngModel)]="checkfree[c.id]"  [ngModelOptions]="{standalone: true}" (click)="selectData(c.id)"></ion-checkbox>
+          </ion-col>
+          <ion-col size="12" *ngIf="isSubmitted && discount[c.id]>c.total">
             <ion-row >
               <span class="error" >
                สินค้าลำดับที่ {{i+1}}  มีส่วนลดมากกว่าราคาสินค้า กรุณาตรวจสอบข้อมูล

@@ -85,7 +85,7 @@ export class Poassign02Page implements OnInit {
      // console.log('check');
       this.dataallarray.push(data);
      }
-     //console.log(this.datacheckarray);
+     console.log(this.dataallarray);
    }
 
 

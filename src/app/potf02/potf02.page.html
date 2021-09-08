@@ -18,13 +18,48 @@
     <ion-row> 
       <ion-col>
         <ion-item>
+          <ion-label class="showlabel" position="floating">วันที่มอบหมาย</ion-label>
+          <ion-input formControlName="po_assigndate" readonly  type="text"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
           <ion-label class="postatus_alert">มีรายการที่เลือก {{dataallarray.length}} รายการ</ion-label>
         </ion-item>
       </ion-col>
     </ion-row>
     <ion-row *ngIf="dataallarray.length>0">
-      <ion-col >
+      <ion-col *ngIf="count_shipping.length>0">
         <ion-item>
+          <ion-label class="postatus_ok">ส่งฟรีตามวิน {{count_shipping.length}} รายการ</ion-label>
+        </ion-item>
+      </ion-col>
+      <ion-col *ngIf="count_shipping1.length>0">
+        <ion-item>
+          <ion-label class="showlabelheader2">พัสดุ (โอนก่อนส่ง) {{count_shipping1.length}} รายการ</ion-label>
+        </ion-item>
+      </ion-col>
+      <ion-col *ngIf="count_shipping2.length>0">
+        <ion-item>
+          <ion-label class="status_ok0">พัสดุ (เก็บปลายทาง) {{count_shipping2.length}} รายการ</ion-label>
+        </ion-item>
+      </ion-col>
+      <ion-col *ngIf="count_shipping3.length>0">
+        <ion-item>
+          <ion-label class="showlabelheader1">รับเอง {{count_shipping3.length}} รายการ</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <!-- <ion-row> 
+      <ion-col>
+        <ion-item>
+          <ion-label class="postatus_alert">มีรายการที่เลือก {{dataallarray.length}} รายการ</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>  -->
+    <ion-row *ngIf="count_shipping.length>0">
+      <ion-col >
+        <ion-item> 
           <ion-label class="showlabelheader" position="floating">คนส่ง</ion-label>
           <ionic-selectable interface="floating" item-content  
           formControlName="transfer_userid" itemValueField="id"
@@ -34,13 +69,6 @@
           กรุณาระบุ คนส่ง
         </span>
         </ion-item>
-        <!-- <ion-col size="12" *ngIf="isSubmitted && c.tf_empid === '0'">
-          <ion-row >
-            <span class="error" >
-                กรุณาระบุคนส่ง
-            </span>
-          </ion-row>
-        </ion-col> -->
     </ion-col>
     </ion-row>
   </ion-grid>
@@ -59,8 +87,88 @@
       </ion-row>
     </ion-grid> 
     <ion-card *ngFor="let c of data  | filter:filterTerm;index as i">
-      <ion-item >
+      <ion-item>
         <ion-checkbox  color="dark"  (click)="selectData(i,data[i],c.status_checked)" [disabled]="c.disable_checked" [(ngModel)]="c.status_checked" slot="start"></ion-checkbox>
+        <ion-row>
+          <ion-col>
+            <ion-label class="showlabelheader">{{ c.po_running }}</ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-button fill="outline" slot="end" color="success" (click)="View(c.id,c.po_running)">ดูรายละเอียดลำดับที่ {{i+1}}</ion-button>
+      </ion-item>
+      <ion-item>
+        <ion-grid fixed>
+          <ion-row>
+            <ion-col>
+              <ion-label> <u class="showlabel">วันที่สั่งซื้อ:</u> {{ c.po_date }}</ion-label>
+            </ion-col>
+            <ion-col>
+              <ion-label><u class="showlabel">ชื่อวิน:</u>  {{ c.po_namewin }}</ion-label>
+            </ion-col>
+            <ion-col>
+              <ion-label><u class="showlabel">เขต:</u>  {{ c.area_name }}</ion-label>
+            </ion-col>
+            
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-label> <u class="showlabel">ชื่อลูกค้า:</u> {{ c.po_customer }}</ion-label>
+            </ion-col>
+            <ion-col>
+              <ion-label> <u class="showlabel">เบอร์ลูกค้า:</u> {{ c.po_customer_tel }}</ion-label>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-label><u class="showlabel">จำนวนสินค้า:</u>  {{ c.qty }}</ion-label>
+            </ion-col>
+            <ion-col>
+              <ion-label> <u class="showlabel">ราคา:</u> {{ c.po_total | number }}</ion-label>
+            </ion-col>
+            <ion-col>
+              <ion-label> <u class="showlabel">วันที่นัดรับ:</u> {{ c.po_recivedate }}</ion-label>
+            </ion-col>
+          </ion-row>  
+          <div *ngIf="c.ponumberdetail?.length > 0">
+            <ion-row *ngFor="let cc of c.ponumberdetail;let ii = index;">
+              <ion-col  size="auto" *ngIf="cc.product_name != null"> {{cc.product_name}}</ion-col>
+              <ion-col  size="auto" *ngIf="cc.size != null"><u class="showlabelheader">ขนาด</u> {{cc.size}}</ion-col>
+              <ion-col  size="auto" *ngIf="cc.podetail_number != null"><u class="showlabel">เบอร์:</u> {{cc.podetail_number}}</ion-col>
+              <ion-col  size="auto" *ngIf="cc.color_front != null"><u class="showlabel">ด้านหน้าสี:</u> {{cc.color_front}}</ion-col>
+              <ion-col  size="auto" *ngIf="cc.color_back != null"><u class="showlabel">ด้านหลังสี:</u> {{cc.color_back}}</ion-col>
+            </ion-row>
+          </div>
+          <ion-row>
+            <ion-col>
+              <ion-label> <u class="showlabel">วิธีการส่ง:</u> {{ c.shipping_name }}</ion-label>
+            </ion-col>
+            <ion-col *ngIf="c.tf_empname != null">
+              <ion-label> <u class="showlabel">ผู้ส่ง :</u> 
+                {{ c.tf_empname }}</ion-label>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col > 
+              <ion-label> 
+                <u class="showlabel">สถานะ :</u> 
+                <span   [ngClass]="{'postatus_alert':postatuscolor1.includes(c.po_status),'status_ok1':postatuscolor2.includes(c.po_status), 'postatus_ok': c.po_status==6 }" > {{ c.po_statustext }}</span>
+              </ion-label> 
+            </ion-col>
+            <ion-col *ngIf="c.po_status != 0 ">
+              <ion-button  (click)="viewassign(c.id,c.po_running)">
+                <ion-icon name="search"></ion-icon>
+            </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+    </ion-card>
+  </div>
+</ion-content>
+ <!-- <ion-card *ngFor="let c of data  | filter:filterTerm;index as i">
+      <ion-item >
+        
+        <ion-checkbox *ngIf="c.seq === '0'"  color="dark"  (click)="selectData(i,data[i],c.status_checked)" [disabled]="c.disable_checked" [(ngModel)]="c.status_checked" slot="start"></ion-checkbox>
         <ion-row>
           <ion-col>
             <ion-label class="showlabelheader">{{ c.po_running }}</ion-label>
@@ -143,23 +251,7 @@
                 {{ c.tf_empname }}</ion-label>
             </ion-col>
           </ion-row>
-          <!-- <ion-row *ngIf="c.status_checked && !c.disable_checked">
-            <ion-col >
-              <ion-item>
-                <ion-label class="showlabelheader" position="floating">คนส่ง</ion-label>
-                <ionic-selectable interface="floating" item-content  itemValueField="id"
-                itemTextField="name" [items]="ports_sale" [canSearch]="true" closeButtonText="ยกเลิก" (onChange)="portChangeEmptf($event,data[i])">
-              </ionic-selectable>
-              </ion-item>
-              <ion-col size="12" *ngIf="isSubmitted && c.tf_empid === '0'">
-                <ion-row >
-                  <span class="error" >
-                    {{c.po_running}}  กรุณาระบุคนส่ง
-                  </span>
-                </ion-row>
-              </ion-col>
-          </ion-col>
-          </ion-row> -->
+        
           <ion-row  *ngIf="c.picresizbase64List.length > 0">
             <ion-col size="12">
               <div>
@@ -181,6 +273,21 @@
           </ion-row>
         </ion-grid>
       </ion-item>
-    </ion-card>
-  </div>
-</ion-content>
+    </ion-card> -->
+  <!-- <ion-row *ngIf="c.status_checked && !c.disable_checked">
+            <ion-col >
+              <ion-item>
+                <ion-label class="showlabelheader" position="floating">คนส่ง</ion-label>
+                <ionic-selectable interface="floating" item-content  itemValueField="id"
+                itemTextField="name" [items]="ports_sale" [canSearch]="true" closeButtonText="ยกเลิก" (onChange)="portChangeEmptf($event,data[i])">
+              </ionic-selectable>
+              </ion-item>
+              <ion-col size="12" *ngIf="isSubmitted && c.tf_empid === '0'">
+                <ion-row >
+                  <span class="error" >
+                    {{c.po_running}}  กรุณาระบุคนส่ง
+                  </span>
+                </ion-row>
+              </ion-col>
+          </ion-col>
+          </ion-row> -->

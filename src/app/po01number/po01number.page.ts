@@ -19,7 +19,7 @@ export class Po01numberPage implements OnInit {
   portControl_front: FormControl; ports_front=[];portscategory=[];
   portControl_back: FormControl; ports_back: any;portscategoryid:any;
   portControl_productmain: FormControl; ports_productmain: any;
-  tmpproduct =[];;discount = []; commentproduct = [];
+  tmpproduct =[];;discount = []; commentproduct = [];checkfree =[];
   fix = ['fix','fixproduct'];
   constructor(private modalCtrl:ModalController,private navCtrl: NavController,public formBuilder: FormBuilder,public configSv: ConfigService,public mtdSv: MtdSvService,private alertCtrl: AlertController,private poSv: PoSvService) { }
 
@@ -92,11 +92,12 @@ export class Po01numberPage implements OnInit {
   }) {
     let port = event.value;
     let tmpindex:number;
-   if(this.tmpproduct.length === 0){
-    tmpindex = 0;
-   }else{
-    tmpindex = this.tmpproduct[this.tmpproduct.length-1]["id"] + 1;
-   }
+    if(this.tmpproduct.length === 0){
+      tmpindex = 0;
+     }else{
+      //console.log(this.tmpproduct[this.tmpproduct.length-1]["id"] + 1);
+      tmpindex = Number(this.tmpproduct[this.tmpproduct.length-1]["id"]) + 1;
+     }
    let v_price, v_total;
   
   
@@ -110,7 +111,7 @@ export class Po01numberPage implements OnInit {
       v_price = value.price;v_total=value.price;
     }
     this.tmpproduct.push({
-      id: index+tmpindex,
+      id: index+Number(tmpindex),
       name: value.product_name +'/'+value.size+ '/' +value.price,
       product_id: value.id,
       product_name: value.product_name,
@@ -119,6 +120,7 @@ export class Po01numberPage implements OnInit {
       discount:'0',
       total: v_total,
       commentproduct: '',
+      checkfree:false,
     });
   });
     event.component.clear();
@@ -147,6 +149,7 @@ export class Po01numberPage implements OnInit {
 
   Deltmpproduct(id,index){
     this.discount[index] = null; this.commentproduct[index] = null
+    this.checkfree[index] = null;
     this.tmpproduct = this.tmpproduct.filter(obj => obj.id !== id);
     this.cul_total();
 
@@ -226,7 +229,26 @@ export class Po01numberPage implements OnInit {
     }
   }
 
+  selectData(index){
+    let item = this.tmpproduct.filter((val) => val.id == index);    
+    if(item[0].checkfree == false){
+      this.Commentproduct(index,'แถมลูกค้า');
+      this.Discount(index,item[0].price);
+      item[0].checkfree = true;
+      this.commentproduct[index]  = "แถมลูกค้า";
+      this.discount[index] = item[0].price;
+    }else if(item[0].checkfree == true){
+      this.Commentproduct(index,'');
+      this.Discount(index,0);
+      item[0].checkfree = false;
+      this.commentproduct[index]  = "";
+      this.discount[index] = 0;
+    }
+ 
+  }
+
 }
+
 
 
 //       // const user = {

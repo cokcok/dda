@@ -86,7 +86,7 @@ export class Pocfcupon02Page implements OnInit {
       }
       this.checkallstatus = false;this.dataallarray = [];
      }
-   }
+   } 
 
    selectData(index,data,checked){
     if(checked){
@@ -101,7 +101,7 @@ export class Pocfcupon02Page implements OnInit {
  
    async submitForm(){
     this.ionicForm.controls['dataall'].setValue(this.dataallarray);
-    console.log(this.ionicForm.value);
+    //console.log(this.ionicForm.value);
     const confirm =  await this.alertCtrl.create({
       header: 'ยืนยันข้อมูลในการปรับสถานะการปัก',
       //message: 'แน่ใจว่าต้องการลบเลขระบบที่ '+ item +' ? ',
