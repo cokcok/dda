@@ -47,7 +47,7 @@ export class Poassign02Page implements OnInit {
     .getpo(this.ionicForm.value,padding,this.limit)
     .subscribe((data) => {
       if (data !== null) {
-        console.log(data);
+       // console.log(data);
         this.maxpadding = data["maxpadding"];
         datalimit = data["limit"];
         this.data =  this.data.concat(data.data_detail.map((item) => Object.assign({}, item)));   

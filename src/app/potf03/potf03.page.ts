@@ -84,9 +84,9 @@ export class Potf03Page implements OnInit {
     let item = this.data.filter((val) => val.po_recivedate == recivedate);
     //console.log(item);
     const modal = await this.modalCtrl.create({
-      component:Potf04Page,
+      component:Potf04Page, 
       cssClass: 'my-modal',
-      componentProps:{recivedate:recivedate,view:'view'},
+      componentProps:{recivedate:recivedate,view:'viewwin'},
     });
     await modal.present();
     const {data,role} = await modal.onWillDismiss();

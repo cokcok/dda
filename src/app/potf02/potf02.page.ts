@@ -95,11 +95,11 @@ export class Potf02Page implements OnInit {
 
   selectData(index,data1,checked){
     if(checked){
-      this.dataallarray = this.dataallarray.filter(item => item.poid !== data1['poid'])
+      this.dataallarray = this.dataallarray.filter(item => item.id !== data1['id'])
      // console.log(this.dataallarray,checked,data1['poid']);
       if(this.dataallarray.length === 0){this.checkall = false;}
      }else{
-      let  data_true = this.data.filter(item => item.poid === data1['poid']);
+     // let  data_true = this.data.filter(item => item.poid === data1['poid']);
      // let  data_true =  this.data.filter(item => item.poid === data1['poid']).map((item) => Object.assign({}, item));
      // console.log(this.toObject(data_true),data1);
       
@@ -120,7 +120,7 @@ export class Potf02Page implements OnInit {
    async submitForm(){
     this.ionicForm.controls['dataall'].setValue(this.dataallarray);
     this.isSubmitted = true;
-    console.log(this.ionicForm.value);
+    //console.log(this.ionicForm.value);
     // let foundempnull = this.dataallarray.find(function (value){
     //   if(value.tf_empid === '0'){
     //     return true;

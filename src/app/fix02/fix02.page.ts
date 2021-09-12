@@ -228,10 +228,6 @@ export class Fix02Page implements OnInit {
     }
 
     saveAs(new Blob([s2ab(wbout)], { type: 'application/octet-stream' }), 'po' + this.currentDate + ' ' + this.currentTime + '.xlsx');
-
-
-
-
   }
 
 }

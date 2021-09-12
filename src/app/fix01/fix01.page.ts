@@ -778,7 +778,7 @@ export class Fix01Page implements OnInit {
  
    async submitForm_Payment() {
      this.ionicFormPayment.controls['tmpproduct'].setValue(this.ionicForm.controls['oldtmpproduct'].value);
-     console.log(this.ionicFormPayment.value)
+     //console.log(this.ionicFormPayment.value)
      this.isSubmitted = true;
      if (!this.ionicFormPayment.valid ) {
        console.log("Please provide all the required values!");

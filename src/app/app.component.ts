@@ -106,7 +106,7 @@ export class AppComponent implements OnInit {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-      //this.chklogin();  // เช็ด ต้องผ่านหน้า login ก่อน 
+      this.chklogin();  // เช็ด ต้องผ่านหน้า login ก่อน 
      // this.configSv.chkidle(); // เช็ด ถ้าไม่มีการ active ที่หน้าจอ จะย้อนกลับไปหน้า login 
       this.signinSv.getObservable().subscribe((data) => {
         //console.log('Data received', data);
