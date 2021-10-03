@@ -78,6 +78,7 @@ export class PoSvService {
         'tmpproduct' : vdata.tmpproduct,
         'oldtmpproduct' : vdata.oldtmpproduct,
         'namewin_comment' : vdata.namewin_comment,
+        'po_status' : vdata.po_status,
         'emp_id': this.configSv.emp_id,
         'type_sql': type
       }

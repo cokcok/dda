@@ -53,6 +53,7 @@ export class FxSvService {
         'tmpproduct' : vdata.tmpproduct,
         'oldtmpproduct' : vdata.oldtmpproduct,
         'namewin_comment' : vdata.namewin_comment,
+        'po_status' : vdata.fx_status,
         'emp_id': this.configSv.emp_id,
         'type_sql': type
       }

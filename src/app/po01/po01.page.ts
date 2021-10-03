@@ -42,7 +42,7 @@ export class Po01Page implements OnInit {
   group_id:any;
   privilege_payment = ['1','4','9']; 
   privilege_saveedit = [undefined,'0','1']; 
-
+  privilege_saveeditrecive_date = ['3','4','5']; 
   constructor(private navCtrl: NavController,public formBuilder: FormBuilder,
     public configSv: ConfigService,public mtdSv: MtdSvService,
     private alertCtrl: AlertController,private poSv: PoSvService,public placeSv:PlaceSvService,private modalCtrl:ModalController,private iab: InAppBrowser) { 
@@ -447,6 +447,7 @@ export class Po01Page implements OnInit {
         type:type,
         statusqty:statusqty,
         statusqty_flg:statusqty_flg,
+        notnumber: false,
       });
     });
    }else{
@@ -476,6 +477,7 @@ export class Po01Page implements OnInit {
         type:type,
         statusqty:statusqty,
         statusqty_flg:statusqty_flg,
+        notnumber: false,
       });
     });
 
@@ -631,6 +633,8 @@ export class Po01Page implements OnInit {
       // console.log( a.reduce((acc,current) => Number(acc) + Number(current.etctotaldiscount), 0));
 
       this.cul_total();
+    }else{
+      item[0].notnumber = true;
     }
   }
 
@@ -642,7 +646,7 @@ export class Po01Page implements OnInit {
     let foundaddnumber = false;
     if(this.ionicForm.controls['po_green'].value.id === 0 ){
       foundaddnumber  = this.tmpproduct.find(function (value){
-        if(value.numbervalue  === null){
+        if(value.numbervalue  === null && value.notnumber  === false ){
           return true;
         }
       });
@@ -655,7 +659,7 @@ export class Po01Page implements OnInit {
         }
     });
  
-    
+     
    
     this.ionicForm.controls['tmpproduct'].setValue(this.tmpproduct);
     this.ionicForm.controls['po_discount'].setValue(this.allDiscount);
@@ -1054,5 +1058,52 @@ fileUpload_imgpayment(event) {
     return true;
   }
  }
+
+ async submitForm_date() {
+  this.isSubmitted = true;
+  if (!this.ionicForm.valid ) {
+    console.log("Please provide all the required values!");
+    return false;
+  } else {
+    const confirm =  await this.alertCtrl.create({
+    header: 'ยืนยันการเปลี่ยนวันที่ ' + this.po_running,
+   // message: 'แน่ใจว่าต้องการลบใบสั่งซื้อที่ '+ this.po_running +' ? ',
+    buttons: [{
+      text: 'ยกเลิก',
+      handler: (data: any) => {
+         console.log('cancel ',data);
+      }
+    },
+    {
+      text: 'ตกลง',
+        handler: (data: any) => {
+           this.sub = this.poSv.crudpo(this.ionicForm.value,'editdate').subscribe(
+            (data) => { 
+              if(data.status == 'ok')
+              {   
+                this.configSv.ChkformAlert(data.message);
+                let dataarray = []; 
+                dataarray.push({ 
+                  po_recivedate:this.ionicForm.controls.po_recivedate.value,
+                });
+                this.modalCtrl.dismiss(dataarray,'editdate');
+              }
+              else
+              {
+                this.configSv.ChkformAlert(data.message);
+              }
+            }, (error) => {
+              console.log(JSON.stringify(error));
+            }
+          );
+       
+      }
+    }]
+  });
+  confirm.present();
+}
+
+ }
+
 
 }

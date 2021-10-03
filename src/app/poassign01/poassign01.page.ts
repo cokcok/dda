@@ -182,7 +182,7 @@ export class Poassign01Page implements OnInit {
     total = this.dataallarray.reduce((acc,current) => acc + Number(current.countsus), 0) + this.datasomearray.reduce((acc,current) => acc + Number(current.qty), 0);
     //console.log(total);
     this.ionicForm.controls['total'].setValue(total);
-    //console.log(this.ionicForm.value);
+    console.log(this.ionicForm.value);
     const confirm =  await this.alertCtrl.create({
       header: 'ยืนยันข้อมูลในการบันทึก',
       //message: 'แน่ใจว่าต้องการลบเลขระบบที่ '+ item +' ? ',

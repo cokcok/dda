@@ -24,6 +24,11 @@
         <ion-icon slot="icon-only" src="./assets/icons/save.svg"></ion-icon>
       </ion-button>
     </ion-buttons> 
+    <ion-buttons slot="primary" *ngIf="mode !== 'view'  && privilege_saveeditrecive_date.includes(tmppostatus)">
+      <ion-button (click)="submitForm_date()">
+        <ion-icon slot="icon-only" src="./assets/icons/editdate.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons> 
     <ion-buttons slot="primary" *ngIf="modepayment === 'ok' && privilege_payment.includes(group_id)">
       <ion-button (click)="submitForm_Payment()">
         <ion-icon slot="icon-only" src="./assets/icons/save.svg"></ion-icon>
@@ -451,7 +456,10 @@
               </ion-row>
             </div>
             </ion-col>
-            <ion-col size="12" *ngIf="isSubmitted && this.ionicForm.controls.po_green.value.id === 0 && c.numbervalue === null">
+            <ion-col size="12" *ngIf="c.notnumber === true">
+              <ion-col  size="auto"> ไม่ปักตัวเลข</ion-col>
+            </ion-col>
+            <ion-col size="12" *ngIf="isSubmitted && this.ionicForm.controls.po_green.value.id === 0 && c.numbervalue === null && c.notnumber === false">
               <ion-row >
                 <span class="error" >
                  สินค้าลำดับที่ {{i+1}}  กรุณาระบุเบอร์เสื้อ

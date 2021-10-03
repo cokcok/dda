@@ -58,6 +58,7 @@ export class Po01numberPage implements OnInit {
     this.portscategory = [
       {id: '0',typecategory: 'ตัวเลข'},
       {id: '1',typecategory: 'สินค้าอื่นๆ'},
+      {id: '2',typecategory: 'ไม่ปักตัวเลข'},
     ];
     if(this.mode === 'fix'){
       this.portscategoryid = '0';
@@ -216,7 +217,7 @@ export class Po01numberPage implements OnInit {
       } else {
         this.modalCtrl.dismiss(this.ionicForm.value,'comfirm');
       }
-    }else{
+    }else if(this.portscategoryid === '1'){
       //console.log('abc');
       this.ionicForm1.controls['tmpproductetc'].setValue(this.tmpproduct);
       //console.log(this.ionicForm1.value);
@@ -226,6 +227,8 @@ export class Po01numberPage implements OnInit {
       } else {
         this.modalCtrl.dismiss(this.ionicForm1.value,'comfirm1');
       }
+    }else{
+      this.modalCtrl.dismiss(null,'comfirm2');
     }
   }
 
