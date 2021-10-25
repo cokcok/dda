@@ -115,9 +115,12 @@
               <ion-col  size="auto" *ngIf="cc.podetail_number != null"><u class="showlabel">เบอร์:</u> {{cc.podetail_number}}</ion-col>
               <ion-col  size="auto" *ngIf="cc.color_front != null"><u class="showlabel">ด้านหน้าสี:</u> {{cc.color_front}}</ion-col>
               <ion-col  size="auto" *ngIf="cc.color_back != null"><u class="showlabel">ด้านหลังสี:</u> {{cc.color_back}}</ion-col>
-              <ion-row *ngIf="cc.product_other != null">
+              <ion-col *ngIf="cc.product_other != null">
                 <ion-col> <u class="showlabel">สินค้าอื่น :</u> {{cc.product_other}}</ion-col>
-              </ion-row>
+              </ion-col>
+              <ion-col *ngIf="cc.product_flg  != ''">
+                <ion-col> <u class="showlabel">หมายเหตุ :</u> {{cc.product_flg}}</ion-col>
+              </ion-col>
             </ion-row>
           </div>
           <ion-row>
