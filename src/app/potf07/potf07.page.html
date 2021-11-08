@@ -9,9 +9,9 @@
 <form [formGroup]="ionicForm" novalidate>
   <ion-grid fixed>
     <ion-row>
-      <!-- <ion-col >
+       <ion-col >
         <ion-item>
-          <ion-label class="showlabel" position="floating" >ประเภทการค้นหา</ion-label>
+          <ion-label class="showlabel" position="floating" >ประเภทการส่ง</ion-label>
           <ionic-selectable
             interface="floating"
             item-content
@@ -24,19 +24,21 @@
             (onChange)="portChange($event)"
             >
           </ionic-selectable>
-          <span class="error" *ngIf="isSubmitted && errorControl.mtd_size_id.errors?.required">
-            กรุณาระบุ ประเภทการค้นหา
+          <span class="error" *ngIf="isSubmitted && errorControl.typeserch_id.errors?.required">
+            กรุณาระบุ ประเภทการส่ง
           </span>
         </ion-item> 
-      </ion-col> -->
+      </ion-col> 
+    </ion-row> 
+    <ion-row *ngIf="typeserch===0">
       <ion-col>
         <ion-item> 
           <ion-label class="showlabel" position="floating">วันที่มอบหมาย</ion-label>
           <ion-input  formControlName="txtserach" readonly [liIonic4Datepicker]="datePickerObj" type="text"></ion-input>
          
-          <span class="error" *ngIf="isSubmitted && errorControl.txtserach.errors?.required">
+          <!-- <span class="error" *ngIf="isSubmitted && errorControl.txtserach.errors?.required">
             กรุณาระบุ วันที่มอบหมาย
-          </span>
+          </span> -->
         </ion-item>
       </ion-col>
       <ion-col>
@@ -48,14 +50,33 @@
       <ion-col>
           <ion-button [disabled]="ionicForm.invalid" (click)="SearchData(0)" expand="block"
           shape="round">
-          สรุปข้อมูล  
+          สรุปข้อมูลก่อนส่ง
         </ion-button>
       </ion-col> 
-      <!-- <ion-col>
-        <ion-button [disabled]="ionicForm.invalid" (click)="get_dataexcel()" expand="block" shape="round"  color="success">
-        ออกรายงาน
-      </ion-button>
-    </ion-col> -->
+    </ion-row>
+    <ion-row *ngIf="typeserch===1">
+      <ion-col>
+        <ion-item> 
+          <ion-label class="showlabel" position="floating">วันที่ส่ง</ion-label>
+          <ion-input  formControlName="txtserach_send" readonly [liIonic4Datepicker]="datePickerObj" type="text"></ion-input>
+         
+          <!-- <span class="error" *ngIf="isSubmitted && errorControl.txtserach_send.errors?.required">
+            กรุณาระบุ วันที่มอบหมาย
+          </span> -->
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item> 
+          <ion-label class="showlabel" position="floating">ถึง วันที่ส่ง</ion-label>
+        <ion-input  [disabled]="ionicForm.controls.txtserach_send.invalid" formControlName="txtserach1_send" readonly [liIonic4Datepicker]="datePickerObj" type="text"></ion-input>
+        </ion-item>
+      </ion-col>    
+      <ion-col>
+          <ion-button [disabled]="ionicForm.invalid" (click)="SearchData_Send(0)" expand="block"
+          shape="round">
+          สรุปข้อมูลหลังส่ง 
+        </ion-button>
+      </ion-col> 
     </ion-row>
     <ion-row class="content_alert">
       <ion-col>

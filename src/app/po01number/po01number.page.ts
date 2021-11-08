@@ -56,9 +56,9 @@ export class Po01numberPage implements OnInit {
   loaddata_typeserch(){
 
     this.portscategory = [
-      {id: '0',typecategory: 'ตัวเลข'},
-      {id: '1',typecategory: 'สินค้าอื่นๆ'},
-      {id: '2',typecategory: 'ไม่ปักตัวเลข'},
+      {id: '0',typecategory: 'ตัวเลข',name: 'radio_list',},
+      {id: '1',typecategory: 'สินค้าอื่นๆ',name: 'radio_list',},
+      {id: '2',typecategory: 'ไม่ปักตัวเลข',name: 'radio_list',},
     ];
     if(this.mode === 'fix'){
       this.portscategoryid = '0';
@@ -66,6 +66,10 @@ export class Po01numberPage implements OnInit {
       this.portscategoryid = '1';
     }
 
+  }
+
+  radioGroupChange(event) {
+    this.portscategoryid = event.detail.value;
   }
 
   loaddata_product(_value) {

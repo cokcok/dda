@@ -23,7 +23,7 @@
       <ion-button (click)="submitForm()">
         <ion-icon slot="icon-only" src="./assets/icons/save.svg"></ion-icon>
       </ion-button>
-    </ion-buttons> 
+    </ion-buttons>  
     <ion-buttons slot="primary" *ngIf="mode !== 'view'  && privilege_saveeditrecive_date.includes(tmppostatus)">
       <ion-button (click)="submitForm_date()">
         <ion-icon slot="icon-only" src="./assets/icons/editdate.svg"></ion-icon>
@@ -280,7 +280,7 @@
           <ion-item>
             <ion-label class="showlabel" position="floating">การส่งสินค้า</ion-label>
             <ionic-selectable interface="floating" item-content formControlName="mtd_shipping_id" itemValueField="id"
-              itemTextField="shipping_desc" [items]="ports_shipping" [canSearch]="true" closeButtonText="ยกเลิก" (onChange)="portChange($event)">
+              itemTextField="shipping_desc" [items]="ports_shipping" [canSearch]="true" closeButtonText="ยกเลิก" (onChange)="portChange($event)"> 
             </ionic-selectable>
             <span class="error" *ngIf="isSubmitted && errorControl.mtd_shipping_id.errors?.required">
               กรุณาระบุ การส่งสินค้า

@@ -10,8 +10,8 @@ import {Keepalive} from '@ng-idle/keepalive';
   providedIn: 'root'
 }) 
 export class ConfigService {
-  //public ip = 'http://localhost:8012/ws_dda/'; // test
-  public ip = 'https://www.duangdeewin.com/ws_dda/'; //production
+  public ip = 'http://localhost:8012/ws_dda/'; // test
+  //public ip = 'https://www.duangdeewin.com/ws_dda/'; //production
   //public ip = 'http://192.168.1.47/ws_dda/';
   public token;
   public emp_id:number; 

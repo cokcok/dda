@@ -244,7 +244,7 @@ export class Poassign03Page implements OnInit {
             text: 'ขนาด: ' + element['size']
           },{
             border: [false, false, true, false],
-            fillColor: this.configSv.colortxt[moment(element['po_recivedate'],'DD/MM/YYYY').isoWeekday()],
+            //fillColor: this.configSv.colortxt[moment(element['po_recivedate'],'DD/MM/YYYY').isoWeekday()],
             text: 'วันนัดรับ: ' +  element['po_recivedate'] 
           }
         ],

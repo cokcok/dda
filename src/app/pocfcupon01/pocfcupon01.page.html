@@ -62,6 +62,18 @@
         </ion-col>
       </ion-row>
       <ion-row>
+        <ion-col>
+          <ion-item>
+            <label class="showlabelheader"> งานปักที่รอ </label>&nbsp;&nbsp;&nbsp;&nbsp; <label>{{c.totalunsus }}</label>  &nbsp;&nbsp;&nbsp;&nbsp; <label class="showlabelheader">รายการ</label>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <label class="showlabelheader"> งานปักที่เสร็จ </label>&nbsp;&nbsp;&nbsp;&nbsp; <label>{{c.totalsus }}</label>  &nbsp;&nbsp;&nbsp;&nbsp; <label class="showlabelheader">รายการ</label>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
         <ion-item> 
           <ion-label> <u class="showlabelheader">สถานะ :</u> <span
               [ngClass]="{'postatus_alert': c.po_assign_status == 0,'status_ok0':c.po_assign_status == 2,'postatus_ok':c.po_assign_status == 1}">

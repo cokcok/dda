@@ -42,7 +42,7 @@ export class Po01Page implements OnInit {
   group_id:any;
   privilege_payment = ['1','4','9']; 
   privilege_saveedit = [undefined,'0','1']; 
-  privilege_saveeditrecive_date = ['3','4','5']; 
+  privilege_saveeditrecive_date = ['2','3','4','5']; 
   constructor(private navCtrl: NavController,public formBuilder: FormBuilder,
     public configSv: ConfigService,public mtdSv: MtdSvService,
     private alertCtrl: AlertController,private poSv: PoSvService,public placeSv:PlaceSvService,private modalCtrl:ModalController,private iab: InAppBrowser) { 

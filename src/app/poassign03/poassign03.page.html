@@ -31,12 +31,12 @@
     </ion-row>
   </ion-grid>
 </form>
-<ion-content>
+<ion-content>  
   <div>
     <ion-searchbar placeholder="ค้นหา..." [(ngModel)]="filterTerm" animated="true"></ion-searchbar>
     <ion-card *ngFor="let c of data  | filter:filterTerm;index as i">
       <ion-row  class="showlabelheader">
-        <ion-col>ครั้งที่ {{c.seq}}</ion-col>
+        <ion-col>ครั้งที่ {{c.seq}} {{c.create_time}}</ion-col>
         <ion-col>จำนวน {{c.total}} รายการ</ion-col>
         <ion-col>
           <ion-button fill="outline" color="tertiary" (click)="PrintData(c.id)">ออกคูปอง</ion-button>

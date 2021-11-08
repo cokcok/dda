@@ -58,7 +58,7 @@ export class Potf02Page implements OnInit {
     //.getpo(this.ionicForm.value,padding,this.limit)
     .subscribe((data) => {
       if (data !== null) {
-        console.log(data.data_detail);
+        //console.log(data.data_detail);
         this.data =  data.data_detail.map((item) => Object.assign({}, item));   
       }else{
         this.maxpadding = 0;

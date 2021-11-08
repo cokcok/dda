@@ -7,9 +7,6 @@
     </ion-buttons>
     <ion-title>เพิ่มรายละเอียดสินค้าลำดับที่ {{index}}</ion-title>
     <ion-buttons slot="end">
-      <!-- <ion-button (click)="dismissModal()">
-        <ion-icon slot="icon-only" src="./assets/icons/close.svg"></ion-icon>
-      </ion-button> -->
       <ion-buttons slot="primary">
         <ion-button (click)="submitForm()">
           <ion-icon slot="icon-only" src="./assets/icons/save.svg"></ion-icon>
@@ -18,7 +15,7 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-item *ngIf="!fix.includes(mode)">
+<!-- <ion-item *ngIf="!fix.includes(mode)">
   <ion-label class="showlabel" position="floating" >หมวด</ion-label>
   <ionic-selectable
     interface="floating" 
@@ -31,7 +28,21 @@
     (onChange)="portChange_category($event)"
     >
   </ionic-selectable>
-</ion-item>
+</ion-item> -->
+<ion-list *ngIf="!fix.includes(mode)">
+  <ion-radio-group allow-empty-selection="true" name="radio-group" (ionChange)="radioGroupChange($event)" #radioGroup>
+    <ion-list-header>
+      <ion-label>หมวด</ion-label>
+    </ion-list-header>
+    <ion-item *ngFor="let item of portscategory" >
+      <ion-label>{{item.typecategory}}</ion-label>
+      <ion-radio slot="start" name="{{item.name}}" value="{{item.id}}" 
+       ></ion-radio>
+    </ion-item>
+
+  </ion-radio-group>
+</ion-list>
+
 <ion-content class="ion-padding">
   <form [formGroup]="ionicForm" novalidate *ngIf="portscategoryid==='0'">
     <ion-grid fixed>

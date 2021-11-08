@@ -52,8 +52,13 @@ export class Potf07Page implements OnInit {
   ngOnInit() {
    // this.portControl = this.formBuilder.control("", Validators.required);
     this.ionicForm = this.formBuilder.group({
-      txtserach: ["",[Validators.required]],
-      txtserach1: ["",[Validators.required]],
+      typeserch_id : ["",[Validators.required]],
+      txtserach: [],
+      txtserach1: [],
+      txtserach_send :[],
+      txtserach1_send :[],
+      // txtserach: ["",[Validators.required]],
+      // txtserach1: ["",[Validators.required]],
     }); 
     this.loaddata_typeserch();this.fndate();
   }
@@ -61,10 +66,11 @@ export class Potf07Page implements OnInit {
 
   loaddata_typeserch(){
     this.portssearch = [
-      {id: 0,typeserch: 'วันที่มอบหมายการส่ง'},
-      {id: 1,typeserch: 'เลขที่ใบสั่งซื้อ'},
+      {id: 0,typeserch: 'ก่อนส่ง'},
+      {id: 1,typeserch: 'หลังส่ง'},
     ];
     //console.log(this.ports);
+    
   }
 
   get errorControl() {
@@ -76,8 +82,18 @@ export class Potf07Page implements OnInit {
     value: any
   }) {
     let port = event.value;
-    //console.log(port,port['id']);
     this.typeserch = port['id'];
+    if(this.typeserch === 0){
+      this.ionicForm.get('txtserach').setValidators(Validators.required);
+      this.ionicForm.get('txtserach1').setValidators(Validators.required);
+      this.ionicForm.get('txtserach_send').setValidators(null);
+      this.ionicForm.get('txtserach1_send').setValidators(null);
+    }else{
+      this.ionicForm.get('txtserach_send').setValidators(Validators.required);
+      this.ionicForm.get('txtserach1_send').setValidators(Validators.required);
+      this.ionicForm.get('txtserach').setValidators(null);
+      this.ionicForm.get('txtserach1').setValidators(null);
+    }
   }
 
   fndate(){
@@ -121,7 +137,7 @@ export class Potf07Page implements OnInit {
   get_report(){
     var docDefinition = {
       pageSize: 'A4',
-      //pageOrientation: 'landscape',
+      pageOrientation: 'landscape',
       pageMargins: [ 10,30,10,10 ],
       header: {
         margin: 10,
