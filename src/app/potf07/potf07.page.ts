@@ -269,4 +269,8 @@ export class Potf07Page implements OnInit {
     };
   }
 
+
+  SearchData_Send(padding,infiniteScroll?){
+
+  }
 }

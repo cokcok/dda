@@ -6,13 +6,14 @@ import { Subscription } from "rxjs";
 import { MtdSvService} from '../sv/mtd-sv.service';
 import {PoSvService} from '../sv/po-sv.service';
 import * as moment_ from 'moment';
-import 'moment/locale/th';  
+import 'moment/locale/th';   
 const moment = moment_;
 import { IonicSelectableComponent } from 'ionic-selectable';
 import {PlaceSvService} from '../sv/place-sv.service';
 import {Po01numberPage} from '../po01number/po01number.page';
 //import * as $ from 'jquery';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import {PortService} from '../namewin/port.service';
 
 @Component({
   selector: 'app-po01',
@@ -28,6 +29,7 @@ export class Po01Page implements OnInit {
   //id: number; 
   portControl_sale: FormControl; ports_sale: any;
   portControl_area: FormControl; ports_area: any;
+  portControl_namewin: FormControl; ports_namewin: any;
   portControl_shipping: FormControl; ports_shipping: any;
   portControl_productmain: FormControl; ports_productmain: any;ports_productmain_number: any;
   portControl_customertype: FormControl; portscustomertype:any;
@@ -45,7 +47,7 @@ export class Po01Page implements OnInit {
   privilege_saveeditrecive_date = ['2','3','4','5']; 
   constructor(private navCtrl: NavController,public formBuilder: FormBuilder,
     public configSv: ConfigService,public mtdSv: MtdSvService,
-    private alertCtrl: AlertController,private poSv: PoSvService,public placeSv:PlaceSvService,private modalCtrl:ModalController,private iab: InAppBrowser) { 
+    private alertCtrl: AlertController,private poSv: PoSvService,public placeSv:PlaceSvService,private modalCtrl:ModalController,private iab: InAppBrowser,private portService:PortService) { 
       //this.folder = this.activatedRoute.snapshot.paramMap.get('id');
       this.group_id = this.configSv.group_id;
     }
@@ -57,13 +59,15 @@ export class Po01Page implements OnInit {
     this.portControl_shipping = this.formBuilder.control("", Validators.required);
     this.portControl_customertype = this.formBuilder.control("", Validators.required);
     this.portControl_green = this.formBuilder.control("", Validators.required);
+    this.portControl_namewin =  this.formBuilder.control("", Validators.required);
     this.portControl_member = this.formBuilder.control("");
     this.ionicForm = this.formBuilder.group({
-      id:[this.id],
+      id:[this.id], 
       po_running:[""],
       po_date:[moment().format('DD/MM/YYYY'),[Validators.required]],
       mtd_user_id:this.portControl_sale,
       po_namewin: ["",[Validators.required]],
+      //po_namewin : this.portControl_namewin,
       mtd_area_id: this.portControl_area,
       customer_type_id :  this.portControl_customertype,
       po_customer:[""], 
@@ -94,6 +98,10 @@ export class Po01Page implements OnInit {
 
   ionViewDidEnter(){
     this.loaddata_edit();
+    this.ports_namewin = this.portService.data;
+    //console.log(this.ports_namewin);
+    //console.log(this.ports_namewin);
+    //this.ports_namewin =
   
   }
 
@@ -643,6 +651,7 @@ export class Po01Page implements OnInit {
   }
 
   async submitForm(){
+    console.log(this.ionicForm.value)
     let foundaddnumber = false;
     if(this.ionicForm.controls['po_green'].value.id === 0 ){
       foundaddnumber  = this.tmpproduct.find(function (value){
@@ -1103,7 +1112,33 @@ fileUpload_imgpayment(event) {
   confirm.present();
 }
 
- }
+}
+
+addPort() {
+  // Create port.
+  // let port = new Port({
+  //   //id: this.portService.getNewPortId(),
+  //   name: this.portNameControl.value,
+  //   //country: this.portCountryControl.value
+  // });
+  // console.log(port);
+  // Add port to storage.
+  //this.portService.addPort(port);
+
+  // // Add port to the top of list.
+  // this.portComponent.addItem(port).then(() => {
+  //   this.portComponent.search(port.name);
+  // });
+
+  // // Clean form.
+  // this.portNameControl.reset();
+  // this.portCountryControl.reset();
+
+  // // Show list.
+  // this.portComponent.hideAddItemTemplate();
+}
+
+
 
 
 }

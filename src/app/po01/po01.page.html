@@ -193,13 +193,34 @@
           </ion-item>
         </ion-col>
         <ion-col>
-          <ion-item>
+          <!-- <ion-item>
             <ion-label class="showlabel" position="floating">ชื่อวิน</ion-label>
-            <ion-input formControlName="po_namewin" type="text"></ion-input>
+            <ion-input list="browsers" formControlName="po_namewin" type="text"></ion-input>
+            <span class="error" *ngIf="isSubmitted && errorControl.po_namewin.errors?.required">
+              กรุณาระบุ ชื่อวิน
+            </span> 
+          </ion-item> -->
+
+          <ion-item>
+            <ion-label class="showlabel" position="floating"></ion-label>
+            <input list="browsers"  placeholder="ชื่อวิน" formControlName="po_namewin">
             <span class="error" *ngIf="isSubmitted && errorControl.po_namewin.errors?.required">
               กรุณาระบุ ชื่อวิน
             </span> 
           </ion-item>
+          
+          <!-- <ion-label>Browsers</ion-label>  -->
+    
+            <datalist id="browsers">
+                <!-- <option value="Internet Explorer"></option>
+                <option value="Firefox"></option>
+                <option value="Chrome"></option>
+                <option value="Opera"></option>
+                <option value="Safari"></option> -->
+                <option *ngFor="let user of ports_namewin" [value]="user.name">
+                  {{ user.name }}
+              </option>
+            </datalist>
         </ion-col>
         <ion-col > 
           <ion-item>
@@ -308,7 +329,7 @@
       <ion-row>
         <ion-col>
           <ion-label>
-            <ion-auto-complete class="showlabel" [labelPosition]="'floating'" [label]="'สถานที่ส่ง ( แขวง/ตำบล เขต/อำเภอ จังหวัด รหัสไปรษณีย์)'" formControlName="po_address_place"
+            <ion-auto-complete class="showlabel" [labelPosition]="'floating'" [label]="'สถานที่ส่ง ( แขวง/ตำบล เขต/อำเภอ จังหวัด รหัสไปรษณีย์)'" formControlName="po_address_place" [useIonInput]="false"
             [dataProvider]="placeSv"></ion-auto-complete>
           </ion-label>
         </ion-col>
@@ -535,4 +556,23 @@
     </ion-grid>
 
   </form>
+
+  <!-- <ng-autocomplete 
+  [data]="data_test"
+  [searchKeyword]="keyword"
+  placeholder="ชื่อวิน"
+  (selected)='selectEvent($event)'
+  (inputChanged)='onChangeSearch($event)'
+  (inputFocused)='onFocused($event)'
+  [itemTemplate]="itemTemplate"
+  [notFoundTemplate]="notFoundTemplate"> 
+</ng-autocomplete>
+
+<ng-template #itemTemplate let-item>
+<a [innerHTML]="item.name"></a>
+</ng-template>
+
+<ng-template #notFoundTemplate let-notFound>
+<div [innerHTML]="notFound"></div>
+</ng-template> -->
 </ion-content>

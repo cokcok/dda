@@ -9,7 +9,7 @@ import { data } from '../models/data_model';
 import { FeedBack } from './../models/feedback';
 @Injectable({
   providedIn: 'root'
-})
+}) 
 export class PlaceSvService {
   sub: Subscription;
   place = [];
