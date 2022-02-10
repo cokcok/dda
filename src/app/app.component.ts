@@ -9,7 +9,8 @@ import { Router } from '@angular/router';
 import { ConfigService } from './sv/config.service';
 import { SigninSvService } from './sv/signin-sv.service';
 import { page } from './models/signin_model';
-
+import { PoSvService } from './sv/po-sv.service';
+PoSvService
 
 @Component({
   selector: 'app-root',
@@ -88,7 +89,7 @@ export class AppComponent implements OnInit {
   //   }
   // ];
   public appPages: any;
-  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
+ //public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
   emp_name: string; dept_name: string; pic: string;
   constructor(
     private platform: Platform,
@@ -96,17 +97,25 @@ export class AppComponent implements OnInit {
     private statusBar: StatusBar,
     private notificationsService: NotificationsService,
     private navCtrl: NavController,
-    private router: Router, public configSv: ConfigService, public signinSv: SigninSvService, public menuCtrl: MenuController
+    private router: Router, public configSv: ConfigService, public signinSv: SigninSvService, public menuCtrl: MenuController,
+    private poSv: PoSvService
   ) {
     this.initializeApp();
     this.Showversion();
   }
 
-  initializeApp() {
+  initializeApp() { 
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
-      this.splashScreen.hide();
-      this.chklogin();  // เช็ด ต้องผ่านหน้า login ก่อน 
+      this.splashScreen.hide(); 
+
+      // this.poSv.getObservable_tf().subscribe((data) => {
+      //   //this.chkAuten = data;
+      //  //console.log(this.chkAuten);
+      //   this.chklogin(data); 
+      // });
+
+      //this.chklogin();  // เช็ด ต้องผ่านหน้า login ก่อน 
      // this.configSv.chkidle(); // เช็ด ถ้าไม่มีการ active ที่หน้าจอ จะย้อนกลับไปหน้า login 
       this.signinSv.getObservable().subscribe((data) => {
         //console.log('Data received', data);
@@ -137,6 +146,9 @@ export class AppComponent implements OnInit {
     });
     //this.chkAuten = true;
     //this.menuCtrl.close();
+
+  
+
   }
 
   async ngOnInit() {
@@ -155,9 +167,10 @@ export class AppComponent implements OnInit {
     });
   }
 
-  chklogin() {
-    if (this.chkAuten === false) {
-      this.router.navigateByUrl('/');
+  chklogin(data) {
+    if (this.chkAuten === false || data !== true) {
+      console.log(data);
+      this.router.navigateByUrl('/signin');
     }
   }
 

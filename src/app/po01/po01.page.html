@@ -86,8 +86,8 @@
         <ion-row *ngIf="paymenttype === 0">
           <ion-col>
             <ion-item>
-              <ion-label class="showlabel" position="floating">รับเงิน</ion-label>
-              <ion-input formControlName="cashmoney_0" type="number"  (keyup)="cul_cashmoney_0()" ></ion-input>
+              <ion-label class="showlabel" position="floating">รับเงิน</ion-label> 
+              <ion-input formControlName="cashmoney_0" type="number"  (input)="cul_cashmoney_0($event.target.value)" ></ion-input>
               <span class="error" *ngIf="isSubmitted && errorControl_Payment.cashmoney_0.errors?.required">
                 กรุณาระบุ รับเงิน
               </span>
@@ -451,8 +451,9 @@
               <ion-button (click)="onClick_fileUpload(c.id)">
                 <ion-icon slot="icon-only" class="iconSize" name="images"></ion-icon>
               </ion-button> 
-              <ion-button *ngIf="this.ionicForm.controls.po_green.value.id === 0" (click)="Addnumber(i+1,c.id)">
-                <ion-icon slot="icon-only" class="iconSize" name="add"></ion-icon>
+              <ion-button  (click)="Addnumber(i+1,c.id)">
+                <ion-icon slot="icon-only" class="iconSize" name="add"></ion-icon> 
+                <!-- *ngIf="this.ionicForm.controls.po_green.value.id === 0" -->
               </ion-button>
               <ion-button (click)="Deltmpproduct(c.id,c.id,c.type,c.product_id,c.number_id,c.statusqty)">
                 <ion-icon slot="icon-only" class="iconSize" name="trash"></ion-icon>

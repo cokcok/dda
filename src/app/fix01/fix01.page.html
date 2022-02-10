@@ -82,7 +82,7 @@
           <ion-col>
             <ion-item>
               <ion-label class="showlabel" position="floating">รับเงิน</ion-label>
-              <ion-input formControlName="cashmoney_0" type="number"  (keyup)="cul_cashmoney_0()" ></ion-input>
+              <ion-input formControlName="cashmoney_0" type="number"  (input)="cul_cashmoney_0()" ></ion-input>
               <span class="error" *ngIf="isSubmitted && errorControl_Payment.cashmoney_0.errors?.required">
                 กรุณาระบุ รับเงิน
               </span>

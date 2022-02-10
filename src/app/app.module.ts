@@ -20,6 +20,7 @@ import { File } from '@ionic-native/file/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -33,7 +34,7 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
   providers: [
     StatusBar,
     SplashScreen,{ provide: LocationStrategy, useClass: HashLocationStrategy },
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },InAppBrowser,File,FileOpener  
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },InAppBrowser,File,FileOpener 
   ],
   bootstrap: [AppComponent],
   

@@ -10,7 +10,7 @@ import { FeedBack } from '../models/feedback';
 })
 export class SigninSvService {
 
-  private fooSubject = new Subject<any>();private fooSubject1 = new Subject<any>();
+  private fooSubject = new Subject<any>();private fooSubject1 = new Subject<any>(); 
   constructor(private http: HttpClient, private configSv: ConfigService) { }
 
   signin(username: string, password: string, token?): Observable<employee> {
@@ -32,6 +32,8 @@ export class SigninSvService {
   getObservable(): Subject<any> {
     return this.fooSubject;
   }
+
+ 
 
   getchpass(id: number,type_sql:string): Observable<data> {
     const header = { 'Content-Type': 'application/json' };
@@ -80,4 +82,5 @@ export class SigninSvService {
     return this.fooSubject1;
   }
 
+ 
 }

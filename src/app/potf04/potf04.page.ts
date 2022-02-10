@@ -67,7 +67,7 @@ export class Potf04Page implements OnInit {
       modepay = 'view';
     }else{
       modepay = 'ok';
-    }
+    } 
     if(item[0].assign_type == 0){
       const modal = await this.modalCtrl.create({
         component:Po01Page,

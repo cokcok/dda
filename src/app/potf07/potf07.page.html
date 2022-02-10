@@ -78,11 +78,11 @@
         </ion-button>
       </ion-col> 
     </ion-row>
-    <ion-row class="content_alert">
+    <!-- <ion-row class="content_alert">
       <ion-col>
-        พบข้อมูลที่ค้นหา จำนวน  {{data.length}} ข้อมูล
+        พบข้อมูลที่ค้นหา จำนวน  {{data.length}}{{data_tf.length}} ข้อมูล
       </ion-col>
-    </ion-row>
+    </ion-row> -->
   </ion-grid> 
 </form>
 <ion-content>
@@ -106,8 +106,33 @@
   </ion-card>
   <ion-item *ngIf="data.length>0">
     <ion-col>
-      <ion-button  (click)="get_report()" expand="block" shape="round"  color="success">
-      ออกรายงาน
+      <ion-button  (click)="get_report(data,'before')" expand="block" shape="round"  color="success">
+      ออกรายงานก่อนส่ง
+    </ion-button>
+  </ion-col>
+  </ion-item>
+
+  <ion-card *ngFor="let c of data_tf ;index as i">
+    <ion-item>
+      <ion-row> <ion-label> <u class="showlabel">วันที่ส่ง:</u> {{ c.transferdate }}</ion-label> </ion-row>
+    </ion-item>
+    <ion-item>
+      <ion-row>
+        <ion-col size="50%"> <ion-label> <u class="showlabel">ประเภทการส่ง:</u> {{ c.shipping_desc }}</ion-label>  </ion-col>
+        <ion-col size="50%">  <ion-label> <u class="showlabel">จำนวน:</u> {{c.count_po}}  ชิ้น </ion-label>   </ion-col>
+      </ion-row>
+    </ion-item>
+    <ion-item *ngIf="c.emp_detail?.length > 0">
+      <ion-row *ngFor="let cc of c.emp_detail;let ii = index;">
+        <ion-col size="50%"> <ion-label> <u class="showlabel">คนส่ง:</u>{{cc.name}} </ion-label></ion-col>
+        <ion-col size="50%"><ion-label> <u class="showlabel">จำนวน:</u>{{cc.count_po}} ชิ้น </ion-label>   </ion-col>
+      </ion-row>
+    </ion-item>
+  </ion-card>
+  <ion-item *ngIf="data_tf.length>0">
+    <ion-col>
+      <ion-button  (click)="get_reporttf(data_tf,'after')" expand="block" shape="round"  color="success">
+      ออกรายงานหลังส่ง
     </ion-button>
   </ion-col>
   </ion-item>

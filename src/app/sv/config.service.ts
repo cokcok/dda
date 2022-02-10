@@ -10,16 +10,16 @@ import {Keepalive} from '@ng-idle/keepalive';
   providedIn: 'root'
 }) 
 export class ConfigService {
-  //public ip = 'http://localhost:8012/ws_dda/'; // test
+ // ip = 'http://localhost:8012/ws_dda/'; // test
   public ip = 'https://www.duangdeewin.com/ws_dda/'; //production
-  //public ip = 'http://192.168.1.47/ws_dda/';
   public token;
   public emp_id:number; 
   public group_id:number; public pic:string;
   public prefix_name:string;public surname:string;public name:string
   //emp_name:string; dept_name:string;pic:string;
   idleState = 'Not started.';timedOut = false;lastPing?: Date = null;
-  colortxt = ['#000000', '#ffff00', '#FF00F3', '#008000', '#ffa500', '#87ceeb', '#800080', '#ff0000'];
+
+  colortxt = ['#000000', '#FEFFA0', '#FFB4FC', '#B4FFBB', '#FCA560', '#A6FEF6', '#C481FF', '#FA7676'];
   numberalltxt = ['รอปักเลขทั้งหมด','ปักเลขทั้งหมดแล้ว','รอปักเลขบางส่วน'];
   greenalltxt = ['รอปักป้ายเขียวทั้งหมด','ปักป้ายเขียวทั้งหมดแล้ว','รอปักป้ายเขียวบางส่วน'];
   installalltxt = ['รอประกอบทั้งหมด','ประกอบทั้งหมดแล้ว','รอประกอบบางส่วน'];

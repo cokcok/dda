@@ -15,6 +15,7 @@ import {Po01numberPage} from '../po01number/po01number.page';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import {PortService} from '../namewin/port.service';
 
+
 @Component({
   selector: 'app-po01',
   templateUrl: './po01.page.html',
@@ -50,10 +51,11 @@ export class Po01Page implements OnInit {
     private alertCtrl: AlertController,private poSv: PoSvService,public placeSv:PlaceSvService,private modalCtrl:ModalController,private iab: InAppBrowser,private portService:PortService) { 
       //this.folder = this.activatedRoute.snapshot.paramMap.get('id');
       this.group_id = this.configSv.group_id;
+     //this.AppComponent.chkAuten =  true;
     }
-
+ 
   ngOnInit() {
-   
+    
     this.portControl_sale = this.formBuilder.control("", Validators.required);
     this.portControl_area = this.formBuilder.control("", Validators.required);
     this.portControl_shipping = this.formBuilder.control("", Validators.required);
@@ -95,7 +97,7 @@ export class Po01Page implements OnInit {
     this.loaddata_sale(0);this.loaddata_area(0);this.loaddata_shipping(0);this.loaddata_customertype();this.loaddata_member(0);
     this.fndate();   this.loadform_payment();this.loaddata_greentype();
   }
-
+ 
   ionViewDidEnter(){
     this.loaddata_edit();
     this.ports_namewin = this.portService.data;
@@ -275,7 +277,7 @@ export class Po01Page implements OnInit {
   }
 
  
-
+ 
   get errorControl() {
     return this.ionicForm.controls;
   }
@@ -651,7 +653,7 @@ export class Po01Page implements OnInit {
   }
 
   async submitForm(){
-    console.log(this.ionicForm.value)
+    //console.log(this.ionicForm.value)
     let foundaddnumber = false;
     if(this.ionicForm.controls['po_green'].value.id === 0 ){
       foundaddnumber  = this.tmpproduct.find(function (value){
@@ -949,9 +951,19 @@ export class Po01Page implements OnInit {
    
   }
 
-  cul_cashmoney_0(){
-    let total =  Number(this.ionicFormPayment.controls['cashmoney_0'].value) - Number(this.ionicFormPayment.controls['moneypay'].value);
+  cul_cashmoney_0(value){
+    //console.log(value);
+    //this.plf.platforms()
+   
+    // if(this.plf.is('desktop')){
+    //   let total =  Number(value) - Number(this.ionicFormPayment.controls['moneypay'].value);
+    //   this.ionicFormPayment.controls['change_0'].setValue(total);
+    // }else{
+    //   this.ionicFormPayment.controls['change_0'].setValue(this.ionicFormPayment.controls['cashmoney_0'].value);
+    // }
+    let total =  Number(value) - Number(this.ionicFormPayment.controls['moneypay'].value);
     this.ionicFormPayment.controls['change_0'].setValue(total);
+   
   }
 
   async submitForm_Payment() {

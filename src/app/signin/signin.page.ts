@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import {SigninSvService} from '../sv/signin-sv.service';
 import {ConfigService} from '../sv/config.service';
+import { Location } from '@angular/common';
 
 
 @Component({
@@ -16,9 +17,8 @@ export class SigninPage implements OnInit {
   isSubmitted = false;
   versionNumber: string|number;
  
-
+ 
   constructor(public formBuilder: FormBuilder,public menuCtrl: MenuController,private navCtrl: NavController,private signinSv:SigninSvService,public configSv:ConfigService) { 
-
 
   }
 
@@ -30,6 +30,7 @@ export class SigninPage implements OnInit {
       dob: [this.defaultDate],
       mobile: ['', [Validators.required, Validators.pattern('^[0-9]+$')]] */
     });
+   
     
   }
  

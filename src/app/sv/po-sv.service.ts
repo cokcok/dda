@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ConfigService } from './config.service';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { data,number_data } from '../models/data_model';
 import { FeedBack } from '../models/feedback';
@@ -8,7 +8,7 @@ import { FeedBack } from '../models/feedback';
   providedIn: 'root'
 })
 export class PoSvService {
- 
+  private fooSubject_tf = new Subject<any>();
   constructor(private http: HttpClient, private configSv: ConfigService) { }
 
 
@@ -603,7 +603,24 @@ export class PoSvService {
     return this.http.post<data>(apiUrl, data, { headers: header });
   }
 
+  searchtfsummary_tf(vdata:any): Observable<data> {
+    const header = { 'Content-Type': 'application/json' };
+    let apiUrl = this.configSv.ip + 'tf_summary.php';
+     let data = { 
+      'serchtxt': vdata.txtserach_send,
+      'serchtxt1': vdata.txtserach1_send,
+      'type_sql': 'readsend',
+    }
+    return this.http.post<data>(apiUrl, data, { headers: header });
+  }
 
+  publishSomeData_tf(data: any) {
+    this.fooSubject_tf.next(data);
+  }
+
+  getObservable_tf(): Subject<any> {
+    return this.fooSubject_tf;
+  }
 
 }
   

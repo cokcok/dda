@@ -38,7 +38,7 @@ pdfMake.fonts = {
 })
 export class Potf07Page implements OnInit {
   ionicForm: FormGroup;isSubmitted = false; 
-  data = []; page = 0;maxpadding:number;limit = 50;
+  data = []; page = 0;maxpadding:number;limit = 50;  data_tf = [];
   sub: Subscription; maxdatalimit=0;filterTerm: string;
   portControl: FormControl; portssearch: any;typeserch:number = 9;
   myarraytxt = [1]; myarraytxtdate = [0];
@@ -123,25 +123,36 @@ export class Potf07Page implements OnInit {
     };
   }
 
-  SearchData(padding,infiniteScroll?){
+  SearchData(padding){
+    this.data= []; this.data_tf = [];
     this.sub = this.poSv
     .searchtfsummary(this.ionicForm.value)
     .subscribe((data) => {
       if (data !== null) {
-         console.log(data.data_detail);
+         //console.log(data.data_detail);
          this.data =  data.data_detail.map((item) => Object. assign({}, item));   
       }
     });
   }
 
-  get_report(){
+  get_report(data,type){
+    let head;
+   
+    if(type === 'before')
+    {
+      head = 'สรุปการส่ง(ก่อน)';
+    }
+    else
+    {
+      head = 'สรุปการส่ง(หลัง)';
+    }
     var docDefinition = {
       pageSize: 'A4',
       pageOrientation: 'landscape',
       pageMargins: [ 10,30,10,10 ],
       header: {
         margin: 10,
-        columns: [{ text: 'สรุปการส่ง', alignment: 'left' },
+        columns: [{ text: head , alignment: 'left' },
         {
           text: {
             function(currentPage, pageCount) {
@@ -153,7 +164,9 @@ export class Potf07Page implements OnInit {
         ]
       },
       content: [
-          this.getDataObject(),
+     
+          this.getDataObject(data,type),
+         
       ],
       defaultStyle: {
         font: 'THSarabunNew'
@@ -162,103 +175,157 @@ export class Potf07Page implements OnInit {
     this.configSv.saveToDevice(pdfMake.createPdf(docDefinition), "tfsummary.pdf");
   }
 
-  getDataObject(){
+  getDataObject(data,type){
     const exs = [];
-    this.data.forEach((element, index) => {
-      if( element['mtd_shipping_id'] === '1'){
+    let head;
+    if(type === 'before')
+    {
+      head = 'วันที่มอบหมาย ';
+    }
+    else
+    {
+      head = 'วันที่ส่ง ';
+    }
+    data.forEach((element, index) => {
+      if( element['mtd_shipping_id'] === '1'  ){
         element['emp_detail'].forEach((element1, index1) => {
           if( exs.length === 0 ){
             exs.push(
-              [{text: 'วันที่มอบหมาย ' +  element['transferdate'] + ' ประเภทการส่ง ' + element['shipping_desc'] + ' ผู้ส่ง  ' +   element1['name'] , style: 'tableHeader', alignment: 'center',colSpan: 3 },'',''], 
+              [{text: head +  element['transferdate'] + ' ประเภทการส่ง ' + element['shipping_desc'] + ' ผู้ส่ง  ' +   element1['name'] , style: 'tableHeader', alignment: 'center',colSpan: 16 },'','','','','','','','','','','','','','',''], 
              ); 
 
           }else{
             exs.push(
-              [{text: 'วันที่มอบหมาย ' +  element['transferdate'] + ' ประเภทการส่ง ' + element['shipping_desc'] + ' ผู้ส่ง  ' +   element1['name'] , style: 'tableHeader', alignment: 'center',colSpan: 3 ,pageBreak: "before"},'',''], 
+              [{text: head +  element['transferdate'] + ' ประเภทการส่ง ' + element['shipping_desc'] + ' ผู้ส่ง  ' +   element1['name'] , style: 'tableHeader', alignment: 'center',colSpan: 16 ,pageBreak: "before"},'','','','','','','','','','','','','','',''], 
              ); 
           }
+      
+
           exs.push(
-            [{text: '#', style: 'tableHeader', alignment: 'center'},{text: 'เลขที่ใบสั่งซื้อ', style: 'tableHeader', alignment: 'center'}, {text: 'สถานะ', style: 'tableHeader', alignment: 'center'}]
-          )
+            [{text: '#', style: 'tableHeader', alignment: 'center'},{text: 'เลขที่ใบสั่งซื้อ', style: 'tableHeader', alignment: 'center'},{text: 'ผู้ขาย', style: 'tableHeader', alignment: 'center'},{text: 'ชื่อวิน', style: 'tableHeader', alignment: 'center'},{text: 'เขต', style: 'tableHeader', alignment: 'center'},{text: 'สินค้า', style: 'tableHeader', alignment: 'center'},{text: 'ขนาด', style: 'tableHeader', alignment: 'center'},{text: 'เบอร์', style: 'tableHeader', alignment: 'center'},{text: 'สี', style: 'tableHeader', alignment: 'center'},{text: 'ราคา', style: 'tableHeader', alignment: 'center'},{text: 'ค่ามัดจำ', style: 'tableHeader', alignment: 'center'},{text: 'สินค้าอื่นๆ', style: 'tableHeader', alignment: 'center'},{text: 'ลูกค้า', style: 'tableHeader', alignment: 'center'},{text: 'เบอร์โทร', style: 'tableHeader', alignment: 'center'},{text: 'หมายเหตุ', style: 'tableHeader', alignment: 'center'}, {text: 'สถานะ', style: 'tableHeader', alignment: 'center'}]
+          );
+          
           element1['po_detail'].forEach((element2, index2) => {
             exs.push(
               [
                 { text: index2+1, alignment: 'center' },
                 { text: element2['po_running'], alignment: 'center' },
+                { text: element2['nickname'], alignment: 'center' },
+                { text: element2['po_namewin'], alignment: 'center' },
+                { text: element2['area_name'], alignment: 'center' },
+                { text: element2['product_name'], alignment: 'center' },
+                { text: element2['size'], alignment: 'center' },
+                { text: element2['podetail_number'], alignment: 'center' },
+                { text: element2['colorfront'], alignment: 'center' },
+                { text: element2['po_total'], alignment: 'center' },
+                { text: element2['po_deposit'], alignment: 'center' },
+                { text: element2['product_other'], alignment: 'center' },
+                { text: element2['po_customer'], alignment: 'center' },
+                { text: element2['po_customer_tel'], alignment: 'center' },
+                { text: element2['podetail_comment'], alignment: 'center' },
                 { text:  element2['postatus'], alignment: 'center' },
               ] //,pageBreak: "before"
             );
           });
+
+          element1['po_sum'].forEach((element3, index3) => {
+            exs.push(
+              [
+                { text: '', alignment: 'center' },
+                { text: '', alignment: 'center' },
+                { text: '', alignment: 'center' },
+                { text: '', alignment: 'center' },
+                { text:'', alignment: 'center' },
+                { text: '', alignment: 'center' },
+                { text: '', alignment: 'center' },
+                { text: '', alignment: 'center' },
+                { text: 'รวม', alignment: 'center' },
+                { text: element3['sumtotal'], alignment: 'center' },
+                { text: element3['sumdeposit'], alignment: 'center' },
+                { text: '', alignment: 'center' },
+                { text: '', alignment: 'center' },
+                { text: '', alignment: 'center' },
+                { text: '', alignment: 'center' },
+                { text:  '', alignment: 'center' },
+              ] //,pageBreak: "before"  
+              );
+          });
+
+
         });
       }
       else
       {
         if( exs.length === 0 ){
           exs.push(
-            [{text: 'วันที่มอบหมาย ' +  element['transferdate'] + ' ประเภทการส่ง ' + element['shipping_desc'] , style: 'tableHeader', alignment: 'center',colSpan: 3 },'',''],
-          ); 
+            [{text: head +  element['transferdate'] + ' ประเภทการส่ง ' + element['shipping_desc']  , style: 'tableHeader', alignment: 'center',colSpan: 16 },'','','','','','','','','','','','','','',''], 
+           ); 
         }else{
           exs.push(
-            [{text: 'วันที่มอบหมาย ' +  element['transferdate'] + ' ประเภทการส่ง ' + element['shipping_desc'] , style: 'tableHeader', alignment: 'center',colSpan: 3,pageBreak: "before" },'',''],
-          ); 
+            [{text: head +  element['transferdate'] + ' ประเภทการส่ง ' + element['shipping_desc']  , style: 'tableHeader', alignment: 'center',colSpan: 16,pageBreak: "before" },'','','','','','','','','','','','','','',''], 
+           ); 
         }
-          exs.push(
-            [{text: '#', style: 'tableHeader', alignment: 'center'},{text: 'เลขที่ใบสั่งซื้อ', style: 'tableHeader', alignment: 'center'}, {text: 'สถานะ', style: 'tableHeader', alignment: 'center'}]
-          );
+         
+        exs.push(
+          [{text: '#', style: 'tableHeader', alignment: 'center'},{text: 'เลขที่ใบสั่งซื้อ', style: 'tableHeader', alignment: 'center'},{text: 'ผู้ขาย', style: 'tableHeader', alignment: 'center'},{text: 'ชื่อวิน', style: 'tableHeader', alignment: 'center'},{text: 'เขต', style: 'tableHeader', alignment: 'center'},{text: 'สินค้า', style: 'tableHeader', alignment: 'center'},{text: 'ขนาด', style: 'tableHeader', alignment: 'center'},{text: 'เบอร์', style: 'tableHeader', alignment: 'center'},{text: 'สี', style: 'tableHeader', alignment: 'center'},{text: 'ราคา', style: 'tableHeader', alignment: 'center'},{text: 'ค่ามัดจำ', style: 'tableHeader', alignment: 'center'},{text: 'สินค้าอื่นๆ', style: 'tableHeader', alignment: 'center'},{text: 'ลูกค้า', style: 'tableHeader', alignment: 'center'},{text: 'เบอร์โทร', style: 'tableHeader', alignment: 'center'},{text: 'หมายเหตุ', style: 'tableHeader', alignment: 'center'}, {text: 'สถานะ', style: 'tableHeader', alignment: 'center'}]
+        );
+
+
           element['po_detail'].forEach((element, index) => {
             exs.push(
               [
-                {text: index+1, alignment: 'center' },
-                {text: element['po_running'], alignment: 'center'},
-                {text: element['postatus'], alignment: 'center'},
-              ] 
+                { text: index+1, alignment: 'center' },
+                { text: element['po_running'], alignment: 'center' },
+                { text: element['nickname'], alignment: 'center' },
+                { text: element['po_namewin'], alignment: 'center' },
+                { text: element['area_name'], alignment: 'center' },
+                { text: element['product_name'], alignment: 'center' },
+                { text: element['size'], alignment: 'center' },
+                { text: element['podetail_number'], alignment: 'center' },
+                { text: element['colorfront'], alignment: 'center' },
+                { text: element['po_total'], alignment: 'center' },
+                { text: element['po_deposit'], alignment: 'center' },
+                { text: element['product_other'], alignment: 'center' },
+                { text: element['po_customer'], alignment: 'center' },
+                { text: element['po_customer_tel'], alignment: 'center' },
+                { text: element['podetail_comment'], alignment: 'center' },
+                { text:  element['postatus'], alignment: 'center' },
+              ] //,pageBreak: "before"
             );
-          });  
-      }
-      // if( element['emp_detail'] != null   ){
-      //   exs.push(
-      //     [{text: 'วันที่มอบหมาย ' +  element['transferdate'] + ' ประเภทการส่ง ' + element['shipping_desc'] + ' ผู้ส่ง  ' +  element['emp_detail'][index]['name'] , style: 'tableHeader', alignment: 'center',colSpan: 3 },'',''], 
-      //   ); 
-      // }else{
-      //   exs.push(
-      //     [{text: 'วันที่มอบหมาย ' +  element['transferdate'] + ' ประเภทการส่ง ' + element['shipping_desc'] , style: 'tableHeader', alignment: 'center',colSpan: 3,pageBreak: "before" },'',''],
-      //   ); 
-      // }
-      // exs.push(
-      //   [{text: '#', style: 'tableHeader', alignment: 'center'},{text: 'เลขที่ใบสั่งซื้อ', style: 'tableHeader', alignment: 'center'}, {text: 'สถานะ', style: 'tableHeader', alignment: 'center'}]
-      // )
-     
-      // if(element['emp_detail'] != null ){
-      //   element['emp_detail'][index]['po_detail'].forEach((element1, index1) => {
-      //     exs.push(
-      //       [
-      //         { text: index1+1, alignment: 'center' },
-      //         { text: element1['po_running'], alignment: 'center' },
-      //         { text:  element1['postatus'], alignment: 'center' },
-      //       ] //,pageBreak: "before"
-      //     );
-      //   });
-      // }
-      // else{
-      //   element['po_detail'].forEach((element, index) => {
-      //     exs.push(
-      //       [
-      //         {text: index+1, alignment: 'center' },
-      //         {text: element['po_running'], alignment: 'center'},
-      //         {text: element['postatus'], alignment: 'center'},
-      //       ] //,pageBreak: "after"
-      //     );
-      //   });
-      // }
-      //i++;
+          });
+
+          element['po_sum'].forEach((element3, index3) => {
+            exs.push(
+              [
+                { text: '', alignment: 'center' },
+                { text: '', alignment: 'center' },
+                { text: '', alignment: 'center' },
+                { text: '', alignment: 'center' },
+                { text:'', alignment: 'center' },
+                { text: '', alignment: 'center' },
+                { text: '', alignment: 'center' },
+                { text: '', alignment: 'center' },
+                { text: 'รวม', alignment: 'center' },
+                { text: element3['sumtotal'], alignment: 'center' },
+                { text: element3['sumdeposit'], alignment: 'center' },
+                { text: '', alignment: 'center' },
+                { text: '', alignment: 'center' },
+                { text: '', alignment: 'center' },
+                { text: '', alignment: 'center' },
+                { text:  '', alignment: 'center' },
+              ] //,pageBreak: "before"  
+              );
+          });
+
+        }
     });
    
    
     return {
       table: {
-        widths: ['2%','*','*'],
+        widths: ['2%','7.4%','4%','10%','10%','10%','3%','2.4%','5%','5.5%','5%','10%','6.2%','6%','9%','5%'],
         //widths: ['1.5%','25%','20%','7%','9%','25%','5%'],
-       // headerRows: 1,
+        //headerRows: 2,
         //dontBreakRows: true,
         //keepWithHeaderRows: true, 
        // unbreakable: true,
@@ -270,7 +337,172 @@ export class Potf07Page implements OnInit {
   }
 
 
-  SearchData_Send(padding,infiniteScroll?){
-
+  SearchData_Send(padding){
+    this.data= []; this.data_tf = [];
+    this.sub = this.poSv
+    .searchtfsummary_tf(this.ionicForm.value)
+    .subscribe((data) => {
+      if (data !== null) {
+         //console.log(data.data_detail);
+         this.data_tf =  data.data_detail.map((item) => Object. assign({}, item));   
+      }
+    });
   }
+
+  get_reporttf(data,type){
+    let head;
+   
+    if(type === 'before')
+    {
+      head = 'สรุปการส่ง(ก่อน)';
+    }
+    else
+    {
+      head = 'สรุปการส่ง(หลัง)';
+    }
+    var docDefinition = {
+      pageSize: 'A4',
+      pageOrientation: 'landscape',
+      pageMargins: [ 10,30,10,10 ],
+      header: {
+        margin: 10,
+        columns: [{ text: head , alignment: 'left' },
+        {
+          text: {
+            function(currentPage, pageCount) {
+              return currentPage.toString() + ' / ' + pageCount;
+            }
+          }, alignment: 'center'
+        }
+          , { text: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString(), alignment: 'right' }
+        ]
+      },
+      content: [
+     
+          this.getDataObject_tf(data,type),
+         
+      ],
+      defaultStyle: {
+        font: 'THSarabunNew'
+      }
+    }
+    this.configSv.saveToDevice(pdfMake.createPdf(docDefinition), "tfsummary.pdf");
+  }
+
+  getDataObject_tf(data,type){
+    const exs = [];
+    let head;
+    if(type === 'before')
+    {
+      head = 'วันที่มอบหมาย ';
+    }
+    else
+    {
+      head = 'วันที่ส่ง ';
+    }
+    data.forEach((element, index) => {
+      //if( element['mtd_shipping_id'] === '1'  ){
+        element['emp_detail'].forEach((element1, index1) => {
+          if( exs.length === 0 ){
+            exs.push(
+              [{text: head +  element['transferdate'] + ' ประเภทการส่ง ' + element['shipping_desc'] + ' ผู้ส่ง  ' +   element1['name'] , style: 'tableHeader', alignment: 'center',colSpan: 16 },'','','','','','','','','','','','','','',''], 
+             ); 
+
+          }else{
+            exs.push(
+              [{text: head +  element['transferdate'] + ' ประเภทการส่ง ' + element['shipping_desc'] + ' ผู้ส่ง  ' +   element1['name'] , style: 'tableHeader', alignment: 'center',colSpan: 16 ,pageBreak: "before"},'','','','','','','','','','','','','','',''], 
+             ); 
+          }
+          // exs.push(
+          //   [{text: '#', style: 'tableHeader', alignment: 'center'},{text: 'เลขที่ใบสั่งซื้อ', style: 'tableHeader', alignment: 'center'},{text: 'ผู้ขาย', style: 'tableHeader', alignment: 'center'},{text: 'ชื่อวิน', style: 'tableHeader', alignment: 'center'},{text: 'เขต', style: 'tableHeader', alignment: 'center'},{text: 'สินค้า', style: 'tableHeader', alignment: 'center'},{text: 'ขนาด', style: 'tableHeader', alignment: 'center'},{text: 'เบอร์', style: 'tableHeader', alignment: 'center'},{text: 'สี', style: 'tableHeader', alignment: 'center'},{text: 'ราคา', style: 'tableHeader', alignment: 'center'},{text: 'ค่ามัดจำ', style: 'tableHeader', alignment: 'center'},{text: 'สินค้าอื่นๆ', style: 'tableHeader', alignment: 'center'},{text: 'ลูกค้า', style: 'tableHeader', alignment: 'center'},{text: 'เบอร์โทร', style: 'tableHeader', alignment: 'center'},{text: 'หมายเหตุ', style: 'tableHeader', alignment: 'center'}, {text: 'สถานะ', style: 'tableHeader', alignment: 'center'}]
+          // )
+            // element1['po_detail'].forEach((element2, index2) => {
+          //   exs.push(
+          //     [
+          //       { text: index2+1, alignment: 'center' },
+          //       { text: element2['po_running'], alignment: 'center' },
+          //       { text: element2['po_date'], alignment: 'center' },
+          //       { text: element2['nickname'], alignment: 'center' },
+          //       { text: element2['po_namewin'], alignment: 'center' },
+          //       { text: element2['area_name'], alignment: 'center' },
+          //       { text: element2['product_name'], alignment: 'center' },
+          //       { text: element2['podetail_number'], alignment: 'center' },
+          //       { text: element2['size'], alignment: 'center' },
+          //       { text: element2['product_other'], alignment: 'center' },
+          //       { text: element2['po_total'], alignment: 'center' },
+          //       { text: element2['po_customer_tel'], alignment: 'center' },
+          //       { text: element2['po_recivedate'], alignment: 'center' },
+          //       { text: element2['podetail_comment'], alignment: 'center' },
+          //       { text:  element2['postatus'], alignment: 'center' },
+          //     ] //,pageBreak: "before"
+          //   );
+          // });
+
+          exs.push(
+            [{text: '#', style: 'tableHeader', alignment: 'center'},{text: 'เลขที่ใบสั่งซื้อ', style: 'tableHeader', alignment: 'center'},{text: 'ผู้ขาย', style: 'tableHeader', alignment: 'center'},{text: 'ชื่อวิน', style: 'tableHeader', alignment: 'center'},{text: 'เขต', style: 'tableHeader', alignment: 'center'},{text: 'สินค้า', style: 'tableHeader', alignment: 'center'},{text: 'ขนาด', style: 'tableHeader', alignment: 'center'},{text: 'เบอร์', style: 'tableHeader', alignment: 'center'},{text: 'สี', style: 'tableHeader', alignment: 'center'},{text: 'ราคา', style: 'tableHeader', alignment: 'center'},{text: 'ค่ามัดจำ', style: 'tableHeader', alignment: 'center'},{text: 'สินค้าอื่นๆ', style: 'tableHeader', alignment: 'center'},{text: 'ลูกค้า', style: 'tableHeader', alignment: 'center'},{text: 'เบอร์โทร', style: 'tableHeader', alignment: 'center'},{text: 'หมายเหตุ', style: 'tableHeader', alignment: 'center'}, {text: 'สถานะ', style: 'tableHeader', alignment: 'center'}]
+          );
+        
+
+          element1['po_detail'].forEach((element2, index2) => {
+            exs.push(
+              [
+                { text: index2+1, alignment: 'center' },
+                { text: element2['po_running'], alignment: 'center' },
+                { text: element2['nickname'], alignment: 'center' },
+                { text: element2['po_namewin'], alignment: 'center' },
+                { text: element2['area_name'], alignment: 'center' },
+                { text: element2['product_name'], alignment: 'center' },
+                { text: element2['size'], alignment: 'center' },
+                { text: element2['podetail_number'], alignment: 'center' },
+                { text: element2['colorfront'], alignment: 'center' },
+                { text: element2['po_total'], alignment: 'center' },
+                { text: element2['po_deposit'], alignment: 'center' },
+                { text: element2['product_other'], alignment: 'center' },
+                { text: element2['po_customer'], alignment: 'center' },
+                { text: element2['po_customer_tel'], alignment: 'center' },
+                { text: element2['podetail_comment'], alignment: 'center' },
+                { text:  element2['postatus'], alignment: 'center' },
+              ] //,pageBreak: "before"
+            );
+          });
+
+          element1['po_sum'].forEach((element3, index3) => {
+            exs.push(
+              [
+                { text: '', alignment: 'center' },
+                { text: '', alignment: 'center' },
+                { text: '', alignment: 'center' },
+                { text: '', alignment: 'center' },
+                { text:'', alignment: 'center' },
+                { text: '', alignment: 'center' },
+                { text: '', alignment: 'center' },
+                { text: '', alignment: 'center' },
+                { text: 'รวม', alignment: 'center' },
+                { text: element3['sumtotal'], alignment: 'center' },
+                { text: element3['sumdeposit'], alignment: 'center' },
+                { text: '', alignment: 'center' },
+                { text: '', alignment: 'center' },
+                { text: '', alignment: 'center' },
+                { text: '', alignment: 'center' },
+                { text:  '', alignment: 'center' },
+              ] 
+              );
+          });  
+
+        });
+    });
+   
+   
+    return {
+      table: {
+        //widths: ['2%','8%','6.2%','4%','10%','10%','*','3%','3%','*','6%','6.2%','6.2%','6%','5%'],
+        widths: ['2%','7.4%','4%','10%','10%','10%','3%','2.4%','5%','5.5%','5%','10%','6.2%','6%','9%','5%'],
+        body: [
+          ...exs
+        ],
+      }
+    };
+  }
+
+
 }

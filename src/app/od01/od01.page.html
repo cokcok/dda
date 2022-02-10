@@ -214,13 +214,13 @@
             <ion-col size="2">{{c.product_name}}</ion-col>
             <ion-col size="1">{{c.size}}</ion-col>
             <ion-col size="2">
-              <ion-input  class="showborder" type="number"  [(ngModel)]="od_qty[c.id]" [ngModelOptions]="{standalone: true}" (keyup)="Caltotal(c.id,od_qty[c.id],'qty')" ></ion-input> 
+              <ion-input  class="showborder" type="number"  [(ngModel)]="od_qty[c.id]" [ngModelOptions]="{standalone: true}" (input)="Caltotal(c.id,od_qty[c.id],'qty')" ></ion-input> 
             </ion-col>
             <!-- <ion-col size="1"> 
               <ion-input  class="showborder" type="text"  [(ngModel)]="od_unit[c.id]" [ngModelOptions]="{standalone: true}" (change)="Commentunit(c.id,od_unit[c.id])"></ion-input> 
             </ion-col> -->
             <ion-col size="2"> 
-                <ion-input  class="showborder" type="number"  [(ngModel)]="od_price[c.id]" [ngModelOptions]="{standalone: true}" (keyup)="Caltotal(c.id,od_price[c.id],'price')"></ion-input> 
+                <ion-input  class="showborder" type="number"  [(ngModel)]="od_price[c.id]" [ngModelOptions]="{standalone: true}" (input)="Caltotal(c.id,od_price[c.id],'price')"></ion-input> 
             </ion-col>
             <ion-col size="2.5"> 
               {{c.od_total|number}}
