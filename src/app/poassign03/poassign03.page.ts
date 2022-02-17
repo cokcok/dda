@@ -119,8 +119,8 @@ export class Poassign03Page implements OnInit {
       .getpoassignreport('cupon', id)
       .subscribe((data) => {
         if (data !== null) {
-          //this.DownloadPdf(data.data_detail);
-          this.DownloadPdf_Sticker(data.data_detail);
+          this.DownloadPdf(data.data_detail);
+          //this.DownloadPdf_Sticker(data.data_detail);
           //console.log(this.getDataObject(data.data_detail));
         } 
       });
@@ -155,7 +155,8 @@ export class Poassign03Page implements OnInit {
       defaultStyle: {
         font: 'THSarabunNew',
         fontSize: 16
-      }
+      },
+      
     }
     //console.log(docDefinition);
     this.configSv.saveToDevice(pdfMake.createPdf(docDefinition), "cupon.pdf");
@@ -163,7 +164,7 @@ export class Poassign03Page implements OnInit {
 
   getDataObject_sticker(vdata, type) {
      let  data = vdata;
-    
+    //console.log(data);
     if(data.length === 0){
       data.push({
         po_running : "" ,
@@ -290,7 +291,7 @@ export class Poassign03Page implements OnInit {
     // )
     data.forEach((element, index) => {
       let head1,head2;
-      console.log(data.length ,index);
+     // console.log(data.length ,index);
       if(element['assign_type'] === '0'){
         head1 = 'วันสั่งซื้อ : ';
       }else{
@@ -300,19 +301,31 @@ export class Poassign03Page implements OnInit {
         exs.push(
           [
            {
-              colSpan: 2,
+            text: 'ร้านเสื้อวินดวงดี',
+            alignment: 'left',
+            fontSize: 22,
+            bold: true
+           },
+           {
+              //colSpan: 2,
               text: 'คูปอง',
               alignment: 'right',
               //margin: [100],
-            },''
+            }
           ],
           [
             {
-               colSpan: 2,
+              text: 'โทร. 02-866-9994',
+              alignment: 'left',
+              fontSize: 22,
+              bold: true
+            },
+            {
+               //colSpan: 2,
                text: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString(),
                alignment: 'right',
-               //margin: [0,0,0,0]
-             },''
+               margin: [0,-10,0,0]
+             }
              
            ],
            [
@@ -320,7 +333,7 @@ export class Poassign03Page implements OnInit {
                colSpan: 2,
                text: element['po_running'],
                alignment: 'right',
-               margin: [0,0,0,20]
+               margin: [0,-20,0,20]
              },''
            ],
            [
@@ -348,7 +361,7 @@ export class Poassign03Page implements OnInit {
            ],
            [
             {
-              text: 'วิน : ' +  element['po_recivedate'],
+              text: 'วิน : ' +  element['po_namewin'],
             },
             {
               text: 'เขต : '+  element['area_name'],
@@ -386,7 +399,7 @@ export class Poassign03Page implements OnInit {
            [
             {  
               colSpan: 2,
-              qr: 'https://www.duangdeewin.com/dda/#/po01' ,
+              qr: 'https://duangdeewin.com/ddaaap/#/podda01/'+element['id'] ,
               alignment: 'right',
               fit: '100',
               pageBreak: "after",
@@ -399,30 +412,42 @@ export class Poassign03Page implements OnInit {
       {
         exs.push(
           [
-           {
-              colSpan: 2,
-              text: 'คูปอง',
-              alignment: 'right',
-              //margin: [100],
-            },''
-          ],
-          [
             {
-               colSpan: 2,
-               text: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString(),
+             text: 'ร้านเสื้อวินดวงดี',
+             alignment: 'left',
+             fontSize: 22,
+             bold: true
+            },
+            {
+               //colSpan: 2,
+               text: 'คูปอง',
                alignment: 'right',
-               //margin: [0,0,0,0]
-             },''
-             
+               //margin: [100],
+             }
            ],
            [
-            {
-               colSpan: 2,
-               text: element['po_running'],
-               alignment: 'right',
-               margin: [0,0,0,20]
-             },''
-           ],
+             {
+               text: 'โทร. 02-866-9994',
+               alignment: 'left',
+               fontSize: 22,
+               bold: true
+             },
+             {
+                //colSpan: 2,
+                text: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString(),
+                alignment: 'right',
+                margin: [0,-10,0,0]
+              }
+              
+            ],
+            [
+             {
+                colSpan: 2,
+                text: element['po_running'],
+                alignment: 'right',
+                margin: [0,-20,0,20]
+              },''
+            ],
            [
             {
               text: head1 + element['po_date'],
@@ -448,7 +473,7 @@ export class Poassign03Page implements OnInit {
            ],
            [
             {
-              text: 'วิน : ' +  element['po_recivedate'],
+              text: 'วิน : ' +  element['po_namewin'],
             },
             {
               text: 'เขต : '+  element['area_name'],
@@ -486,7 +511,8 @@ export class Poassign03Page implements OnInit {
            [
             {  
               colSpan: 2,
-              qr: 'https://www.duangdeewin.com/dda/#/po01' ,
+              //qr: 'https://www.duangdeewin.com/dda/#/po01' ,
+              qr: 'https://duangdeewin.com/ddaaap/#/podda01/'+element['id'] ,
               alignment: 'right',
               fit: '100',
               //pageBreak: "after",
@@ -511,6 +537,7 @@ export class Poassign03Page implements OnInit {
         
       },
       layout: 'noBorders',
+      
       
     };
   }

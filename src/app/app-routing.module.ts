@@ -6,10 +6,10 @@ const routes: Routes = [
     path: '',
     //redirectTo: 'folder/Inbox',
     //redirectTo: 'po01',
-    //redirectTo: 'signin',
-    redirectTo: '',
+    redirectTo: 'signin',
+    //redirectTo: '',
     pathMatch: 'full' 
-  },
+  }, 
   {
     path: 'folder/:id',
     loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule)
@@ -241,7 +241,19 @@ const routes: Routes = [
   {
     path: 'potf08',
     loadChildren: () => import('./potf08/potf08.module').then( m => m.Potf08PageModule)
+  },  {
+    path: 'rp01',
+    loadChildren: () => import('./rp01/rp01.module').then( m => m.Rp01PageModule)
+  },
+  {
+    path: 'rpmain',
+    loadChildren: () => import('./rpmain/rpmain.module').then( m => m.RpmainPageModule)
+  },
+  {
+    path: 'rp02',
+    loadChildren: () => import('./rp02/rp02.module').then( m => m.Rp02PageModule)
   }
+
 
 
 

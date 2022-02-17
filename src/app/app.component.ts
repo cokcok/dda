@@ -109,12 +109,6 @@ export class AppComponent implements OnInit {
       this.statusBar.styleDefault();
       this.splashScreen.hide(); 
 
-      // this.poSv.getObservable_tf().subscribe((data) => {
-      //   //this.chkAuten = data;
-      //  //console.log(this.chkAuten);
-      //   this.chklogin(data); 
-      // });
-
       //this.chklogin();  // เช็ด ต้องผ่านหน้า login ก่อน 
      // this.configSv.chkidle(); // เช็ด ถ้าไม่มีการ active ที่หน้าจอ จะย้อนกลับไปหน้า login 
       this.signinSv.getObservable().subscribe((data) => {

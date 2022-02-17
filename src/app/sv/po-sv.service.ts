@@ -115,7 +115,7 @@ export class PoSvService {
     const apiUrl = this.configSv.ip + 'po.php';
     let data;
     data = {
-      'id': id,
+      'id': id, 
       'type_sql': 'read'
     }
     return this.http.post<data>(apiUrl, data, { headers: header });

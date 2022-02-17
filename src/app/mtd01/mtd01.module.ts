@@ -6,7 +6,7 @@ import { Mtd01PageRoutingModule } from './mtd01-routing.module';
 import { Mtd01Page } from './mtd01.page';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { IonicSelectableModule } from 'ionic-selectable';
-@NgModule({
+@NgModule({ 
   imports: [
     CommonModule,
     FormsModule,

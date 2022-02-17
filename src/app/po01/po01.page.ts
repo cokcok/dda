@@ -97,7 +97,7 @@ export class Po01Page implements OnInit {
     this.loaddata_sale(0);this.loaddata_area(0);this.loaddata_shipping(0);this.loaddata_customertype();this.loaddata_member(0);
     this.fndate();   this.loadform_payment();this.loaddata_greentype();
   }
- 
+  
   ionViewDidEnter(){
     this.loaddata_edit();
     this.ports_namewin = this.portService.data;
@@ -594,7 +594,7 @@ export class Po01Page implements OnInit {
       }
     }
   }
-
+ 
   delImg(tmpproductid,index){
     let item = this.tmpproduct.filter(obj => obj.id == tmpproductid);
     let itempic =  item.map((element) => {
@@ -928,6 +928,7 @@ export class Po01Page implements OnInit {
     this.ionicFormPayment.controls['ems_2'].updateValueAndValidity();
     this.ionicFormPayment.controls['payment_cancel_3'].updateValueAndValidity();
     this.ionicFormPayment.controls['problem_cause_4'].updateValueAndValidity();
+    this.picresizbase64Array.updateValueAndValidity();
     if(this.paymenttype === 0){
       this.ionicFormPayment.get('cashmoney_0').setValidators(Validators.required);
       this.ionicFormPayment.get('change_0').setValidators(Validators.min(0));
@@ -1066,7 +1067,7 @@ fileUpload_imgpayment(event) {
        alert('กรุณาระบุชนิดไฟล์รูปภาพ');
      }
    }
- }
+}
 
  delImg_payment(index){
   this.picpreview = this.picpreview.filter(obj => obj.id !== index);
