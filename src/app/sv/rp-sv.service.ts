@@ -19,6 +19,26 @@ export class RpSvService {
       'type_sql': 'read'
     }
     return this.http.post<data>(apiUrl, data, { headers: header });
+  }  
+
+
+  searchdata_rp01(vdata:any): Observable<data> {
+    const header = { 'Content-Type': 'application/json' };
+    let apiUrl = this.configSv.ip + 'rp01.php';
+     let data = { 
+      'rp_type': vdata.rp_type,
+      'rp_type1': vdata.rp_type1,
+      'txtdate': vdata.txtdate,
+      'txtdate1': vdata.txtdate1,
+      'txtmonth': vdata.txtmonth,
+      'txtmonth1': vdata.txtmonth1,
+      'txtyear': vdata.txtyear,
+      'txtyear1': vdata.txtyear1,
+      
+    }
+    return this.http.post<data>(apiUrl, data, { headers: header });
   }
+
+
 }
  

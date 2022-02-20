@@ -14,9 +14,9 @@
         <ion-item>
           <ion-label class="showlabel" position="floating">ประเภท</ion-label>
           <ion-select interface="popover" formControlName="rp_type"  >
-            <ion-select-option value="0">งานปักตัวเลข</ion-select-option>
-            <ion-select-option value="1">งานปักป้ายเขียว</ion-select-option>
-            <ion-select-option value="2">งานประกอบ</ion-select-option>
+            <ion-select-option value="number">งานปักตัวเลข</ion-select-option>
+            <ion-select-option value="green">งานปักป้ายเขียว</ion-select-option>
+            <ion-select-option value="install">งานประกอบ</ion-select-option>
           </ion-select>
           <span class="error" *ngIf="isSubmitted && errorControl.rp_type.errors?.required">
             กรุณาระบุ ประเภท
@@ -56,51 +56,41 @@
         <ion-item>
           <ion-label class="showlabel" position="floating">เดือน</ion-label>
           <ion-select interface="popover" formControlName="txtmonth"  >
-            <ion-select-option value="01">มกราคม</ion-select-option>
-            <ion-select-option value="02">กุมภาพันธ์</ion-select-option>
-            <ion-select-option value="03">มีนาคม</ion-select-option>
-            <ion-select-option value="04">เมษายน</ion-select-option>
-            <ion-select-option value="05">พฤษภาคม</ion-select-option>
-            <ion-select-option value="06">มิถุนายน</ion-select-option>
-            <ion-select-option value="07">กรกฏาคม</ion-select-option>
-            <ion-select-option value="08">สิงหาคม</ion-select-option>
-            <ion-select-option value="09">กันยายน</ion-select-option>
-            <ion-select-option value="10">ตุลาคม</ion-select-option>
-            <ion-select-option value="11">พฤศจิกายน</ion-select-option>
-            <ion-select-option value="12">ธันวาคม</ion-select-option>
+            <ion-select-option *ngFor="let m of ArrayMonth" value={{m.id}}>{{m.text}}</ion-select-option>
           </ion-select>
-          <span class="error" *ngIf="isSubmitted && errorControl.txtmonth.errors?.required">
-            กรุณาระบุ เดือน
-          </span> 
         </ion-item>
       </ion-col>
+      <ion-col>
+        <ion-item >
+          <ion-label class="showlabel" position="floating">ปี :</ion-label>
+          <ion-select interface="popover"  formControlName="txtyear"  >
+             <ion-select-option *ngFor="let item of years" value="{{item}}">{{item}}</ion-select-option>
+          </ion-select>
+      </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="ionicForm.controls.rp_type1.value == '1'">
       <ion-col>
         <ion-item>
           <ion-label class="showlabel" position="floating">ถึง เดือน</ion-label>
           <ion-select interface="popover" formControlName="txtmonth1"  >
-            <ion-select-option value="01">มกราคม</ion-select-option>
-            <ion-select-option value="02">กุมภาพันธ์</ion-select-option>
-            <ion-select-option value="03">มีนาคม</ion-select-option>
-            <ion-select-option value="04">เมษายน</ion-select-option>
-            <ion-select-option value="05">พฤษภาคม</ion-select-option>
-            <ion-select-option value="06">มิถุนายน</ion-select-option>
-            <ion-select-option value="07">กรกฏาคม</ion-select-option>
-            <ion-select-option value="08">สิงหาคม</ion-select-option>
-            <ion-select-option value="09">กันยายน</ion-select-option>
-            <ion-select-option value="10">ตุลาคม</ion-select-option>
-            <ion-select-option value="11">พฤศจิกายน</ion-select-option>
-            <ion-select-option value="12">ธันวาคม</ion-select-option>
+            <ion-select-option *ngFor="let m of ArrayMonth" value={{m.id}}>{{m.text}}</ion-select-option>
           </ion-select>
-          <span class="error" *ngIf="isSubmitted && errorControl.txtmonth1.errors?.required">
-            กรุณาระบุ เดือน
-          </span> 
         </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item >
+          <ion-label class="showlabel" position="floating">ปี :</ion-label>
+          <ion-select interface="popover"  formControlName="txtyear1"  >
+             <ion-select-option *ngFor="let item of years" value="{{item}}">{{item}}</ion-select-option>
+          </ion-select>
+      </ion-item>
       </ion-col>
     </ion-row>
     <ion-row *ngIf="ionicForm.controls.rp_type1.value == '2'">
       <ion-col>
         <ion-item >
-          <ion-label class="showlabel">ปี :</ion-label>
+          <ion-label class="showlabel" position="floating">ปี :</ion-label>
           <ion-select interface="popover"  formControlName="txtyear"  >
              <ion-select-option *ngFor="let item of years" value="{{item}}">{{item}}</ion-select-option>
           </ion-select>
@@ -108,7 +98,7 @@
       </ion-col>
       <ion-col>
         <ion-item >
-          <ion-label class="showlabel">ถึง ปี :</ion-label>
+          <ion-label class="showlabel" position="floating">ถึง ปี :</ion-label>
           <ion-select interface="popover"  formControlName="txtyear1"  >
              <ion-select-option *ngFor="let item of years" value="{{item}}">{{item}}</ion-select-option>
           </ion-select>
@@ -117,7 +107,7 @@
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-button [disabled]="ionicForm.invalid"  expand="block" shape="round">
+        <ion-button [disabled]="ionicForm.invalid"  expand="block" shape="round" (click)="SearchData()">
         ออกรายงาน
       </ion-button>
       </ion-col>
