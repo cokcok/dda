@@ -29,6 +29,11 @@
         <ion-icon slot="icon-only" src="./assets/icons/editdate.svg"></ion-icon>
       </ion-button>
     </ion-buttons> 
+    <ion-buttons slot="primary" *ngIf="mode !== 'view'  && privilege_saveedittf.includes(tmppostatus)">
+      <ion-button (click)="submitForm_tf()">
+        <ion-icon slot="icon-only" src="./assets/icons/transport.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons> 
     <ion-buttons slot="primary" *ngIf="modepayment === 'ok' && privilege_payment.includes(group_id)">
       <ion-button (click)="submitForm_Payment()">
         <ion-icon slot="icon-only" src="./assets/icons/save.svg"></ion-icon>

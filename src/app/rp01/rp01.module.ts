@@ -4,14 +4,13 @@ import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Rp01PageRoutingModule } from './rp01-routing.module';
 import { Rp01Page } from './rp01.page';
-import { IonicSelectableModule } from 'ionic-selectable';
 import { Ionic4DatepickerModule } from '@logisticinfotech/ionic4-datepicker';
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    Rp01PageRoutingModule,ReactiveFormsModule,IonicSelectableModule,Ionic4DatepickerModule
+    Rp01PageRoutingModule,ReactiveFormsModule,Ionic4DatepickerModule
   ],
   declarations: [Rp01Page]
 })

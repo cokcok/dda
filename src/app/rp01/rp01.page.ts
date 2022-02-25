@@ -25,7 +25,7 @@ pdfMake.fonts = {
     italics: 'Roboto-Italic.ttf',
     bolditalics: 'Roboto-MediumItalic.ttf'
   }
-}
+ }
 @Component({
   selector: 'app-rp01',
   templateUrl: './rp01.page.html',
@@ -148,16 +148,23 @@ export class Rp01Page implements OnInit {
 
   SearchData(){
     this.data_rp= []; 
-    console.log(this.ionicForm.value);
+    //console.log(this.ionicForm.value);
     this.sub = this.rpSv
     .searchdata_rp01(this.ionicForm.value)
     .subscribe((data) => {
+      console.log(data);
       if (data !== null) {
-         console.log(data.data_detail);  
+          //console.log(data.data_detail);  
           this.DownloadPdf(data.data_detail);  
+      }
+      else
+      {
+        this.configSv.ChkformAlert('ไม่พบข้อมูล');
       }
     });
   }
+
+
   DownloadPdf(vdata) {
     // console.log(vdata);
     let items = [];

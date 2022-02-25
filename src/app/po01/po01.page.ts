@@ -46,6 +46,7 @@ export class Po01Page implements OnInit {
   privilege_payment = ['1','4','9']; 
   privilege_saveedit = [undefined,'0','1']; 
   privilege_saveeditrecive_date = ['2','3','4','5']; 
+  privilege_saveedittf = ['3']; 
   constructor(private navCtrl: NavController,public formBuilder: FormBuilder,
     public configSv: ConfigService,public mtdSv: MtdSvService,
     private alertCtrl: AlertController,private poSv: PoSvService,public placeSv:PlaceSvService,private modalCtrl:ModalController,private iab: InAppBrowser,private portService:PortService) { 
@@ -1127,31 +1128,53 @@ fileUpload_imgpayment(event) {
 
 }
 
-addPort() {
-  // Create port.
-  // let port = new Port({
-  //   //id: this.portService.getNewPortId(),
-  //   name: this.portNameControl.value,
-  //   //country: this.portCountryControl.value
-  // });
-  // console.log(port);
-  // Add port to storage.
-  //this.portService.addPort(port);
 
-  // // Add port to the top of list.
-  // this.portComponent.addItem(port).then(() => {
-  //   this.portComponent.search(port.name);
-  // });
-
-  // // Clean form.
-  // this.portNameControl.reset();
-  // this.portCountryControl.reset();
-
-  // // Show list.
-  // this.portComponent.hideAddItemTemplate();
+async submitForm_tf() {
+  this.isSubmitted = true;
+  if (!this.ionicForm.valid ) {
+    console.log("Please provide all the required values!");
+    return false;
+  } else {
+    const confirm =  await this.alertCtrl.create({
+    header: 'ยืนยันการเปลี่ยนวิธีการส่ง ' + this.po_running,
+   // message: 'แน่ใจว่าต้องการลบใบสั่งซื้อที่ '+ this.po_running +' ? ',
+    buttons: [{
+      text: 'ยกเลิก',
+      handler: (data: any) => {
+         console.log('cancel ',data);
+      }
+    },
+    {
+      text: 'ตกลง',
+        handler: (data: any) => {
+           this.sub = this.poSv.crudpo(this.ionicForm.value,'edittf').subscribe(
+            (data) => { 
+              if(data.status == 'ok')
+              {   
+                this.configSv.ChkformAlert(data.message);
+                // let dataarray = []; 
+                // dataarray.push({ 
+                //   po_recivedate:this.ionicForm.controls.po_recivedate.value,
+                // });
+                // this.modalCtrl.dismiss(dataarray,'editdate');
+                this.modalCtrl.dismiss();
+              }
+              else
+              {
+                this.configSv.ChkformAlert(data.message);
+              }
+            }, (error) => {
+              console.log(JSON.stringify(error));
+            }
+          );
+       
+      }
+    }]
+  });
+  confirm.present();
 }
 
-
+}
 
 
 }
