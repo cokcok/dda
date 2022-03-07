@@ -6,7 +6,7 @@ import { PoSvService } from '../sv/po-sv.service';
 import { FormBuilder, FormGroup, Validators, FormControl, } from "@angular/forms";
 import { IonicSelectableComponent } from 'ionic-selectable';
 import * as moment_ from 'moment';
-import 'moment/locale/th';
+import 'moment/locale/th'; 
 import {Po01Page} from '../po01/po01.page';
 import { utils, write, WorkBook } from 'xlsx';
 import * as XLSX from 'xlsx'; 

@@ -1,0 +1,101 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+      </ion-buttons>
+    <ion-title>รายงานสรุปยอด</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="ionicForm" novalidate>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label class="showlabel" position="floating">ช่วงเวลา</ion-label>
+          <ion-select interface="popover" formControlName="rp_typeday"  (ionChange)="Checkvalid($event.detail.value)"  >
+            <ion-select-option value="0">วัน</ion-select-option>
+            <ion-select-option value="1">เดือน</ion-select-option>
+            <ion-select-option value="2">ปี</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  <ion-row *ngIf="ionicForm.controls.rp_typeday.value == '0'">
+    <ion-col>
+      <ion-item> 
+        <ion-label class="showlabel" position="floating">วันที่</ion-label>
+        <ion-input  formControlName="txtdate" readonly [liIonic4Datepicker]="datePickerObj" type="text"></ion-input>
+      </ion-item>
+    </ion-col>
+    <ion-col>
+      <ion-item> 
+        <ion-label class="showlabel" position="floating">ถึง วันที่</ion-label>
+      <ion-input  [disabled]="ionicForm.controls.txtdate.invalid" formControlName="txtdate1" readonly [liIonic4Datepicker]="datePickerObj" type="text"></ion-input>
+      </ion-item>
+    </ion-col> 
+  </ion-row>
+  <ion-row *ngIf="ionicForm.controls.rp_typeday.value == '1'">
+    <ion-col>
+      <ion-item>
+        <ion-label class="showlabel" position="floating">เดือน</ion-label>
+        <ion-select interface="popover" formControlName="txtmonth"  >
+          <ion-select-option *ngFor="let m of ArrayMonth" value={{m.id}}>{{m.text}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-col>
+    <ion-col>
+      <ion-item >
+        <ion-label class="showlabel" position="floating">ปี :</ion-label>
+        <ion-select interface="popover"  formControlName="txtyear"  >
+           <ion-select-option *ngFor="let item of years" value="{{item}}">{{item}}</ion-select-option>
+        </ion-select>
+    </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row *ngIf="ionicForm.controls.rp_typeday.value == '1'">
+    <ion-col>
+      <ion-item>
+        <ion-label class="showlabel" position="floating">ถึง เดือน</ion-label>
+        <ion-select interface="popover" formControlName="txtmonth1"  >
+          <ion-select-option *ngFor="let m of ArrayMonth" value={{m.id}}>{{m.text}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-col>
+    <ion-col>
+      <ion-item >
+        <ion-label class="showlabel" position="floating">ปี :</ion-label>
+        <ion-select interface="popover"  formControlName="txtyear1"  >
+           <ion-select-option *ngFor="let item of years" value="{{item}}">{{item}}</ion-select-option>
+        </ion-select>
+    </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row *ngIf="ionicForm.controls.rp_typeday.value == '2'">
+    <ion-col>
+      <ion-item >
+        <ion-label class="showlabel" position="floating">ปี :</ion-label>
+        <ion-select interface="popover"  formControlName="txtyear"  >
+           <ion-select-option *ngFor="let item of years" value="{{item}}">{{item}}</ion-select-option>
+        </ion-select>
+    </ion-item>
+    </ion-col>
+    <ion-col>
+      <ion-item >
+        <ion-label class="showlabel" position="floating">ถึง ปี :</ion-label>
+        <ion-select interface="popover"  formControlName="txtyear1"  >
+           <ion-select-option *ngFor="let item of years" value="{{item}}">{{item}}</ion-select-option>
+        </ion-select>
+    </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-button [disabled]="ionicForm.invalid"  expand="block" shape="round" (click)="SearchData()">
+      ออกรายงาน
+    </ion-button>
+    </ion-col>
+  </ion-row>
+  </form>
+</ion-content>
+  

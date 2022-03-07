@@ -43,8 +43,25 @@ export class RpSvService {
     const header = { 'Content-Type': 'application/json' };
     let apiUrl = this.configSv.ip + 'rp02.php';
      let data = { 
+      'rp_typeday': vdata.rp_typeday,
+      'rp_typesend': vdata.rp_typesend,
       'rp_type': vdata.rp_type,
-      'rp_type1': vdata.rp_type1,
+      'txtdate': vdata.txtdate,
+      'txtdate1': vdata.txtdate1,
+      'txtmonth': vdata.txtmonth,
+      'txtmonth1': vdata.txtmonth1,
+      'txtyear': vdata.txtyear,
+      'txtyear1': vdata.txtyear1,
+      
+    }
+    return this.http.post<data>(apiUrl, data, { headers: header });
+  }
+
+  searchdata_rp03(vdata:any): Observable<data> {
+    const header = { 'Content-Type': 'application/json' };
+    let apiUrl = this.configSv.ip + 'rp03.php';
+     let data = { 
+      'rp_typeday': vdata.rp_typeday,
       'txtdate': vdata.txtdate,
       'txtdate1': vdata.txtdate1,
       'txtmonth': vdata.txtmonth,

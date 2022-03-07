@@ -12,29 +12,29 @@
     <ion-row>
       <ion-col>
         <ion-item>
-          <ion-label class="showlabel" position="floating">แบบการส่ง</ion-label>
-          <ion-select interface="popover" formControlName="rp_type2"  >
-            <ion-select-option value="all">ทั้งหมด</ion-select-option>
-            <ion-select-option value="cash">เงินสด</ion-select-option>
-            <ion-select-option value="transfer">โอนเงิน</ion-select-option>
-            <ion-select-option value="EMS">พัสดุ</ion-select-option>
+          <ion-label class="showlabel" position="floating">ประเภท</ion-label>
+          <ion-select interface="popover" formControlName="rp_type"  (ionChange)="Checkvalid1($event.detail.value)"  >
+            <ion-select-option value="0">ทั้งหมด</ion-select-option>
+            <ion-select-option value="1">ส่งได้</ion-select-option>
+            <ion-select-option value="2">ส่งไม่ได้</ion-select-option>
           </ion-select>
         </ion-item>
       </ion-col>
-      <ion-col>
+      <ion-col *ngIf="ionicForm.controls.rp_type.value == '1'">
         <ion-item>
-          <ion-label class="showlabel" position="floating">ประเภท</ion-label>
-          <ion-select interface="popover" formControlName="rp_type"  >
-            <ion-select-option value="all">ทั้งหมด</ion-select-option>
-            <ion-select-option value="ok">ส่งได้</ion-select-option>
-            <ion-select-option value="not">ส่งไม่ได้</ion-select-option>
+          <ion-label class="showlabel" position="floating">แบบการส่ง</ion-label>
+          <ion-select interface="popover" formControlName="rp_typesend"  >
+            <ion-select-option value="3">ทั้งหมด</ion-select-option>
+            <ion-select-option value="0">เงินสด</ion-select-option>
+            <ion-select-option value="1">โอนเงิน</ion-select-option>
+            <ion-select-option value="2">พัสดุ</ion-select-option>
           </ion-select>
         </ion-item>
       </ion-col>
       <ion-col>
         <ion-item>
           <ion-label class="showlabel" position="floating">ช่วงเวลา</ion-label>
-          <ion-select interface="popover" formControlName="rp_type1"  (ionChange)="Checkvalid($event.detail.value)"  >
+          <ion-select interface="popover" formControlName="rp_typeday"  (ionChange)="Checkvalid($event.detail.value)"  >
             <ion-select-option value="0">วัน</ion-select-option>
             <ion-select-option value="1">เดือน</ion-select-option>
             <ion-select-option value="2">ปี</ion-select-option>
@@ -42,7 +42,7 @@
         </ion-item>
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="ionicForm.controls.rp_type1.value == '0'">
+    <ion-row *ngIf="ionicForm.controls.rp_typeday.value == '0'">
       <ion-col>
         <ion-item> 
           <ion-label class="showlabel" position="floating">วันที่</ion-label>
@@ -56,7 +56,7 @@
         </ion-item>
       </ion-col> 
     </ion-row>
-    <ion-row *ngIf="ionicForm.controls.rp_type1.value == '1'">
+    <ion-row *ngIf="ionicForm.controls.rp_typeday.value == '1'">
       <ion-col>
         <ion-item>
           <ion-label class="showlabel" position="floating">เดือน</ion-label>
@@ -74,7 +74,7 @@
       </ion-item>
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="ionicForm.controls.rp_type1.value == '1'">
+    <ion-row *ngIf="ionicForm.controls.rp_typeday.value == '1'">
       <ion-col>
         <ion-item>
           <ion-label class="showlabel" position="floating">ถึง เดือน</ion-label>
@@ -92,7 +92,7 @@
       </ion-item>
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="ionicForm.controls.rp_type1.value == '2'">
+    <ion-row *ngIf="ionicForm.controls.rp_typeday.value == '2'">
       <ion-col>
         <ion-item >
           <ion-label class="showlabel" position="floating">ปี :</ion-label>

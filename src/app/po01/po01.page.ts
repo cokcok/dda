@@ -94,6 +94,7 @@ export class Po01Page implements OnInit {
       oldtmpproduct:[""],
       namewin_comment:[""],
       po_deposit:["0"],
+      alltmpproductetc:[""],
     });
     this.loaddata_sale(0);this.loaddata_area(0);this.loaddata_shipping(0);this.loaddata_customertype();this.loaddata_member(0);
     this.fndate();   this.loadform_payment();this.loaddata_greentype();
@@ -171,6 +172,7 @@ export class Po01Page implements OnInit {
            // console.log(this.ionicForm.value);
             this.tmpproduct = data.data_detail[0]['tmpproduct'];
             this.allDiscount = data.data_detail[0]['po_discount'];
+            this.tmpproductetc = data.data_detail[0]['alltmpproductetc'];
             this.alltotalproduct = data.data_detail[0]['po_totalproduct'];
             this.alltotal = data.data_detail[0]['po_total'];
             this.tmpproduct.forEach((item,index) => {
@@ -408,8 +410,11 @@ export class Po01Page implements OnInit {
   public cul_total(){
     //console.log(this.tmpproduct,this.tmpproductetc);
     this.alltotalproduct = this.tmpproduct.reduce((acc,current) => acc + Number(current.total), 0) +  this.tmpproductetc.reduce((acc,current) => acc + Number(current.etctotalall), 0);
+
     this.allDiscount = this.tmpproduct.reduce((acc,current) => acc + Number(current.discount), 0) +  this.tmpproductetc.reduce((acc,current) => acc + Number(current.etctotaldiscount), 0);
+
     this.alltotal = Number(this.alltotalproduct) + Number(this.po_shipping_price);
+    
     
   }
 
@@ -521,7 +526,7 @@ export class Po01Page implements OnInit {
   }
 
   Deltmpproduct(id,index,type,product_id,number_id,statusqty){
-    //console.log(id,index);
+    console.log(this.tmpproduct,this.tmpproductetc);
     this.discount[index] = null; this.commentproduct[index] = null
     this.tmpproduct = this.tmpproduct.filter(obj => obj.id !== id);
     this.tmpproductetc = this.tmpproductetc.filter(obj => obj.id !== id);
@@ -635,14 +640,13 @@ export class Po01Page implements OnInit {
     if(role === 'comfirm'){ 
       item[0].numbervalue = data;
     }else if(role === 'comfirm1'){
+      this.tmpproductetc = this.tmpproductetc.filter(obj => obj.id !== id);
       item[0].productetc = data;
       let array_data  = []; //data;
       array_data.push(data);  //convert object to array
-      this.tmpproductetc = array_data;
-      // console.log(this.tmpproductetc);
-      // console.log(a);
-      // console.log( a.reduce((acc,current) => Number(acc) + Number(current.etctotaldiscount), 0));
-
+      //this.tmpproductetc = array_data;
+      this.tmpproductetc = this.tmpproductetc.concat(array_data);
+      console.log(this.tmpproductetc);
       this.cul_total();
     }else{
       item[0].notnumber = true;
@@ -1081,7 +1085,7 @@ fileUpload_imgpayment(event) {
     return true;
   }
  }
-
+ 
  async submitForm_date() {
   this.isSubmitted = true;
   if (!this.ionicForm.valid ) {

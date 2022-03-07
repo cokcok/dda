@@ -252,6 +252,10 @@ const routes: Routes = [
   {
     path: 'rp02',
     loadChildren: () => import('./rp02/rp02.module').then( m => m.Rp02PageModule)
+  },
+  {
+    path: 'rp03',
+    loadChildren: () => import('./rp03/rp03.module').then( m => m.Rp03PageModule)
   }
 
 

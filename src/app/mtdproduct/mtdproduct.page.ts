@@ -6,6 +6,10 @@ import { AlertController } from "@ionic/angular";
 import { MtdSvService} from '../sv/mtd-sv.service';
 import { NavController } from '@ionic/angular';
 import * as $ from 'jquery';
+import { utils, write, WorkBook } from 'xlsx';
+import * as XLSX from 'xlsx'; 
+import { saveAs } from 'file-saver';
+
 @Component({
   selector: 'app-mtdproduct',
   templateUrl: './mtdproduct.page.html',
@@ -18,6 +22,8 @@ export class MtdproductPage implements OnInit {
   id: number; data = [];  page = 0;maxpadding = 0;limit = 50;
   portControl: FormControl; ports: any;
   picresizbase64Array: FormArray; picresizbase64:any; picpreview =[]; indexpic = 0;
+  currentDate = new Date().toLocaleDateString();
+  currentTime = new Date().toLocaleTimeString();
   constructor(public mtdSv: MtdSvService,public formBuilder: FormBuilder,public configSv: ConfigService,private alertCtrl: AlertController,private navCtrl: NavController) { }
 
   ngOnInit() {
@@ -297,6 +303,51 @@ export class MtdproductPage implements OnInit {
   delImg(index){
     this.picpreview = this.picpreview.filter(obj => obj.id !== index);
    this.picresizbase64Array.removeAt(this.picresizbase64Array.value.findIndex(value => value.id === index));
+  }
+
+
+  report() {
+    this.sub = this.mtdSv
+      .getreport_product('report')
+      .subscribe((data) => {
+        if (data !== null) {
+          this.loadexcel(data.data_detail.map((item) => Object.assign({}, item)))
+        }
+      });
+  }
+
+  loadexcel(data) {
+    if (data.length === 0) {
+      this.configSv.ChkformAlert('ไม่พบข้อมูล');
+      return false;
+    }
+    //console.log(data);
+    const ws_name = 'sheetname';
+    const wb: WorkBook = { SheetNames: [], Sheets: {} };
+    //const ws: any = utils.json_to_sheet(this.table);
+    const ws: any = utils.json_to_sheet(data);
+    wb.SheetNames.push(ws_name);
+    wb.Sheets[ws_name] = ws;
+    const wbout = write(wb, {
+      bookType: 'xlsx', bookSST: true, type:
+        'binary'
+    });
+
+
+    function s2ab(s) {
+      const buf = new ArrayBuffer(s.length);
+      const view = new Uint8Array(buf);
+      for (let i = 0; i !== s.length; ++i) {
+        view[i] = s.charCodeAt(i) & 0xFF;
+      };
+      return buf;
+    }
+
+    saveAs(new Blob([s2ab(wbout)], { type: 'application/octet-stream' }), 'pd' + this.currentDate + ' ' + this.currentTime + '.xlsx');
+
+
+
+
   }
 
 }

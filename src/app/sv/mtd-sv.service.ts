@@ -366,5 +366,25 @@ export class MtdSvService {
     }
     return this.http.post<FeedBack>(apiUrl, data, { headers: header });
   }
+
+
+  getreport_number(type): Observable<data> {
+    const header = { 'Content-Type': 'application/json' };
+    let apiUrl = this.configSv.ip + 'mtd_number.php';
+     let data = {
+      'type_sql': type
+    }
+    return this.http.post<data>(apiUrl, data, { headers: header });
+  }
+
+  getreport_product(type): Observable<data> {
+    const header = { 'Content-Type': 'application/json' };
+    let apiUrl = this.configSv.ip + 'mtd_product.php';
+     let data = {
+      'type_sql': type
+    }
+    return this.http.post<data>(apiUrl, data, { headers: header });
+  }
+
 }
  

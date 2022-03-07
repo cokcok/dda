@@ -27,12 +27,13 @@ pdfMake.fonts = {
   }
  }
 
+
 @Component({
-  selector: 'app-rp02',
-  templateUrl: './rp02.page.html',
-  styleUrls: ['./rp02.page.scss'],
+  selector: 'app-rp03',
+  templateUrl: './rp03.page.html',
+  styleUrls: ['./rp03.page.scss'],
 })
-export class Rp02Page implements OnInit {
+export class Rp03Page implements OnInit {
   ionicForm: FormGroup;
   currentYear= new Date().getFullYear() + 543;
   years: any = []; sub: Subscription; 
@@ -68,11 +69,9 @@ export class Rp02Page implements OnInit {
 
   loadForm(){
     this.ionicForm = this.formBuilder.group({
-      rp_type: ["", [Validators.required]],
-      rp_typeday: ["", [Validators.required]],
-      rp_typesend: [],
-      txtdate: [],
-      txtdate1: [],
+      rp_typeday: ["0", [Validators.required]],
+      txtdate: ['01/02/2022'],
+      txtdate1: ['28/02/2022'],
       txtmonth:[],
       txtmonth1:[],
       txtyear:[],
@@ -107,7 +106,29 @@ export class Rp02Page implements OnInit {
       }
     };
   }
-  
+
+  ngAfterContentChecked() {
+    this.cdref.detectChanges();
+  }
+
+
+  SearchData(){
+    this.data_rp= []; 
+    console.log(this.ionicForm.value);
+    this.sub = this.rpSv
+    .searchdata_rp03(this.ionicForm.value)
+    .subscribe((data) => {
+      //console.log(data);
+      if (data !== null) {
+         //console.log(data.data_detail);  
+         this.DownloadPdf(data.data_detail);  
+      }
+      else
+      {
+        this.configSv.ChkformAlert('ไม่พบข้อมูล');
+      }
+    });
+  }
   Checkvalid(data){
     //console.log(data);
     this.ionicForm.controls['txtdate'].setValidators(null);
@@ -137,65 +158,18 @@ export class Rp02Page implements OnInit {
     }
   }
 
- 
-  Checkvalid1(data){
-    //console.log(data);
-     this.ionicForm.controls['rp_typesend'].setValidators(null);
-     this.ionicForm.controls['rp_typesend'].updateValueAndValidity();
-     if(data == "1")
-     {
-      this.ionicForm.get('rp_typesend').setValidators(Validators.required);
-     }
-  }
-
-  ngAfterContentChecked() {
-    this.cdref.detectChanges();
-  }
-
-
-  SearchData(){
-    this.data_rp= []; 
-    //console.log(this.ionicForm.value);
-    this.sub = this.rpSv
-    .searchdata_rp02(this.ionicForm.value)
-    .subscribe((data) => {
-      //console.log(data);
-      if (data !== null) {
-         //console.log(data.data_detail);  
-         this.DownloadPdf(data.data_detail);  
-      }
-      else
-      {
-        this.configSv.ChkformAlert('ไม่พบข้อมูล');
-      }
-    });
-  }
-
   DownloadPdf(vdata) {
     // console.log(vdata);
     let items = [];
-    let rp_typename = [ 'ทั้งหมด', 'ส่งได้', 'ส่งไม่ได้']; 
-    let rp_typesendname = [ 'เงินสด', 'โอนเงิน', 'พัสดุ','ทั้งหมด']; 
     let header_rp,header_rp1
-    if(this.ionicForm.controls['rp_typesend'].value === null)
-    {
-      header_rp = '[งานส่ง/'+ rp_typename[this.ionicForm.controls['rp_type'].value]+']';
-    }
-    else
-    {
-      header_rp = '[งานส่ง/'+ rp_typesendname[this.ionicForm.controls['rp_typesend'].value] + '/'+ rp_typename[this.ionicForm.controls['rp_type'].value]+']';
-    }
-    
+    header_rp = "[ยอดขาย]";
+   
     if(this.ionicForm.controls['rp_typeday'].value === "0")
     {
       header_rp1 = this.ionicForm.controls['txtdate'].value + ' ถึง ' + this.ionicForm.controls['txtdate1'].value; 
-    
-     
-
     }
     else if(this.ionicForm.controls['rp_typeday'].value === "1")
     {
-      
       let headmonthtext = this.ArrayMonth.filter((val)=> val.id == this.ionicForm.controls['txtmonth'].value );
       let headmonthtext1 = this.ArrayMonth.filter((val)=> val.id == this.ionicForm.controls['txtmonth1'].value );
       header_rp1 = headmonthtext[0]["text"] + ' ' + this.ionicForm.controls['txtyear'].value + ' ถึง ' + headmonthtext1[0]["text"] + ' ' + this.ionicForm.controls['txtyear1'].value;
@@ -209,7 +183,6 @@ export class Rp02Page implements OnInit {
     items = vdata.map(function (item) {
       return [
         {text : item.seq,alignment: 'center'},
-        {text : item.name,alignment: 'center'}, 
         {text: item.c_count,alignment: 'center'}, 
         {text: item.payment_total,alignment: 'center'},
         {text: item.payment_date,alignment: 'center'}
@@ -238,15 +211,14 @@ export class Rp02Page implements OnInit {
            {
             margin: [5,20,5,5],
             columns: [
-              { width: '20%', text: '' },
+              { width: '25%', text: '' },
               {
               width: '70%',
               table: {
                 headerRows: 1,
-                widths: ['5%','20%','20%','20%','20%'],
+                widths: ['10%','20%','20%','20%'],
                 body: [
                   [{ text: '#', style: 'tableHeader' },
-                  { text: 'ประเภท', style: 'tableHeader' },
                   { text: 'จำนวน', style: 'tableHeader' },
                   { text: 'ราคา', style: 'tableHeader' },
                   { text: 'ช่วงเวลา', style: 'tableHeader' },
@@ -277,7 +249,4 @@ export class Rp02Page implements OnInit {
      this.configSv.saveToDevice(pdfMake.createPdf(docDefinition), "green.pdf");
    }
 
-
 }
- 
-

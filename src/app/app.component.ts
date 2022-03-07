@@ -161,9 +161,9 @@ export class AppComponent implements OnInit {
     });
   }
 
-  chklogin(data) {
-    if (this.chkAuten === false || data !== true) {
-      console.log(data);
+  chklogin() {
+    if (this.chkAuten === false) {
+
       this.router.navigateByUrl('/signin');
     }
   }
