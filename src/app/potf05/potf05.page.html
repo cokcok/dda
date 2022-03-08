@@ -42,6 +42,7 @@
         <ion-col>
           <ion-item>
             <label class="showlabelheader">วันที่นัดรับ</label>&nbsp;&nbsp;&nbsp;&nbsp; {{ c.po_recivedate }}
+            <ion-button fill="outline" slot="end" color="secondary" (click)="Print_address(c.po_recivedate)">พิมพ์ที่อยู่ </ion-button>
             <ion-button fill="outline" slot="end" color="success" (click)="View(c.po_recivedate)">ดูรายละเอียด </ion-button>
           </ion-item>
         </ion-col>

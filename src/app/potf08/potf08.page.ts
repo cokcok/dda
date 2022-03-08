@@ -13,11 +13,11 @@ export class Potf08Page implements OnInit {
   constructor(public menuCtrl: MenuController,public configSv: ConfigService,public formBuilder: FormBuilder,private modalCtrl:ModalController,private poSv: PoSvService) { }
 
   ngOnInit() {
-    this.poSv.publishSomeData_tf(true);
+    //this.poSv.publishSomeData_tf(true);
   }
 
   ionViewWillEnter() {
-    this.menuCtrl.enable(false);
+    //this.menuCtrl.enable(false);
   }
 
 }

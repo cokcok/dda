@@ -614,13 +614,27 @@ export class PoSvService {
     return this.http.post<data>(apiUrl, data, { headers: header });
   }
 
-  publishSomeData_tf(data: any) {
-    this.fooSubject_tf.next(data);
+  getpotf_address(vdata:any): Observable<data> {
+    //console.log(vdata);
+    const header = { 'Content-Type': 'application/json' };
+    let apiUrl = this.configSv.ip + 'tf_cfwin.php';
+    let data;
+    data = {
+      'po_recivedate':vdata,
+      'type_sql': 'reportaddress',
+    }
+
+   
+    return this.http.post<data>(apiUrl, data, { headers: header });
   }
 
-  getObservable_tf(): Subject<any> {
-    return this.fooSubject_tf;
-  }
+  // publishSomeData_tf(data: any) {
+  //   this.fooSubject_tf.next(data);
+  // }
+
+  // getObservable_tf(): Subject<any> {
+  //   return this.fooSubject_tf;
+  // }
 
 }
   

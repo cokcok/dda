@@ -85,12 +85,12 @@ export class Poassign02Page implements OnInit {
      // console.log('check');
       this.dataallarray.push(data);
      }
-     console.log(this.dataallarray);
+     //console.log(this.dataallarray);
    }
 
 
    submitForm(){
-    console.log(this.dataallarray);
+    //console.log(this.dataallarray);
     this.modalCtrl.dismiss(this.dataallarray,'somedata');
   }
 

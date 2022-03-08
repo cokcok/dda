@@ -9,6 +9,32 @@ import 'moment/locale/th';
 import {Potf04Page} from '../potf04/potf04.page';
 const moment = moment_;
 
+import { saveAs } from 'file-saver';
+
+
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+
+(<any>pdfMake).vfs = pdfFonts.pdfMake.vfs;
+
+//ต้องระบุตามชื่อของ ไฟล์ font
+pdfMake.fonts = {
+  THSarabunNew: {
+    normal: 'THSarabunNew.ttf',
+    bold: 'THSarabunNew-Bold.ttf',
+    italics: 'THSarabunNew-Italic.ttf',
+    bolditalics: 'THSarabunNew-BoldItalic.ttf'
+  },
+  Roboto: {
+    normal: 'Roboto-Regular.ttf',
+    bold: 'Roboto-Medium.ttf',
+    italics: 'Roboto-Italic.ttf',
+    bolditalics: 'Roboto-MediumItalic.ttf'
+  }
+ }
+
+
+
 @Component({
   selector: 'app-potf05',
   templateUrl: './potf05.page.html',
@@ -19,6 +45,7 @@ export class Potf05Page implements OnInit {
   data = []; page = 0;maxpadding:number;limit = 50;
   sub: Subscription; maxdatalimit=0;filterTerm: string;
   datePickerObj: any = {};
+  data_rp = [];
   constructor(public configSv: ConfigService,private poSv: PoSvService,public formBuilder: FormBuilder,private modalCtrl:ModalController,private alertCtrl: AlertController) { }
 
   ngOnInit() {
@@ -33,7 +60,7 @@ export class Potf05Page implements OnInit {
   get errorControl() {
     return this.ionicForm.controls;
   }
-
+ 
   fndate(){
     this.datePickerObj = {
       inputDate: '',
@@ -118,5 +145,286 @@ export class Potf05Page implements OnInit {
     });
   }
  
-   
+
+  Print_address(recivedate){
+    this.data_rp= []; 
+    //console.log(this.ionicForm.value);
+    this.sub = this.poSv
+    .getpotf_address(recivedate)
+    .subscribe((data) => {
+      console.log(data);
+      if (data !== null) {
+         // console.log(data.data_detail);  
+          this.DownloadPdf_Sticker(data.data_detail);  
+      }
+      else
+      {
+        this.configSv.ChkformAlert('ไม่พบข้อมูล');
+      }
+    });
   }
+
+  DownloadPdf_Sticker(vdata) {
+    //console.log(vdata);
+    var docDefinition = {
+      pageSize: {
+        width: 384,
+        height: 576
+      },
+      pageMargins: [20,20,20,40],
+      content: [
+        [{
+          columns: [
+            this.getDataObject_sticker(vdata, 'sticker'),
+          ]
+        }],
+      ],
+      defaultStyle: {
+        font: 'THSarabunNew',
+        fontSize: 16
+      },
+      
+    }
+    //console.log(docDefinition);
+    this.configSv.saveToDevice(pdfMake.createPdf(docDefinition), "cupon.pdf");
+  }
+
+  getDataObject_sticker(vdata, type) {
+    let  data = vdata;
+   //console.log(data);
+   if(data.length === 0){
+     data.push({
+      company_name : "" ,
+      company_address : "" ,
+      company_place : "" ,
+      company_tel : "" ,
+      po_address : "" ,
+      po_address_place : "" ,
+      po_customer_tel : "" ,
+     });
+   }
+   const exs = [];
+
+  //  exs.push(
+  //   [
+  //     {
+  //       text: 'ผู้ส่ง : ',
+  //       alignment: 'left',
+  //     }
+  //   ],
+  //   [
+  //     {
+  //       text : 'ชื่อบริษัท',
+  //       alignment: 'left',
+  //     }
+  //   ],
+  //   [
+  //     {
+  //       text : 'company_address',
+  //       alignment: 'left',
+  //     }
+  //   ],
+  //   [
+  //     {
+  //       text : 'company_place',
+  //       alignment: 'left',
+
+  //     }
+  //   ],
+  //   [
+  //     {
+  //       text : 'company_tel',
+  //       alignment: 'left',
+
+  //     }
+  //   ],
+  //   [
+  //     {
+  //       text : '________________________________________________________',
+  //       alignment: 'left',
+  //       margin: [0, 5, 0, 0]
+
+  //     }
+  //   ],
+  //   [
+  //     {
+  //       text : 'ผู้รับ : ',
+  //       alignment: 'left',
+  //       margin: [0, 5, 0, 0]
+  //     }
+  //   ],
+  //   [
+  //     {
+  //       text : 'po_address',
+  //       alignment: 'left',
+  //     }
+  //   ],
+  //   [
+  //     {
+  //       text : 'po_address_place',
+  //       alignment: 'left',
+  //     }
+  //   ],
+  //   [
+  //     {
+  //       text : 'po_customer_tel',
+  //       alignment: 'left',
+  //     }
+  //   ],
+  //   [
+  //     {
+  //       text : '________________________________________________________',
+  //       alignment: 'left',
+  //       margin: [0, 5, 0, 0]
+  //     }
+  //   ],
+  //   [
+  //     {
+  //       text : 'สินค้า : POxxxx' ,
+  //       alignment: 'left',
+  //       margin: [0, 5, 0, 0]
+  //     }
+  //   ],
+  //  );
+
+  data.forEach((element, index) => {
+    exs.push(
+      [
+        {
+          text: 'ผู้ส่ง : ',
+          alignment: 'left',
+        }
+      ],
+      [
+        {
+          text : element['company_name'],
+          alignment: 'left',
+        }
+      ],
+      [
+        {
+          text : element['company_address'],
+          alignment: 'left',
+        }
+      ],
+      [
+        {
+          text : element['company_place'],  
+          alignment: 'left',
+  
+        }
+      ],
+      [
+        {
+          text :  element['company_tel'],
+          alignment: 'left',
+  
+        }
+      ],
+      [
+        {
+          text : '________________________________________________________',
+          alignment: 'left',
+          margin: [0, 5, 0, 0]
+  
+        }
+      ],
+      [
+        {
+          text : 'ผู้รับ : ',
+          alignment: 'left',
+          margin: [0, 5, 0, 0]
+        }
+      ],
+     
+      [
+        {
+          text : element['po_address'], 
+          alignment: 'left',
+        }
+      ],
+      [
+        {
+          text : element['po_address_place'],
+          alignment: 'left',
+        }
+      ],
+      [
+        {
+          text : element['po_customer_tel'],
+          alignment: 'left',
+        }
+      ],
+      [
+        {
+          text : '________________________________________________________',
+          alignment: 'left',
+          margin: [0, 5, 0, 0]
+        }
+      ],
+      [
+        {
+          text : 'สินค้า : ' + element['po_running']  ,
+          alignment: 'left',
+          margin: [0, 5, 0, 0]
+        }
+      ],
+      [
+        {
+          text : 'ชื่อวิน : ' + element['po_namewin'] + ' เขต : ' + element['area_name'] , 
+          alignment: 'left',
+        }
+      ],
+      );
+  
+    
+      element['ponumberdetail'].forEach(element1 => {
+        exs.push(
+         
+          [
+            {
+              text :  element1['product_name'] ,
+              alignment: 'left',
+            }
+          ],
+        )
+      });
+
+      if(data.length !== index+1){
+        exs.push(
+          [
+            {
+              text : '' ,
+              pageBreak: "after",
+            }
+          ],
+        )
+      }
+     
+
+
+  });
+  
+
+
+
+ 
+ 
+ 
+  
+
+   return {
+     table: {
+       widths: ['100%'],
+       //margin: [0, 0, 0, 0],
+       //dontBreakRows: true, 
+       body: [
+         ...exs
+       ],
+       
+     },
+     layout: 'noBorders',
+   };
+  }
+   
+ }
