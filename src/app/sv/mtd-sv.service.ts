@@ -177,6 +177,7 @@ export class MtdSvService {
         'id': vdata.id,
         'color': vdata.color,
         'color_acronym': vdata.color_acronym,
+        'pic': vdata.picresizbase64List,
         'emp_id': this.configSv.emp_id,
         'type_sql': type
       }

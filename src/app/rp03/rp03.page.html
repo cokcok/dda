@@ -8,8 +8,17 @@
 </ion-header>
 
 <ion-content>
-  <form [formGroup]="ionicForm" novalidate>
+  <form [formGroup]="ionicForm" novalidate> 
     <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label class="showlabel" position="floating">ประเภท</ion-label>
+          <ion-select interface="popover" formControlName="rp_type"   >
+            <ion-select-option value="0">สรุป</ion-select-option>
+            <ion-select-option value="1">รายละเอียด</ion-select-option>
+          </ion-select> 
+        </ion-item>
+      </ion-col>
       <ion-col>
         <ion-item>
           <ion-label class="showlabel" position="floating">ช่วงเวลา</ion-label>

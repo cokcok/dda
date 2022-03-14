@@ -109,7 +109,7 @@ export class Poassign02Page implements OnInit {
 
   async View(id,po_running,assign_type){
     // console.log(id);
-     let item = this.data.filter((val) => val.id == id && val.assign_type == assign_type);
+     let item = this.data.filter((val) => val.id == id && val.assign_type == assign_type); 
      //console.log(item);
      //const modal;
      if(assign_type === '0'){

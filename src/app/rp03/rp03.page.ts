@@ -69,9 +69,10 @@ export class Rp03Page implements OnInit {
 
   loadForm(){
     this.ionicForm = this.formBuilder.group({
-      rp_typeday: ["0", [Validators.required]],
-      txtdate: ['01/02/2022'],
-      txtdate1: ['28/02/2022'],
+      rp_type: [, [Validators.required]],
+      rp_typeday: [, [Validators.required]],
+      txtdate: [],
+      txtdate1: [],
       txtmonth:[],
       txtmonth1:[],
       txtyear:[],

@@ -61,6 +61,7 @@ export class RpSvService {
     const header = { 'Content-Type': 'application/json' };
     let apiUrl = this.configSv.ip + 'rp03.php';
      let data = { 
+      'rp_type': vdata.rp_type,
       'rp_typeday': vdata.rp_typeday,
       'txtdate': vdata.txtdate,
       'txtdate1': vdata.txtdate1,

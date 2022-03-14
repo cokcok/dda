@@ -115,12 +115,26 @@ export class Poassign03Page implements OnInit {
 
   PrintData(id) {
     //console.log(id);
+    let item = this.data.filter((val) => val.id == id);
     this.sub = this.poSv
       .getpoassignreport('cupon', id)
       .subscribe((data) => {
         if (data !== null) {
+          item[0].print_status = 1;
           this.DownloadPdf(data.data_detail);
           //this.DownloadPdf_Sticker(data.data_detail);
+          //console.log(this.getDataObject(data.data_detail));
+        } 
+      });
+  }
+
+  PrintData_sticker(id) {
+    //console.log(id);
+    this.sub = this.poSv
+      .getpoassignreport('cupon', id)
+      .subscribe((data) => {
+        if (data !== null) {
+          this.DownloadPdf_Sticker(data.data_detail);
           //console.log(this.getDataObject(data.data_detail));
         } 
       });
@@ -156,7 +170,7 @@ export class Poassign03Page implements OnInit {
         font: 'THSarabunNew',
         fontSize: 16
       },
-      
+       
     }
     //console.log(docDefinition);
     this.configSv.saveToDevice(pdfMake.createPdf(docDefinition), "cupon.pdf");

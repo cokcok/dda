@@ -11,7 +11,7 @@ import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 
 @Component({
-  selector: 'app-mtdproduct',
+  selector: 'app-mtdproduct', 
   templateUrl: './mtdproduct.page.html',
   styleUrls: ['./mtdproduct.page.scss'],
 })

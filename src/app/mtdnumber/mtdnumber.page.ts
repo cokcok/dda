@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {FormBuilder,FormGroup,Validators} from "@angular/forms"; 
+import { Component, OnInit, ViewChild, ElementRef  } from '@angular/core';
+import {FormBuilder,FormGroup,Validators,FormControl,FormArray} from "@angular/forms";  
 import { ConfigService } from "../sv/config.service";
 import { Subscription } from "rxjs"; 
 import { AlertController } from "@ionic/angular";
@@ -15,20 +15,24 @@ import { saveAs } from 'file-saver';
   styleUrls: ['./mtdnumber.page.scss'],
 })
 export class MtdnumberPage implements OnInit {
+  @ViewChild('fileIngimg') fileIngimg: ElementRef;
   ionicForm: FormGroup;isSubmitted = false;
   sub: Subscription;filterTerm: string;
   id: number; data = [];  page = 0;maxpadding = 0;limit = 50;
   currentDate = new Date().toLocaleDateString();
   currentTime = new Date().toLocaleTimeString();
+  picresizbase64Array: FormArray; picresizbase64:any; picpreview =[]; indexpic = 0;
   constructor(public mtdSv: MtdSvService,public formBuilder: FormBuilder,public configSv: ConfigService,private alertCtrl: AlertController,private navCtrl: NavController) { }
 
   ngOnInit() {
+    this.picresizbase64Array = this.formBuilder.array([]);
     this.ionicForm = this.formBuilder.group({
       id: [""],
       color: ["", [Validators.required]],
       color_acronym: ["", [Validators.required]],
       number_qty: [""],
       highlight: [""],
+      picresizbase64List: this.picresizbase64Array,
     });
     this.loaddata(this.page);
   }
@@ -62,6 +66,7 @@ export class MtdnumberPage implements OnInit {
                 color_acronym: this.ionicForm.controls.color_acronym.value,
                 number_qty:0,
                 highlight: true,
+                picresizbase64List : this.ionicForm.controls.picresizbase64List.value,
               });
             }else{
               this.configSv.ChkformAlert(data.message);
@@ -72,7 +77,14 @@ export class MtdnumberPage implements OnInit {
               item = this.data.filter((val) => val.id == data.id);
               item.forEach((item) => {
                 for (const [key, value] of Object.entries(item)) {
-                   item[key] = this.ionicForm.controls[key].value;
+                   //item[key] = this.ionicForm.controls[key].value;
+
+                  if(key === 'picresizbase64List'){
+                    item[key] = this.ionicForm.controls.picresizbase64List.value;
+                  }else{
+                  item[key] = this.ionicForm.controls[key].value;
+                  }
+
                 }
               });
             }else{
@@ -101,6 +113,9 @@ export class MtdnumberPage implements OnInit {
   refreshForm() {
     this.ionicForm.reset();
     this.isSubmitted = false;
+    this.picresizbase64Array.clear();
+    this.picpreview = [];
+    this.indexpic = 0;
   }
 
   loaddata(padding: number, infiniteScroll?) {
@@ -124,10 +139,24 @@ export class MtdnumberPage implements OnInit {
     let item;
     item = this.data.filter((val) => val.id == id);
     //console.log(item);
-    item.forEach((item) => {
+    item.forEach((item) => { 
       for (const [key, value] of Object.entries(item)) {
         // console.log(key , value)
+       // this.ionicForm.controls[key].setValue(value);
+      if(key === 'picresizbase64List'){
+        this.picpreview = Object(value).map((item) => Object.assign({}, item));
+        //console.log(this.picpreview);
+        this.picpreview.forEach(task => {
+           //console.log(task)
+            this.indexpic++;
+            this.picresizbase64Array.push(this.formBuilder.group({
+            id: [task.id],
+            url: [task.url],
+          }));
+      });
+      }else{
         this.ionicForm.controls[key].setValue(value);
+      }
       }
     });
   }
@@ -236,9 +265,61 @@ export class MtdnumberPage implements OnInit {
     }
 
     saveAs(new Blob([s2ab(wbout)], { type: 'application/octet-stream' }), 'nb' + this.currentDate + ' ' + this.currentTime + '.xlsx');
-
-
-
-
   }
+
+  onClick_fileUpload() {
+    this.fileIngimg.nativeElement.click();
+  }
+
+  fileUpload_img(event) {
+    var file = event.srcElement.files[0];
+    //console.log(file);
+    if (typeof file !== 'undefined') {
+      if (file.type.match(/image.*/)) {
+        var reader = new FileReader();
+        var self = this;
+        reader.onloadend = function () {
+          //self.picbase64 = reader.result
+          var canvas = document.createElement("canvas");
+          var ctx = canvas.getContext("2d");
+          canvas.width = 200; // target width
+          canvas.height = 200; // target height
+          var image = new Image();
+          image.src = reader.result as string;
+          image.onload = function (e) {
+            ctx.drawImage(image,
+              0, 0, image.width, image.height,
+              0, 0, canvas.width, canvas.height
+            );
+            // create a new base64 encoding
+            var resampledImage = new Image();
+            resampledImage.src = canvas.toDataURL();
+            self.picresizbase64 = resampledImage.src;
+              self.picpreview.push({
+                id:self.indexpic,
+                url:resampledImage.src
+              });
+              
+             self.picresizbase64Array.push(self.formBuilder.group({
+                id:[self.indexpic],
+                url: [self.picresizbase64],
+               
+              }));
+              self.indexpic++;
+          };
+        }
+        reader.readAsDataURL(file);
+      }
+      else {
+        alert('กรุณาระบุชนิดไฟล์รูปภาพ');
+      }
+    }
+  }
+
+  delImg(index){
+    this.picpreview = this.picpreview.filter(obj => obj.id !== index);
+   this.picresizbase64Array.removeAt(this.picresizbase64Array.value.findIndex(value => value.id === index));
+  }
+
+
 }
