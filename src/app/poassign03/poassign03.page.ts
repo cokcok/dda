@@ -130,10 +130,12 @@ export class Poassign03Page implements OnInit {
 
   PrintData_sticker(id) {
     //console.log(id);
+    let item = this.data.filter((val) => val.id == id);
     this.sub = this.poSv
       .getpoassignreport('cupon', id)
       .subscribe((data) => {
         if (data !== null) {
+          item[0].print_status = 1;
           this.DownloadPdf_Sticker(data.data_detail);
           //console.log(this.getDataObject(data.data_detail));
         } 
