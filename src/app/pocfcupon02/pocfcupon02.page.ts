@@ -53,6 +53,7 @@ export class Pocfcupon02Page implements OnInit {
     .subscribe((data) => {
       if (data !== null) {
         this.data =  data.data_detail.map((item) => Object.assign({}, item));
+        //console.log(this.data);
         if (infiniteScroll) {
           infiniteScroll.target.complete();
         }
@@ -89,13 +90,28 @@ export class Pocfcupon02Page implements OnInit {
    } 
 
    selectData(index,data,checked){
+    
+    // let data_ck = this.data.filter(item => item.assign_id === v_data);
+    //  console.log(v_data,data_ck,checked);
+
+    //if(checked){
+    //   console.log('a');
+    //   this.dataallarray = this.dataallarray.filter(item => item.assign_id !== '55')
+    //   if(this.dataallarray.length === 0){this.checkall = false;}
+    //  }else{
+    //   console.log('b');
+    //   this.dataallarray.push(data_ck);
+    //  }
+    //  console.log(this.dataallarray);
+  
+    //console.log(data);
     if(checked){
       this.dataallarray = this.dataallarray.filter(item => item.assign_id !== data['assign_id'])
       if(this.dataallarray.length === 0){this.checkall = false;}
      }else{
       this.dataallarray.push(data);
      }
-     //console.log(this.dataallarray);
+    // console.log(this.dataallarray);
     
    }
  
@@ -143,7 +159,7 @@ export class Pocfcupon02Page implements OnInit {
     });
     confirm.present();
   }
-
+ 
   compareArray(dataall,dataselect) {
     dataall.forEach( array1Ttem => {
         dataselect.forEach( array2Item => {

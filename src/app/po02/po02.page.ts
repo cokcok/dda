@@ -32,7 +32,7 @@ export class Po02Page implements OnInit {
   currentDate = new Date().toLocaleDateString();
   currentTime = new Date().toLocaleTimeString();
   constructor( public configSv: ConfigService,private poSv: PoSvService,public formBuilder: FormBuilder,private modalCtrl:ModalController) { }
-
+ 
   ngOnInit() {
     this.portControl = this.formBuilder.control("", Validators.required);
     this.ionicForm = this.formBuilder.group({
@@ -42,8 +42,9 @@ export class Po02Page implements OnInit {
     this.loaddata_typeserch();this.fndate();
     //console.log(this.data);
     this.loaddata(this.page);
+    //this.portControl.setValue(value_a);
   }
-
+ 
   loaddata(padding: number, infiniteScroll?){
     let datalimit;
     //console.log(padding,this.data);
@@ -74,6 +75,7 @@ export class Po02Page implements OnInit {
       {id: 3,typeserch: 'ชื่อลูกค้า'},
       {id: 5,typeserch: 'เลขที่ใบสั่งซื้อ'},
     ];
+     this.portControl.setValue(this.portssearch[2]);
     //console.log(this.ports);
   }
 
@@ -191,7 +193,7 @@ export class Po02Page implements OnInit {
     this.sub.unsubscribe();
   }
 
-
+ 
   get_dataexcel(){
     this.sub = this.poSv
     .getpo_excel(this.ionicForm.value,'read')

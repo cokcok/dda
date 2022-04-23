@@ -11,6 +11,9 @@ import 'moment/locale/th';
 const moment = moment_;
 import {Po05Page} from '../po05/po05.page';
 import {Po01Page} from '../po01/po01.page';
+
+
+
 @Component({
   selector: 'app-potf02',
   templateUrl: './potf02.page.html',
@@ -27,6 +30,7 @@ export class Potf02Page implements OnInit {
   count_shipping = [];  count_shipping1 = []; count_shipping2 = []; count_shipping3 = [];
   postatuscolor1 = ['0','1'];
   postatuscolor2 = ['2','3','4','5','7','8']; 
+  datePickerObj: any = {};
   constructor(public formBuilder: FormBuilder,
     public configSv: ConfigService,private alertCtrl: AlertController,private poSv: PoSvService,private modalCtrl:ModalController,private iab: InAppBrowser) { }
 
@@ -38,11 +42,38 @@ export class Potf02Page implements OnInit {
       dataall:[],
       transfer_userid :this.portControl_sale,
     }); 
-    this.loaddata(0);this.loaddata_sale(0);
+    this.loaddata(0);this.loaddata_sale(0);this.fndate();
   }
 
   get errorControl() {
     return this.ionicForm.controls;
+  }
+
+  fndate() {
+    this.datePickerObj = {
+      inputDate: '',
+      // showTodayButton: false,
+      closeOnSelect: true,
+      // disableWeekDays: [],
+      // mondayFirst: true,
+      setLabel: 'เลือก',
+      todayLabel: 'วันที่ปัจจุบัน',
+      closeLabel: 'ปิด',
+      // disabledDates: [],
+      // titleLabel: 'Select a Date',
+      monthsList: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'],
+      weeksList: ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'],
+      dateFormat: 'DD/MM/YYYY',
+      btnProperties: {
+        expand: 'block', // "block" | "full"
+        fill: '', // "clear" | "default" | "outline" | "solid"
+        size: '', // "default" | "large" | "small"
+        disabled: '', // boolean (default false)
+        strong: '', // boolean (default false)
+        color: 'success'
+        // "primary", "secondary", "tertiary", "success", "warning", "danger", "light", "medium", "dark" , and give color in string
+      }
+    };
   }
 
   dismissModal(){

@@ -151,7 +151,7 @@ export class Poassign03Page implements OnInit {
       },
       //pageOrientation: 'landscape',
       //pageMargins: [ 10,5,10,5 ],
-      pageMargins: [20,20,20,40],
+      pageMargins: [20,5,20,40],
       // header: {
       //   margin: 3,
       //   columns: [
@@ -349,7 +349,7 @@ export class Poassign03Page implements OnInit {
                colSpan: 2,
                text: element['po_running'],
                alignment: 'right',
-               margin: [0,-20,0,20]
+               margin: [0,-20,0,5]
              },''
            ],
            [

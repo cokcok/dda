@@ -32,9 +32,9 @@
         </ion-col>
       </ion-row>
     </ion-grid>
-    <ion-card *ngFor="let c of data  | filter:filterTerm;index as i">
+    <ion-card *ngFor="let c of data  | filter:filterTerm;index as i;">
       <ion-item > 
-        <ion-checkbox  color="dark"  (click)="selectData(i,data[i],c.status_checked)" [disabled]="c.disable_checked" [(ngModel)]="c.status_checked" slot="start"></ion-checkbox>
+        <ion-checkbox  color="dark"  (click)="selectData(i,data[c.index],c.status_checked)" [disabled]="c.disable_checked" [(ngModel)]="c.status_checked" slot="start"></ion-checkbox>
         <ion-row>
           <ion-col>
             <ion-label class="showlabelheader">{{ c.po_running }}</ion-label>

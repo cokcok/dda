@@ -86,6 +86,7 @@ export class Pocfgreen02Page implements OnInit {
   }
 
   selectData(index,data,checked){
+    //console.log(data);
    if(checked){
      this.dataallarray = this.dataallarray.filter(item => item.assign_id !== data['assign_id'])
      if(this.dataallarray.length === 0){this.checkall = false;}

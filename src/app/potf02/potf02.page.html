@@ -19,9 +19,9 @@
       <ion-col>
         <ion-item>
           <ion-label class="showlabel" position="floating">วันที่มอบหมาย</ion-label>
-          <ion-input formControlName="po_assigndate" readonly  type="text"></ion-input>
+          <ion-input formControlName="po_assigndate" [liIonic4Datepicker]="datePickerObj" type="text"></ion-input>
         </ion-item>
-      </ion-col>
+      </ion-col> 
       <ion-col>
         <ion-item>
           <ion-label class="postatus_alert">มีรายการที่เลือก {{dataallarray.length}} รายการ</ion-label>

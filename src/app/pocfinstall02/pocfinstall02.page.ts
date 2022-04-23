@@ -88,6 +88,7 @@ export class Pocfinstall02Page implements OnInit {
   }
 
   selectData(index,data,checked){
+    //console.log(data);
    if(checked){
      this.dataallarray = this.dataallarray.filter(item => item.assign_id !== data['assign_id'])
      if(this.dataallarray.length === 0){this.checkall = false;}
@@ -98,9 +99,10 @@ export class Pocfinstall02Page implements OnInit {
    
   }
 
+
   async submitForm(){
     this.ionicForm.controls['dataall'].setValue(this.dataallarray);
-    //console.log(this.ionicForm.value);
+    console.log(this.ionicForm.value);
     const confirm =  await this.alertCtrl.create({
       header: 'ยืนยันข้อมูลในการปรับสถานะการประกอบ',
       //message: 'แน่ใจว่าต้องการลบเลขระบบที่ '+ item +' ? ',
