@@ -370,10 +370,12 @@ export class Poassign03Page implements OnInit {
            ],
            [
             {
-               colSpan: 2,
                text: 'วันที่นัดรับ : ' + element['po_recivedate'] ,
               
-             },''
+             },
+             {
+              text: 'การส่งสินค้า : ' + element['shipping'] ,
+             }
            ],
            [
             {
@@ -482,10 +484,12 @@ export class Poassign03Page implements OnInit {
            ],
            [
             {
-               colSpan: 2,
                text: 'วันที่นัดรับ : ' + element['po_recivedate'] ,
               
-             },''
+             },
+             {
+              text: 'การส่งสินค้า : ' + element['shipping'] ,
+             }
            ],
            [
             {
@@ -621,8 +625,10 @@ export class Poassign03Page implements OnInit {
         pic : "" ,
         etc : "" ,
         po_statustxt : "" ,
+        shipping : "" ,
       });
     }
+    //text: 'การส่งสินค้า : ' + element['shipping'] ,
     const exs = [];
     data.forEach((element, index) => {
       //console.log(element);
@@ -685,10 +691,13 @@ export class Poassign03Page implements OnInit {
         ],
         [
           {
-            colSpan: 3,
+            colSpan: 2,
             border: [true, false, false, false],
             text:  'สินค้าอื่น: ' + element['etc']
-          },'','',{
+          },'',{
+            border: [false, false, false, false],
+            text:  'การส่งสินค้า: ' + element['shipping']
+          },{
             border: [false, false, true, false],
             text: head2 + element['po_statustxt'] 
           },
