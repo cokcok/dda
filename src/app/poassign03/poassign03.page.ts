@@ -136,8 +136,8 @@ export class Poassign03Page implements OnInit {
       .subscribe((data) => {
         if (data !== null) {
           item[0].print_status = 1;
-          this.DownloadPdf_Sticker(data.data_detail);
-          //console.log(this.getDataObject(data.data_detail));
+         // this.DownloadPdf_Sticker(data.data_detail);
+         this.DownloadPdf_Sticker_New(data.data_detail);
         } 
       });
   }
@@ -177,6 +177,310 @@ export class Poassign03Page implements OnInit {
     //console.log(docDefinition);
     this.configSv.saveToDevice(pdfMake.createPdf(docDefinition), "cupon.pdf");
   }
+
+
+  DownloadPdf_Sticker_New(vdata) {
+    //console.log(vdata);
+    var docDefinition = {
+      pageSize: { //point unit
+        width: 283.465,
+        height: 212.598
+      },
+
+      pageMargins: [10,5,10,5],
+      content: [
+        [{
+          columns: [
+            this.getDataObject_sticker_New(vdata, 'sticker'),
+          ]
+        }],
+      ],
+      defaultStyle: {
+        font: 'THSarabunNew',
+        bold: true,
+        fontSize: 10
+      },
+       
+    }
+    //console.log(docDefinition);
+    this.configSv.saveToDevice(pdfMake.createPdf(docDefinition), "cupon.pdf");
+  }
+
+  getDataObject_sticker_New(vdata, type) {
+    let  data = vdata;
+   //console.log(data);
+   if(data.length === 0){
+     data.push({
+       po_running : "" ,
+       name : "" ,
+       po_customer_tel : "" ,
+       po_date : "" ,
+       po_namewin : "" ,
+       area_name : "" ,
+       product_name : "" ,
+       size : "" ,
+       podetail_comment : "" ,
+       po_recivedate : "" ,
+       podetail_number : "" ,
+       colorfront : "" ,
+       colorback : "" ,
+       pic : "" ,
+       etc : "" ,
+       po_statustxt : "" ,
+     });
+   }
+   const exs = [];
+   data.forEach((element, index) => {
+     let head1,head2;
+    // console.log(data.length ,index);
+     if(element['assign_type'] === '0'){
+       head1 = 'วันสั่งซื้อ : ';
+     }else{
+       head1 = 'วันเปลี่ยน : ';
+     }
+     if(data.length !== index+1){
+       exs.push(
+         [
+          {
+           text: 'ร้านเสื้อวินดวงดี',
+           alignment: 'left',
+           fontSize: 12,
+           bold: true
+          },
+          {
+             //colSpan: 2,
+             text: 'คูปอง',
+             alignment: 'right',
+             //margin: [100],
+           }
+         ],
+         [
+           {
+             text: 'โทร. 02-866-9994',
+             alignment: 'left',
+             fontSize: 12,
+             bold: true
+           },
+           {
+              //colSpan: 2,
+              text: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString(),
+              alignment: 'right',
+              margin: [0,-10,0,0]
+            }
+            
+          ],
+          [
+           {
+              colSpan: 2,
+              text: element['po_running'],
+              alignment: 'right',
+              margin: [0,-20,0,0]
+            },''
+          ],
+          [
+           {
+             text: head1 + element['po_date'],
+           },
+           {
+             text: 'ผู้ขาย : ' + element['name'],
+           }
+          ],
+          [
+           {
+             text: 'ลูกค้า : ' + element['po_customer'],
+           },
+           {  
+             text: 'Tel : ' + element['po_customer_tel'],
+           }
+          ],
+          [
+           {
+              text: 'วันที่นัดรับ : ' + element['po_recivedate'] ,
+             
+            },
+            {
+             text: 'การส่งสินค้า : ' + element['shipping'] ,
+            }
+          ],
+          [
+           {
+             text: 'วิน : ' +  element['po_namewin'],
+           },
+           {
+             text: 'เขต : '+  element['area_name'],
+           }
+          ],
+          [
+           {
+             text: 'สินค้า : ' +  element['product_name'],
+           },
+           {
+             text: 'ขนาด : ' +  element['size'],
+           }
+          ],
+          [
+           {
+              colSpan: 2,
+              text: 'เบอร์/สี : '  +  element['podetail_number'] + '/' + element['colorfront'] + '-' + element['colorback'] ,
+             
+            },''
+          ],
+          [
+           {
+              colSpan: 2,
+              text: 'หมายเหตุ : ' +  element['podetail_comment']  ,
+             
+            },''
+          ],
+          [
+           {
+              colSpan: 2,
+              text: 'สินค้าอื่นๆ : ' +  element['etc'] ,
+             
+            },''
+          ],
+          [
+           {  
+             colSpan: 2,
+             qr: 'https://duangdeewin.com/ddaaap/#/podda01/'+element['id'] ,
+             alignment: 'right',
+             fit: '20',
+             pageBreak: "after",
+             margin: [0, 0, 0, 8]
+           },''
+          ],
+       )
+     }
+     else
+     {
+       exs.push(
+         [
+           {
+            text: 'ร้านเสื้อวินดวงดี',
+            alignment: 'left',
+            fontSize: 12,
+            bold: true
+           },
+           {
+              colSpan: 2,
+              text: 'คูปอง',
+              alignment: 'right',
+              //margin: [100],
+            },''
+          ],
+          [
+            {
+              text: 'โทร. 02-866-9994',
+              alignment: 'left',
+              fontSize: 12,
+              bold: true,
+              margin: [0,-5,0,0]
+            },
+            {
+               colSpan: 2,
+               text: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString(),
+               alignment: 'right',
+               margin: [0,-10,0,0]
+             },''
+             
+           ],
+           [
+            {
+               colSpan: 3,
+               text: element['po_running'],
+               alignment: 'right',
+               margin: [0,-15,0,0]
+             },''
+           ],
+          [
+           {
+             text: head1 + element['po_date'],
+           },
+           {
+             text: 'ผู้ขาย : ' + element['name'],
+           },
+           {
+             text: 'ลูกค้า : ' + element['po_customer'],
+           }
+          ],
+          [
+           {
+             text: 'Tel : ' + element['po_customer_tel'],
+           },
+           {  
+             text: 'วันที่นัดรับ : ' + element['po_recivedate'],
+           },
+           {
+             text: 'การส่งสินค้า : ' + element['shipping'] ,
+           }
+          ],
+          [
+           {
+             text: 'วิน : ' +  element['po_namewin'],
+           },
+           {
+            colSpan: 2,
+             text: 'เขต : '+  element['area_name'],
+           },''
+          ],
+          [
+           {
+             text: 'สินค้า : ' +  element['product_name'],
+           },
+           {
+             text: 'ขนาด : ' +  element['size'],
+           },
+           {
+                text: 'เบอร์/สี : '  +  element['podetail_number'] + '/' + element['colorfront'] + '-' + element['colorback'] ,
+           }
+          ],
+          [
+           {
+              text: 'หมายเหตุ : ' +  element['podetail_comment']  ,
+           },
+           {
+              colSpan: 2,
+              text: 'สินค้าอื่นๆ : ' +  element['etc'] ,
+            },''
+          ],
+          // [
+          //  {
+          //     colSpan: 2,
+          //     text: 'สินค้าอื่นๆ : ' +  element['etc'] ,
+             
+          //   },''
+          // ],
+          [
+           {  
+             colSpan: 3,
+             qr: 'https://duangdeewin.com/ddaaap/#/podda01/'+element['id'] ,
+             alignment: 'right',
+             fit: '50',
+             //pageBreak: "after",
+             margin: [0, 0, 0, 8]
+           },'',''
+          ],
+       
+       )
+     }
+    
+
+   });
+
+   return {
+     table: {
+       widths: ['35%','35%','30%'],
+
+       body: [
+         ...exs
+       ],
+       
+     },
+     layout: 'noBorders',
+
+   };
+ }
+
 
   getDataObject_sticker(vdata, type) {
      let  data = vdata;

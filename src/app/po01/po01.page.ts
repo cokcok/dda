@@ -2,7 +2,8 @@ import { Component, OnInit,Input, ViewChild, ElementRef } from '@angular/core';
 import { ModalController, NavController,AlertController } from '@ionic/angular';
 import { FormBuilder, FormGroup, Validators, FormControl,FormArray } from "@angular/forms";
 import { ConfigService } from "../sv/config.service";
-import { Subscription } from "rxjs";
+import { Subscription,Subject  } from "rxjs";
+import { map,take } from 'rxjs/operators';
 import { MtdSvService} from '../sv/mtd-sv.service';
 import {PoSvService} from '../sv/po-sv.service';
 import * as moment_ from 'moment';
@@ -14,6 +15,7 @@ import {Po01numberPage} from '../po01number/po01number.page';
 //import * as $ from 'jquery';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import {PortService} from '../namewin/port.service';
+
 
 
 @Component({
@@ -47,6 +49,8 @@ export class Po01Page implements OnInit {
   privilege_saveedit = [undefined,'0','1']; 
   privilege_saveeditrecive_date = ['2','3','4','5']; 
   privilege_saveedittf = ['3']; 
+
+
   constructor(private navCtrl: NavController,public formBuilder: FormBuilder,
     public configSv: ConfigService,public mtdSv: MtdSvService,
     private alertCtrl: AlertController,private poSv: PoSvService,public placeSv:PlaceSvService,private modalCtrl:ModalController,private iab: InAppBrowser,private portService:PortService) { 
@@ -106,7 +110,7 @@ export class Po01Page implements OnInit {
     //console.log(this.ports_namewin);
     //console.log(this.ports_namewin);
     //this.ports_namewin =
-  
+   
   }
 
   loaddata_edit(){
@@ -657,6 +661,36 @@ export class Po01Page implements OnInit {
     this.modalCtrl.dismiss();
   }
 
+ 
+  modalSubscription: Subscription;
+  checkdupitem = false;   checkdupitem_data:any ;
+  private  $option3 = new Subject<any>();
+  private  option3Subscription = this.$option3.pipe(take(1)).subscribe(response => {
+    console.log('Response3', response)
+    if(response["data_detail"].length > 0){
+       this.checkdupitem = true;
+       this.checkdupitem_data = response["data_detail"][0]['detail'];
+    }
+    else{
+      this.checkdupitem = false;
+    }
+    //   this.checkdupitem = true;
+    //   this.checkdupitem_data = response["data_detail"][0]['detail'];
+      // console.log(this.checkdupitem,this.checkdupitem_data)
+  });
+
+
+  // this.modalSubscription = this.modalService.openModal
+  //   .pipe(
+  //      takeUntil(this.unsubscribeSignal.asObservable()),
+  //   )
+  //   .subscribe(cmp => {
+
+  //     // CALLD TWICE EVRY TIME THE SERVICE CALLS .next()
+  //     console.log(cmp);
+  //   });
+ 
+
   async submitForm(){
     //console.log(this.ionicForm.value)
     let foundaddnumber = false;
@@ -667,7 +701,6 @@ export class Po01Page implements OnInit {
         }
       });
     }
-  
 
     let founddiscount = this.tmpproduct.find(function (value){
         if(Number(value.discount) > Number(value.price)){
@@ -683,81 +716,200 @@ export class Po01Page implements OnInit {
     this.ionicForm.controls['po_total'].setValue(this.alltotal);
     //console.log(this.ionicForm.value)
     this.isSubmitted = true;
+   
     if (!this.ionicForm.valid || founddiscount || foundaddnumber) {
       console.log("Please provide all the required values!");
       return false;
-    } else {
-      const confirm =  await this.alertCtrl.create({
-        header: 'ยืนยันข้อมูลในการบันทึก',
-        //message: 'แน่ใจว่าต้องการลบเลขระบบที่ '+ item +' ? ',
-        buttons: [{
-          text: 'ยกเลิก',
-          handler: (data: any) => {
-             //console.log('cancel ',data);
-          }
-        },
+    }
+     else 
+    {
+      let typesql: string;
+      if (!this.ionicForm.controls.id.value) {
+        typesql = "insert";
+      } else {
+        typesql = "update";
+      }
+     
+      this.sub = this.poSv
+      .crudpo(this.ionicForm.value,'check')
+      .subscribe(async  (data_check) => {
+      //console.log(data_check);
+      let header_submit;
+      if(typesql === "insert"){
+        if(data_check["data_detail"].length > 0)
         {
-          text: 'ตกลง',
+          header_submit = "พบมีรายการสินค้าซ้ำกับ เลขใบสั่งซื้อ " + data_check["data_detail"][0]["detail"] + " ต้องการยืนยันการบันทึกใช่ไหม ??";
+          //this.$option3.unsubscribe();
+        }
+        else
+        {
+          header_submit ='ยืนยันข้อมูลในการบันทึก';
+        }
+      }
+      else
+      {
+        header_submit ='ยืนยันข้อมูลในการบันทึก';
+      }
+  
+        const confirm =  await this.alertCtrl.create({
+          header: header_submit,
+          //message: 'แน่ใจว่าต้องการลบเลขระบบที่ '+ item +' ? ',
+          buttons: [{
+            text: 'ยกเลิก',
             handler: (data: any) => {
-            //console.log('submit');
-            let typesql: string;
-            if (!this.ionicForm.controls.id.value) {
-              typesql = "insert";
-            } else {
-              typesql = "update";
+               //console.log('cancel ',data);
             }
-            this.sub = this.poSv
-            .crudpo(this.ionicForm.value,typesql)
-            .subscribe((data) => {
-              if (data !== null) {
-                if(typesql === 'insert'){
-                  if(data.status === 'ok'){
-                    this.refreshForm();
+          },
+          {
+            text: 'ตกลง',
+              handler: (data: any) => {
+              //console.log('submit');
+             
+              this.sub = this.poSv
+              .crudpo(this.ionicForm.value,typesql)
+              .subscribe((data) => {
+                if (data !== null) {
+                  if(typesql === 'insert'){
+                    if(data.status === 'ok'){
+                      this.refreshForm();
+                      this.configSv.ChkformAlert(data.message);
+                    }
+                  }else if(typesql === 'update'){
+                    //console.log('update');
                     this.configSv.ChkformAlert(data.message);
-                  }
-                }else if(typesql === 'update'){
-                  //console.log('update');
-                  this.configSv.ChkformAlert(data.message);
-                  let dataarray = []; 
-                  let ponumberdetail = this.tmpproduct.map(function (item) {
-                    return item.numbervalue
-                  });
-                
-                  if(ponumberdetail[0] !== null){
-                    ponumberdetail = ponumberdetail.filter(function(val){
-                      return val;
+                    let dataarray = []; 
+                    let ponumberdetail = this.tmpproduct.map(function (item) {
+                      return item.numbervalue
                     });
-                  }else{
-                    ponumberdetail = null;
+                  
+                    if(ponumberdetail[0] !== null){
+                      ponumberdetail = ponumberdetail.filter(function(val){
+                        return val;
+                      });
+                    }else{
+                      ponumberdetail = null;
+                    }
+                    dataarray.push({ 
+                      po_date:this.ionicForm.controls.po_date.value,
+                      po_recivedate:this.ionicForm.controls.po_recivedate.value,
+                      po_namewin:this.ionicForm.controls.po_namewin.value,
+                      area_name:this.ionicForm.controls.mtd_area_id.value.area_name,
+                      po_customer:this.ionicForm.controls.po_customer.value,
+                      po_customer_tel:this.ionicForm.controls.po_customer_tel.value,
+                      po_total: this.ionicForm.controls.po_total.value,
+                      qty:this.tmpproduct.length,
+                      ponumberdetail:ponumberdetail,
+                    });
+                    //console.log(dataarray);
+                    this.modalCtrl.dismiss(dataarray,'comfirm');
+                   // this.ionicForm.controls.podetail_number.value
+  
                   }
-                  dataarray.push({ 
-                    po_date:this.ionicForm.controls.po_date.value,
-                    po_recivedate:this.ionicForm.controls.po_recivedate.value,
-                    po_namewin:this.ionicForm.controls.po_namewin.value,
-                    area_name:this.ionicForm.controls.mtd_area_id.value.area_name,
-                    po_customer:this.ionicForm.controls.po_customer.value,
-                    po_customer_tel:this.ionicForm.controls.po_customer_tel.value,
-                    po_total: this.ionicForm.controls.po_total.value,
-                    qty:this.tmpproduct.length,
-                    ponumberdetail:ponumberdetail,
-                  });
-                  //console.log(dataarray);
-                  this.modalCtrl.dismiss(dataarray,'comfirm');
-                 // this.ionicForm.controls.podetail_number.value
-
                 }
-              }
-            },
-            (error) => {
-              console.log(JSON.stringify(error));
-            },
-            () => {
-              //this.refreshForm();
-            });
-          }
-        }]
-      });
-      confirm.present();
+              },
+              (error) => {
+                console.log(JSON.stringify(error));
+              },
+              () => {
+                //this.refreshForm();
+              });
+            }
+          }]
+        });
+        confirm.present();
+
+        // if(data["data_detail"].length > 0 ){
+        //   if(data["data_detail"][0]['count_dup'] > 0){
+        //     this.$option3.next(data);
+        //   }
+        // }
+       // console.log('a');
+      //  this.$option3.next(data);
+        //this.$option3.unsubscribe();
+      } ,
+      (error) => {
+        console.log(JSON.stringify(error));
+      },
+      () => {});
+   
+    
+   //console.log(await this.$option3.pipe(take(1)).toPromise()) ;
+   //console.log(await this.$option3.pipe(take(1)).toPromise()) ;
+   //await this.$option3.pipe(take(1)).toPromise()
+   //console.log(this.checkdupitem,this.checkdupitem_data)
+  // console.log(this.$option3.pipe(take(1)));
+      
+      // const confirm =  await this.alertCtrl.create({
+      //   header: header_submit,
+      //   //message: 'แน่ใจว่าต้องการลบเลขระบบที่ '+ item +' ? ',
+      //   buttons: [{
+      //     text: 'ยกเลิก',
+      //     handler: (data: any) => {
+      //        //console.log('cancel ',data);
+      //     }
+      //   },
+      //   {
+      //     text: 'ตกลง',
+      //       handler: (data: any) => {
+      //       //console.log('submit');
+      //       let typesql: string;
+      //       if (!this.ionicForm.controls.id.value) {
+      //         typesql = "insert";
+      //       } else {
+      //         typesql = "update";
+      //       }
+      //       this.sub = this.poSv
+      //       .crudpo(this.ionicForm.value,typesql)
+      //       .subscribe((data) => {
+      //         if (data !== null) {
+      //           if(typesql === 'insert'){
+      //             if(data.status === 'ok'){
+      //               //this.refreshForm();
+      //               this.configSv.ChkformAlert(data.message);
+      //             }
+      //           }else if(typesql === 'update'){
+      //             //console.log('update');
+      //             this.configSv.ChkformAlert(data.message);
+      //             let dataarray = []; 
+      //             let ponumberdetail = this.tmpproduct.map(function (item) {
+      //               return item.numbervalue
+      //             });
+                
+      //             if(ponumberdetail[0] !== null){
+      //               ponumberdetail = ponumberdetail.filter(function(val){
+      //                 return val;
+      //               });
+      //             }else{
+      //               ponumberdetail = null;
+      //             }
+      //             dataarray.push({ 
+      //               po_date:this.ionicForm.controls.po_date.value,
+      //               po_recivedate:this.ionicForm.controls.po_recivedate.value,
+      //               po_namewin:this.ionicForm.controls.po_namewin.value,
+      //               area_name:this.ionicForm.controls.mtd_area_id.value.area_name,
+      //               po_customer:this.ionicForm.controls.po_customer.value,
+      //               po_customer_tel:this.ionicForm.controls.po_customer_tel.value,
+      //               po_total: this.ionicForm.controls.po_total.value,
+      //               qty:this.tmpproduct.length,
+      //               ponumberdetail:ponumberdetail,
+      //             });
+      //             //console.log(dataarray);
+      //             this.modalCtrl.dismiss(dataarray,'comfirm');
+      //            // this.ionicForm.controls.podetail_number.value
+
+      //           }
+      //         }
+      //       },
+      //       (error) => {
+      //         console.log(JSON.stringify(error));
+      //       },
+      //       () => {
+      //         //this.refreshForm();
+      //       });
+      //     }
+      //   }]
+      // });
+      // confirm.present();
     }
   }
 
@@ -765,6 +917,8 @@ export class Po01Page implements OnInit {
 
   ngOnDestroy(): void {
     this.sub.unsubscribe();
+    //this.$option3.unsubscribe();
+    //this.$option3.next();
   }
 
 
