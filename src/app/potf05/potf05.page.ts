@@ -201,6 +201,8 @@ export class Potf05Page implements OnInit {
       po_address : "" ,
       po_address_place : "" ,
       po_customer_tel : "" ,
+      po_customer : "" ,
+      shipping_show : "" ,
      });
    }
    const exs = [];
@@ -351,7 +353,13 @@ export class Potf05Page implements OnInit {
       ],
       [
         {
-          text : element['po_customer_tel'],
+          text :  element['po_customer'] + ' ' + element['po_customer_tel'],
+          alignment: 'left',
+        }
+      ],
+      [
+        {
+          text :  element['shipping_show'] ,
           alignment: 'left',
         }
       ],

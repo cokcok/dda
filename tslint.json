@@ -1,6 +1,7 @@
 {
   "extends": "tslint:recommended",
   "rules": {
+    "no-string-literal": false,
     "align": {
       "options": [
         "parameters",
@@ -77,8 +78,9 @@
       "as-needed"
     ],
     "quotemark": [
-      true,
-      "single"
+      //true,
+      //"single"
+      false
     ],
     "semicolon": {
       "options": [
@@ -119,8 +121,9 @@
         "allow-pascal-case"
       ]
     },
-    "whitespace": {
+    "whitespace": {     
       "options": [
+        "true",
         "check-branch",
         "check-decl",
         "check-operator",
