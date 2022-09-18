@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>  
+  <ion-toolbar>
     <ion-buttons slot="start" *ngIf="id === undefined">
       <ion-menu-button  ></ion-menu-button>
     </ion-buttons>
@@ -12,35 +12,35 @@
     <ion-buttons slot="primary" *ngIf="id === undefined && mode !== 'view'">
       <ion-button (click)="refreshForm()">
         <ion-icon slot="icon-only" src="./assets/icons/refresh.svg"></ion-icon>
-      </ion-button> 
+      </ion-button>
     </ion-buttons>
     <ion-buttons slot="primary"  *ngIf="id !== undefined && mode !== 'view' && privilege_saveedit.includes(tmppostatus)">
-      <ion-button (click)="cancelData()"> 
+      <ion-button (click)="cancelData()">
         <ion-icon slot="icon-only" name="trash"></ion-icon>
       </ion-button>
-    </ion-buttons>  
+    </ion-buttons>
     <ion-buttons slot="primary" *ngIf="mode !== 'view'  && privilege_saveedit.includes(tmppostatus)">
       <ion-button (click)="submitForm()">
         <ion-icon slot="icon-only" src="./assets/icons/save.svg"></ion-icon>
       </ion-button>
-    </ion-buttons>  
+    </ion-buttons>
     <ion-buttons slot="primary" *ngIf="mode !== 'view'  && privilege_saveeditrecive_date.includes(tmppostatus)">
       <ion-button (click)="submitForm_date()">
         <ion-icon slot="icon-only" src="./assets/icons/editdate.svg"></ion-icon>
       </ion-button>
-    </ion-buttons> 
+    </ion-buttons>
     <ion-buttons slot="primary" *ngIf="mode !== 'view'  && privilege_saveedittf.includes(tmppostatus)">
       <ion-button (click)="submitForm_tf()">
         <ion-icon slot="icon-only" src="./assets/icons/transport.svg"></ion-icon>
       </ion-button>
-    </ion-buttons> 
+    </ion-buttons>
     <ion-buttons slot="primary" *ngIf="modepayment === 'ok' && privilege_payment.includes(group_id)">
       <ion-button (click)="submitForm_Payment()">
         <ion-icon slot="icon-only" src="./assets/icons/save.svg"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-</ion-header> 
+</ion-header>
 
  <ion-content>
   <div *ngIf="modepayment === 'ok' || modepayment === 'view' ">
@@ -51,7 +51,7 @@
           <ion-col>การรับสินค้า</ion-col>
         </ion-row>
         <ion-row>
-          <ion-col> 
+          <ion-col>
             <ion-item>
               <ion-label class="showlabel" position="floating">วันที่ส่ง</ion-label>
               <ion-input formControlName="payment_date" readonly  type="text"></ion-input>
@@ -59,7 +59,7 @@
           </ion-col>
         </ion-row>
         <ion-row>
-          <ion-col> 
+          <ion-col>
             <ion-item>
               <ion-label class="showlabel" position="floating">เงินที่ต้องชำระ</ion-label>
               <ion-input formControlName="moneypay" type="text" readonly></ion-input>
@@ -77,7 +77,7 @@
                 itemValueField="id"
                 itemTextField="typeserch"
                 [items]="ports_payment"
-                [canSearch]="true" 
+                [canSearch]="true"
                 closeButtonText="ยกเลิก"
                 (onChange)="portChange_payment($event)"
                 >
@@ -91,7 +91,7 @@
         <ion-row *ngIf="paymenttype === 0">
           <ion-col>
             <ion-item>
-              <ion-label class="showlabel" position="floating">รับเงิน</ion-label> 
+              <ion-label class="showlabel" position="floating">รับเงิน</ion-label>
               <ion-input formControlName="cashmoney_0" type="number"  (input)="cul_cashmoney_0($event.target.value)" ></ion-input>
               <span class="error" *ngIf="isSubmitted && errorControl_Payment.cashmoney_0.errors?.required">
                 กรุณาระบุ รับเงิน
@@ -116,7 +116,7 @@
          </ion-row>
          <ion-row>
           <ion-col>
-            <p>แนบสลิปการโอน 
+            <p>แนบสลิปการโอน
               <input type="file" (change)="fileUpload_imgpayment($event)" id="file-input" accept="image/x-png,image/jpeg"  style="position:absolute; top: -999999px" #fileIngimg1>
               <button ion-button (click)="fileUpload_payment()">Upload</button>
               <div>
@@ -134,7 +134,7 @@
           </ion-col>
          </ion-row>
         </div>
-        
+
         <ion-row *ngIf="paymenttype === 2">
           <ion-col>
             <ion-item>
@@ -203,7 +203,7 @@
             <ion-input list="browsers" formControlName="po_namewin" type="text"></ion-input>
             <span class="error" *ngIf="isSubmitted && errorControl.po_namewin.errors?.required">
               กรุณาระบุ ชื่อวิน
-            </span> 
+            </span>
           </ion-item> -->
 
           <ion-item>
@@ -211,11 +211,11 @@
             <input list="browsers"  placeholder="ชื่อวิน" formControlName="po_namewin">
             <span class="error" *ngIf="isSubmitted && errorControl.po_namewin.errors?.required">
               กรุณาระบุ ชื่อวิน
-            </span> 
+            </span>
           </ion-item>
-          
+
           <!-- <ion-label>Browsers</ion-label>  -->
-    
+
             <datalist id="browsers">
                 <!-- <option value="Internet Explorer"></option>
                 <option value="Firefox"></option>
@@ -227,7 +227,7 @@
               </option>
             </datalist>
         </ion-col>
-        <ion-col > 
+        <ion-col >
           <ion-item>
             <ion-label class="showlabel" position="floating">เขต</ion-label>
             <ionic-selectable interface="floating" item-content formControlName="mtd_area_id" itemValueField="id"
@@ -248,10 +248,10 @@
             </ionic-selectable>
             <span class="error" *ngIf="isSubmitted && errorControl.customer_type_id.errors?.required">
               กรุณาระบุ ประเภทลูกค้า
-            </span> 
+            </span>
           </ion-item>
         </ion-col>
-      
+
         <ion-col *ngIf="cus_type==0">
           <ion-item>
             <ion-label class="showlabel" position="floating">ชื่อลูกค้า</ion-label>
@@ -264,10 +264,18 @@
         <ion-col *ngIf="cus_type==0">
           <ion-item>
             <ion-label class="showlabel" position="floating">เบอร์ลูกค้า</ion-label>
-            <ion-input formControlName="po_customer_tel" type="text"></ion-input>
+            <ion-input formControlName="po_customer_tel" type="tel" placeholder="999-999-9999" mask="***-***-****" maxlength="12"></ion-input>
             <span class="error" *ngIf="isSubmitted && errorControl.po_customer_tel.errors?.required">
               กรุณาระบุ เบอร์ลูกค้า
             </span>
+          </ion-item>
+
+        </ion-col>
+        <ion-col *ngIf="cus_type==0">
+          <ion-item>
+            <ion-label class="showlabel" position="floating">เบอร์ลูกค้า 1</ion-label>
+            <ion-input formControlName="po_customer_tel1" type="tel" placeholder="999-999-9999" mask="***-***-****" maxlength="12"></ion-input>
+
           </ion-item>
         </ion-col>
         <ion-col *ngIf="cus_type==1">
@@ -292,10 +300,10 @@
               กรุณาระบุ วันที่นัดรับ
             </span>
           </ion-item>
-          </ion-col> 
+          </ion-col>
       </ion-row>
       <ion-row>
-       
+
         <ion-col>
           <ion-item>
             <ion-label class="showlabel" position="floating">ค่ามัดจำ</ion-label>
@@ -306,7 +314,7 @@
           <ion-item>
             <ion-label class="showlabel" position="floating">การส่งสินค้า</ion-label>
             <ionic-selectable interface="floating" item-content formControlName="mtd_shipping_id" itemValueField="id"
-              itemTextField="shipping_desc" [items]="ports_shipping" [canSearch]="true" closeButtonText="ยกเลิก" (onChange)="portChange($event)"> 
+              itemTextField="shipping_desc" [items]="ports_shipping" [canSearch]="true" closeButtonText="ยกเลิก" (onChange)="portChange($event)">
             </ionic-selectable>
             <span class="error" *ngIf="isSubmitted && errorControl.mtd_shipping_id.errors?.required">
               กรุณาระบุ การส่งสินค้า
@@ -314,7 +322,7 @@
           </ion-item>
         </ion-col>
       </ion-row>
-      <ion-row> 
+      <ion-row>
         <ion-col >
           <ion-item>
             <ion-label class="showlabel" position="floating">ราคาค่าส่ง</ion-label>
@@ -324,7 +332,7 @@
             </span>
           </ion-item>
         </ion-col>
-        <ion-col > 
+        <ion-col >
           <ion-item>
             <ion-label class="showlabel" position="floating">สถานที่ส่ง (บ้านเลขที่ ซอย ถนน)</ion-label>
             <ion-input formControlName="po_address" type="text"></ion-input>
@@ -339,7 +347,7 @@
           </ion-label>
         </ion-col>
       </ion-row>
-      <ion-row> 
+      <ion-row>
         <ion-col >
           <ion-item>
             <ion-label class="showlabel" position="floating" >ประเภทใบสั่งซื้อ</ion-label>
@@ -350,7 +358,7 @@
               itemValueField="id"green
               itemTextField="typegreen"
               [items]="ports_green"
-              [canSearch]="true" 
+              [canSearch]="true"
               closeButtonText="ยกเลิก"
               (onChange)="portChange_green($event)"
               >
@@ -371,9 +379,9 @@
       <p></p>
       <div class="table1">
         <ion-row  *ngIf="this.ionicForm.controls.po_green.value.id === 0">
-          <ion-col  > 
+          <ion-col  >
             <ion-item>
-            <ion-label class="showproduct"  position="floating">เลือกสินค้า</ion-label> 
+            <ion-label class="showproduct"  position="floating">เลือกสินค้า</ion-label>
            <ionic-selectable item-content itemValueField="id" itemTextField="name" [isMultiple]="true" [canSearch]="true" [items]="ports_productmain" (onChange)="portChange_Product($event,'product')">
             <ng-template ionicSelectableItemTemplate let-port="item" let-isPortSelected="isItemSelected">
               <div [ngClass]="{'qtychkwaring': inqtywaring(port.qty,port.qty_remain),'qtychk':  inqtyerror(port.qty,port.qty_remain)}" >{{port.name}} จำนวนคงเหลือ: {{port.qty}}</div>
@@ -386,7 +394,7 @@
           </ion-item>
           <ion-item>
             <ion-label text-wrap>
-              <ion-col> 
+              <ion-col>
                 <ion-icon name="radio-button-on-outline" class="qtychkwaring"></ion-icon> = สินค้าเหลืออยู่ต่ำกว่าที่กำหนดใน Stock</ion-col>
               <ion-col> <ion-icon name="radio-button-on-outline"  color="danger"></ion-icon> = สินค้าไม่เหลือใน Stock
               </ion-col>
@@ -395,32 +403,32 @@
         </ion-col>
         </ion-row >
         <ion-row *ngIf="this.ionicForm.controls.po_green.value.id === 1">
-          <ion-col> 
+          <ion-col>
             <ion-item>
-            <ion-label class="showproduct" position="floating">เลือกสินค้า</ion-label> 
+            <ion-label class="showproduct" position="floating">เลือกสินค้า</ion-label>
            <ionic-selectable item-content itemValueField="id" itemTextField="name" [isMultiple]="true" [canSearch]="true" [items]="ports_productmain" (onChange)="portChange_Product($event,'product')">
             <ng-template ionicSelectableItemTemplate let-port="item" let-isPortSelected="isItemSelected">
               <!-- <div [ngClass]="{'qtychk': inqtyerror(port.qty,port.qty_remain)}" >{{port.name}} remain: {{port.qty_remain}} qty: {{port.qty}}</div> -->
-              <div [ngClass]="{'qtychkwaring': inqtywaring(port.qty,port.qty_remain),'qtychk':  inqtyerror(port.qty,port.qty_remain)}" >{{port.name}}  จำนวนคงเหลือ: {{port.qty}}</div>  
+              <div [ngClass]="{'qtychkwaring': inqtywaring(port.qty,port.qty_remain),'qtychk':  inqtyerror(port.qty,port.qty_remain)}" >{{port.name}}  จำนวนคงเหลือ: {{port.qty}}</div>
               <!-- remain: {{port.qty_remain}} -->
             </ng-template>
           </ionic-selectable>
           </ion-item>
         </ion-col>
-        <ion-col> 
+        <ion-col>
           <ion-item>
-          <ion-label class="showproduct" position="floating">เลือกสินค้าตัวเลข </ion-label> 
+          <ion-label class="showproduct" position="floating">เลือกสินค้าตัวเลข </ion-label>
          <ionic-selectable item-content itemValueField="id" itemTextField="name" [isMultiple]="true" [canSearch]="true" [items]="ports_productmain_number" (onChange)="portChange_Product($event,'number')">
           <ng-template ionicSelectableItemTemplate let-port="item" let-isPortSelected="isItemSelected">
             <div [ngClass]="{'qtychkwaring': inqtywaring(port.qty,port.qty_remain),'qtychk':  inqtyerror(port.qty,port.qty_remain)}" >{{port.name}} จำนวนคงเหลือ : {{port.qty}}</div>
           </ng-template>
         </ionic-selectable>
-        </ion-item> 
-      </ion-col> 
+        </ion-item>
+      </ion-col>
       <ion-col size="12">
       <ion-item>
         <ion-label text-wrap>
-          <ion-col> 
+          <ion-col>
             <ion-icon name="radio-button-on-outline" class="qtychkwaring"></ion-icon> = สินค้าเหลืออยู่ต่ำกว่าที่กำหนดใน Stock</ion-col>
           <ion-col> <ion-icon name="radio-button-on-outline"  color="danger"></ion-icon> = สินค้าไม่เหลือใน Stock
           </ion-col>
@@ -439,32 +447,32 @@
           <ion-col size="3">หมายเหตุ</ion-col>
         </ion-row>
         <!-- <ion-row class="table1_detail" *ngFor="let c of tmpproduct;let i = index;">  ng-class-even="'blue'" ng-class-odd="'green'" -->
-          <ion-row  *ngFor="let c of tmpproduct;let i = index; " [ngClass]="(i % 2 == 0) ? 'table1_detail_odd' : 'table1_detail_even'">  
+          <ion-row  *ngFor="let c of tmpproduct;let i = index; " [ngClass]="(i % 2 == 0) ? 'table1_detail_odd' : 'table1_detail_even'">
           <ion-col  size="0.5">{{i+1}}</ion-col>
           <ion-col size="2">{{c.name}}</ion-col>
           <!-- <ion-col size="2">{{c.size}}/{{c.price}}</ion-col> -->
-          <ion-col size="2"> 
-          <ion-input  class="showborder" type="number"  [(ngModel)]="discount[c.id]" [ngModelOptions]="{standalone: true}" (change)="Discount(c.id,discount[c.id])"></ion-input> 
+          <ion-col size="2">
+          <ion-input  class="showborder" type="number"  [(ngModel)]="discount[c.id]" [ngModelOptions]="{standalone: true}" (change)="Discount(c.id,discount[c.id])"></ion-input>
           </ion-col>
           <ion-col size="2">{{c.total|number}}</ion-col>
-          <ion-col size="3"> 
-            <ion-input  class="showborder" type="text"  [(ngModel)]="commentproduct[c.id]" [ngModelOptions]="{standalone: true}" (change)="Commentproduct(c.id,commentproduct[c.id])"></ion-input> 
+          <ion-col size="3">
+            <ion-input  class="showborder" type="text"  [(ngModel)]="commentproduct[c.id]" [ngModelOptions]="{standalone: true}" (change)="Commentproduct(c.id,commentproduct[c.id])"></ion-input>
           </ion-col>
-            <ion-col size="2.5" > 
+            <ion-col size="2.5" >
               <div *ngIf="mode !== 'view'">
-                <input type="file"  (change)="fileUpload_img($event)" id="file-input" accept="image/x-png,image/jpeg" style="position:absolute; top: -999999px" #fileIngimg> 
+                <input type="file"  (change)="fileUpload_img($event)" id="file-input" accept="image/x-png,image/jpeg" style="position:absolute; top: -999999px" #fileIngimg>
               <ion-button (click)="onClick_fileUpload(c.id)">
                 <ion-icon slot="icon-only" class="iconSize" name="images"></ion-icon>
-              </ion-button> 
+              </ion-button>
               <ion-button  (click)="Addnumber(i+1,c.id)">
-                <ion-icon slot="icon-only" class="iconSize" name="add"></ion-icon> 
+                <ion-icon slot="icon-only" class="iconSize" name="add"></ion-icon>
                 <!-- *ngIf="this.ionicForm.controls.po_green.value.id === 0" -->
               </ion-button>
               <ion-button (click)="Deltmpproduct(c.id,c.id,c.type,c.product_id,c.number_id,c.statusqty)">
                 <ion-icon slot="icon-only" class="iconSize" name="trash"></ion-icon>
               </ion-button>
               </div>
-              
+
             </ion-col>
              <ion-col size="12" *ngIf="isSubmitted && check_discout(discount[i],c.total)">
             <ion-row >
@@ -473,7 +481,7 @@
               </span>
             </ion-row>
           </ion-col>
-            
+
             <ion-col size="12" *ngIf="c.numbervalue !== null">
               <div>
               <ion-row *ngIf="c.numbervalue !== null">
@@ -501,10 +509,10 @@
                   </ion-text>
                 </ion-row>
               <ion-row *ngFor="let cc of c.productetc.tmpproductetc;let ii = index;">
-                <ion-col size="1"> {{ii+1}}</ion-col> 
+                <ion-col size="1"> {{ii+1}}</ion-col>
                 <ion-col size="2"> {{cc.name}}</ion-col>
                 <ion-col size="2"> {{cc.discount}}</ion-col>
-                <ion-col size="2"> {{cc.total}}</ion-col> 
+                <ion-col size="2"> {{cc.total}}</ion-col>
                 <ion-col size="3"> {{cc.commentproduct}}</ion-col>
               </ion-row>
               </div>
@@ -529,7 +537,7 @@
                  </div>
               </div>
             </ion-col>
-        </ion-row> 
+        </ion-row>
         <ion-row class="table1_footer" *ngIf="tmpproduct.length>0">
           <!-- <ion-col  size="1"></ion-col> -->
           <ion-col  size="3">รวมราคาสินค้า</ion-col>
@@ -557,13 +565,13 @@
           <ion-col  size="2">{{alltotal-ionicForm.controls['po_deposit'].value|number}}</ion-col>
         </ion-row>
       </div>
-      
-     
+
+
     </ion-grid>
 
   </form>
 
-  <!-- <ng-autocomplete 
+  <!-- <ng-autocomplete
   [data]="data_test"
   [searchKeyword]="keyword"
   placeholder="ชื่อวิน"
@@ -571,7 +579,7 @@
   (inputChanged)='onChangeSearch($event)'
   (inputFocused)='onFocused($event)'
   [itemTemplate]="itemTemplate"
-  [notFoundTemplate]="notFoundTemplate"> 
+  [notFoundTemplate]="notFoundTemplate">
 </ng-autocomplete>
 
 <ng-template #itemTemplate let-item>

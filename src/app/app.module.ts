@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-import { Ng2SearchPipeModule } from 'ng2-search-filter'; 
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import { AutoCompleteModule } from 'ionic4-auto-complete';
@@ -20,22 +20,24 @@ import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { IonicSelectableModule } from 'ionic-selectable';
+import { IonicInputDirective } from './directives/ionic-input.directive';
+import { TextMaskModule } from 'angular2-text-mask';
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, IonicInputDirective],
   entryComponents: [],
   imports: [
-    BrowserModule,FormsModule,ReactiveFormsModule,HttpClientModule,
-    IonicModule.forRoot(),AutoCompleteModule,
-    AppRoutingModule,Ng2SearchPipeModule,IonicSelectableModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),NgSelectModule //,FileOpener
-    ,NgIdleKeepaliveModule.forRoot()
+    BrowserModule, FormsModule, ReactiveFormsModule, HttpClientModule,
+    IonicModule.forRoot(), AutoCompleteModule,
+    AppRoutingModule, Ng2SearchPipeModule, IonicSelectableModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }), NgSelectModule // ,FileOpener
+    , NgIdleKeepaliveModule.forRoot() , TextMaskModule
   ],
   providers: [
     StatusBar,
-    SplashScreen,{ provide: LocationStrategy, useClass: HashLocationStrategy },
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },InAppBrowser,File,FileOpener 
+    SplashScreen, { provide: LocationStrategy, useClass: HashLocationStrategy },
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, InAppBrowser, File, FileOpener
   ],
   bootstrap: [AppComponent],
-  
+
 })
 export class AppModule {}

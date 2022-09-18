@@ -4,12 +4,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 const routes: Routes = [
   {
     path: '',
-    //redirectTo: 'folder/Inbox',
-    //redirectTo: 'po01',
+    // redirectTo: 'folder/Inbox',
+    // redirectTo: 'po01',
     redirectTo: 'signin',
-    //redirectTo: '',
-    pathMatch: 'full' 
-  }, 
+    // redirectTo: '',
+    pathMatch: 'full'
+  },
   {
     path: 'folder/:id',
     loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule)
@@ -241,7 +241,8 @@ const routes: Routes = [
   {
     path: 'potf08',
     loadChildren: () => import('./potf08/potf08.module').then( m => m.Potf08PageModule)
-  },  {
+  },
+  {
     path: 'rp01',
     loadChildren: () => import('./rp01/rp01.module').then( m => m.Rp01PageModule)
   },
@@ -265,7 +266,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [   
+  imports: [
     RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
   ],
   exports: [RouterModule]

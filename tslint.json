@@ -37,13 +37,15 @@
     "import-spacing": true,
     "indent": {
       "options": [
+        true,
         "spaces"
+
       ]
     },
     "max-classes-per-file": false,
     "max-line-length": [
       true,
-      140
+      500
     ],
     "member-ordering": [
       true,
@@ -98,6 +100,7 @@
     },
     "typedef-whitespace": {
       "options": [
+        //true,
         {
           "call-signature": "nospace",
           "index-signature": "nospace",
@@ -118,12 +121,18 @@
       "options": [
         "ban-keywords",
         "check-format",
-        "allow-pascal-case"
+        "allow-pascal-case",
+        "allow-leading-underscore",
+        "allow-snake-case",
+        "allow-trailing-underscore",
+        "require-const-for-all-caps"
       ]
     },
-    "whitespace": {     
+    "whitespace": {
+
       "options": [
-        "true",
+       // true,
+
         "check-branch",
         "check-decl",
         "check-operator",

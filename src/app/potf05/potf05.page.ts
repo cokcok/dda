@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController,AlertController } from '@ionic/angular';
+import { ModalController, AlertController } from '@ionic/angular';
 import { ConfigService } from "../sv/config.service";
 import { Subscription } from "rxjs";
 import { PoSvService } from '../sv/po-sv.service';
@@ -15,9 +15,9 @@ import { saveAs } from 'file-saver';
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 
-(<any>pdfMake).vfs = pdfFonts.pdfMake.vfs;
+(pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
-//ต้องระบุตามชื่อของ ไฟล์ font
+// ต้องระบุตามชื่อของ ไฟล์ font
 pdfMake.fonts = {
   THSarabunNew: {
     normal: 'THSarabunNew.ttf',
@@ -31,7 +31,7 @@ pdfMake.fonts = {
     italics: 'Roboto-Italic.ttf',
     bolditalics: 'Roboto-MediumItalic.ttf'
   }
- }
+ };
 
 
 
@@ -41,26 +41,26 @@ pdfMake.fonts = {
   styleUrls: ['./potf05.page.scss'],
 })
 export class Potf05Page implements OnInit {
-  ionicForm: FormGroup;isSubmitted = false; 
-  data = []; page = 0;maxpadding:number;limit = 50;
-  sub: Subscription; maxdatalimit=0;filterTerm: string;
+  ionicForm: FormGroup; isSubmitted = false;
+  data = []; page = 0; maxpadding: number; limit = 50;
+  sub: Subscription; maxdatalimit = 0; filterTerm: string;
   datePickerObj: any = {};
   data_rp = [];
-  constructor(public configSv: ConfigService,private poSv: PoSvService,public formBuilder: FormBuilder,private modalCtrl:ModalController,private alertCtrl: AlertController) { }
+  constructor(public configSv: ConfigService, private poSv: PoSvService, public formBuilder: FormBuilder, private modalCtrl: ModalController, private alertCtrl: AlertController) { }
 
   ngOnInit() {
     this.ionicForm = this.formBuilder.group({
       typeserch_id: ["9"],
-      txtserach: ["",[Validators.required]],
-      dataall:[],
-    }); 
-    this.fndate();this.loaddata(0);
+      txtserach: ["", [Validators.required]],
+      dataall: [],
+    });
+    this.fndate(); this.loaddata(0);
   }
 
   get errorControl() {
     return this.ionicForm.controls;
   }
- 
+
   fndate(){
     this.datePickerObj = {
       inputDate: '',
@@ -74,7 +74,7 @@ export class Potf05Page implements OnInit {
       // disabledDates: [],
       // titleLabel: 'Select a Date',
        monthsList: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'],
-       weeksList: [ 'อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ','ส'],
+       weeksList: [ 'อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'],
       dateFormat: 'DD/MM/YYYY',
       btnProperties: {
         expand: 'block', // "block" | "full"
@@ -89,13 +89,13 @@ export class Potf05Page implements OnInit {
   }
 
   loaddata(padding: number, infiniteScroll?){
-    if(padding == 0){this.data = []};
+    if (padding === 0){this.data = []; }
     this.ionicForm.controls['typeserch_id'].setValue(9);
     this.sub = this.poSv
-    .getpotf_cfwin('read_storefront',this.ionicForm.value,padding)
+    .getpotf_cfwin('read_storefront', this.ionicForm.value, padding)
     .subscribe((data) => {
       if (data !== null) {
-        //console.log(data.data_detail);
+        // console.log(data.data_detail);
         this.data =  data.data_detail.map((item) => Object.assign({}, item));
         if (infiniteScroll) {
           infiniteScroll.target.complete();
@@ -105,20 +105,20 @@ export class Potf05Page implements OnInit {
       }
     });
   }
-  
+
   async View(recivedate){
-    let item = this.data.filter((val) => val.po_recivedate == recivedate);
-    //console.log(item);
+    const item = this.data.filter((val) => val.po_recivedate === recivedate);
+    // console.log(item);
     const modal = await this.modalCtrl.create({
-      component:Potf04Page,
+      component: Potf04Page,
       cssClass: 'my-modal',
-      componentProps:{recivedate:recivedate,view:'view'},
+      componentProps: {recivedate, view: 'view'},
     });
     await modal.present();
-    const {data,role} = await modal.onWillDismiss();
-    if(role === 'confirm'){
-      //console.log(data);
-      if( data[0]['countcf'] > 0 || data[0]['counterr'] > 0 ){ 
+    const {data, role} = await modal.onWillDismiss();
+    if (role === 'confirm'){
+      // console.log(data);
+      if ( data[0]['countcf'] > 0 || data[0]['counterr'] > 0 ){
         item[0].countid = item[0].countid - (Number(data[0]['countcf']) + Number(data[0]['counterr']));
         item[0].countsus = Number(item[0].countsus) + Number(data[0]['countcf']);
         item[0].counterr = Number(item[0].counterr) + Number(data[0]['counterr']);
@@ -128,10 +128,10 @@ export class Potf05Page implements OnInit {
 
 
   SearchData(padding: number,  infiniteScroll?){
-    if(padding == 0){this.data = []};
+    if (padding === 0){this.data = []; }
     this.ionicForm.controls['typeserch_id'].setValue(0);
     this.sub = this.poSv
-    .getpotf_cfwin('read_storefront',this.ionicForm.value,padding)
+    .getpotf_cfwin('read_storefront', this.ionicForm.value, padding)
     .subscribe((data) => {
       if (data !== null) {
         this.data =  data.data_detail.map((item) => Object.assign({}, item));
@@ -140,22 +140,22 @@ export class Potf05Page implements OnInit {
           infiniteScroll.target.complete();
         }
       }else{
-        this.maxpadding = 0;this.maxdatalimit =0;
+        this.maxpadding = 0; this.maxdatalimit = 0;
       }
     });
   }
- 
+
 
   Print_address(recivedate){
-    this.data_rp= []; 
-    //console.log(this.ionicForm.value);
+    this.data_rp = [];
+    // console.log(this.ionicForm.value);
     this.sub = this.poSv
     .getpotf_address(recivedate)
     .subscribe((data) => {
-      console.log(data);
+      // console.log(data);
       if (data !== null) {
-         // console.log(data.data_detail);  
-          this.DownloadPdf_Sticker(data.data_detail);  
+         // console.log(data.data_detail);
+          this.DownloadPdf_Sticker(data.data_detail);
       }
       else
       {
@@ -165,13 +165,13 @@ export class Potf05Page implements OnInit {
   }
 
   DownloadPdf_Sticker(vdata) {
-    //console.log(vdata);
-    var docDefinition = {
+    // console.log(vdata);
+    const docDefinition = {
       pageSize: {
         width: 384,
         height: 576
       },
-      pageMargins: [20,20,20,40],
+      pageMargins: [20, 20, 20, 40],
       content: [
         [{
           columns: [
@@ -183,16 +183,16 @@ export class Potf05Page implements OnInit {
         font: 'THSarabunNew',
         fontSize: 16
       },
-      
-    }
-    //console.log(docDefinition);
+
+    };
+    // console.log(docDefinition);
     this.configSv.saveToDevice(pdfMake.createPdf(docDefinition), "cupon.pdf");
   }
 
   getDataObject_sticker(vdata, type) {
-    let  data = vdata;
-   //console.log(data);
-   if(data.length === 0){
+    const  data = vdata;
+   // console.log(data);
+    if (data.length === 0){
      data.push({
       company_name : "" ,
       company_address : "" ,
@@ -205,7 +205,7 @@ export class Potf05Page implements OnInit {
       shipping_show : "" ,
      });
    }
-   const exs = [];
+    const exs = [];
 
   //  exs.push(
   //   [
@@ -289,7 +289,7 @@ export class Potf05Page implements OnInit {
   //   ],
   //  );
 
-  data.forEach((element, index) => {
+    data.forEach((element, index) => {
     exs.push(
       [
         {
@@ -311,16 +311,16 @@ export class Potf05Page implements OnInit {
       ],
       [
         {
-          text : element['company_place'],  
+          text : element['company_place'],
           alignment: 'left',
-  
+
         }
       ],
       [
         {
           text :  element['company_tel'],
           alignment: 'left',
-  
+
         }
       ],
       [
@@ -328,7 +328,7 @@ export class Potf05Page implements OnInit {
           text : '________________________________________________________',
           alignment: 'left',
           margin: [0, 5, 0, 0]
-  
+
         }
       ],
       [
@@ -338,10 +338,10 @@ export class Potf05Page implements OnInit {
           margin: [0, 5, 0, 0]
         }
       ],
-     
+
       [
         {
-          text : element['po_address'], 
+          text : element['po_address'],
           alignment: 'left',
         }
       ],
@@ -379,26 +379,26 @@ export class Potf05Page implements OnInit {
       ],
       [
         {
-          text : 'ชื่อวิน : ' + element['po_namewin'] + ' เขต : ' + element['area_name'] , 
+          text : 'ชื่อวิน : ' + element['po_namewin'] + ' เขต : ' + element['area_name'] ,
           alignment: 'left',
         }
       ],
       );
-  
-    
-      element['ponumberdetail'].forEach(element1 => {
+
+
+    element['ponumberdetail'].forEach(element1 => {
         exs.push(
-         
+
           [
             {
               text :  element1['product_name'] ,
               alignment: 'left',
             }
           ],
-        )
+        );
       });
 
-      if(data.length !== index+1){
+    if (data.length !== index + 1){
         exs.push(
           [
             {
@@ -406,33 +406,25 @@ export class Potf05Page implements OnInit {
               pageBreak: "after",
             }
           ],
-        )
+        );
       }
-     
+
 
 
   });
-  
 
-
-
- 
- 
- 
-  
-
-   return {
+    return {
      table: {
        widths: ['100%'],
-       //margin: [0, 0, 0, 0],
-       //dontBreakRows: true, 
+       // margin: [0, 0, 0, 0],
+       // dontBreakRows: true,
        body: [
          ...exs
        ],
-       
+
      },
      layout: 'noBorders',
    };
   }
-   
+
  }
