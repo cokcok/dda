@@ -18,12 +18,12 @@
 <!-- <ion-item *ngIf="!fix.includes(mode)">
   <ion-label class="showlabel" position="floating" >หมวด</ion-label>
   <ionic-selectable
-    interface="floating" 
+    interface="floating"
     item-content
     itemValueField="id"
     itemTextField="typecategory"
     [items]="portscategory"
-    [canSearch]="true" 
+    [canSearch]="true"
     closeButtonText="ยกเลิก"
     (onChange)="portChange_category($event)"
     >
@@ -36,7 +36,7 @@
     </ion-list-header>
     <ion-item *ngFor="let item of portscategory" >
       <ion-label>{{item.typecategory}}</ion-label>
-      <ion-radio slot="start" name="{{item.name}}" value="{{item.id}}" 
+      <ion-radio slot="start" name="{{item.name}}" value="{{item.id}}"
        ></ion-radio>
     </ion-item>
 
@@ -80,7 +80,7 @@
         <span class="error" *ngIf="isSubmitted && errorControl.mtd_numberback_id.errors?.required">
           กรุณาเลือก ตัวเลขด้านหลัง
         </span>
-        <tabset class="center"> 
+        <tabset class="center">
         <tab heading="ตัวเลขด้านหน้า" id="tab1">
         <ion-col >
         <ion-list>
@@ -90,7 +90,7 @@
                 ตัวเลขด้านหน้า
               </ion-label>
             </ion-list-header>
-           
+
             <ion-item>
               <ion-searchbar placeholder="ค้นหา..." [(ngModel)]="filterfront" [ngModelOptions]="{standalone: true}" animated="true"></ion-searchbar>
             </ion-item>
@@ -98,14 +98,14 @@
               <ion-item>
                 <ion-radio slot="start" value="{{c.id}}"></ion-radio>
                 <ion-label>สี{{ c.color }}</ion-label>
-              </ion-item> 
-              <ion-item *ngIf="c.picresizbase64List.length > 0"> 
+              </ion-item>
+              <ion-item *ngIf="c.picresizbase64List.length > 0">
                 <div style="display: inline-block;" *ngFor="let img of c.picresizbase64List">
                   <ion-img style="width: 100px; height: 100px;" [src]="img.url"></ion-img>
-                </div>  
+                </div>
               </ion-item>
                 <ion-list  *ngFor="let cc of ports_front[i].front_number;">
-                  <ion-label  [ngClass]="(inqtyerror(cc.qty,cc.qty_remain))?'sublistchk':'sublist'"> เลข {{ cc.number }} เหลือ {{cc.qty}}</ion-label>  
+                  <ion-label  [ngClass]="(inqtyerror(cc.qty,cc.qty_remain))?'sublistchk':'sublist'"> เลข {{ cc.number }} เหลือ {{cc.qty}}</ion-label>
                 </ion-list>
             </ion-list>
           </ion-radio-group>
@@ -121,7 +121,7 @@
                   ตัวเลขด้านหลัง
                 </ion-label>
               </ion-list-header>
-            
+
               <ion-item>
                 <ion-searchbar placeholder="ค้นหา..." [(ngModel)]="filterback" [ngModelOptions]="{standalone: true}" animated="true"></ion-searchbar>
               </ion-item>
@@ -130,18 +130,18 @@
                   <ion-radio slot="start" value="{{c.id}}"></ion-radio>
                   <ion-label>สี{{ c.color }}</ion-label>
                 </ion-item>
-                <ion-item *ngIf="c.picresizbase64List.length > 0"> 
+                <ion-item *ngIf="c.picresizbase64List.length > 0">
                   <div style="display: inline-block;" *ngFor="let img of c.picresizbase64List">
                     <ion-img style="width: 100px; height: 100px;" [src]="img.url"></ion-img>
-                  </div>  
+                  </div>
                 </ion-item>
                 <ion-list *ngFor="let cc of ports_front[i].back_number;">
-                  <ion-label  [ngClass]="(inqtyerror(cc.qty,cc.qty_remain))?'sublistchk':'sublist'"> เลข {{ cc.number }} เหลือ {{cc.qty}}</ion-label> 
+                  <ion-label  [ngClass]="(inqtyerror(cc.qty,cc.qty_remain))?'sublistchk':'sublist'"> เลข {{ cc.number }} เหลือ {{cc.qty}}</ion-label>
                 </ion-list>
               </ion-list>
             </ion-radio-group>
           </ion-list>
-          
+
         </ion-col>
       </tab>
       </tabset>
@@ -178,14 +178,14 @@
         <ion-row class="table1_detail" *ngFor="let c of tmpproduct;let i = index;">
           <ion-col size="0.5">{{i+1}}</ion-col>
           <ion-col size="2">{{c.name}}</ion-col>
-          <ion-col > 
-          <ion-input size="2" class="showborder" type="number"  [(ngModel)]="discount[c.id]" [ngModelOptions]="{standalone: true}" (change)="Discount(c.id,discount[c.id])"></ion-input> 
+          <ion-col >
+          <ion-input size="2" class="showborder" type="number"  [(ngModel)]="discount[c.id]" [ngModelOptions]="{standalone: true}" (change)="Discount(c.id,discount[c.id])"></ion-input>
           </ion-col>
           <ion-col >{{c.total|number}}</ion-col>
-          <ion-col > 
-            <ion-input  class="showborder" type="text"  [(ngModel)]="commentproduct[c.id]" [ngModelOptions]="{standalone: true}" (change)="Commentproduct(c.id,commentproduct[c.id])"></ion-input> 
+          <ion-col >
+            <ion-input  class="showborder" type="text"  [(ngModel)]="commentproduct[c.id]" [ngModelOptions]="{standalone: true}" (change)="Commentproduct(c.id,commentproduct[c.id])"></ion-input>
           </ion-col>
-          <ion-col > 
+          <ion-col >
             <ion-button (click)="Deltmpproduct(c.id,c.id)">
               <ion-icon slot="icon-only" class="iconSize" name="trash"></ion-icon>
             </ion-button>
@@ -201,7 +201,7 @@
               </span>
             </ion-row>
           </ion-col>
-        </ion-row> 
+        </ion-row>
     </ion-grid>
   </form>
 </ion-content>
