@@ -5,7 +5,7 @@ import { Subscription } from "rxjs";
 import {RpSvService} from '../sv/rp-sv.service';
 import { saveAs } from 'file-saver';
 
-
+import { MtdSvService} from '../sv/mtd-sv.service';
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 
@@ -38,7 +38,8 @@ export class Rp03Page implements OnInit {
   currentYear= new Date().getFullYear() + 543;
   years: any = []; sub: Subscription; 
   data_rp = [];
-
+  v_false: any = true;
+  portControl_customertype: FormControl; portscustomertype=[];
   datePickerObj: any = {};
   currentDate = new Date().toLocaleDateString();
   currentTime = new Date().toLocaleTimeString();
@@ -58,19 +59,22 @@ export class Rp03Page implements OnInit {
         {id: '11', text: 'พฤศจิกายน'},
         {id: '12', text: 'ธันวาคม'},
   ];
-  constructor(public formBuilder: FormBuilder,public configSv: ConfigService,public rpSv: RpSvService,private cdref: ChangeDetectorRef) { }
+  constructor(public formBuilder: FormBuilder,public configSv: ConfigService,public rpSv: RpSvService,private cdref: ChangeDetectorRef,public mtdSv: MtdSvService) { }
 
   ngOnInit() {
     for (let i = this.currentYear - 5; i <= this.currentYear ; i++) {
       this.years.push(i);
     }
     this.loadForm();this.fndate();
+    this.loaddata_customertype(0);
   }
 
   loadForm(){
+    this.portControl_customertype = this.formBuilder.control("", Validators.required);
     this.ionicForm = this.formBuilder.group({
       rp_type: [, [Validators.required]],
       rp_typeday: [, [Validators.required]],
+      customer_type_id: this.portControl_customertype,  
       txtdate: [],
       txtdate1: [],
       txtmonth:[],
@@ -78,8 +82,35 @@ export class Rp03Page implements OnInit {
       txtyear:[],
       txtyear1:[],
     });
+    
+    if( this.configSv.group_id == 5)
+    {
+      this.v_false = false;
+    }
+   
   }
 
+  loaddata_customertype(padding){
+  
+    this.sub = this.mtdSv
+    .getmtd_sale(0,padding, null, 'po')
+    .subscribe((data) => {
+      if (data !== null) {
+        // tslint:disable-next-line:no-shadowed-variable
+        this.portscustomertype = data.data_detail.map((item) => Object.assign({}, item));
+        this.portscustomertype.unshift({ 
+          id: 0,
+          name: 'ทั้งหมด'
+        });
+    
+        const item = this.portscustomertype.filter((val) => val.id === this.configSv.emp_id)[0];
+        // console.log(item);
+        this.portControl_customertype.setValue(item);
+      }
+    });
+    
+    
+  }
 
   fndate(){
     this.datePickerObj = {
@@ -114,8 +145,10 @@ export class Rp03Page implements OnInit {
 
 
   SearchData(){
+
     this.data_rp= []; 
-    console.log(this.ionicForm.value);
+    //console.log(this.ionicForm.controls['customer_type_id'].value.name)
+   // console.log(this.ionicForm.value);
     this.sub = this.rpSv
     .searchdata_rp03(this.ionicForm.value)
     .subscribe((data) => {
@@ -197,16 +230,32 @@ export class Rp03Page implements OnInit {
         columns: [{
           table: {
             widths: ['20%','60%', '20%'],
+            height: 60,
             body: [
               [
               {text: header_rp, alignment: 'left'},
-              {text: header_rp1,style: 'header'},
+              {text: this.ionicForm.controls['customer_type_id'].value.name  + ' ' + header_rp1,style: 'header'},
+              // {
+              //   stack: [
+              //     { text: 'First row', style: 'header' },
+              //     { text: 'Second row', style: 'header' }
+              //   ],
+              //   width: '*'
+
+              // },
+
+              //{text: header_rp1,style: 'header'},
               {text: this.currentDate + ' ' + this.currentTime , alignment: 'right'}
               ],
-             
+              // [
+              //   {text: '', alignment: 'left'},
+              //   {text:  header_rp1,style: 'header'},
+              //   {text: ' ' , alignment: 'right'}
+              // ]
             ]
             }, layout: 'noBorders'
-        }]
+        }],
+        
        },
         content: [
            {

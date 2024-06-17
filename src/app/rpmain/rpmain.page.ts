@@ -19,7 +19,7 @@ export class RpmainPage implements OnInit {
   loaddata() {
     let datalimit;
     this.sub = this.rpSv
-      .getmtd_report()
+      .getmtd_report(this.configSv.group_id)
       .subscribe((data) => { 
         if (data !== null) {
           this.data =  this.data.concat(data.data_detail.map((item) => Object.assign({}, item)));   

@@ -47,7 +47,7 @@ export class Po01Page implements OnInit {
   @ViewChild('fileIngimg1') fileIngimg1: ElementRef;
   ionicForm: FormGroup; isSubmitted = false;  ionicFormPayment: FormGroup;
   sub: Subscription;
-  // id: number;
+  // id: number; 
   portControl_sale: FormControl; ports_sale: any;
   portControl_area: FormControl; ports_area: any;
   portControl_namewin: FormControl; ports_namewin: any;

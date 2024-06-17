@@ -59,7 +59,7 @@
         <ion-select interface="popover"  formControlName="txtyear"  >
            <ion-select-option *ngFor="let item of years" value="{{item}}">{{item}}</ion-select-option>
         </ion-select>
-    </ion-item>
+    </ion-item> 
     </ion-col>
   </ion-row>
   <ion-row *ngIf="ionicForm.controls.rp_typeday.value == '1'">
@@ -97,6 +97,17 @@
         </ion-select>
     </ion-item>
     </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <ion-label class="showlabel" position="floating">พนักงาน</ion-label>
+        <ionic-selectable interface="floating" item-content formControlName="customer_type_id" itemValueField="id"
+          itemTextField="name" [items]="portscustomertype" [canSearch]="true" closeButtonText="ยกเลิก" [isEnabled]="v_false">
+        </ionic-selectable>
+        
+      </ion-item> 
+    </ion-col> 
   </ion-row>
   <ion-row>
     <ion-col>

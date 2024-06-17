@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { data } from '../models/data_model';
 import { FeedBack } from '../models/feedback';
 import { place } from '../models/place';
-
+ 
 @Injectable({
   providedIn: 'root'
 })
@@ -29,6 +29,20 @@ export class MtdSvService {
       'limit': limit,
       'condition':condition,
       'type_sql': 'read'
+    }
+    return this.http.post<data>(apiUrl, data, { headers: header });
+  }
+  getmtd_sale(page:number,padding: number, limit: number = 9999999999,condition?): Observable<data> {
+    const header = { 'Content-Type': 'application/json' };
+    let apiUrl = this.configSv.ip + this.getpage[page];
+    // if(page === 'mtd01'){
+    //    apiUrl = this.configSv.ip + 'mtd01.php';
+    // }
+     let data = {
+      'padding': padding,
+      'limit': limit,
+      'condition':condition,
+      'type_sql': 'readsale'
     }
     return this.http.post<data>(apiUrl, data, { headers: header });
   }

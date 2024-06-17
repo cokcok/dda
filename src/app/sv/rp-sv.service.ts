@@ -12,11 +12,12 @@ export class RpSvService {
 
   constructor(private http: HttpClient, private configSv: ConfigService) { }
 
-  getmtd_report(): Observable<data> {
+  getmtd_report(group_id): Observable<data> {
     const header = { 'Content-Type': 'application/json' };
     let apiUrl = this.configSv.ip + 'mtd_report.php';
      let data = {
-      'type_sql': 'read'
+      'type_sql': 'read',
+      'group_id' : group_id
     }
     return this.http.post<data>(apiUrl, data, { headers: header });
   }  
@@ -69,6 +70,7 @@ export class RpSvService {
       'txtmonth1': vdata.txtmonth1,
       'txtyear': vdata.txtyear,
       'txtyear1': vdata.txtyear1,
+      'mtd_user_id' : vdata.customer_type_id.id,
       
     }
     return this.http.post<data>(apiUrl, data, { headers: header });
