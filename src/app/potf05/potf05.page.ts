@@ -164,7 +164,7 @@ export class Potf05Page implements OnInit {
     });
   }
 
-  DownloadPdf_Sticker(vdata) {
+  async DownloadPdf_Sticker(vdata) {
     // console.log(vdata);
     const docDefinition = {
       pageSize: {
@@ -186,6 +186,7 @@ export class Potf05Page implements OnInit {
 
     };
     // console.log(docDefinition);
+    await this.configSv.loadThaiFonts(pdfMake);
     this.configSv.saveToDevice(pdfMake.createPdf(docDefinition), "cupon.pdf");
   }
 

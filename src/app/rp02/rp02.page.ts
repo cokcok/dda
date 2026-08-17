@@ -171,7 +171,7 @@ export class Rp02Page implements OnInit {
     });
   }
 
-  DownloadPdf(vdata) {
+  async DownloadPdf(vdata) {
     // console.log(vdata);
     let items = [];
     let rp_typename = [ 'ทั้งหมด', 'ส่งได้', 'ส่งไม่ได้']; 
@@ -274,6 +274,7 @@ export class Rp02Page implements OnInit {
          font: 'THSarabunNew'
        }
      }
+     await this.configSv.loadThaiFonts(pdfMake);
      this.configSv.saveToDevice(pdfMake.createPdf(docDefinition), "green.pdf");
    }
 

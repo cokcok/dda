@@ -142,7 +142,7 @@ export class Poassign03Page implements OnInit {
       });
   }
 
-  DownloadPdf_Sticker(vdata) {
+  async DownloadPdf_Sticker(vdata) {
     // console.log(vdata);
     const docDefinition = {
       pageSize: {
@@ -176,11 +176,12 @@ export class Poassign03Page implements OnInit {
 
     };
     // console.log(docDefinition);
+    await this.configSv.loadThaiFonts(pdfMake);
     this.configSv.saveToDevice(pdfMake.createPdf(docDefinition), "cupon.pdf");
   }
 
 
-  DownloadPdf_Sticker_New(vdata) {
+  async DownloadPdf_Sticker_New(vdata) {
     // console.log(vdata);
     const docDefinition = {
       pageSize: { // point unit
@@ -204,6 +205,7 @@ export class Poassign03Page implements OnInit {
 
     };
     // console.log(docDefinition);
+    await this.configSv.loadThaiFonts(pdfMake);
     this.configSv.saveToDevice(pdfMake.createPdf(docDefinition), "cupon.pdf");
   }
 
@@ -869,7 +871,7 @@ export class Poassign03Page implements OnInit {
     };
   }
 
-  DownloadPdf(vdata) {
+  async DownloadPdf(vdata) {
     // console.log(vdata);
     const docDefinition = {
       pageSize: 'A4',
@@ -900,6 +902,7 @@ export class Poassign03Page implements OnInit {
         font: 'THSarabunNew'
       }
     };
+    await this.configSv.loadThaiFonts(pdfMake);
     this.configSv.saveToDevice(pdfMake.createPdf(docDefinition), "cupon.pdf");
   }
 
@@ -1052,7 +1055,7 @@ export class Poassign03Page implements OnInit {
       });
   }
 
-  DownloadPdf1(vdata, seq, assign_date) {
+  async DownloadPdf1(vdata, seq, assign_date) {
    // console.log(vdata);
    // let items = [];
   // var self = this;
@@ -1101,6 +1104,7 @@ export class Poassign03Page implements OnInit {
         font: 'THSarabunNew'
       }
     };
+    await this.configSv.loadThaiFonts(pdfMake);
     this.configSv.saveToDevice(pdfMake.createPdf(docDefinition), "green.pdf");
   }
 

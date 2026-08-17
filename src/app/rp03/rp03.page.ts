@@ -192,7 +192,7 @@ export class Rp03Page implements OnInit {
     }
   }
 
-  DownloadPdf(vdata) {
+  async DownloadPdf(vdata) {
     // console.log(vdata);
     let items = [];
     let header_rp,header_rp1
@@ -296,6 +296,7 @@ export class Rp03Page implements OnInit {
          font: 'THSarabunNew'
        }
      }
+     await this.configSv.loadThaiFonts(pdfMake);
      this.configSv.saveToDevice(pdfMake.createPdf(docDefinition), "green.pdf");
    }
 

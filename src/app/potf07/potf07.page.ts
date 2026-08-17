@@ -135,7 +135,7 @@ export class Potf07Page implements OnInit {
     });
   }
 
-  get_report(data,type){
+  async get_report(data,type){
     let head;
    
     if(type === 'before')
@@ -172,6 +172,7 @@ export class Potf07Page implements OnInit {
         font: 'THSarabunNew'
       }
     }
+    await this.configSv.loadThaiFonts(pdfMake);
     this.configSv.saveToDevice(pdfMake.createPdf(docDefinition), "tfsummary.pdf");
   }
 
@@ -349,7 +350,7 @@ export class Potf07Page implements OnInit {
     });
   }
 
-  get_reporttf(data,type){
+  async get_reporttf(data,type){
     let head;
    
     if(type === 'before')
@@ -386,6 +387,7 @@ export class Potf07Page implements OnInit {
         font: 'THSarabunNew'
       }
     }
+    await this.configSv.loadThaiFonts(pdfMake);
     this.configSv.saveToDevice(pdfMake.createPdf(docDefinition), "tfsummary.pdf");
   }
 

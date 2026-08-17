@@ -49,6 +49,29 @@ export class ConfigService {
     return await alert.present();
   }
 
+  thaiFontsLoaded = false;
+
+  async loadThaiFonts(pdfMake: any) {
+    if (this.thaiFontsLoaded) { return; }
+    const fonts = ['THSarabunNew.ttf', 'THSarabunNew-Bold.ttf', 'THSarabunNew-Italic.ttf', 'THSarabunNew-BoldItalic.ttf'];
+    for (const font of fonts) {
+      const res = await fetch('assets/fonts/' + font);
+      const buffer = await res.arrayBuffer();
+      pdfMake.vfs[font] = this.arrayBufferToBase64(buffer);
+    }
+    this.thaiFontsLoaded = true;
+  }
+
+  private arrayBufferToBase64(buffer: ArrayBuffer): string {
+    let binary = '';
+    const bytes = new Uint8Array(buffer);
+    const chunkSize = 0x8000;
+    for (let i = 0; i < bytes.length; i += chunkSize) {
+      binary += String.fromCharCode.apply(null, Array.from(bytes.subarray(i, i + chunkSize)));
+    }
+    return btoa(binary);
+  }
+
   saveToDevice(pdfobj: any, savefile: any) {
     if (this.plt.is('cordova')) {
       pdfobj.getBuffer((buffer) => {
